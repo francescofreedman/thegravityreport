@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GRAVITY — an independent basketball research publication</title>
+<meta name="description" content="GRAVITY: Game-Rate Adjusted Value, Impact, Talent, and Yield. Research notes, registered forecasts, and a full-league player ranking — delivered through a vintage inbox.">
+<meta property="og:title" content="GRAVITY — basketball research, delivered as mail">
+<meta property="og:description" content="Research notes as letters. Predictions age in the Outbox. Mistakes stay in the trash, labeled.">
+<meta property="og:type" content="website">
+<link rel="alternate" type="application/rss+xml" title="GRAVITY Research Notes" href="feed.xml">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📥</text></svg>">
+<style>
+:root{
+  --chrome:#d4d0c8; --chrome-dk:#808080; --chrome-dkr:#404040; --chrome-lt:#ffffff;
+  --court:#0E5A3A; --court2:#2E6B4F; --amber:#B26A1F; --amber-lt:#F3E3CD;
+  --ink:#171A1E; --teal:#0a7a70; --sel:#0E5A3A;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{
+  background:var(--teal);
+  background-image:radial-gradient(circle at 25% 20%, rgba(255,255,255,.045), transparent 45%);
+  font-family:Tahoma,'MS Sans Serif',Verdana,'Segoe UI',sans-serif;
+  font-size:11px; color:var(--ink); overflow:hidden;
+  display:flex; flex-direction:column;
+}
+.desk{flex:1; position:relative; overflow:hidden; padding:14px;}
+/* ---------- desktop icons ---------- */
+.dicons{position:absolute; top:14px; left:12px; display:flex; flex-direction:column; gap:16px; z-index:1;}
+.dicon{width:76px; text-align:center; color:#fff; cursor:pointer; user-select:none; text-decoration:none; display:block;}
+.dicon .glyph{font-size:28px; line-height:1; filter:drop-shadow(1px 1px 0 rgba(0,0,0,.55));}
+.dicon .lbl{margin-top:3px; font-size:10px; text-shadow:1px 1px 0 rgba(0,0,0,.7); padding:1px 2px; line-height:1.25;}
+.dicon:hover .lbl{background:rgba(14,90,58,.85); outline:1px dotted #fff;}
+/* ---------- window chrome ---------- */
+.window{
+  position:absolute; inset:12px 16px 12px 108px;
+  background:var(--chrome);
+  border:1px solid var(--chrome-dkr);
+  box-shadow:inset 1px 1px 0 var(--chrome-lt), inset -1px -1px 0 var(--chrome-dk), 2px 2px 0 rgba(0,0,0,.35);
+  display:flex; flex-direction:column; min-width:0;
+}
+.tbar{
+  background:linear-gradient(90deg,var(--court) 0%, var(--court2) 60%, #4F7A63 100%);
+  color:#fff; font-weight:bold; padding:3px 4px 3px 7px; display:flex; align-items:center; gap:6px;
+  letter-spacing:.2px; flex:0 0 auto;
+}
+.tbar .tglyph{font-weight:normal;}
+.tbar .title{flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.tbtn{
+  width:16px; height:14px; background:var(--chrome); color:#000; font-size:9px; line-height:12px;
+  text-align:center; border:1px solid; border-color:var(--chrome-lt) var(--chrome-dkr) var(--chrome-dkr) var(--chrome-lt);
+  font-family:Verdana,sans-serif; cursor:default; user-select:none;
+}
+.menubar{display:flex; gap:2px; padding:2px 2px; border-bottom:1px solid var(--chrome-dk); box-shadow:0 1px 0 var(--chrome-lt); flex:0 0 auto;}
+.menubar span{padding:2px 7px; cursor:default;}
+.menubar span:hover{background:var(--sel); color:#fff;}
+.toolbar{display:flex; align-items:stretch; gap:2px; padding:3px 4px; border-bottom:1px solid var(--chrome-dk); box-shadow:0 1px 0 var(--chrome-lt); flex:0 0 auto; flex-wrap:wrap;}
+.tool{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;
+  min-width:52px; padding:3px 6px 2px; border:1px solid transparent; cursor:pointer; user-select:none; color:#222; background:none; font:inherit;
+}
+.tool .ic{font-size:15px; line-height:1;}
+.tool .tl{font-size:10px;}
+.tool:hover{border-color:var(--chrome-lt) var(--chrome-dk) var(--chrome-dk) var(--chrome-lt); background:#e2ded6;}
+.tool:active{border-color:var(--chrome-dk) var(--chrome-lt) var(--chrome-lt) var(--chrome-dk);}
+.tool:focus-visible{outline:1px dotted #000; outline-offset:-3px;}
+.tool.sep{min-width:1px; padding:0; margin:2px 3px; border-left:1px solid var(--chrome-dk); border-right:1px solid var(--chrome-lt); cursor:default;}
+.tool.sep:hover{background:none;}
+/* ---------- main panes ---------- */
+.main{flex:1; display:flex; min-height:0; padding:4px; gap:4px;}
+.pane{
+  background:#fff; border:1px solid; border-color:var(--chrome-dk) var(--chrome-lt) var(--chrome-lt) var(--chrome-dk);
+  box-shadow:inset 1px 1px 0 var(--chrome-dkr);
+}
+.folders{flex:0 0 190px; overflow:auto; padding:4px 2px;}
+.fhead{font-weight:bold; padding:3px 6px 4px; color:#333;}
+.folder{display:flex; align-items:center; gap:5px; padding:2.5px 6px 2.5px 14px; cursor:pointer; white-space:nowrap; width:100%; text-align:left; background:none; border:0; font:inherit;}
+.folder:hover{text-decoration:underline;}
+.folder:focus-visible{outline:1px dotted #000;}
+.folder.active{background:var(--sel); color:#fff;}
+.folder .cnt{font-weight:bold;}
+.folder.active .cnt{color:#fff;}
+.folder .cnt.unread{color:var(--court);}
+.fsep{margin:6px 6px 4px; border-top:1px solid #c8c4bc; box-shadow:0 1px 0 #fff;}
+.fnote{padding:6px 8px; color:#666; font-size:10px; line-height:1.45;}
+.right{flex:1; display:flex; flex-direction:column; gap:4px; min-width:0;}
+/* ---------- message list ---------- */
+.list{flex:0 0 44%; overflow:auto; min-height:110px; transition:flex-basis .12s ease;}
+.right.reading .list{flex:0 0 24%;}
+table.msgs{width:100%; border-collapse:collapse; table-layout:fixed;}
+table.msgs th{
+  position:sticky; top:0; background:var(--chrome); text-align:left; font-weight:normal;
+  padding:2px 6px; border:1px solid; border-color:var(--chrome-lt) var(--chrome-dk) var(--chrome-dk) var(--chrome-lt);
+  cursor:default; white-space:nowrap; font-size:10.5px; z-index:1;
+}
+table.msgs td{padding:2.5px 6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:default; border-bottom:1px dotted #eee;}
+tr.msg.unread td{font-weight:bold;}
+tr.msg.selected td{background:var(--sel); color:#fff;}
+tr.msg.pinned td{background:#F6EFE2;}
+tr.msg.pinned.selected td{background:var(--sel);}
+tr.msg:hover:not(.selected) td{background:#EAF0EA;}
+.col-ico{width:22px; text-align:center;}
+.col-clip{width:22px; text-align:center;}
+.col-from{width:168px;}
+.col-date{width:118px;}
+.newchip{display:inline-block; background:var(--amber); color:#fff; font-size:9px; padding:0 4px; margin-left:5px; vertical-align:1px; animation:blink 1.15s steps(2) infinite;}
+@keyframes blink{50%{opacity:.25;}}
+@media (prefers-reduced-motion:reduce){ .newchip{animation:none;} .scroller{animation:none; transform:none;} }
+/* ---------- preview ---------- */
+.preview{flex:1; overflow:auto; display:flex; flex-direction:column; min-height:140px;}
+.phead{background:#ECE9E2; border-bottom:1px solid var(--chrome-dk); padding:6px 10px; flex:0 0 auto;}
+.phead .row{display:flex; gap:6px; padding:1px 0;}
+.phead .k{color:#555; width:74px; flex:0 0 auto;}
+.phead .v{font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.phead .v.normal{font-weight:normal;}
+.attachline{border-top:1px solid #c9c5bd; margin-top:4px; padding-top:4px; color:#333;}
+.attachline a{color:#003399;}
+.pbody{
+  padding:20px 30px 28px; max-width:76ch;
+  font-family:'Latin Modern Roman','Computer Modern Serif','CMU Serif',Georgia,'Times New Roman',serif;
+  font-size:13.5px; line-height:1.66; text-align:justify; hyphens:auto;
+}
+.pbody p{margin:0 0 10px;}
+.pbody h3{font-size:13.5px; margin:18px 0 7px; color:var(--court); font-variant:small-caps; letter-spacing:.8px;}
+.pbody a{color:#003399;}
+.pbody .gsc{font-variant:small-caps; letter-spacing:.6px;}
+.kicker{
+  color:var(--amber); font-weight:bold; letter-spacing:1.4px; font-size:11px; text-transform:uppercase;
+  margin-bottom:8px; font-family:Georgia,'Times New Roman',serif;
+}
+/* full-paper reading mode */
+.pdfwrap{flex:1; display:flex; min-height:0; background:#5a5e63;}
+iframe.pdfview{flex:1; width:100%; border:0; min-height:0;}
+.pdfbar{
+  display:flex; align-items:center; gap:8px; background:#ECE9E2; border-bottom:1px solid var(--chrome-dk);
+  padding:3px 8px; font-size:10.5px; color:#444; flex-wrap:wrap;
+}
+.pdfbar .btn{margin:1px 0; padding:2px 10px; font-size:10.5px;}
+.plain{
+  background:#E7EFE8; border:1px solid; border-color:var(--chrome-dk) var(--chrome-lt) var(--chrome-lt) var(--chrome-dk);
+  padding:8px 10px; margin:12px 0; color:#123f2c;
+}
+.plain b{color:var(--court);}
+.betbox{ background:var(--amber-lt); border:1px dashed var(--amber); padding:8px 10px; margin:12px 0; color:#5c3a12; }
+ul.findings{margin:8px 0 12px 18px;}
+ul.findings li{margin-bottom:5px;}
+pre.mono{
+  font-family:'Courier New',monospace; font-size:11px; line-height:1.5; background:#FBFBF7;
+  border:1px solid; border-color:var(--chrome-dk) var(--chrome-lt) var(--chrome-lt) var(--chrome-dk);
+  padding:8px 10px; margin:10px 0; overflow-x:auto; text-align:left;
+}
+.badge{font-family:'Courier New',monospace; font-weight:bold; background:#EDF2EE; border:1px solid var(--court); color:var(--court); padding:0 5px; white-space:nowrap;}
+.chip{display:inline-block; font-size:9.5px; font-weight:bold; padding:1px 6px; border:1px solid var(--chrome-dkr); font-family:Tahoma,sans-serif;}
+.chip.open{background:var(--amber); color:#fff; border-color:#7a4a12;}
+.chip.win{background:var(--court); color:#fff;}
+.chip.recall{background:#999; color:#fff;}
+.btn{
+  display:inline-block; background:var(--chrome); padding:4px 14px; margin:4px 8px 0 0; color:#000; text-decoration:none;
+  border:1px solid; border-color:var(--chrome-lt) var(--chrome-dkr) var(--chrome-dkr) var(--chrome-lt);
+  box-shadow:1px 1px 0 rgba(0,0,0,.25); cursor:pointer; font-family:Tahoma,sans-serif; font-size:11px;
+}
+.btn:active{border-color:var(--chrome-dkr) var(--chrome-lt) var(--chrome-lt) var(--chrome-dkr);}
+.btn:focus-visible{outline:1px dotted #000; outline-offset:1px;}
+.sig{margin-top:16px; color:#666; font-size:10.5px; border-top:1px dotted #bbb; padding-top:8px; text-align:left;}
+/* ---------- status bar ---------- */
+.status{display:flex; gap:4px; padding:3px 4px; flex:0 0 auto;}
+.sseg{
+  border:1px solid; border-color:var(--chrome-dk) var(--chrome-lt) var(--chrome-lt) var(--chrome-dk);
+  padding:2px 8px; white-space:nowrap; overflow:hidden;
+}
+.sseg.grow{flex:1; position:relative;}
+.scroller{display:inline-block; white-space:nowrap; animation:crawl 26s linear infinite; color:var(--court); font-weight:bold;}
+@keyframes crawl{from{transform:translateX(100%);} to{transform:translateX(-105%);}}
+/* ---------- taskbar ---------- */
+.taskbar{
+  flex:0 0 32px; background:var(--chrome); border-top:1px solid var(--chrome-lt);
+  display:flex; align-items:center; gap:5px; padding:3px 5px; box-shadow:0 -1px 0 var(--chrome-dk);
+}
+.start{
+  display:flex; align-items:center; gap:5px; font-weight:bold; padding:2px 10px 3px 7px;
+  border:1px solid; border-color:var(--chrome-lt) var(--chrome-dkr) var(--chrome-dkr) var(--chrome-lt); cursor:pointer; user-select:none; background:none; font:inherit;
+}
+.start:active{border-color:var(--chrome-dkr) var(--chrome-lt) var(--chrome-lt) var(--chrome-dkr);}
+.task{
+  flex:0 1 260px; display:flex; align-items:center; gap:6px; padding:2px 9px; font-weight:bold;
+  border:1px solid; border-color:var(--chrome-dkr) var(--chrome-lt) var(--chrome-lt) var(--chrome-dkr); background:#e6e2da;
+  white-space:nowrap; overflow:hidden;
+}
+.tray{
+  margin-left:auto; display:flex; align-items:center; gap:8px; padding:2px 10px;
+  border:1px solid; border-color:var(--chrome-dk) var(--chrome-lt) var(--chrome-lt) var(--chrome-dk);
+}
+/* ---------- win98 dialog ---------- */
+.dlgwrap{position:absolute; inset:0; display:none; align-items:center; justify-content:center; z-index:9;}
+.dlgwrap.show{display:flex;}
+.dlg{
+  width:330px; background:var(--chrome); border:1px solid var(--chrome-dkr);
+  box-shadow:inset 1px 1px 0 var(--chrome-lt), inset -1px -1px 0 var(--chrome-dk), 3px 3px 0 rgba(0,0,0,.35);
+}
+.dlg .body{display:flex; gap:12px; padding:16px 14px; align-items:flex-start; font-size:11px;}
+.dlg .body .ic{font-size:26px;}
+.dlg .foot{display:flex; justify-content:center; padding:0 0 12px;}
+/* ---------- responsive ---------- */
+@media (max-width:820px){
+  .dicons{display:none;}
+  .window{inset:8px;}
+  .main{flex-direction:column;}
+  .folders{flex:0 0 auto; display:flex; overflow-x:auto; padding:3px;}
+  .fhead,.fsep,.fnote{display:none;}
+  .folder{padding:3px 8px; border:1px solid var(--chrome-dk); margin-right:3px; flex:0 0 auto; width:auto;}
+  .list{flex:0 0 34%;}
+  .right.reading .list{flex:0 0 22%;}
+  .col-from{width:110px;} .col-date{display:none;} th.col-date{display:none;}
+  .pbody{padding:14px 14px 22px; text-align:left;}
+  .taskbar .task{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="desk">
+  <nav class="dicons" aria-label="Desktop shortcuts">
+    <a class="dicon" href="the644/">
+      <div class="glyph">🏀</div><div class="lbl">The 644<br>(July 2026)</div>
+    </a>
+    <a class="dicon" href="papers/queta.pdf" target="_blank">
+      <div class="glyph">📄</div><div class="lbl">queta.pdf</div>
+    </a>
+    <a class="dicon" href="papers/morant.pdf" target="_blank">
+      <div class="glyph">📄</div><div class="lbl">morant.pdf</div>
+    </a>
+    <a class="dicon" href="#deleted" onclick="selectFolder('deleted');return false;">
+      <div class="glyph">🗑</div><div class="lbl">Recycle Bin</div>
+    </a>
+  </nav>
+
+  <main class="window" aria-label="GRAVITY Mail">
+    <div class="tbar">
+      <span class="tglyph">📥</span><span class="title">GRAVITY Mail — Research Notes — [reader@courtside]</span>
+      <span class="tbtn">_</span><span class="tbtn">□</span><span class="tbtn">✕</span>
+    </div>
+    <div class="menubar" aria-hidden="true">
+      <span>File</span><span>Edit</span><span>View</span><span>Go</span><span>Tools</span><span>Compose</span><span>Help</span>
+    </div>
+    <div class="toolbar">
+      <button class="tool" onclick="dlg('Compose is reserved for the editor. №3 ships after the vote — see Drafts.')"><span class="ic">📝</span><span class="tl">New Note</span></button>
+      <button class="tool" onclick="dlg('Reply-all to a research note? Bold. The newsletter will have a reply address.')"><span class="ic">↩</span><span class="tl">Reply</span></button>
+      <button class="tool" onclick="dlg('Forwarding is encouraged. That is, roughly, the entire growth strategy.')"><span class="ic">↪</span><span class="tl">Forward</span></button>
+      <div class="tool sep"></div>
+      <button class="tool" onclick="dlg('Printing works best on the PDF attachments — that is what LaTeX is for.')"><span class="ic">🖨</span><span class="tl">Print</span></button>
+      <button class="tool" onclick="dlg('Notes are permanent by policy. Only the model gets revised.')"><span class="ic">🗑</span><span class="tl">Delete</span></button>
+      <div class="tool sep"></div>
+      <button class="tool" onclick="selectFolder('ledger')"><span class="ic">📌</span><span class="tl">Ledger</span></button>
+      <button class="tool" onclick="selectFolder('spec')"><span class="ic">⚖</span><span class="tl">The Model</span></button>
+      <button class="tool" onclick="dlg('RSS is live: add feed.xml to your reader. The email edition is coming — for now, the inbox is the inbox.')"><span class="ic">📮</span><span class="tl">Subscribe</span></button>
+    </div>
+
+    <div class="main">
+      <div class="pane folders" id="folderPane" role="navigation" aria-label="Folders"></div>
+      <div class="right" id="rightPane">
+        <div class="pane list">
+          <table class="msgs">
+            <thead>
+              <tr><th class="col-ico">!</th><th class="col-clip">📎</th><th class="col-from">From</th><th>Subject</th><th class="col-date">Received ▾</th></tr>
+            </thead>
+            <tbody id="msgList"></tbody>
+          </table>
+        </div>
+        <div class="pane preview" id="preview" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="status">
+      <div class="sseg" id="statusCount"></div>
+      <div class="sseg grow"><span class="scroller">GRAVITY — Game-Rate Adjusted Value, Impact, Talent, and Yield · How good, times how often · Open predictions: 1 (scores July 2027) · Use ↑ ↓ to read the mail · No external rankings were consulted in the making of this inbox</span></div>
+      <div class="sseg">GRAVITY v3 (CTG)</div>
+    </div>
+  </main>
+
+  <div class="dlgwrap" id="dlgwrap" role="dialog" aria-modal="true">
+    <div class="dlg">
+      <div class="tbar"><span class="title">GRAVITY Mail</span><span class="tbtn" onclick="dlgClose()">✕</span></div>
+      <div class="body"><span class="ic">ℹ️</span><span id="dlgmsg"></span></div>
+      <div class="foot"><button class="btn" onclick="dlgClose()" style="min-width:70px; text-align:center;">OK</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="taskbar">
+  <button class="start" onclick="dlg('Where do you want to rank today?')"><span>🟢</span><span>Start</span></button>
+  <div class="task">📥 GRAVITY Mail — Inbox</div>
+  <div class="tray"><span>📶</span><span>🔊</span><span id="clock"></span></div>
+</div>
+
+<script>
+const M = {
+  spec: {
+    from:'GRAVITY (The Editor)', subject:'📌 START HERE — What is GRAVITY? (The Specification, v3)',
+    date:'Jul 10 2026, 9:00 AM', pinned:true, flag:'📌',
+    body:`
+      <div class="kicker">Pinned · Methodology</div>
+      <p><b class="gsc">GRAVITY</b> stands for <b>Game-Rate Adjusted Value, Impact, Talent, and Yield</b>. It estimates a player's
+      per-minute quality and adjusts for role, availability, and documented injury risk — measuring not just how good a
+      player is, but how much of that ability a team actually receives.</p>
+      <div class="plain"><b>In plain terms:</b> GRAVITY = (how good per minute) × (how reliably he's on the floor),
+      graded against the whole league by the same formula. No opinions, no reputation, no external rankings.</div>
+      <pre class="mono">THE SCALE
+  50   league-average minute
+  60+  quality starter
+  80+  franchise engine
+  97.8 Nikola Jokić (2025-26 max)</pre>
+      <h3>Version history</h3>
+      <p style="line-height:2; text-align:left">
+        <span class="chip">v1.0 · Jul 10</span> initial 644-player ranking &nbsp;→&nbsp;
+        <span class="chip">v2 · Jul 10</span> Butler ACL correction (#13→#58) &nbsp;→&nbsp;
+        <span class="chip">v3 · Jul 10</span> CTG filtered on/off integrated
+      </p>
+      <p>House rule for reading anything here: <b style="color:var(--court)">green is the model speaking</b>,
+      <b style="color:var(--amber)">amber is the model betting</b>, grey is the world providing context.</p>
+      <p>The full mathematical specification — seventeen equations of it — is in the appendix of every research
+      note (see the attachments on №1 and №2).</p>
+      <div class="sig">GRAVITY · an independent basketball research publication · est. July 2026</div>`
+  },
+  ed644: {
+    from:'The 644 (Rankings Desk)', subject:'📌 [CURRENT EDITION] The 644 — Every NBA Player, Ranked (July 2026)',
+    date:'Jul 10 2026, 9:05 AM', pinned:true, flag:'📌', clip:true,
+    body:`
+      <div class="kicker">Pinned · Flagship edition · 644 players · 60 rookies</div>
+      <p>Every NBA player plus the 2026 draft class, one number each, built from two seasons of data with
+      Cleaning the Glass filtered on/off. Rebuilt annually; old editions stay up so changes never look retroactive.</p>
+      <pre class="mono">TOP 10 — JULY 2026 (v3)
+  1  Jokić        DEN  97.8      6  Kawhi      TOR  77.3
+  2  SGA          OKC  92.9      7  Cade       DET  70.3
+  3  Wembanyama   SAS  85.7      8  KAT        NYK  69.3
+  4  Giannis      MIA  83.9      9  Mitchell   CLE  68.1
+  5  Dončić       LAL  83.0     10  Maxey      PHI  67.3</pre>
+      <p>Tier board, full sortable table, methodology, and the calls the model makes — including the ones it got
+      yelled at for (see: Research Note №2).</p>
+      <a class="btn" href="the644/">Open The 644</a>
+      <div class="sig">Next edition: July 2027 — with the Forecast Audit attached.</div>`
+  },
+  ledger: {
+    from:'Forecast Ledger', subject:'📌 Open predictions: 1 — the ledger is public and permanent',
+    date:'Jul 10 2026, 9:10 AM', pinned:true, flag:'📌',
+    body:`
+      <div class="kicker">Pinned · The Prediction Ledger</div>
+      <p>Every forecast is registered before the season with its probability, thresholds, and what counts as being
+      wrong. After the season, every call gets graded in the annual <b>Forecast Audit</b> — wins and misses alike.</p>
+      <pre class="mono">№   CLAIM                          P      REGISTERED    SCORES      STATUS
+2   Queta top-50 in July 2027     75%    Jul 10 2026   Jul 2027    [ OPEN ]
+2b  Queta top-25 in July 2027     40%    Jul 10 2026   Jul 2027    [ OPEN ]</pre>
+      <p style="text-align:left"><span class="chip open">OPEN</span> &nbsp;→&nbsp; becomes &nbsp;<span class="chip win">WIN</span> /
+      <span class="chip">PUSH</span> / <span class="chip" style="background:#8a2f2f;color:#fff">MISS</span>
+      &nbsp;when scored. No deletions, no edits, no quiet revisions.</p>
+      <div class="plain"><b>In plain terms:</b> anyone can highlight wins. The audit is the product.</div>
+      <div class="sig">Forecast Audit 2027 — an annual report. What the model got right, what it got wrong, and why.</div>`
+  },
+  queta: {
+    from:'Research Note №2', subject:'The Queta Problem — why he’s a top-50 player, and why 2026-27 proves it',
+    date:'Jul 10 2026, 4:10 AM', unread:true, clip:true, flag:'❗', isnew:true, pdf:'papers/queta.pdf',
+    attach:'queta.pdf (115 KB) · <a href="papers/queta.tex">queta.tex</a>',
+    body:`
+      <div class="kicker">№ 41 · Trust the data — a prediction paper</div>
+      <p>Our ranking put Neemias Queta — twice waived, 39th pick — at <span class="badge">58.8 · #41 · T4</span>,
+      a full tier above his reputation. Instead of defending the number, this note attacks it twice, keeps what
+      survives, and converts it into a registered bet.</p>
+      <ul class="findings">
+        <li><b>The anti-fluke chart:</b> his role grew 7× (269 → 1,924 minutes) and his efficiency went <i>up</i> —
+        PSA 130 → 132 → 134, with a 97th-percentile playoff series on top.</li>
+        <li><b>Stress test I:</b> on/off is two-thirds noise (year-over-year r = 0.317, n = 184). Shrink his +8.6 to
+        +2.7 and he's still ~#48. The case never rested on the shiny number.</li>
+        <li><b>Stress test II:</b> all 33 comparable big-man seasons since 2020 (the Gobert / Robert Williams /
+        Jarrett Allen family): 39% delivered a top-50-caliber follow-up.</li>
+        <li><b>The market agrees:</b> Boston signed Mitchell Robinson July 6 — then extended Queta for
+        <b>$56M anyway</b>.</li>
+      </ul>
+      <div class="betbox"><b>Registered forecast:</b> P(top-50 in July 2027) ≈ <b>75%</b> · P(top-25) ≈ <b>40%</b>.
+      Falsification on the record: #50+ = win · #51–70 = push, explanation owed · below #70 = clean miss.</div>
+      <div class="plain"><b>In plain terms:</b> it's not a moonshot claim — it just requires this season to mostly
+      repeat. We wrote down in advance exactly what counts as being wrong.</div>
+      <a class="btn" href="papers/queta.pdf" target="_blank">Open the paper (PDF)</a>
+      <a class="btn" href="papers/queta.pdf" download>Save queta.pdf</a>
+      <div class="sig">Implications for GRAVITY: + empirical on/off shrinkage (r = 0.317) is now a candidate model input.</div>`
+  },
+  morant: {
+    from:'Research Note №1', subject:'The Rise and Fall of Ja Morant — a statistical account, 2017–2026',
+    date:'Jul 10 2026, 2:39 AM', clip:true, flag:'', pdf:'papers/morant.pdf',
+    attach:'morant.pdf (118 KB) · <a href="papers/morant.tex">morant.tex</a>',
+    body:`
+      <div class="kicker">№ 140 · The steepest fall — a career autopsy</div>
+      <p>Seven seasons, one instrument: from unranked recruit to the 97th percentile of the league (2021-22),
+      then an availability catastrophe — <b>79 of 249 games since 2023</b> — and one 569-minute season the data
+      cannot fully judge.</p>
+      <ul class="findings">
+        <li><b>Missing, not choosing:</b> of his eFG collapse, 88% was shot-<i>making</i>, only 0.7 points of it
+        shot-selection (exact Shapley split).</li>
+        <li><b>The sample-size problem:</b> the three-point collapse covers 20-of-85; its Wilson interval
+        [.158, .336] contains his career norm.</li>
+        <li><b>The touch paradox:</b> the only split that moved beyond doubt was his free throw — <i>upward</i>,
+        to .897.</li>
+        <li><b>What the draft model missed:</b> his college assist rate was +3.5σ against the 2026 cohort —
+        the skill the formula didn't count is the one that survived everything.</li>
+      </ul>
+      <div class="plain"><b>In plain terms:</b> #140 is the right price for the delivery risk. It is probably the
+      wrong forecast of the talent. Both statements are the same mathematics, read in two directions.</div>
+      <a class="btn" href="papers/morant.pdf" target="_blank">Open the paper (PDF)</a>
+      <a class="btn" href="papers/morant.pdf" download>Save morant.pdf</a>
+      <div class="sig">Implications for GRAVITY: + creation added to the rookie blend · + zone mix ≠ shot difficulty · + CIs before adjectives.</div>`
+  },
+  welcome: {
+    from:'The Editor', subject:'Why this looks like 1999 (read once, then archive)',
+    date:'Jul 10 2026, 8:45 AM', flag:'',
+    body:`
+      <div class="kicker">About this publication</div>
+      <p>Research notes are letters: numbered, dated, permanent, addressed to anyone who takes basketball arguments
+      seriously. An inbox is the honest interface for that — nothing trends, nothing autoplays, the archive
+      <i>is</i> the product.</p>
+      <p>Each note ships three ways: the <b>PDF</b> proves depth, the <b>web version</b> gets read, the
+      <b>thread</b> gets discovered. The Ledger keeps us honest and the Audit grades us annually.</p>
+      <p>Subscribe by RSS (<a href="feed.xml">feed.xml</a>) — the email edition is coming.</p>
+      <div class="plain"><b>In plain terms:</b> an institution, not a feed. Slower on purpose.</div>
+      <div class="sig">GRAVITY · How good, times how often.</div>`
+  },
+  draft_kawhi: {
+    from:'Drafts', subject:'№3 (draft) — The Kawhi Anomaly: top-8 in 2027?',
+    date:'not sent', flag:'✏️',
+    body:`
+      <div class="kicker">Draft · unwritten · voting open</div>
+      <p>Career-best offense at 34 (8.0 BPM, +14.4 filtered on/off), zero playoff test, one cap-circumvention
+      investigation holding up his trade. The aging-curve math would be the spine: how rare is elite at 35?</p>
+      <p><i>This note has no content yet. The next paper goes to the draft with more votes.</i></p>
+      <button class="btn" onclick="vote('kawhi')">Vote: write this one</button>
+      <span id="votes-kawhi" style="font-family:Tahoma; font-size:10.5px; color:#666"></span>`
+  },
+  draft_jokic: {
+    from:'Drafts', subject:'№3 (draft) — Jokić: still the best, and 2027 proves it',
+    date:'not sent', flag:'✏️',
+    body:`
+      <div class="kicker">Draft · unwritten · voting open</div>
+      <p>GRAVITY #1 by five clear points (97.8 vs 92.9) — yet two straight MVPs went elsewhere. The paper would
+      quantify the voter-vs-data gap and the aging math for why a 31-year-old repeats at #1.</p>
+      <p><i>This note has no content yet. The next paper goes to the draft with more votes.</i></p>
+      <button class="btn" onclick="vote('jokic')">Vote: write this one</button>
+      <span id="votes-jokic" style="font-family:Tahoma; font-size:10.5px; color:#666"></span>`
+  },
+  outbox_queta: {
+    from:'Forecast Ledger', subject:'⏳ SCHEDULED — Grading Research Note №2 (sends July 2027)',
+    date:'queued', flag:'⏳',
+    body:`
+      <div class="kicker">Outbox · scheduled send</div>
+      <p>This message sends itself when the July 2027 edition of The 644 is computed. It will contain one line:</p>
+      <pre class="mono">Queta finished #__ of 6__.
+Forecast №2 (75% top-50):  [ WIN / PUSH / MISS ]</pre>
+      <p>Nothing about the claim can be edited between now and then. That's the point of an outbox.</p>
+      <div class="plain"><b>In plain terms:</b> the bet is in the mail. See you in twelve months.</div>`
+  },
+  sent_thread: {
+    from:'Sent Items', subject:'Thread: The Rise and Fall of Ja Morant (12 posts)',
+    date:'Jul 10 2026, 11:02 AM', flag:'',
+    body:`
+      <div class="kicker">Sent · social version of №1</div>
+      <pre class="mono">1/12  Everyone saw Ja Morant settle for ugly mid-range
+      jumpers last season. The data says that's not
+      what went wrong. A thread with receipts: 🧵
+2/12  88% of the collapse was MISSING, not choosing.
+      Exact decomposition below. [chart]
+3/12  His 3P% crash covers 85 attempts. The confidence
+      interval contains his career norm. [chart] ...</pre>
+      <p>The thread carries the plain-terms boxes and the two best charts; the PDF carries the proof.</p>`
+  },
+  del_butler: {
+    from:'The 644 (Rankings Desk)', subject:'♻️ RECALLED — Jimmy Butler at #13 (v1)',
+    date:'Jul 10 2026, 10:20 AM', flag:'♻️',
+    body:`
+      <div class="kicker">Deleted Items · kept visible on purpose</div>
+      <p style="text-align:left"><span class="chip recall">RECALLED</span> &nbsp;The sender recalled this ranking on Jul 10, 2026.</p>
+      <p><b>Reason:</b> the model rated 38 games of elite per-minute play as "availability risk." It didn't know
+      the season ended with a torn ACL on Jan 19. With the same injury discount every rehab case gets,
+      Butler moved <b>#13 → #58</b>, and the correction shipped the same day, in public.</p>
+      <div class="plain"><b>In plain terms:</b> the trash folder is part of the methodology. Errors get corrected
+      in public and kept on display — that's what makes the wins believable.</div>`
+  }
+};
+
+const FOLDERS = [
+  {id:'inbox',   icon:'📥', name:'Inbox', msgs:['spec','ed644','ledger','queta','morant','welcome']},
+  {id:'drafts',  icon:'✏️', name:'Drafts', msgs:['draft_kawhi','draft_jokic']},
+  {id:'outbox',  icon:'📤', name:'Outbox', msgs:['outbox_queta']},
+  {id:'sent',    icon:'📨', name:'Sent Items', msgs:['sent_thread']},
+  {id:'deleted', icon:'🗑', name:'Deleted Items', msgs:['del_butler']},
+  {sep:true},
+  {id:'spec',    icon:'⚖', name:'The Specification', msgs:['spec']},
+  {id:'644',     icon:'🏀', name:'The 644 (editions)', msgs:['ed644']},
+  {id:'ledger',  icon:'📌', name:'Forecast Ledger', msgs:['ledger','outbox_queta']},
+  {id:'audit',   icon:'📊', name:'Forecast Audit 2027', msgs:[]},
+];
+
+let curFolder = 'inbox', curMsg = 'queta';
+
+// read-state persists across visits
+let READ = [];
+try{ READ = JSON.parse(localStorage.getItem('gravity_read') || '[]'); }catch(e){}
+for (const id of READ){ if (M[id]){ M[id].unread = false; M[id].isnew = false; } }
+
+function markRead(id){
+  if (M[id].unread){ M[id].unread = false; M[id].isnew = false; }
+  if (!READ.includes(id)){ READ.push(id); try{ localStorage.setItem('gravity_read', JSON.stringify(READ)); }catch(e){} }
+}
+
+function renderFolders(){
+  const el = document.getElementById('folderPane');
+  let h = '<div class="fhead">📬 gravity@research</div>';
+  for (const f of FOLDERS){
+    if (f.sep){ h += '<div class="fsep"></div><div class="fhead" style="font-size:10px;color:#777">ARCHIVES</div>'; continue; }
+    const unread = f.id==='inbox' ? countUnread() : 0;
+    h += `<button class="folder ${f.id===curFolder?'active':''}" onclick="selectFolder('${f.id}')">
+      <span>${f.icon}</span><span>${f.name}</span>
+      ${unread?`<span class="cnt unread">(${unread})</span>`:(f.msgs && f.msgs.length && f.id!=='inbox'?`<span class="cnt" style="color:#888">(${f.msgs.length})</span>`:'')}
+    </button>`;
+  }
+  h += '<div class="fsep"></div><div class="fnote">Everything here is permanent.<br>Predictions age in the Outbox;<br>mistakes stay in the trash,<br>labeled.</div>';
+  el.innerHTML = h;
+}
+function countUnread(){
+  return FOLDERS[0].msgs.filter(id => M[id].unread).length;
+}
+function renderList(){
+  const f = FOLDERS.find(x => x.id===curFolder);
+  const el = document.getElementById('msgList');
+  if (!f.msgs.length){
+    el.innerHTML = '<tr><td colspan="5" style="padding:22px;text-align:center;color:#888;white-space:normal">This folder is empty until July 2027.<br><br>(The audit writes itself only after the season grades the predictions.)</td></tr>';
+    document.getElementById('preview').innerHTML = '<div class="pbody" style="color:#888">No message selected.</div>';
+    document.getElementById('rightPane').classList.remove('reading');
+    updateStatus(0);
+    return;
+  }
+  el.innerHTML = f.msgs.map(id => {
+    const m = M[id];
+    return `<tr class="msg ${m.unread?'unread':''} ${m.pinned?'pinned':''} ${id===curMsg?'selected':''}" onclick="selectMsg('${id}')">
+      <td class="col-ico">${m.flag||''}</td>
+      <td class="col-clip">${m.clip?'📎':''}</td>
+      <td class="col-from">${m.from}</td>
+      <td>${m.subject}${m.isnew?'<span class="newchip">NEW</span>':''}</td>
+      <td class="col-date">${m.date}</td>
+    </tr>`;
+  }).join('');
+  updateStatus(f.msgs.length);
+}
+function renderPreview(){
+  const m = M[curMsg];
+  if (!m) return;
+  const head = `
+    <div class="phead">
+      <div class="row"><span class="k">From:</span><span class="v">${m.from} &lt;notes@gravity&gt;</span></div>
+      <div class="row"><span class="k">Date:</span><span class="v normal">${m.date}</span></div>
+      <div class="row"><span class="k">Subject:</span><span class="v">${m.subject}</span></div>
+      ${m.attach?`<div class="attachline">📎 Attachments: <a href="${m.pdf}" target="_blank">${m.attach.split(' · ')[0]}</a> · ${m.attach.split(' · ')[1]||''}</div>`:''}
+    </div>`;
+  const right = document.getElementById('rightPane');
+  const pv = document.getElementById('preview');
+  const canInline = navigator.pdfViewerEnabled !== false;
+  if (m.pdf && canInline){
+    right.classList.add('reading');
+    pv.innerHTML = head + `
+      <div class="pdfbar"><span>Full paper — rendered from LaTeX.</span>
+        <a class="btn" href="${m.pdf}" target="_blank">Open in new tab</a>
+        <a class="btn" href="${m.pdf}" download>Save PDF</a></div>
+      <div class="pdfwrap"><iframe class="pdfview" src="${m.pdf}#view=FitH" title="${m.subject}"></iframe></div>`;
+  } else if (m.pdf){
+    right.classList.remove('reading');
+    pv.innerHTML = head + `
+      <div class="pdfbar"><span>This browser can't display PDFs inline.</span>
+        <a class="btn" href="${m.pdf}" target="_blank">Open the paper</a>
+        <a class="btn" href="${m.pdf}" download>Save PDF</a></div>
+      <div class="pbody">${m.body}</div>`;
+  } else {
+    right.classList.remove('reading');
+    pv.innerHTML = head + `<div class="pbody">${m.body}</div>`;
+  }
+  if (curMsg === 'draft_kawhi' || curMsg === 'draft_jokic') renderVotes();
+}
+function selectMsg(id, push=true){
+  curMsg = id;
+  markRead(id);
+  renderFolders(); renderList(); renderPreview();
+  document.title = M[id] ? `${M[id].subject.replace(/^[^A-Za-z№]*/, '')} — GRAVITY` : 'GRAVITY';
+  if (push) history.replaceState(null, '', `#${curFolder}/${id}`);
+}
+function selectFolder(id, push=true){
+  curFolder = id;
+  const f = FOLDERS.find(x => x.id===id);
+  curMsg = f && f.msgs.length ? f.msgs[0] : null;
+  renderFolders(); renderList();
+  if (curMsg){ markRead(curMsg); renderPreview(); }
+  if (push) history.replaceState(null, '', `#${id}${curMsg?'/'+curMsg:''}`);
+}
+function updateStatus(n){
+  const u = countUnread();
+  document.getElementById('statusCount').textContent = `${n} message(s), ${u} unread`;
+}
+function dlg(msg){
+  document.getElementById('dlgmsg').textContent = msg;
+  document.getElementById('dlgwrap').classList.add('show');
+}
+function dlgClose(){ document.getElementById('dlgwrap').classList.remove('show'); }
+
+// drafts voting (local; honest about it)
+function vote(k){
+  try{
+    const v = JSON.parse(localStorage.getItem('gravity_votes') || '{}');
+    if (v.voted){ dlg('One ballot per reader — you voted for ' + (v.voted === 'kawhi' ? 'the Kawhi paper.' : 'the Jokić paper.')); return; }
+    v.voted = k; v[k] = (v[k]||0) + 1;
+    localStorage.setItem('gravity_votes', JSON.stringify(v));
+    renderVotes();
+    dlg('Vote recorded. Ballots are tallied by hand at the editorial desk (this machine counts yours locally).');
+  }catch(e){ dlg('Your browser is refusing to remember the vote. It still counts in spirit.'); }
+}
+function renderVotes(){
+  let v = {};
+  try{ v = JSON.parse(localStorage.getItem('gravity_votes') || '{}'); }catch(e){}
+  const k = document.getElementById('votes-kawhi'), j = document.getElementById('votes-jokic');
+  if (k) k.textContent = v.voted==='kawhi' ? ' ✓ your ballot' : '';
+  if (j) j.textContent = v.voted==='jokic' ? ' ✓ your ballot' : '';
+}
+
+// keyboard: ↑/↓ move through current folder
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+  const f = FOLDERS.find(x => x.id===curFolder);
+  if (!f || !f.msgs.length) return;
+  e.preventDefault();
+  let i = f.msgs.indexOf(curMsg);
+  i = e.key === 'ArrowDown' ? Math.min(f.msgs.length-1, i+1) : Math.max(0, i-1);
+  selectMsg(f.msgs[i]);
+});
+
+// live tray clock
+function tickClock(){
+  const d = new Date();
+  let h = d.getHours(); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+  document.getElementById('clock').textContent =
+    `${h}:${String(d.getMinutes()).padStart(2,'0')} ${ap}  ${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}`;
+}
+tickClock(); setInterval(tickClock, 30000);
+
+// hash routing: #folder or #folder/msg
+(function(){
+  const hash = location.hash.replace('#','');
+  if (hash){
+    const [f, m] = hash.split('/');
+    if (FOLDERS.find(x => x.id===f)){
+      curFolder = f;
+      const fo = FOLDERS.find(x => x.id===f);
+      curMsg = (m && fo.msgs.includes(m)) ? m : (fo.msgs[0] || null);
+    } else if (M[f]){ // bare message id
+      for (const fo of FOLDERS){ if (fo.msgs && fo.msgs.includes(f)){ curFolder = fo.id; curMsg = f; break; } }
+    }
+  }
+  renderFolders(); renderList();
+  if (curMsg){ markRead(curMsg); renderPreview(); }
+})();
+window.addEventListener('hashchange', () => {
+  const hash = location.hash.replace('#','');
+  const [f, m] = hash.split('/');
+  if (FOLDERS.find(x => x.id===f)) selectFolder(f, false);
+  if (m && M[m]) selectMsg(m, false);
+});
+</script>
+</body>
+</html>
