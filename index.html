@@ -327,9 +327,25 @@ const M = {
       </p>
       <p>House rule for reading anything here: <b style="color:var(--court)">green is the model speaking</b>,
       <b style="color:var(--amber)">amber is the model betting</b>, grey is the world providing context.</p>
-      <p>The full mathematical specification — seventeen equations of it — is in the appendix of every research
-      note (see the attachments on №1 and №2).</p>
+      <p>The full mathematics — every equation, weight, shrinkage rule, tier cut, and the complete injury-override
+      table — is published as a standalone technical document, typeset like everything else here.</p>
+      <button class="btn" onclick="selectFolder('spec');selectMsg('specdoc')">Open the full specification (5 pp)</button>
+      <a class="btn" href="papers/spec.pdf" download>Save spec.pdf</a>
       <div class="sig">GRAVITY · The Gravity Report · thegravityreport.com · est. July 2026</div>`
+  },
+  specdoc: {
+    from:'GRAVITY (The Editor)', subject:'The GRAVITY Specification, v3 — the full mathematics (technical document)',
+    date:'Jul 10 2026, 9:02 AM', clip:true, flag:'⚖', pdf:'papers/spec.pdf',
+    pages:5, pagesDir:'papers/pages/spec',
+    attach:'spec.pdf (80 KB) · <a href="papers/spec.tex">spec.tex</a>',
+    body:`
+      <div class="kicker">Technical document · v3 · citable</div>
+      <p>The complete specification: standardization, all seven component constructions, every weight,
+      the two-year blend and credibility shrinkage, playoff/age adjustments, the full injury-override
+      table, tier definitions, the GRAVITY-RS variant, the rookie module, version history, and the
+      reproducibility statement.</p>
+      <a class="btn" href="papers/spec.pdf" target="_blank">Open the paper (PDF)</a>
+      <a class="btn" href="papers/spec.pdf" download>Save spec.pdf</a>`
   },
   ed644: {
     from:'The 644 (Rankings Desk)', subject:'📌 [CURRENT EDITION] The 644 — Every NBA Player, Ranked (July 2026)',
@@ -492,7 +508,7 @@ const FOLDERS = [
   {id:'outbox',  icon:'📤', name:'Outbox', msgs:['outbox_queta']},
   {id:'deleted', icon:'🗑', name:'Deleted Items', msgs:['del_butler']},
   {sep:true},
-  {id:'spec',    icon:'⚖', name:'The Specification', msgs:['spec']},
+  {id:'spec',    icon:'⚖', name:'The Specification', msgs:['specdoc','spec']},
   {id:'644',     icon:'🏀', name:'The 644 (editions)', msgs:['ed644']},
   {id:'ledger',  icon:'📌', name:'Forecast Ledger', msgs:['ledger','outbox_queta']},
   {id:'audit',   icon:'📊', name:'Forecast Audit 2027', msgs:[]},

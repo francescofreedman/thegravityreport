@@ -1,0 +1,303 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!50!black]{hyperref}
+\usepackage{microtype}
+
+\definecolor{court}{HTML}{0E5A3A}
+\definecolor{amberx}{HTML}{B26A1F}
+\newcommand{\gravity}{\textsc{gravity}}
+\newcommand{\ctg}{\textsc{ctg}}
+\newcommand{\plainbox}[1]{\par\medskip\noindent\begin{center}%
+\colorbox{court!8}{\parbox{0.93\textwidth}{\small \textbf{\textcolor{court}{In plain terms:}} #1}}%
+\end{center}\medskip}
+
+\title{\textbf{The GRAVITY Specification}\\[4pt]
+\large Game-Rate Adjusted Value, Impact, Talent, and Yield\\[2pt]
+\normalsize Technical Document · Version 3 · The Gravity Report}
+\author{}
+\date{July 10, 2026}
+
+\begin{document}
+\maketitle
+\vspace{-2.5em}
+
+\begin{abstract}
+\noindent
+This document is the complete, citable specification of \gravity{}, the player-value
+system behind ``The 644'' rankings and every numbered research note published at
+\texttt{thegravityreport.com}. It defines all inputs, transformations, weights,
+adjustments, and boundary rules; the retrospective variant used for historical series;
+the rookie module; and the version history. Everything here is sufficient to reproduce
+the published numbers given the underlying data. Nothing here is a black box: where the
+system makes a judgment call (an exponent, a shrinkage constant, an injury discount),
+the call is stated, and the annual Forecast Audit grades what those calls produce.
+\end{abstract}
+
+\section{What GRAVITY measures}
+
+\gravity{} asks two questions about every player. \emph{How good is he per minute on the
+floor?} --- estimated from box-score impact, scoring efficiency relative to offensive
+burden, creation, defensive activity, rebounding, rim pressure, and garbage-time-filtered
+lineup impact. \emph{And how much of that ability does a team actually receive?} ---
+estimated from games played, sustained role size, and documented injury status. The two
+multiply. \gravity{} is therefore a rating of \emph{delivered value}, not pure talent: a
+per-minute star who cannot stay on the floor ranks below his talent, on purpose, by a
+stated amount.
+
+\plainbox{\gravity{} = (how good per minute) $\times$ (how reliably he's on the floor),
+graded against the whole league by the same formula. The scale: 50 = an average NBA
+minute, 60+ = a quality starter, 80+ = a franchise engine. The 2025--26 maximum is
+Nikola Joki\'c at 97.8.}
+
+\section{Notation and standardization}
+
+Let season $y$ have qualifying player set $\mathcal{P}_y$, with player $i$ playing $m_i$
+minutes. For any input statistic $x_k(i)$, define minutes-weighted moments and a clipped
+z-score:
+\begin{equation}
+\mu_k = \frac{\sum_{i \in \mathcal{P}_y} m_i\, x_k(i)}{\sum_i m_i},
+\qquad
+\sigma_k = \Bigl(\tfrac{\sum_i m_i (x_k(i) - \mu_k)^2}{\sum_i m_i}\Bigr)^{1/2},
+\qquad
+z_k(i) = \mathrm{clip}\!\left(\frac{x_k(i) - \mu_k}{\sigma_k},\ \pm 4\right).
+\label{eq:z}
+\end{equation}
+Weighting by minutes means $z = 0$ is the \emph{average NBA minute}, not the average
+roster spot; replacement level sits near $-1.9$. All standardizations are within-season,
+so a $+1\sigma$ season in 2020 and in 2026 mean the same thing relative to their leagues.
+
+\section{Component constructions}
+
+Seven constructed inputs feed the skill blend, each standardized via \eqref{eq:z}:
+\begin{align}
+\text{eff}(i) &= \bigl(\mathrm{TS}(i) - \mu_{\mathrm{TS}}\bigr) \times 100 \times
+\bigl(\mathrm{clip}(\mathrm{USG}(i), 8, 36)/20\bigr)^{0.7}
+&&\text{efficiency under load},
+\label{eq:eff}\\
+\text{creation}(i) &= \mathrm{AST\%}(i) - 0.55\,\mathrm{TOV\%}(i)
+&&\text{playmaking net of waste},\\
+\text{load}(i) &= \mathrm{USG}(i) + 0.4\,\mathrm{AST\%}(i)
+&&\text{shot + playmaking burden},\\
+\text{stocks}(i) &= 2.0\,\mathrm{STL\%}(i) + 1.2\,\mathrm{BLK\%}(i)
+&&\text{defensive events},\\
+\text{rim}(i) &= 100\cdot\mathrm{FTr}(i) + 200\cdot\text{dunk share}(i)
+&&\text{rim pressure},\\
+\text{vol}(i) &= \text{points per 100 possessions}
+&&\text{scoring volume},\\
+\text{reb}(i) &= \mathrm{TRB\%}(i)
+&&\text{rebounding}.
+\end{align}
+The exponent $0.7 > 0.5$ in \eqref{eq:eff} is a deliberate design choice: efficiency on a
+34\% usage burden is worth more than square-root usage curves grant, and empty-calorie
+efficiency at 14\% usage correspondingly less.
+
+\section{Season impact}
+
+The skill blend and the season impact for the current season are
+\begin{equation}
+S(i) = 0.27\, z_{\text{vol}} + 0.19\, z_{\text{eff}} + 0.22\, z_{\text{crea}}
++ 0.09\, z_{\text{load}} + 0.10\, z_{\text{stk}} + 0.05\, z_{\text{reb}} + 0.08\, z_{\text{rim}},
+\label{eq:skill}
+\end{equation}
+\begin{equation}
+I_y(i) = \Bigl[0.44\, z_{\mathrm{BPM}} + 0.12\, z_{\mathrm{WS/48}}
++ 0.14\, z\bigl(\Delta_{\text{on/off}}\cdot \min(1, m_i/2400)\bigr)
++ 0.30\, S(i)\Bigr]\cdot \sqrt{\min(1, m_i/800)},
+\label{eq:impact}
+\end{equation}
+where $\Delta_{\text{on/off}}$ is the garbage-time-filtered on/off differential
+(Cleaning the Glass), regressed by minutes before standardization. The trailing factor is
+a \emph{within-season} shrink: a scorching 300-minute stretch regresses toward league
+average before it can move a ranking. Research Note №2 measured the year-to-year
+reliability of filtered on/off at $r = 0.317$ ($n = 184$ players with 1{,}000+ minutes in
+consecutive seasons) --- which is why the term carries only 14\% weight and a minutes
+regression.
+
+\section{Two-year blend and credibility}
+
+Two seasons blend with minute-proportional weights favoring the recent year, then shrink
+toward replacement $\rho = -1.9$ with credibility from actual two-year minutes:
+\begin{equation}
+w = \frac{0.75\, m_y}{0.75\, m_y + 0.25\, m_{y-1}},
+\qquad
+R(i) = w\, I_y(i) + (1 - w)\, I_{y-1}(i),
+\label{eq:blend}
+\end{equation}
+\begin{equation}
+\tilde{R}(i) = c\,R(i) + (1 - c)\,\rho,
+\qquad
+c = \sqrt{\min(m_y + m_{y-1},\ 2200)/2200}.
+\label{eq:cred}
+\end{equation}
+An established star with a short injury season keeps his track record; a 300-minute
+two-way contract is pulled firmly toward replacement.
+
+\section{Adjustments}
+
+\subsection{Playoff evidence and age}
+\begin{equation}
+\pi(i) = \mathrm{clip}\Bigl(0.12\,(\mathrm{BPM}^{po} - \mathrm{BPM}^{rs})\cdot
+\min(1, m^{po}/300)/2.6,\ \pm 0.30\Bigr),
+\label{eq:po}
+\end{equation}
+\begin{equation}
+\alpha(i) = \mathrm{clip}\bigl(0.055\,(24 - \text{age})\,[\text{age} \le 23]
+- 0.045\,(\text{age} - 30)\,[\text{age} \ge 31],\ -0.30,\ +0.25\bigr).
+\label{eq:age}
+\end{equation}
+
+\subsection{Reliability multipliers}
+\begin{align}
+A(i) &= 0.78 + 0.22\, \min\!\bigl(1,\ (0.7 g_y + 0.3 g_{y-1})/55\bigr)
+&&\text{availability},
+\label{eq:avail}\\
+\Phi(i) &= 0.62 + 0.38\, \min\!\bigl(1,\ \max(\mathrm{mpg}_y,\ 0.85\,\mathrm{mpg}_{y-1})/32\bigr)
+&&\text{role size},
+\label{eq:role}\\
+J(i) &\in [0.78,\ 1.00]
+&&\text{documented injury override}.
+\label{eq:inj}
+\end{align}
+Injury overrides are manual, sparse, and published. Table~\ref{tab:inj} lists every
+override active in v3.
+
+\begin{table}[h]
+\centering\small
+\caption{All injury overrides in v3 (July 2026). Nothing else is hand-adjusted.}
+\begin{tabular}{llc}
+\toprule
+Player & Documented reason & $J$ \\
+\midrule
+Damian Lillard & Achilles tear Apr 2025; missed all 2025--26; age 36 & 0.78 \\
+Donte DiVincenzo & Achilles tear 2026 playoffs; out most of 2026--27 & 0.80 \\
+Jimmy Butler & ACL tear Jan 19, 2026; out until $\sim$Feb 2027 & 0.80 \\
+Tyrese Haliburton & Achilles tear Jun 2025; missed all 2025--26 & 0.82 \\
+Kyrie Irving & ACL tear Mar 2025; missed all 2025--26 & 0.88 \\
+Fred VanVleet & ACL tear 2025 offseason; missed all 2025--26 & 0.88 \\
+Bradley Beal & hip surgery ended 2025--26 after 6 games & 0.90 \\
+Dejounte Murray & Achilles rehab; 14 games in 2025--26 & 0.90 \\
+Jayson Tatum & Achilles return Mar 2026; strong 16-game sample & 0.95 \\
+Ja Morant & injury-marred 20-game 2025--26 (elbow UCL) & 0.95 \\
+Joel Embiid & chronic knee management; 38 games & 0.97 \\
+\bottomrule
+\end{tabular}
+\label{tab:inj}
+\end{table}
+
+\section{The final scale and tiers}
+
+\begin{equation}
+G(i) = 50 + 15\Bigl[\rho + \bigl(\tilde{R} + \pi + \alpha - \rho\bigr)\cdot A \cdot \Phi \cdot J\Bigr].
+\label{eq:final}
+\end{equation}
+
+\begin{table}[h]
+\centering\small
+\caption{Tier definitions (fixed score cuts, not fixed counts).}
+\begin{tabular}{clc}
+\toprule
+Tier & Name & \gravity{} score \\
+\midrule
+T1 & Franchise engines & $\ge 80$ \\
+T2 & All-NBA core & 66--80 \\
+T3 & All-Star tier & 60--66 \\
+T4 & Plus starters & 56--60 \\
+T5 & Solid starters & 53--56 \\
+T6 & High-leverage rotation & 50--53 \\
+T7 & Rotation & 46--50 \\
+T8 & Fringe \& developmental & 40--46 \\
+T9 & Deep bench, two-ways \& stashes & $< 40$ \\
+\bottomrule
+\end{tabular}
+\label{tab:tiers}
+\end{table}
+
+\section{The retrospective variant (GRAVITY-RS)}
+
+Filtered on/off is not uniformly available for early seasons, so historical series
+(career arcs, comparables engines) use \gravity-RS: delete the on/off term from
+\eqref{eq:impact} and renormalize,
+\begin{equation}
+I^{RS}_y(i) = \bigl[0.533\, z_{\mathrm{BPM}} + 0.133\, z_{\mathrm{WS/48}}
++ 0.333\, S'(i)\bigr]\cdot \sqrt{\min(1, m_i/800)},
+\label{eq:rs}
+\end{equation}
+with $S'$ using prior-season skill weights
+($0.28/0.21/0.22/0.09/0.10/0.06/0.04$; rim term reduced to free-throw rate only).
+
+\section{The rookie module}
+
+Draftees with no NBA minutes enter via a draft-slot prior mapped onto the current
+veteran score distribution, adjusted by college production:
+\begin{equation}
+\text{prod} = 0.5\, z^{c}_{\mathrm{BPM}} + 0.2\, z^{c}_{\mathrm{TS}}
++ 0.15\, z^{c}_{\mathrm{USG}} + 0.15\, z^{c}_{\mathrm{WS/40}},
+\qquad
+\Delta_{\text{pct}} = \mathrm{clip}(5\,\text{prod},\ \pm 8),
+\label{eq:rookie}
+\end{equation}
+where $z^c$ standardizes within the draft-class cohort. Slot priors (league percentile):
+pick 1 $\to$ 84; 2--3 $\to$ 78; 4--7 $\to$ 66; 8--14 $\to$ 56; 15--22 $\to$ 46;
+23--30 $\to$ 38; 31--45 $\to$ 28; 46--60 $\to$ 20; minus $0.06$ per pick as a tie-break.
+
+\textbf{Known deficiency, scheduled for v4:} Research Note №1 showed the production blend
+\eqref{eq:rookie} would have graded 2019-prospect Ja Morant as ordinary while his college
+assist rate sat $+3.5\sigma$ above the 2026 cohort --- creation is the one skill his
+collapse never touched. A creation term enters the rookie blend at the next model
+revision, before the All-Star 2027 edition.
+
+\section{Version history and edition calendar}
+
+\begin{table}[h]
+\centering\small
+\caption{Versions are model changes; editions are publications. Old editions are never
+revised.}
+\begin{tabular}{llp{8.6cm}}
+\toprule
+& Date & Change \\
+\midrule
+v1.0 & Jul 10, 2026 & Initial specification; The 644 computed (644 players). \\
+v2 & Jul 10, 2026 & Butler injury override added after fact-check (ACL Jan 19, 2026);
+his rank moved \#13 $\to$ \#58. Correction published same day. \\
+v3 & Jul 10, 2026 & \ctg{} garbage-time-filtered on/off integrated for both blend years
+(matched 278 of 279 players with 1{,}000+ minutes); bbref raw on/off retained as
+fallback below the match threshold. \\
+\midrule
+\multicolumn{3}{l}{\textbf{Edition calendar:} Jul 2026 (\textsc{final}) $\to$
+All-Star Break Feb 2027 $\to$ End of Season Apr 2027 $\to$} \\
+\multicolumn{3}{l}{Post-Playoffs Jun 2027 + Forecast Audit №1 (grades the registered
+Queta forecast).} \\
+\bottomrule
+\end{tabular}
+\label{tab:versions}
+\end{table}
+
+\section{Data sources and reproducibility}
+
+Season inputs: Basketball-Reference league tables (advanced, per-100-possession,
+play-by-play, shooting; regular season and playoffs), 2019--20 through 2025--26. Lineup
+inputs: Cleaning the Glass subscriber database (filtered on/off; licensed, not
+redistributable --- published outputs are derived values). College inputs:
+Sports-Reference CBB. Each edition of The 644 publishes its full output table as CSV
+alongside the interactive database. No external player rankings, projections, or draft
+boards are consulted at any stage of the pipeline.
+
+\textbf{Known limitations.} Box-score composites undervalue tracking-invisible defense
+(the Draymond Green problem, flagged in every affected placement); filtered on/off is
+two-thirds noise year-over-year and is weighted accordingly; rookie placements are
+priors, not measurements; availability and role discounts are stated choices, and a pure
+talent ranking would order some players differently.
+
+\subsection*{Citation}
+\begin{quote}
+The Gravity Report. \emph{The GRAVITY Specification}, version 3. July 10, 2026.\\
+\texttt{https://thegravityreport.com}
+\end{quote}
+
+\end{document}
