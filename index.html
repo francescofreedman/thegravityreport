@@ -135,8 +135,12 @@ tr.msg:hover:not(.selected) td{background:#EAF0EA;}
 .right.reading .list{flex:0 0 96px;}
 .main.max .folders, .main.max .list, .main.max .phead{display:none;}
 .main.max .right{gap:0;}
-.pdfwrap{flex:1; display:flex; min-height:0; background:#5a5e63;}
-iframe.pdfview{flex:1; width:100%; border:0; min-height:0;}
+.pages{flex:1; overflow:auto; background:#565a5e; padding:16px 10px;}
+img.sheet{
+  display:block; width:min(96%, 880px); margin:0 auto 16px; background:#fff;
+  box-shadow:0 3px 10px rgba(0,0,0,.5); border:1px solid #3c3f42; height:auto;
+}
+.main.max .pages img.sheet{width:min(97%, 1040px);}
 .pdfbar{
   display:flex; align-items:center; gap:8px; background:#ECE9E2; border-bottom:1px solid var(--chrome-dk);
   padding:3px 8px; font-size:10.5px; color:#444; flex-wrap:wrap;
@@ -364,6 +368,7 @@ const M = {
   queta: {
     from:'Research Note №2', subject:'The Queta Problem — why he’s a top-50 player, and why 2026-27 proves it',
     date:'Jul 10 2026, 4:10 AM', unread:true, clip:true, flag:'❗', isnew:true, pdf:'papers/queta.pdf',
+    pages:8, pagesDir:'papers/pages/queta',
     attach:'queta.pdf (115 KB) · <a href="papers/queta.tex">queta.tex</a>',
     body:`
       <div class="kicker">№ 41 · Trust the data — a prediction paper</div>
@@ -391,6 +396,7 @@ const M = {
   morant: {
     from:'Research Note №1', subject:'The Rise and Fall of Ja Morant — a statistical account, 2017–2026',
     date:'Jul 10 2026, 2:39 AM', clip:true, flag:'', pdf:'papers/morant.pdf',
+    pages:10, pagesDir:'papers/pages/morant',
     attach:'morant.pdf (118 KB) · <a href="papers/morant.tex">morant.tex</a>',
     body:`
       <div class="kicker">№ 140 · The steepest fall — a career autopsy</div>
@@ -517,9 +523,13 @@ function markRead(id){
 let expanded = false;
 try{ expanded = localStorage.getItem('gravity_expand') === '1'; }catch(e){}
 function toggleExpand(){
+  const sc = document.getElementById('pagesScroll');
+  const ratio = sc && sc.scrollHeight > 0 ? sc.scrollTop / sc.scrollHeight : 0;
   expanded = !expanded;
   try{ localStorage.setItem('gravity_expand', expanded ? '1' : '0'); }catch(e){}
   renderPreview();
+  const sc2 = document.getElementById('pagesScroll');
+  if (sc2) requestAnimationFrame(() => { sc2.scrollTop = ratio * sc2.scrollHeight; });
 }
 
 function renderFolders(){
@@ -575,24 +585,20 @@ function renderPreview(){
   const right = document.getElementById('rightPane');
   const pv = document.getElementById('preview');
   const mainEl = document.querySelector('.main');
-  const canInline = navigator.pdfViewerEnabled !== false;
-  if (m.pdf && canInline){
+  if (m.pdf && m.pages){
     right.classList.add('reading');
     mainEl.classList.toggle('max', expanded);
+    let sheets = '';
+    for (let i = 1; i <= m.pages; i++){
+      const n = String(i).padStart(2, '0');
+      sheets += `<img class="sheet" loading="lazy" src="${m.pagesDir}/p-${n}.png" alt="Page ${i} of ${m.pages}" width="1275" height="1650">`;
+    }
     pv.innerHTML = head + `
-      <div class="pdfbar"><span>${expanded ? '<b>' + m.subject + '</b>' : 'Full paper — rendered from LaTeX.'}</span>
+      <div class="pdfbar"><span>${expanded ? '<b>' + m.subject + '</b>' : `Full paper — ${m.pages} pages, rendered from LaTeX.`}</span>
         <span class="btn" onclick="toggleExpand()">${expanded ? 'Restore layout (Esc)' : '⛶ Expand reading'}</span>
-        <a class="btn" href="${m.pdf}" target="_blank">Open in new tab</a>
+        <a class="btn" href="${m.pdf}" target="_blank">Open PDF</a>
         <a class="btn" href="${m.pdf}" download>Save PDF</a></div>
-      <div class="pdfwrap"><iframe class="pdfview" src="${m.pdf}#view=FitH" title="${m.subject}"></iframe></div>`;
-  } else if (m.pdf){
-    mainEl.classList.remove('max');
-    right.classList.remove('reading');
-    pv.innerHTML = head + `
-      <div class="pdfbar"><span>This browser can't display PDFs inline.</span>
-        <a class="btn" href="${m.pdf}" target="_blank">Open the paper</a>
-        <a class="btn" href="${m.pdf}" download>Save PDF</a></div>
-      <div class="pbody">${m.body}</div>`;
+      <div class="pages" id="pagesScroll">${sheets}</div>`;
   } else {
     right.classList.remove('reading');
     mainEl.classList.remove('max');
