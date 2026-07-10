@@ -1,0 +1,8 @@
+// The Gravity Report — static assets, no worker script needed.
+{
+  "name": "thegravityreport",
+  "compatibility_date": "2026-07-10",
+  "assets": {
+    "directory": "."
+  }
+}

@@ -24,9 +24,9 @@ in most browsers, but Chrome blocks PDF iframes from file:// URLs.)
 
 ## Deploy (pick one)
 
-- **Cloudflare Pages** (recommended — DNS is already on Cloudflare): create a Pages
-  project, connect this repo (works from a private repo), framework = None,
-  build command = none, output dir = `/`.
+- **Cloudflare Workers (static assets)** — the live setup: dashboard → Workers & Pages →
+  import this repo, build command empty, deploy command `npx wrangler deploy`
+  (config in `wrangler.jsonc`). Pushes to `main` auto-deploy.
 - **GitHub Pages**: public repo → Settings → Pages → deploy from `main` `/ (root)`.
 - **Railway**: static site service, serve `/`.
 
