@@ -132,6 +132,9 @@ tr.msg:hover:not(.selected) td{background:#EAF0EA;}
   margin-bottom:8px; font-family:Georgia,'Times New Roman',serif;
 }
 /* full-paper reading mode */
+.right.reading .list{flex:0 0 96px;}
+.main.max .folders, .main.max .list, .main.max .phead{display:none;}
+.main.max .right{gap:0;}
 .pdfwrap{flex:1; display:flex; min-height:0; background:#5a5e63;}
 iframe.pdfview{flex:1; width:100%; border:0; min-height:0;}
 .pdfbar{
@@ -510,6 +513,15 @@ function markRead(id){
   if (!READ.includes(id)){ READ.push(id); try{ localStorage.setItem('gravity_read', JSON.stringify(READ)); }catch(e){} }
 }
 
+// expanded reading mode (sticky preference)
+let expanded = false;
+try{ expanded = localStorage.getItem('gravity_expand') === '1'; }catch(e){}
+function toggleExpand(){
+  expanded = !expanded;
+  try{ localStorage.setItem('gravity_expand', expanded ? '1' : '0'); }catch(e){}
+  renderPreview();
+}
+
 function renderFolders(){
   const el = document.getElementById('folderPane');
   let h = '<div class="fhead">📬 gravity@research</div>';
@@ -534,6 +546,7 @@ function renderList(){
     el.innerHTML = '<tr><td colspan="5" style="padding:22px;text-align:center;color:#888;white-space:normal">This folder is empty until July 2027.<br><br>(The audit writes itself only after the season grades the predictions.)</td></tr>';
     document.getElementById('preview').innerHTML = '<div class="pbody" style="color:#888">No message selected.</div>';
     document.getElementById('rightPane').classList.remove('reading');
+    document.querySelector('.main').classList.remove('max');
     updateStatus(0);
     return;
   }
@@ -561,15 +574,19 @@ function renderPreview(){
     </div>`;
   const right = document.getElementById('rightPane');
   const pv = document.getElementById('preview');
+  const mainEl = document.querySelector('.main');
   const canInline = navigator.pdfViewerEnabled !== false;
   if (m.pdf && canInline){
     right.classList.add('reading');
+    mainEl.classList.toggle('max', expanded);
     pv.innerHTML = head + `
-      <div class="pdfbar"><span>Full paper — rendered from LaTeX.</span>
+      <div class="pdfbar"><span>${expanded ? '<b>' + m.subject + '</b>' : 'Full paper — rendered from LaTeX.'}</span>
+        <span class="btn" onclick="toggleExpand()">${expanded ? 'Restore layout (Esc)' : '⛶ Expand reading'}</span>
         <a class="btn" href="${m.pdf}" target="_blank">Open in new tab</a>
         <a class="btn" href="${m.pdf}" download>Save PDF</a></div>
       <div class="pdfwrap"><iframe class="pdfview" src="${m.pdf}#view=FitH" title="${m.subject}"></iframe></div>`;
   } else if (m.pdf){
+    mainEl.classList.remove('max');
     right.classList.remove('reading');
     pv.innerHTML = head + `
       <div class="pdfbar"><span>This browser can't display PDFs inline.</span>
@@ -578,6 +595,7 @@ function renderPreview(){
       <div class="pbody">${m.body}</div>`;
   } else {
     right.classList.remove('reading');
+    mainEl.classList.remove('max');
     pv.innerHTML = head + `<div class="pbody">${m.body}</div>`;
   }
   if (curMsg === 'draft_kawhi' || curMsg === 'draft_jokic') renderVotes();
@@ -626,8 +644,9 @@ function renderVotes(){
   if (j) j.textContent = v.voted==='jokic' ? ' ✓ your ballot' : '';
 }
 
-// keyboard: ↑/↓ move through current folder
+// keyboard: ↑/↓ move through current folder, Esc restores layout
 document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && expanded){ toggleExpand(); return; }
   if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
   const f = FOLDERS.find(x => x.id===curFolder);
   if (!f || !f.msgs.length) return;
