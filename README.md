@@ -1,4 +1,4 @@
-# GRAVITY
+# The Gravity Report (GRAVITY)
 
 **Game-Rate Adjusted Value, Impact, Talent, and Yield** — an independent basketball
 research publication, delivered through a vintage inbox.
@@ -30,12 +30,12 @@ in most browsers, but Chrome blocks PDF iframes from file:// URLs.)
 - **GitHub Pages**: public repo → Settings → Pages → deploy from `main` `/ (root)`.
 - **Railway**: static site service, serve `/`.
 
-After deploying, replace `https://example.com/` in `feed.xml` with the real domain.
+Domain: **thegravityreport.com** (Cloudflare Registrar; feed.xml already points at it).
 
 ## Permalinks
 
-- `/#inbox/queta` — Research Note №2 (the reading pane opens the PDF)
-- `/#inbox/morant` — Research Note №1
+- `https://thegravityreport.com/#inbox/queta` — Research Note №2 (the reading pane opens the PDF)
+- `https://thegravityreport.com/#inbox/morant` — Research Note №1
 - `/#ledger` — the Forecast Ledger
 - `/#drafts` — vote on №3
 - `/the644/` — the full player ranking

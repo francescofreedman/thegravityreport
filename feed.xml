@@ -2,20 +2,20 @@
 <rss version="2.0">
 <channel>
   <title>GRAVITY Research Notes</title>
-  <link>https://example.com/</link>
+  <link>https://thegravityreport.com/</link>
   <description>GRAVITY: Game-Rate Adjusted Value, Impact, Talent, and Yield. An independent basketball research publication — numbered notes, registered forecasts, annual audits.</description>
   <language>en-us</language>
   <lastBuildDate>Fri, 10 Jul 2026 12:00:00 -0400</lastBuildDate>
   <item>
     <title>Research Note No. 2 — The Queta Problem: why he’s a top-50 player, and why 2026-27 proves it</title>
-    <link>https://example.com/#inbox/queta</link>
+    <link>https://thegravityreport.com/#inbox/queta</link>
     <guid isPermaLink="false">gravity-note-2</guid>
     <pubDate>Fri, 10 Jul 2026 04:10:00 -0400</pubDate>
     <description>A prediction paper. GRAVITY ranked Neemias Queta #41; this note attacks the number twice (an empirical on/off noise model, a 33-season comparables engine), keeps what survives, and registers the forecast: 75% top-50 by July 2027, falsification criteria on the record. PDF: papers/queta.pdf</description>
   </item>
   <item>
     <title>Research Note No. 1 — The Rise and Fall of Ja Morant: a statistical account, 2017–2026</title>
-    <link>https://example.com/#inbox/morant</link>
+    <link>https://thegravityreport.com/#inbox/morant</link>
     <guid isPermaLink="false">gravity-note-1</guid>
     <pubDate>Fri, 10 Jul 2026 02:39:00 -0400</pubDate>
     <description>Seven seasons, one instrument. The collapse was 88% shot-making and 12% shot-selection; the three-point crash fits inside its own confidence interval; the free throw improved significantly; and the college assist rate the draft model ignored was a +3.5σ outlier. PDF: papers/morant.pdf</description>
