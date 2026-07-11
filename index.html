@@ -474,38 +474,46 @@ const M = {
 2   Queta top-50 in July 2027     75%    Jul 10 2026   Jul 2027    [ OPEN ]
 2b  Queta top-25 in July 2027     40%    Jul 10 2026   Jul 2027    [ OPEN ]</pre>
       <p style="text-align:left"><span class="chip open">OPEN</span> &nbsp;→&nbsp; becomes &nbsp;<span class="chip win">WIN</span> /
-      <span class="chip">PUSH</span> / <span class="chip" style="background:#8a2f2f;color:#fff">MISS</span>
+      <span class="chip">NEAR MISS</span> / <span class="chip" style="background:#8a2f2f;color:#fff">MISS</span>
       &nbsp;when scored. No deletions, no edits, no quiet revisions.</p>
+      <p style="text-align:left"><span class="chip recall">AMENDED</span> &nbsp;<b>Jul 11, 2026</b> — grading tightened
+      <i>against ourselves</i>, following external review: №2's registered #51–70 band, originally labeled a
+      "push," will be graded a <b>near miss</b> — a failed prediction owing a diagnosis, not partial credit.
+      The claims, probabilities, and thresholds above stand exactly as registered.</p>
       <div class="plain"><b>In plain terms:</b> anyone can highlight wins. The audit is the product.</div>
       <div class="sig">Forecast Audit 2027 — an annual report. What the model got right, what it got wrong, and why.</div>`
   },
   queta: {
-    from:'Research Note №2', subject:'The Queta Problem — why he’s a top-50 player, and why 2026-27 proves it',
+    from:'Research Note №2', subject:'The Queta Problem — why he’s a top-50 player, and why 2026-27 proves it (rev. v2)',
     date:'Jul 10 2026, 4:10 AM', unread:true, clip:true, flag:'❗', isnew:true, pdf:'papers/queta.pdf',
-    pages:8, pagesDir:'papers/pages/queta',
-    attach:'queta.pdf (115 KB) · <a href="papers/queta.tex">queta.tex</a>',
+    pages:10, pagesDir:'papers/pages/queta',
+    attach:'queta.pdf (129 KB) · <a href="papers/queta.tex">queta.tex</a>',
+    rev:'v2, Jul 11 2026, after external review — model output separated from editorial scenario weights (each weight now anchored to an observable rate); on/off language corrected to cross-season persistence, and the shrunk-input counterfactual re-run properly: #53–55, not ≈#48 (the harshest reading grazes the claim); comparables disclosed as 33 seasons / 22 players (32% per-player rate) + cutoff-sensitivity table; grading tightened: #51–70 = near miss, not push. The registered 75% is unchanged — that is the bet.',
     body:`
-      <div class="kicker">№ 41 · Trust the data — a prediction paper</div>
+      <div class="kicker">№ 41 · Trust the data — a prediction paper · revised v2</div>
       <p>Our ranking put Neemias Queta — twice waived, 39th pick — at <span class="badge">58.8 · #41 · T4</span>,
       a full tier above his reputation. Instead of defending the number, this note attacks it twice, keeps what
       survives, and converts it into a registered bet.</p>
       <ul class="findings">
-        <li><b>The anti-fluke chart:</b> his role grew 7× (269 → 1,924 minutes) and his efficiency went <i>up</i> —
-        PSA 130 → 132 → 134, with a 97th-percentile playoff series on top.</li>
-        <li><b>Stress test I:</b> on/off is two-thirds noise (year-over-year r = 0.317, n = 184). Shrink his +8.6 to
-        +2.7 and he's still ~#48. The case never rested on the shiny number.</li>
-        <li><b>Stress test II:</b> all 33 comparable big-man seasons since 2020 (the Gobert / Robert Williams /
-        Jarrett Allen family): 39% delivered a top-50-caliber follow-up.</li>
+        <li><b>The anti-fluke chart:</b> his season workload grew nearly 6× (333 → 1,926 minutes) and his
+        efficiency went <i>up</i> — PSA 130 → 132 → 134, with a 97th-percentile playoff series shown separately.</li>
+        <li><b>Stress test I:</b> only ~⅓ of on/off persists year to year (r = 0.317, n = 184). Discounted uniformly,
+        #41 doesn't move; discount <i>his number alone</i> — the harshest reading — and he lands #53–55, just outside.
+        The bet never rested on the shiny number, and v2 owes you that it grazes the claim.</li>
+        <li><b>Stress test II:</b> 33 comparable big-man seasons from 22 players since 2020 (the Gobert / Robert
+        Williams / Jarrett Allen family): 39% by season, 32% by player, delivered a top-50-caliber follow-up —
+        robust to every cutoff we varied.</li>
         <li><b>The market agrees:</b> Boston signed Mitchell Robinson July 6 — then extended Queta for
         <b>$56M anyway</b>.</li>
       </ul>
-      <div class="betbox"><b>Registered forecast:</b> P(top-50 in July 2027) ≈ <b>75%</b> · P(top-25) ≈ <b>40%</b>.
-      Falsification on the record: #50+ = win · #51–70 = push, explanation owed · below #70 = clean miss.</div>
+      <div class="betbox"><b>Registered forecast:</b> we assign P(top-50 in July 2027) ≈ <b>75%</b> ·
+      P(top-25) ≈ <b>40%</b> — GRAVITY prices the scenarios, the weights are ours, and the paper shows the anchors.
+      Falsification on the record: #50+ = win · #51–70 = near miss (a failure owing a diagnosis) · below #70 = clean miss.</div>
       <div class="plain"><b>In plain terms:</b> it's not a moonshot claim — it just requires this season to mostly
-      repeat. We wrote down in advance exactly what counts as being wrong.</div>
+      repeat. We wrote down in advance exactly what counts as being wrong, and #51 counts.</div>
       <a class="btn" href="papers/queta.pdf" target="_blank">Open the paper (PDF)</a>
       <a class="btn" href="papers/queta.pdf" download>Save queta.pdf</a>
-      <div class="sig">Implications for GRAVITY: + empirical on/off shrinkage (r = 0.317) is now a candidate model input.</div>`
+      <div class="sig">Implications for GRAVITY: + empirical on/off persistence (r = 0.317) is now a candidate model input.</div>`
   },
   morant: {
     from:'Research Note №1', subject:'The Rise and Fall of Ja Morant — a statistical account, 2017–2026 (rev. v2)',
@@ -584,8 +592,11 @@ const M = {
       <div class="kicker">Outbox · scheduled send</div>
       <p>This message sends itself when the July 2027 edition of The 644 is computed. It will contain one line:</p>
       <pre class="mono">Queta finished #__ of 6__.
-Forecast №2 (75% top-50):  [ WIN / PUSH / MISS ]</pre>
+Forecast №2 (75% top-50):  [ WIN / NEAR MISS / MISS ]</pre>
       <p>Nothing about the claim can be edited between now and then. That's the point of an outbox.</p>
+      <p style="font-size:10.5px; color:#666">Amended Jul 11, 2026 (grading only, tightened against ourselves):
+      the middle outcome grades as a <b>near miss</b> — a failure owing a diagnosis — not a "push."
+      The claim, the 75%, and the thresholds are untouched.</p>
       <div class="plain"><b>In plain terms:</b> the bet is in the mail. See you in twelve months.</div>`
   },
   del_butler: {
