@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0E5A3A">
 <title>The 644 — July 2026 Edition · The Gravity Report</title>
 <meta name="description" content="Every NBA player plus the 2026 draft class, ranked by GRAVITY. July 2026 edition — final. Searchable, filterable, exportable.">
 <meta property="og:title" content="The 644 — July 2026 Edition">
@@ -202,7 +203,10 @@ tr.row.selected .notecell{color:#e8e8e8;}
 .dlg .body{display:flex; gap:12px; padding:16px 14px; align-items:flex-start; font-size:11px;}
 .dlg .body .ic{font-size:26px;}
 .dlg .foot{display:flex; justify-content:center; padding:0 0 12px;}
-@media (max-width:860px){
+.monly{display:none;}
+.recbar{display:none;}
+#fadv{display:contents;}
+@media (min-width:701px) and (max-width:860px){
   .dicons{display:none;}
   .window{inset:8px;}
   .record .note{display:none;}
@@ -210,6 +214,93 @@ tr.row.selected .notecell{color:#e8e8e8;}
   .col-n{width:150px;}
   .taskbar .task{display:none;}
   .plaque .meta{font-size:9.5px;}
+}
+/* ---------- phone (≤700px): two-line ranking rows + full-screen record card ---------- */
+@media (max-width:700px){
+  body{font-size:13px; height:100dvh;}
+  .desk{padding:0;}
+  .dicons{display:none;}
+  .window{inset:0; border:0; box-shadow:none;}
+  .tbar{padding:8px; font-size:13.5px;}
+  .tbar .tbtn{display:none;}
+  .menubar{display:none;}
+  .plaque{margin:4px 4px 0; padding:7px 10px; gap:2px 10px;}
+  .plaque .ed{font-size:14px;}
+  .plaque .meta{font-size:9.5px;}
+  /* controls: search + Filters toggle; the rest folds away */
+  .controls{padding:6px; gap:6px;}
+  .controls label{display:none;}
+  .w98in{flex:1 1 auto; min-width:0; font-size:16px; padding:7px 10px;}
+  #fbtn{display:inline-block; flex:0 0 auto; padding:8px 12px;}
+  .controls.open #fbtn{border-color:var(--chrome-dkr) var(--chrome-lt) var(--chrome-lt) var(--chrome-dkr); background:#e6e2da;}
+  #fadv{display:none;}
+  .controls.open #fadv{display:contents;}
+  .w98sel{flex:1 1 40%; min-width:0; font-size:13px; padding:8px 4px;}
+  #edition{flex:1 1 100%;}
+  #msort{display:block; flex:1 1 52%;}
+  .chk{flex:1 1 38%; font-size:12px;}
+  .chk input{width:17px; height:17px;}
+  .spacer{display:none;}
+  .controls .btn{padding:8px 10px; flex:1 1 40%; text-align:center;}
+  .legend{padding:5px 6px; gap:5px;}
+  .legend .lbl{display:none;}
+  .tchip{font-size:11px; padding:4px 9px;}
+  /* grid → two-line rows */
+  .gridwrap{margin:3px 4px;}
+  table.grid{min-width:0; width:100%;}
+  table.grid thead{display:none;}
+  table.grid, table.grid tbody{display:block;}
+  tr.row{
+    display:grid; grid-template-columns:34px auto auto auto 1fr auto; column-gap:8px; row-gap:1px;
+    padding:8px 10px; border-bottom:1px solid #eceae4; align-items:baseline;
+    -webkit-tap-highlight-color:rgba(14,90,58,.15); touch-action:manipulation; cursor:pointer;
+  }
+  tr.row td{display:none; padding:0; border-bottom:0; white-space:normal; overflow:visible;}
+  tr.row td:nth-of-type(1){display:block; grid-column:1; grid-row:1 / span 2; align-self:center; font-size:11.5px; color:#888; text-align:right;}
+  tr.row td:nth-of-type(2){display:block; grid-column:2 / 7; grid-row:1; font-size:13.5px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding-right:4px;}
+  tr.row td:nth-of-type(3){display:block; grid-column:2; grid-row:2; font-size:10.5px; color:#777;}
+  tr.row td:nth-of-type(4){display:block; grid-column:3; grid-row:2; font-size:10.5px; color:#777;}
+  tr.row td:nth-of-type(5){display:block; grid-column:4; grid-row:2; font-size:10.5px; color:#777; font-family:Tahoma,sans-serif;}
+  tr.row td:nth-of-type(4)::before, tr.row td:nth-of-type(5)::before{content:"· "; color:#c2c0ba;}
+  tr.row td:nth-of-type(6){display:block; grid-column:6; grid-row:1 / span 2; align-self:center; font-size:16px; color:var(--court); text-align:right;}
+  tr.row td:nth-of-type(7){display:block; grid-column:5; grid-row:2; justify-self:end; align-self:center;}
+  tr.row.selected{background:#EAF0EA;}
+  tr.row.selected td, tr.row:hover td{background:transparent; color:inherit;}
+  tr.row.selected td:nth-of-type(6){color:var(--court);}
+  /* record card → full-screen sheet */
+  .record{display:none;}
+  body.rec-open .record{
+    display:flex; position:fixed; inset:0; z-index:8; margin:0; padding:0 0 28px; overflow:auto;
+    flex-direction:column; align-items:stretch; gap:12px; background:#F7F6F1; border:0;
+    -webkit-overflow-scrolling:touch;
+  }
+  body.rec-open .recbar{
+    display:flex; position:sticky; top:0; z-index:2; align-items:center; justify-content:space-between;
+    background:linear-gradient(90deg,var(--court) 0%, var(--court2) 60%, #4F7A63 100%);
+    color:#fff; font-weight:bold; padding:9px 10px; font-size:13px;
+  }
+  .recbar .rclose{
+    background:var(--chrome); color:#000; border:1px solid;
+    border-color:var(--chrome-lt) var(--chrome-dkr) var(--chrome-dkr) var(--chrome-lt);
+    font:inherit; font-size:12px; font-weight:bold; padding:5px 11px; cursor:pointer;
+  }
+  .recbar .rclose:active{border-color:var(--chrome-dkr) var(--chrome-lt) var(--chrome-lt) var(--chrome-dkr);}
+  body.rec-open .record > *:not(.recbar){margin:0 12px;}
+  body.rec-open .record .gscore{font-size:28px; align-self:flex-start;}
+  body.rec-open .record .who .nm{font-size:16px; white-space:normal;}
+  body.rec-open .record .who .sub{font-size:12px; margin-top:2px;}
+  body.rec-open .record .statrow{flex-wrap:wrap; gap:10px 16px;}
+  body.rec-open .record .stat .v{font-size:14px;}
+  body.rec-open .record .note{max-width:none; font-size:12px;}
+  body.rec-open .record .fs{padding:8px 10px 9px;}
+  /* chrome bits */
+  .status{font-size:10px;}
+  #hint{display:none;}
+  .taskbar{flex:0 0 36px;}
+  .taskbar .task{display:none;}
+  .dlgwrap{position:fixed;}
+  .dlg{width:min(340px, 90vw);}
+  .btn, .tchip, .w98sel, .w98in, .start{touch-action:manipulation;}
 }
 </style>
 </head>
@@ -244,16 +335,27 @@ tr.row.selected .notecell{color:#e8e8e8;}
       published <b>July 10, 2026</b> · next edition: <b>All-Star Break, Feb 2027</b></span>
     </div>
 
-    <div class="controls">
+    <div class="controls" id="controls">
       <input id="q" class="w98in" type="search" placeholder="Find player or team…" aria-label="Find player or team">
+      <button id="fbtn" class="btn monly" aria-expanded="false" aria-controls="fadv">⚙ Filters</button>
+      <div id="fadv">
       <label for="fteam">Team</label>
-      <select id="fteam" class="w98sel"><option value="">All</option></select>
+      <select id="fteam" class="w98sel"><option value="">All teams</option></select>
       <label for="fpos">Pos</label>
       <select id="fpos" class="w98sel">
-        <option value="">All</option><option value="G">Guards</option>
+        <option value="">All positions</option><option value="G">Guards</option>
         <option value="F">Forwards</option><option value="C">Centers</option>
       </select>
       <label class="chk"><input id="frk" type="checkbox"> Rookies only</label>
+      <select id="msort" class="w98sel monly" aria-label="Sort by">
+        <option value="r|asc" selected>Sort: Rank</option>
+        <option value="n|asc">Sort: Name A–Z</option>
+        <option value="a|asc">Sort: Youngest first</option>
+        <option value="a|desc">Sort: Oldest first</option>
+        <option value="b|desc">Sort: Best BPM ’26</option>
+        <option value="v|desc">Sort: Best VORP</option>
+        <option value="g|desc">Sort: Most games</option>
+      </select>
       <span class="spacer"></span>
       <select id="edition" class="w98sel" aria-label="Edition">
         <option value="cur" selected>📕 July 2026 — FINAL</option>
@@ -263,6 +365,7 @@ tr.row.selected .notecell{color:#e8e8e8;}
       </select>
       <a class="btn" href="the644-2026-07.csv" download>💾 Export CSV</a>
       <a class="btn" href="../">📥 Inbox</a>
+      </div>
     </div>
 
     <div class="legend" id="legend"><span class="lbl">Tiers (click to filter):</span></div>
@@ -396,7 +499,7 @@ function render(){
     rows.length === DATA.length ? `644 records` : `${rows.length} of 644 records`;
 }
 
-function selectRow(r){
+function selectRow(r, open = true){
   selId = r;
   const d = DATA.find(x => x.r === r);
   const pct = x => (x === null || x === undefined) ? '—' : (x * 100).toFixed(1);
@@ -408,6 +511,7 @@ function selectRow(r){
       + (d.sp !== undefined ? st(fmt(d.sp,1),'STL') + st(fmt(d.bp,1),'BLK') : '')
       + st(pct(d.f),'FG%') + st(pct(d.f3),'3P%') + st(pct(d.ft),'FT%');
   document.getElementById('record').innerHTML = `
+    <div class="recbar"><span>📇 Record card — #${d.r}</span><button class="rclose" onclick="recClose()">✕ Close</button></div>
     <span class="gscore">${fmt(d.s, 1)}</span>
     <span class="who"><div class="nm">#${d.r} · ${d.n}${d.rk ? ` <span class="rkbadge">ROOKIE${d.pk ? ' · PICK ' + d.pk : ''}</span>` : ''}</div>
       <div class="sub">${d.t} · ${d.p !== '—' ? d.p : 'position TBD'}${d.a ? ' · age ' + d.a : ''} ·
@@ -417,8 +521,11 @@ function selectRow(r){
       ${st(fmt(d.b,1),'BPM ’26')}${st(fmt(d.v,1),'VORP')}${st(fmt(d.g),'GP')}${st(pct(d.ts),'TS%')}${st(fmt(d.us,1),'USG%')}
     </div></div>
     <span class="note">${d.note ? '📎 ' + d.note : ''}</span>`;
+  // on phones the record card is a full-screen sheet, opened per tap
+  if (open && window.matchMedia('(max-width:700px)').matches) document.body.classList.add('rec-open');
   render();
 }
+function recClose(){ document.body.classList.remove('rec-open'); }
 
 document.getElementById('q').addEventListener('input', e => { q = e.target.value.toLowerCase(); render(); });
 document.getElementById('fteam').addEventListener('change', e => { fTeam = e.target.value; render(); });
@@ -441,8 +548,22 @@ document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click
   th.appendChild(s); render();
 }));
 
+document.getElementById('fbtn').addEventListener('click', () => {
+  const c = document.getElementById('controls');
+  c.classList.toggle('open');
+  document.getElementById('fbtn').setAttribute('aria-expanded', c.classList.contains('open'));
+});
+document.getElementById('msort').addEventListener('change', e => {
+  const [k, dir] = e.target.value.split('|');
+  sortK = k; sortAsc = dir === 'asc';
+  render();
+});
+
 function dlg(msg){ document.getElementById('dlgmsg').textContent = msg; document.getElementById('dlgwrap').classList.add('show'); }
 function dlgClose(){ document.getElementById('dlgwrap').classList.remove('show'); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape'){ recClose(); dlgClose(); }
+});
 
 function tickClock(){
   const d = new Date();
@@ -452,7 +573,7 @@ function tickClock(){
 }
 tickClock(); setInterval(tickClock, 30000);
 
-selectRow(1);
+selectRow(1, false);
 render();
 </script>
 </body>
