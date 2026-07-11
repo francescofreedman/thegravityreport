@@ -28,7 +28,7 @@
 \large A Statistical Account, 2017--2026\\[2pt]
 \normalsize \gravity{} Research Note No.\ 1}
 \author{}
-\date{July 10, 2026}
+\date{July 10, 2026 \ $\cdot$ \ revised July 11, 2026 (v2)}
 
 \begin{document}
 \maketitle
@@ -40,15 +40,17 @@ We measure every season of Ja Morant's career --- college, rise, peak, and colla
 with one rating system (\gravity{}) applied the same way to every player in every season,
 so his trajectory can be read in a single currency. Three findings organize the paper.
 \textbf{(1) The rise was real:} from an average-ish rookie to the 97th percentile of the
-league in 2021--22. \textbf{(2) The collapse was about missing, not choosing:} of his
-shooting-efficiency crash in 2025--26, 88\% came from shots not going in and only 12\%
-from worse shot selection --- while his playmaking hit a career high. \textbf{(3) Much of
-the ``decline'' is too small a sample to trust:} the three-point collapse everyone saw
-covers just 85 attempts, a range where cold streaks happen to healthy players, and his
-free-throw shooting --- the purest touch test --- actually \emph{improved}, significantly.
-The fall of Ja Morant is, by the numbers, mostly an \emph{availability} story: 79 games
-played in three seasons. His rank of \#140 of 644 prices that risk correctly. It probably
-underprices the talent, and we show exactly where the difference lives.
+league in 2021--22. \textbf{(2) The collapse was about missing, not choosing:} measured
+across shot zones, 88\% of his 2025--26 efficiency crash came from worse conversion and
+only 12\% from where he shot --- while his playmaking hit a career high. \textbf{(3) Much
+of the ``decline'' is too small a sample to judge:} the three-point collapse everyone saw
+covers just 85 attempts --- too few to distinguish genuine decline from ordinary shooting
+variance --- and his free-throw shooting, the purest touch test, actually \emph{improved},
+significantly. The fall of Ja Morant is, by the numbers, mostly an \emph{availability}
+story: 79 games played in three seasons. His rank of \#140 of 644 prices that risk, and
+the number is robust to the model's own judgment calls: every variation we test in
+Appendix~\ref{app:sens} lands him between \#112 and \#147. It probably underprices the
+talent, and we show exactly where the difference lives.
 \end{abstract}
 
 \section{Introduction}
@@ -92,8 +94,10 @@ Appendix~\ref{app:spec}, and the historical variant used for the seven-season se
 table can be read with the z-score guide above.
 
 \plainbox{\gravity{} = (how good per minute) $\times$ (how reliably he's on the floor),
-graded against the whole league, every season, by the same formula. No opinions,
-no reputation, no external rankings.}
+graded against the whole league, every season, by the same formula. No reputation
+inputs, no external rankings. The judgment lives in the formula's construction --- which
+is published in full, applied identically to all 644 players, and stress-tested in
+Appendix~\ref{app:sens}.}
 
 \section{College, 2017--2019: what the numbers saw and what they missed}
 \label{sec:college}
@@ -148,6 +152,12 @@ excludes is the assist rate: $+3.5$ standard deviations above the cohort, 8.8 po
 higher than anyone in it. And creation turns out to be the one skill that survived every
 disaster of his career (Section~\ref{sec:collapse}). The model would have missed Ja
 Morant, and the miss is instructive.
+
+One scope note. The yardstick is the 2026 first-round class because that is the cohort
+the current model grades --- a convenience benchmark, not the information set a 2019
+draft model would have had. The lesson does not depend on the choice: what makes the
+comparison instructive is its \emph{shape} (ordinary production blend, historic
+creation), and no plausible cohort puts a 51.8\% assist rate anywhere but the far tail.
 
 \plainbox{College Ja looked statistically ordinary for a lottery pick --- except for the
 passing, which was a one-in-thousands outlier that the standard formula doesn't even
@@ -239,15 +249,17 @@ Then the availability collapsed. Table~\ref{tab:timeline} is the ledger.
 
 \begin{table}[h]
 \centering\small
-\caption{The absence ledger. From the 2023 playoffs through June 2026, Morant appeared in
-79 of a possible 249 regular-season games --- 31.7\%.}
+\caption{The absence ledger. Across the three seasons 2023--24 to 2025--26, Morant
+appeared in 79 of a possible 246 regular-season games --- 32.1\%. The 2023--24 season
+accounts for 73 of the misses: the 25-game suspension first, then a nine-game return,
+then 48 games to the shoulder.}
 \begin{tabular}{llll}
 \toprule
 Date & Event & Consequence & Games lost \\
 \midrule
 Mar 4, 2023 & Firearm on Instagram Live (Denver) & League suspension & 8 \\
-May 13, 2023 & Second firearm video & League suspension & 25 \\
-Jan 2024 & Shoulder labrum tear (practice) & Surgery; season over & 73 \\
+May 13, 2023 & Second firearm video & League suspension (start of 23--24) & 25 \\
+Jan 2024 & Shoulder labrum tear (practice) & Surgery; season over after 9 GP & 48 \\
 Nov 2025 & ``Go ask the coach'' episode & Team suspension & 1 \\
 Dec 2025 & Right calf soreness & Two-week absence & $\sim$7 \\
 Jan 21, 2026 & Left elbow ligament sprain (vs.\ ATL) & Season over & 33 \\
@@ -280,8 +292,10 @@ number cratered to career-worst levels. And at the same time his \textbf{creatio
 ($+3.19$) and offensive load ($+2.90$) hit career highs} --- his assist rate (44.7\%) was
 a 96th-percentile figure. The player in those 20 games was a career-best distributor
 carrying a career-peak burden who could not put the ball in the basket. That
-combination --- process intact, outcomes broken --- is what a cold streak looks like, not
-what an eroded athlete looks like.
+combination --- process intact, outcomes broken --- is what a cold streak looks like.
+Twenty games cannot prove that reading; what they can do is fail to match the
+alternative, because eroded athletes do not usually set career highs in the two most
+demanding process stats while their shots rim out.
 
 \begin{figure}[h]
 \centering
@@ -348,10 +362,21 @@ Accuracy (25--26) & 61\% & 40\% & 39\% & 50\% & 19\% & \\
 \label{tab:mixmake}
 \end{table}
 
-\textbf{88\% of the collapse was missing, not choosing.} Had he converted his ugly new
-shot diet at his normal rates, his efficiency would have been almost fine (.505). Fixing
-the diet without fixing the makes recovers almost nothing (.462). The shot chart looked
-broken because the shots missed, not mainly because of where they were taken.
+\textbf{At the zone level, 88\% of the collapse was missing, not choosing.} Had he
+converted his ugly new shot diet at his normal rates, his efficiency would have been
+almost fine (.505). Fixing the diet without fixing the makes recovers almost nothing
+(.462). The shot chart looked broken because the shots missed, not mainly because of
+where they were taken.
+
+One honest limitation. ``Selection'' here means \emph{zone mix} --- the five \ctg{}
+zones --- because that is what the decomposition can see. It cannot see defender
+distance, pull-up versus catch-and-shoot, shot-clock pressure, or how contested the
+attempts were; two non-corner threes can differ enormously in difficulty. If his
+2025--26 attempts were systematically harder \emph{within} zones, some of the
+``missing'' is really hidden shot selection. The defensible reading is therefore: the
+collapse was not primarily about \emph{where} he shot. How much of the conversion drop
+was shot difficulty rather than pure misses, zone data cannot separate --- which is one
+more reason the sample-size analysis of the next section matters.
 
 \subsection{Question 3: is the missing even real?}
 \label{sec:ci}
@@ -408,16 +433,21 @@ his career level. The one clear change is the free throw --- upward.}
 \end{figure}
 
 The three-point collapse --- the number most responsible for the ``he's done'' narrative
---- rests on 85 attempts, and its band comfortably contains his career norm. Meanwhile
-the free throw, the purest touch test in basketball, improved so much the band excludes
-his career average from \emph{below}. A player whose shooting had physically degraded
-does not go .897 from the line on 117 attempts.
+--- rests on 85 attempts, and its band comfortably contains his career norm. To be
+precise about what that means: the sample cannot confidently distinguish a genuine
+decline from ordinary shooting variance. It does not prove the miss was a cold streak;
+it proves nobody can yet prove it wasn't. Meanwhile the free throw, the purest touch
+test in basketball, improved so much the band excludes his career average from
+\emph{below}. That is strong evidence against a broad loss of shooting touch --- though
+not against every physical story, since a player can lose lift or separation on live-play
+jumpers while improving from a standstill. The simplest versions of ``his shot is
+gone,'' however, predict the opposite of what happened at the stripe.
 
 \plainbox{Three answers: (1) his playmaking hit a career high while the shooting failed;
-(2) the failure was 88\% missing, 12\% shot selection; (3) at 85 threes, the missing
-itself is within the range of a cold streak --- and his free-throw touch got
-\emph{better}. The one caveat that is real: his rim-attack rate has been sliding for
-seven years (Figure~\ref{fig:diet}).}
+(2) at the zone level, the failure was 88\% missing, 12\% shot selection; (3) at 85
+threes, the sample can't tell genuine decline from an ordinary cold streak --- and his
+free-throw touch got \emph{better}. The one caveat that is real: his rim-attack rate has
+been sliding for seven years (Figure~\ref{fig:diet}).}
 
 \subsection{The seven-season shot profile}
 
@@ -495,6 +525,9 @@ games against a 55-game standard), role $0.958$, injury override $0.950$ --- mul
 to $0.815$ of his value above replacement. \gravity{} prices Morant like an asset with a
 high expected return and terrible delivery risk. Four days after the ranking date, an
 actual front office priced him identically, trading him for two salary-matching forwards.
+Because several steps in the pipeline are judgment calls --- the override, the anchor,
+the season weights --- Appendix~\ref{app:sens} re-runs the entire ranking under
+alternative choices and reports how much \#140 moves.
 
 \begin{table}[h]
 \centering\small
@@ -521,49 +554,86 @@ Final z & $-1.9 + (0.248+1.9)(0.815)$ & $-0.149$ \\
 \label{tab:pipeline}
 \end{table}
 
-\section{What Portland is getting: three scenarios}
+\section{What Portland is getting: the price of every future}
 \label{sec:prognosis}
 
 Morant enters 2026--27 at 27, sharing a backcourt with Damian Lillard (36, returning
 from an Achilles rupture), on a roster that just made the playoffs without either of
-them. The framework converts directly into forward scenarios: assume a 2026--27
-performance level and games played, and the same pipeline produces a score.
+them. His future has two separate uncertainties --- \emph{how well he plays} and
+\emph{how often he plays} --- and bundling them into named scenarios hides the trade.
+So Table~\ref{tab:matrix} prices them separately: each cell runs the full pipeline
+(blend with the 569-minute 2025--26 season, credibility shrink, availability and role
+multipliers) for an assumed 2026--27 per-minute impact and games total, at 31 minutes
+per game with no injury override assumed. These are \emph{illustrative prices, not
+probabilities}: the framework says what each future is worth, not which one arrives.
 
 \begin{table}[h]
 \centering\small
-\caption{Three futures, same arithmetic.}
-\begin{tabular}{lcccc}
+\caption{The availability $\times$ impact matrix. Cell = projected July 2027 score
+(equivalent rank in the July 2026 edition). Row levels are his own career benchmarks:
+$-0.10$ is the 2025--26 collapse, $+0.80$ is 2024--25, $+1.65$ is the 2021--23 peak.}
+\begin{tabular}{lccc}
 \toprule
-Scenario & Impact & GP & Projected score & Equivalent band \\
+2026--27 per-minute level & 25 GP & 50 GP & 65 GP \\
 \midrule
-Repeat collapse & $-0.10$ & 25 & $\approx 45$ & \#170--\#220 \\
-2024--25 redux (base) & $+0.80$ & 62 & $\approx 58$ & \#42--\#55 \\
-2021--23 restoration & $+1.65$ & 65 & $\approx 69$ & \#8--\#14 \\
+$-0.10$ (repeat collapse)   & 39.7 {\scriptsize(\#281)} & 46.2 {\scriptsize(\#166)} & 47.8 {\scriptsize(\#138)} \\
+$+0.80$ (2024--25 level)    & 47.1 {\scriptsize(\#154)} & 57.2 {\scriptsize(\#53)}  & 59.8 {\scriptsize(\#35)}  \\
+$+1.65$ (2021--23 peak)     & 54.0 {\scriptsize(\#77)}  & 67.6 {\scriptsize(\#10)}  & 71.2 {\scriptsize(\#7)}   \\
 \bottomrule
 \end{tabular}
-\label{tab:scenarios}
+\label{tab:matrix}
 \end{table}
 
-The paper's math argues the base case is livelier than the market's. The skills that
-collapse first in genuinely declining guards --- rim conversion, foul drawing, free-throw
-touch --- are respectively stable, elite (seven straight seasons at the 86th percentile
-or better), and improving. The things that collapsed are the ones a confidence interval
-refuses to certify. Against that stand the two real risks: a rim-attack rate that has
-halved in seven years, and the availability record of Table~\ref{tab:timeline}. The
-binding constraint on Ja Morant has never been a shooting slump. It is that since 2023 he
-has played 31.7\% of his team's games. \gravity{} will believe the rise again when the
-denominator does.
+The matrix makes three facts legible that the bundled scenarios obscured. First, the
+corner cells agree on a striking symmetry: playing at his 2024--25 level for only 25
+games (47.1) is worth almost exactly the same as playing a full healthy season at his
+collapse level (47.8) --- and the latter is his current score. Health and form are
+near-perfect substitutes at the bottom of the table. Second, the big jumps live in the
+\emph{games} direction: at the 2024--25 level, going from 25 to 50 games buys +10.1
+points; going from the 2024--25 level to the peak level at fixed 50 games buys +10.4.
+Portland's return on a healthy Morant is as large as its return on a resurgent one.
+Third, top-50 requires \emph{both}: no 25-game column reaches it, and no collapse-level
+row does.
+
+Which cells deserve weight is a judgment the reader can make with the paper's evidence:
+the skills that collapse first in genuinely declining guards --- rim conversion, foul
+drawing, free-throw touch --- are respectively stable, elite (seven straight seasons at
+the 86th percentile or better), and improving, while the stats that cratered are the
+ones a confidence interval refuses to certify. That argues against loading the bottom
+row. Against it stand the two real risks: a rim-attack rate that has halved in seven
+years, and the availability record of Table~\ref{tab:timeline}. The binding constraint
+on Ja Morant has never been a shooting slump. It is that since 2023 he has played
+32.1\% of his team's games. \gravity{} will believe the rise again when the denominator
+does.
 
 \section{Conclusion}
 
 Measured with one instrument across seven seasons, Morant's career is a steep genuine
 rise ($+1.7\sigma$, twice), an availability catastrophe, and one 569-minute season the
-data cannot fully judge. The collapse was concentrated in shot-making (88\%); the
-shot-making collapse was concentrated in the smallest samples (85 threes); and the
-noise-proof skills --- creation, foul drawing, rim conversion, free-throw touch --- were
-at or near career bests. \#140 of 644 is the right price for the risk. It is probably the
-wrong forecast of the talent. Both statements are the same mathematics, read in two
-directions.
+data cannot fully judge. Most of the observed efficiency decline came from worse
+conversion rather than from where he shot --- though the sample is too small to say how
+much of that conversion drop is lasting decline rather than variance. What the data can
+certify: his creation set a career high, his rim conversion held, his free-throw touch
+improved; against that, his rim-attack rate has fallen for seven straight years and his
+availability record is severe. \#140 of 644 is a defensible price for that bundle of
+uncertainty --- robust, per Appendix~\ref{app:sens}, to every judgment call we could
+vary --- and it should not be read as a claim that 139 players possess more healthy,
+on-court talent. It is the right price for the risk, and probably the wrong forecast of
+the talent. Both statements are the same mathematics, read in two directions.
+
+\section*{Revision note (v2, July 11, 2026)}
+Following a detailed external review, this version corrects two accounting errors and
+tightens several claims. (1) The absence ledger charged 73 games to the January 2024
+shoulder injury; the correct figure is 48, since the 25-game suspension --- listed on
+its own row --- and the nine games he played account for the rest of that season.
+(2) The three-season availability denominator was stated as 249 games (31.7\%); the
+correct figures are 246 and 32.1\%. (3) The Shapley decomposition is now explicitly
+scoped to zone-level selection; the free-throw and cold-streak inferences are stated
+with the caveats the intervals actually support; the three bundled forward scenarios
+were replaced by the availability~$\times$~impact matrix of Table~\ref{tab:matrix},
+recomputed under a single stated convention; and Appendix~\ref{app:sens} (model
+sensitivity) was added. The errors were ours. Nothing in the correction changes the
+ranking itself, which is computed from the data, not from the prose.
 
 \appendix
 \section{The full GRAVITY specification}
@@ -633,6 +703,55 @@ Cleaning the Glass subscriber database (filtered on/off, shot zones, foul drawin
 accessed July 10, 2026; Sports-Reference CBB. The specification is identical to the
 July 10, 2026 ``The 644'' ranking (v3), in which Morant's pipeline values appear
 verbatim. No external rankings or projections were consulted.
+
+\section{How much do the model's choices matter?}
+\label{app:sens}
+
+A transparent model is not the same thing as a validated one. The weights in
+Appendix~\ref{app:spec} --- and the replacement anchor, the availability standard, and
+the injury overrides --- were specified by judgment before any player was ranked; they
+were not fitted to a target variable. Publishing them makes the judgment inspectable.
+It does not make it correct. The honest next question is: how much does this paper's
+conclusion depend on those choices?
+
+Table~\ref{tab:sens} answers it by re-running the \emph{entire} 644-player pipeline ---
+rookies included, since their scores are percentiles of the veteran distribution ---
+under each variation, and reporting where Morant lands. Each row changes exactly one
+thing.
+
+\begin{table}[h]
+\centering\small
+\caption{Sensitivity of Morant's July 2026 placement. Every variation re-ranks all 644
+players; rank is within that variation's own ranking.}
+\begin{tabular}{lcc}
+\toprule
+Model variation & Score & Rank \\
+\midrule
+Baseline \gravity{} v3, as published & 47.8 & \#140 \\
+Injury overrides removed entirely (all $J{=}1$) & 49.1 & \#130 \\
+Equal two-season weights ($0.50/0.50$ vs.\ $0.75/0.25$) & 50.3 & \#112 \\
+Availability standard 65 games (vs.\ 55) & 47.2 & \#147 \\
+Alternate impact weights (BPM $.35$, WS/48 $.15$, on/off $.20$) & 47.5 & \#147 \\
+Replacement level $-1.6$ (vs.\ $-1.9$) & 48.7 & \#138 \\
+Reliability stack removed ($A{=}\Phi{=}J{=}1$; per-minute talent only) & 53.7 & \#112 \\
+\bottomrule
+\end{tabular}
+\label{tab:sens}
+\end{table}
+
+Every variation lands him between \#112 and \#147. The two that move him most ---
+equal season weights, and deleting the reliability machinery altogether --- are both
+versions of the same question, \emph{how much should the solid 2024--25 season count?},
+and both answer \#112: even the reading most generous to his track record does not put
+him inside the top 100 on this data. In the other direction, no tightening we tested
+pushes him past \#147. The paper's headline number is not an artifact of any single
+judgment call; within this family of specifications, ``a clearly good player, heavily
+discounted for delivery risk'' is the only available conclusion.
+
+What this appendix cannot do is validate the model against the future --- that is what
+the Forecast Ledger is for. \gravity{}'s registered predictions are graded in public,
+annually, starting with the July 2027 Forecast Audit; predictive validation accrues
+there, one scored forecast at a time.
 
 \begin{thebibliography}{9}
 \bibitem{bbref} Basketball-Reference.com, league and player tables, accessed July 10, 2026.

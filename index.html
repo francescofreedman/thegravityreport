@@ -404,7 +404,8 @@ const M = {
       per-minute quality and adjusts for role, availability, and documented injury risk — measuring not just how good a
       player is, but how much of that ability a team actually receives.</p>
       <div class="plain"><b>In plain terms:</b> GRAVITY = (how good per minute) × (how reliably he's on the floor),
-      graded against the whole league by the same formula. No opinions, no reputation, no external rankings.</div>
+      graded against the whole league by the same formula. No reputation inputs, no external rankings — the
+      judgment lives in the formula, which is published in full and applied identically to all 644 players.</div>
       <pre class="mono">THE SCALE
   50   league-average minute
   60+  quality starter
@@ -507,30 +508,38 @@ const M = {
       <div class="sig">Implications for GRAVITY: + empirical on/off shrinkage (r = 0.317) is now a candidate model input.</div>`
   },
   morant: {
-    from:'Research Note №1', subject:'The Rise and Fall of Ja Morant — a statistical account, 2017–2026',
+    from:'Research Note №1', subject:'The Rise and Fall of Ja Morant — a statistical account, 2017–2026 (rev. v2)',
     date:'Jul 10 2026, 2:39 AM', clip:true, flag:'', pdf:'papers/morant.pdf',
-    pages:10, pagesDir:'papers/pages/morant',
-    attach:'morant.pdf (118 KB) · <a href="papers/morant.tex">morant.tex</a>',
+    pages:12, pagesDir:'papers/pages/morant',
+    attach:'morant.pdf (127 KB) · <a href="papers/morant.tex">morant.tex</a>',
+    rev:'v2, Jul 11 2026, after external review — absence ledger corrected (the shoulder cost 48 games, not 73; 79 of 246 = 32.1%), inference language tightened, forward scenarios → availability × impact matrix, sensitivity appendix added (#112–#147 across all variations). Full note on the last page. The errors were ours.',
     body:`
-      <div class="kicker">№ 140 · The steepest fall — a career autopsy</div>
+      <div class="kicker">№ 140 · The steepest fall — a career autopsy · revised v2</div>
       <p>Seven seasons, one instrument: from unranked recruit to the 97th percentile of the league (2021-22),
-      then an availability catastrophe — <b>79 of 249 games since 2023</b> — and one 569-minute season the data
+      then an availability catastrophe — <b>79 of 246 games since 2023</b> — and one 569-minute season the data
       cannot fully judge.</p>
       <ul class="findings">
         <li><b>Missing, not choosing:</b> of his eFG collapse, 88% was shot-<i>making</i>, only 0.7 points of it
-        shot-selection (exact Shapley split).</li>
+        shot-selection (exact Shapley split over shot zones — what zone data can't see is scoped in §6.2).</li>
         <li><b>The sample-size problem:</b> the three-point collapse covers 20-of-85; its Wilson interval
-        [.158, .336] contains his career norm.</li>
+        [.158, .336] contains his career norm — too few attempts to tell decline from variance.</li>
         <li><b>The touch paradox:</b> the only split that moved beyond doubt was his free throw — <i>upward</i>,
         to .897.</li>
         <li><b>What the draft model missed:</b> his college assist rate was +3.5σ against the 2026 cohort —
         the skill the formula didn't count is the one that survived everything.</li>
+        <li><b>New in v2 — the stress test:</b> every model variation tested (overrides off, equal season
+        weights, different anchors, reliability stack deleted) lands him <b>#112–#147</b>. The number isn't
+        an artifact of any single judgment call.</li>
       </ul>
-      <div class="plain"><b>In plain terms:</b> #140 is the right price for the delivery risk. It is probably the
+      <div class="plain"><b>In plain terms:</b> #140 is a defensible price for the delivery risk. It is probably the
       wrong forecast of the talent. Both statements are the same mathematics, read in two directions.</div>
       <a class="btn" href="papers/morant.pdf" target="_blank">Open the paper (PDF)</a>
       <a class="btn" href="papers/morant.pdf" download>Save morant.pdf</a>
-      <div class="sig">Implications for GRAVITY: + creation added to the rookie blend · + zone mix ≠ shot difficulty · + CIs before adjectives.</div>`
+      <div class="sig">rev. v2, Jul 11 2026, following external review: absence ledger corrected (the shoulder cost 48
+      games, not 73 — the other 25 were the suspension; denominator 246, not 249), inference language tightened to
+      what the intervals support, forward scenarios replaced by an availability × impact matrix, sensitivity
+      appendix added. The errors were ours; the full revision note is on the paper's last page.<br>
+      Implications for GRAVITY: + creation added to the rookie blend · + zone mix ≠ shot difficulty · + CIs before adjectives.</div>`
   },
   welcome: {
     from:'The Editor', subject:'Why this looks like 1999 (read once, then archive)',
@@ -717,6 +726,7 @@ function renderPreview(){
       <div class="row"><span class="k">Date:</span><span class="v normal">${m.date}</span></div>
       <div class="row"><span class="k">Subject:</span><span class="v">${m.subject}</span></div>
       ${m.attach?`<div class="attachline">📎 Attachments: <a href="${m.pdf}" target="_blank">${m.attach.split(' · ')[0]}</a> · ${m.attach.split(' · ')[1]||''}</div>`:''}
+      ${m.rev?`<div class="attachline">♻️ <b>Revised:</b> ${m.rev}</div>`:''}
     </div>`;
   const right = document.getElementById('rightPane');
   const pv = document.getElementById('preview');
