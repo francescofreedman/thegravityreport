@@ -9,17 +9,26 @@ Static site, no build step, no dependencies.
 index.html        the mail client (the whole site UI; hash-routed permalinks)
 papers/           research note PDFs + LaTeX sources
 papers/pages/     pre-rendered page SVGs (the in-site reading experience — vector, crisp at any zoom)
+notes/            plain web editions — one crawlable page per note (SEO/social skeleton;
+                  the inbox stays the flagship experience)
+cards/            og:image social cards (1200x630, Win98-styled)
 the644/           the interactive full-league ranking (July 2026 edition)
 scripts/          render-pages.sh — PDF -> per-page SVGs (needs poppler's pdftocairo)
-feed.xml          RSS
+                  make-cards.py  — social cards (PIL; add new notes to CARDS)
+feed.xml          RSS · sitemap.xml + robots.txt for crawlers
 ```
 
 ## Publishing a new research note
 
 1. Compile the paper (`tectonic noteN.tex`), put PDF + TeX in `papers/`.
 2. `scripts/render-pages.sh papers/noteN.pdf` (renders one vector SVG per page).
-3. Add the message entry in `index.html` (`M` object: subject, body, pdf, pages, pagesDir).
-4. Add an item to `feed.xml`. Commit, push — Cloudflare deploys automatically.
+3. Add the message entry in `index.html` (`M` object: subject, body, pdf, pages, pagesDir,
+   attach incl. a `notes/<name>/` web-edition link; `rev` field for revisions).
+4. Create `notes/<name>/index.html` (copy an existing one: title, abstract, findings,
+   two embedded page SVGs, citation, JSON-LD) — this is the crawlable/social page.
+5. Add a card entry in `scripts/make-cards.py`, run it (writes `cards/<name>.png`).
+6. Add an item to `feed.xml` (link to the notes page) and a `<url>` to `sitemap.xml`.
+7. Commit, push — Cloudflare deploys automatically.
 
 ## Local preview
 

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0E5A3A">
+<title>The Rise and Fall of Ja Morant — GRAVITY Research Note №1 · The Gravity Report</title>
+<meta name="description" content="Seven seasons of Ja Morant measured with one instrument, the GRAVITY player-value model: a genuine 97th-percentile rise, an availability catastrophe, and a 569-minute season the data cannot fully judge. Why #140 of 644 is the right price for the risk — and probably the wrong forecast of the talent.">
+<link rel="canonical" href="https://thegravityreport.com/notes/morant/">
+<link rel="alternate" type="application/rss+xml" title="GRAVITY Research Notes" href="../../feed.xml">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📥</text></svg>">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="The Gravity Report">
+<meta property="og:title" content="The Rise and Fall of Ja Morant — a statistical account, 2017–2026">
+<meta property="og:description" content="88% of his shooting collapse was missing, not choosing; the three-point crash is 85 attempts; his free throw got better. The GRAVITY player-value model prices the risk at #140 — and shows the number survives every judgment call.">
+<meta property="og:url" content="https://thegravityreport.com/notes/morant/">
+<meta property="og:image" content="https://thegravityreport.com/cards/morant.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:published_time" content="2026-07-10">
+<meta property="article:modified_time" content="2026-07-11">
+<link rel="stylesheet" href="../notes.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "The Rise and Fall of Ja Morant: A Statistical Account, 2017–2026",
+  "alternativeHeadline": "GRAVITY Research Note No. 1",
+  "author": {"@type": "Organization", "name": "The Gravity Report", "url": "https://thegravityreport.com/"},
+  "publisher": {"@type": "Organization", "name": "The Gravity Report", "url": "https://thegravityreport.com/"},
+  "datePublished": "2026-07-10",
+  "dateModified": "2026-07-11",
+  "image": "https://thegravityreport.com/cards/morant.png",
+  "url": "https://thegravityreport.com/notes/morant/",
+  "isAccessibleForFree": true,
+  "about": [{"@type": "Person", "name": "Ja Morant"}, {"@type": "SportsTeam", "name": "Portland Trail Blazers"}, {"@type": "SportsTeam", "name": "Memphis Grizzlies"}],
+  "abstract": "Every season of Ja Morant's career measured with the GRAVITY player-value model: a real rise to the 97th percentile in 2021–22, an availability catastrophe (79 of 246 games since 2023), and a 569-minute 2025–26 the data cannot fully judge. At the zone level, 88% of the efficiency collapse came from worse conversion rather than shot selection; the three-point crash covers 85 attempts; the free throw improved significantly. #140 of 644 prices the risk, robust across a seven-variation sensitivity analysis (#112–#147).",
+  "encoding": {"@type": "MediaObject", "contentUrl": "https://thegravityreport.com/papers/morant.pdf", "encodingFormat": "application/pdf"}
+}
+</script>
+</head>
+<body>
+
+<main class="window">
+  <div class="tbar">
+    <span>📥</span><span class="title">The Gravity Report — Research Note №1 (web edition)</span>
+    <a class="tbtn" href="../../#inbox/morant" title="Open in the inbox">□</a><span class="tbtn">×</span>
+  </div>
+  <nav class="crumbs"><a href="../../">📥 The inbox</a> › <a href="../../#inbox/morant">Research Note №1</a> › web edition
+    &nbsp;·&nbsp; <a href="../queta/">№2: The Queta Problem</a> &nbsp;·&nbsp; <a href="../spec/">the model</a> &nbsp;·&nbsp; <a href="../../the644/">The 644</a></nav>
+
+  <article class="paper">
+    <div class="kicker">Research Note №1 · A career autopsy · rev. v2</div>
+    <h1>The Rise and Fall of Ja Morant</h1>
+    <div class="subtitle">A statistical account, 2017–2026.</div>
+    <div class="byline">
+      <b>The Gravity Report</b> · the GRAVITY player-value model ·
+      published <b>July 10, 2026</b> · revised <b>July 11, 2026 (v2)</b>
+    </div>
+
+    <div class="abstract">
+      <span class="lead">Abstract.</span>
+      We measure every season of Ja Morant's career — college, rise, peak, and collapse — with one rating
+      system applied the same way to every player in every season. Three findings organize the paper.
+      <b>The rise was real:</b> from an average-ish rookie to the 97th percentile of the league in 2021–22.
+      <b>The collapse was about missing, not choosing:</b> measured across shot zones, 88% of his 2025–26
+      efficiency crash came from worse conversion and only 12% from where he shot — while his playmaking hit
+      a career high. <b>Much of the "decline" is too small a sample to judge:</b> the three-point collapse
+      covers just 85 attempts — too few to distinguish genuine decline from ordinary variance — and his
+      free-throw shooting, the purest touch test, actually <i>improved</i>, significantly. The fall of Ja
+      Morant is, by the numbers, mostly an <i>availability</i> story: 79 games played in three seasons. His
+      rank of #140 of 644 prices that risk, and the number is robust to the model's own judgment calls —
+      every variation tested lands him between #112 and #147. It probably underprices the talent, and the
+      paper shows exactly where the difference lives.
+    </div>
+
+    <h2>Principal findings</h2>
+    <ul class="findings">
+      <li><b>Missing, not choosing:</b> of his effective-field-goal collapse, 88% was shot-<i>making</i> and
+      only 0.7 points shot-selection (an exact zone-level Shapley split — with its scope stated honestly:
+      zone data cannot see shot difficulty within zones).</li>
+      <li><b>The sample-size problem:</b> the three-point collapse is 20-of-85; its 95% interval [.158, .336]
+      contains his career norm. The one split that moved beyond doubt was his free throw — <i>upward</i>,
+      to .897.</li>
+      <li><b>The absence ledger:</b> 79 of a possible 246 games across three seasons (32.1%) — the 2023–24
+      season alone: a 25-game suspension, a nine-game return, then 48 games lost to the shoulder.</li>
+      <li><b>The stress test:</b> seven model variations (overrides off, equal season weights, different
+      anchors, reliability stack deleted) land him #112–#147. #140 is not an artifact of any single
+      judgment call.</li>
+    </ul>
+
+    <figure>
+      <img src="../../papers/pages/morant/p-04.svg" alt="Page 4 of the paper: Morant's seven-season career arc in impact and percentile terms, and the corrected absence ledger." loading="lazy" width="612" height="792">
+      <figcaption><b>The arc, and the ledger (p. 4).</b> Seven seasons in one currency — the 2021–22 peak at
+      the 97th percentile, and the absence ledger that explains #140 better than any shooting chart.</figcaption>
+    </figure>
+    <figure>
+      <img src="../../papers/pages/morant/p-09.svg" alt="Page 9 of the paper: the availability-times-impact matrix pricing every 2026-27 future, and the conclusion." loading="lazy" width="612" height="792">
+      <figcaption><b>The price of every future (p. 9).</b> The availability × impact matrix: health and form
+      are near-perfect substitutes at the bottom of the table, and top-50 requires both.</figcaption>
+    </figure>
+
+    <div class="plain"><b>In plain terms:</b> #140 is a defensible price for the delivery risk. It is
+    probably the wrong forecast of the talent. Both statements are the same mathematics, read in two
+    directions.</div>
+
+    <div class="btnrow">
+      <a class="btn" href="../../papers/morant.pdf">📄 Read the full paper (PDF, 12 pp)</a>
+      <a class="btn" href="../../#inbox/morant">📥 Read it in the inbox</a>
+      <a class="btn" href="../../papers/morant.tex">LaTeX source</a>
+      <a class="btn" href="../../the644/">🏀 The 644</a>
+    </div>
+
+    <h2>Cite this note</h2>
+    <pre class="mono">The Gravity Report (2026). "The Rise and Fall of Ja Morant: A Statistical
+Account, 2017-2026." GRAVITY Research Note No. 1, v2.
+https://thegravityreport.com/notes/morant/
+
+@techreport{gravity2026morant,
+  author      = {{The Gravity Report}},
+  title       = {The Rise and Fall of Ja Morant: A Statistical Account, 2017--2026},
+  institution = {The Gravity Report},
+  type        = {GRAVITY Research Note},
+  number      = {1},
+  year        = {2026},
+  month       = {7},
+  note        = {v2, revised July 11, 2026},
+  url         = {https://thegravityreport.com/notes/morant/}
+}</pre>
+
+    <div class="revnote"><b>Revision note (v2, July 11, 2026), following external review:</b> the absence
+    ledger was corrected (the January 2024 shoulder injury cost 48 games, not 73 — the other 25 were the
+    suspension, listed on its own row; denominator 246, not 249); the Wilson-interval, free-throw, and
+    Shapley-split language was tightened to what the evidence supports; the bundled forward scenarios were
+    replaced by an availability × impact matrix; and a model-sensitivity appendix was added. The errors were
+    ours. Nothing in the correction changes the ranking itself.</div>
+  </article>
+
+  <div class="status">
+    <div class="sseg">Research Note №1 · v2</div>
+    <div class="sseg grow">GRAVITY — the player-value model · How good × how often</div>
+    <div class="sseg">© The Gravity Report</div>
+  </div>
+</main>
+
+<p class="sitefoot">The Gravity Report is an independent NBA analytics publication built around GRAVITY, an
+original player-value model that explains careers, identifies mispriced players, and publishes falsifiable
+forecasts. · <a href="../../">the inbox</a> · <a href="../../the644/">The 644</a> ·
+<a href="../../feed.xml">RSS</a> · No external rankings consulted. Not affiliated with the NBA's
+defensive-attention "gravity" statistic.</p>
+
+</body>
+</html>

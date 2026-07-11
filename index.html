@@ -5,14 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0E5A3A">
 <title>The Gravity Report — GRAVITY basketball research</title>
-<meta name="description" content="GRAVITY: Game-Rate Adjusted Value, Impact, Talent, and Yield. Research notes, registered forecasts, and a full-league player ranking — delivered through a vintage inbox.">
+<meta name="description" content="The Gravity Report is an independent NBA analytics publication built around GRAVITY, an original player-value model that explains careers, identifies mispriced players, and publishes falsifiable forecasts — delivered through a vintage inbox.">
 <meta property="og:title" content="The Gravity Report — basketball research, delivered as mail">
-<meta property="og:description" content="Research notes as letters. Predictions age in the Outbox. Mistakes stay in the trash, labeled.">
+<meta property="og:description" content="Research notes as letters. Predictions age in the Outbox. Mistakes stay in the trash, labeled. GRAVITY, the player-value model: how good × how often.">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="The Gravity Report">
 <meta property="og:url" content="https://thegravityreport.com/">
+<meta property="og:image" content="https://thegravityreport.com/cards/site.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://thegravityreport.com/">
 <link rel="alternate" type="application/rss+xml" title="GRAVITY Research Notes" href="feed.xml">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📥</text></svg>">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://thegravityreport.com/#org",
+      "name": "The Gravity Report",
+      "url": "https://thegravityreport.com/",
+      "description": "An independent NBA analytics publication built around GRAVITY, an original player-value model that explains careers, identifies mispriced players, and publishes falsifiable forecasts.",
+      "logo": "https://thegravityreport.com/cards/site.png"
+    },
+    {
+      "@type": "WebSite",
+      "name": "The Gravity Report",
+      "url": "https://thegravityreport.com/",
+      "publisher": {"@id": "https://thegravityreport.com/#org"},
+      "hasPart": [
+        {"@type": "ScholarlyArticle", "headline": "The Rise and Fall of Ja Morant", "url": "https://thegravityreport.com/notes/morant/"},
+        {"@type": "ScholarlyArticle", "headline": "The Queta Problem", "url": "https://thegravityreport.com/notes/queta/"},
+        {"@type": "TechArticle", "headline": "The GRAVITY Specification (v3)", "url": "https://thegravityreport.com/notes/spec/"},
+        {"@type": "Dataset", "name": "The 644 — July 2026 Edition", "url": "https://thegravityreport.com/the644/"}
+      ]
+    }
+  ]
+}
+</script>
 <style>
 :root{
   --chrome:#d4d0c8; --chrome-dk:#808080; --chrome-dkr:#404040; --chrome-lt:#ffffff;
@@ -429,7 +461,7 @@ const M = {
     from:'GRAVITY (The Editor)', subject:'The GRAVITY Specification, v3 — the full mathematics (technical document)',
     date:'Jul 10 2026, 9:02 AM', clip:true, flag:'⚖', pdf:'papers/spec.pdf',
     pages:5, pagesDir:'papers/pages/spec',
-    attach:'spec.pdf (80 KB) · <a href="papers/spec.tex">spec.tex</a>',
+    attach:'spec.pdf (80 KB) · <a href="papers/spec.tex">spec.tex</a> · <a href="notes/spec/">web edition</a>',
     body:`
       <div class="kicker">Technical document · v3 · citable</div>
       <p>The complete specification: standardization, all seven component constructions, every weight,
@@ -487,7 +519,7 @@ const M = {
     from:'Research Note №2', subject:'The Queta Problem — why he’s a top-50 player, and why 2026-27 proves it (rev. v2)',
     date:'Jul 10 2026, 4:10 AM', unread:true, clip:true, flag:'❗', isnew:true, pdf:'papers/queta.pdf',
     pages:10, pagesDir:'papers/pages/queta',
-    attach:'queta.pdf (129 KB) · <a href="papers/queta.tex">queta.tex</a>',
+    attach:'queta.pdf (129 KB) · <a href="papers/queta.tex">queta.tex</a> · <a href="notes/queta/">web edition</a>',
     rev:'v2, Jul 11 2026, after external review — model output separated from editorial scenario weights (each weight now anchored to an observable rate); on/off language corrected to cross-season persistence, and the shrunk-input counterfactual re-run properly: #53–55, not ≈#48 (the harshest reading grazes the claim); comparables disclosed as 33 seasons / 22 players (32% per-player rate) + cutoff-sensitivity table; grading tightened: #51–70 = near miss, not push. The registered 75% is unchanged — that is the bet.',
     body:`
       <div class="kicker">№ 41 · Trust the data — a prediction paper · revised v2</div>
@@ -519,7 +551,7 @@ const M = {
     from:'Research Note №1', subject:'The Rise and Fall of Ja Morant — a statistical account, 2017–2026 (rev. v2)',
     date:'Jul 10 2026, 2:39 AM', clip:true, flag:'', pdf:'papers/morant.pdf',
     pages:12, pagesDir:'papers/pages/morant',
-    attach:'morant.pdf (127 KB) · <a href="papers/morant.tex">morant.tex</a>',
+    attach:'morant.pdf (127 KB) · <a href="papers/morant.tex">morant.tex</a> · <a href="notes/morant/">web edition</a>',
     rev:'v2, Jul 11 2026, after external review — absence ledger corrected (the shoulder cost 48 games, not 73; 79 of 246 = 32.1%), inference language tightened, forward scenarios → availability × impact matrix, sensitivity appendix added (#112–#147 across all variations). Full note on the last page. The errors were ours.',
     body:`
       <div class="kicker">№ 140 · The steepest fall — a career autopsy · revised v2</div>
@@ -736,7 +768,7 @@ function renderPreview(){
       <div class="row"><span class="k">From:</span><span class="v">${m.from} &lt;notes@gravity&gt;</span></div>
       <div class="row"><span class="k">Date:</span><span class="v normal">${m.date}</span></div>
       <div class="row"><span class="k">Subject:</span><span class="v">${m.subject}</span></div>
-      ${m.attach?`<div class="attachline">📎 Attachments: <a href="${m.pdf}" target="_blank">${m.attach.split(' · ')[0]}</a> · ${m.attach.split(' · ')[1]||''}</div>`:''}
+      ${m.attach?`<div class="attachline">📎 Attachments: <a href="${m.pdf}" target="_blank">${m.attach.split(' · ')[0]}</a> · ${m.attach.split(' · ').slice(1).join(' · ')}</div>`:''}
       ${m.rev?`<div class="attachline">♻️ <b>Revised:</b> ${m.rev}</div>`:''}
     </div>`;
   const right = document.getElementById('rightPane');

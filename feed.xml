@@ -3,22 +3,29 @@
 <channel>
   <title>GRAVITY Research Notes</title>
   <link>https://thegravityreport.com/</link>
-  <description>GRAVITY: Game-Rate Adjusted Value, Impact, Talent, and Yield. An independent basketball research publication — numbered notes, registered forecasts, annual audits.</description>
+  <description>The Gravity Report: an independent NBA analytics publication built around GRAVITY, an original player-value model — numbered research notes, registered forecasts, annual audits.</description>
   <language>en-us</language>
-  <lastBuildDate>Fri, 10 Jul 2026 12:00:00 -0400</lastBuildDate>
+  <lastBuildDate>Sat, 11 Jul 2026 18:00:00 -0400</lastBuildDate>
+  <item>
+    <title>The GRAVITY Specification (v3) — the full mathematics of the player-value model</title>
+    <link>https://thegravityreport.com/notes/spec/</link>
+    <guid isPermaLink="false">gravity-spec-v3</guid>
+    <pubDate>Fri, 10 Jul 2026 09:02:00 -0400</pubDate>
+    <description>Every equation, weight, shrinkage rule, tier cut, and the complete injury-override table, published as a standalone citable technical document. Five pages, typeset in LaTeX. PDF: papers/spec.pdf</description>
+  </item>
   <item>
     <title>Research Note No. 2 — The Queta Problem: why he’s a top-50 player, and why 2026-27 proves it</title>
-    <link>https://thegravityreport.com/#inbox/queta</link>
+    <link>https://thegravityreport.com/notes/queta/</link>
     <guid isPermaLink="false">gravity-note-2</guid>
     <pubDate>Fri, 10 Jul 2026 04:10:00 -0400</pubDate>
-    <description>A prediction paper. GRAVITY ranked Neemias Queta #41; this note attacks the number twice (an empirical on/off noise model, a 33-season comparables engine), keeps what survives, and registers the forecast: 75% top-50 by July 2027, falsification criteria on the record. PDF: papers/queta.pdf</description>
+    <description>A prediction paper, revised v2 after external review. GRAVITY ranked Neemias Queta #41; this note attacks the number (an empirical on/off persistence model, a 33-season / 22-player comparables engine with a cutoff-sensitivity table), reports honestly that the harshest discount grazes the claim, and registers the forecast: 75% top-50 by July 2027, falsification criteria on the record. PDF: papers/queta.pdf</description>
   </item>
   <item>
     <title>Research Note No. 1 — The Rise and Fall of Ja Morant: a statistical account, 2017–2026</title>
-    <link>https://thegravityreport.com/#inbox/morant</link>
+    <link>https://thegravityreport.com/notes/morant/</link>
     <guid isPermaLink="false">gravity-note-1</guid>
     <pubDate>Fri, 10 Jul 2026 02:39:00 -0400</pubDate>
-    <description>Seven seasons, one instrument. The collapse was 88% shot-making and 12% shot-selection; the three-point crash fits inside its own confidence interval; the free throw improved significantly; and the college assist rate the draft model ignored was a +3.5σ outlier. PDF: papers/morant.pdf</description>
+    <description>Seven seasons, one instrument; revised v2 after external review. At the zone level the collapse was 88% shot-making; the three-point crash fits inside its own confidence interval; the free throw improved significantly; and a seven-variation sensitivity appendix shows #140 holds (#112–#147) under every judgment call. PDF: papers/morant.pdf</description>
   </item>
 </channel>
 </rss>
