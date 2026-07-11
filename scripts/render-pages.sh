@@ -1,21 +1,15 @@
 #!/bin/bash
-# Render paper PDFs to quantized page images for the no-viewer reading pane.
+# Render paper PDFs to per-page SVGs for the no-viewer reading pane.
+# LaTeX output is vector, so SVG pages stay perfectly crisp at any zoom and
+# any pixel density — and they gzip smaller than the old 150-dpi PNGs.
 # Usage: scripts/render-pages.sh papers/queta.pdf
 set -e
 pdf="$1"; name=$(basename "$pdf" .pdf)
 out="papers/pages/$name"
-mkdir -p "$out"; rm -f "$out"/*.png "$out"/*.jpg
-pdftoppm -png -r 150 "$pdf" "$out/raw"
-python3 - "$out" <<'PY'
-import sys, glob, os
-from PIL import Image
-out = sys.argv[1]
-files = sorted(glob.glob(f"{out}/raw-*.png"))
-for i, f in enumerate(files, 1):
-    im = Image.open(f).convert("RGB")
-    im = im.quantize(colors=128, method=Image.MEDIANCUT, dither=Image.NONE)
-    im.save(f"{out}/p-{i:02d}.png", optimize=True)
-    os.remove(f)
-print(f"{len(files)} pages quantized")
-PY
-echo "$name -> $out"
+mkdir -p "$out"; rm -f "$out"/*.png "$out"/*.jpg "$out"/*.svg
+pages=$(pdfinfo "$pdf" | awk '/^Pages:/{print $2}')
+for ((p=1; p<=pages; p++)); do
+  printf -v pp 'p-%02d' "$p"
+  pdftocairo -svg -f "$p" -l "$p" "$pdf" "$out/$pp.svg"
+done
+echo "$pages pages -> $out (svg)"

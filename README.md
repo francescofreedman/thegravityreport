@@ -8,16 +8,16 @@ Static site, no build step, no dependencies.
 ```
 index.html        the mail client (the whole site UI; hash-routed permalinks)
 papers/           research note PDFs + LaTeX sources
-papers/pages/     pre-rendered page images (the in-site reading experience)
+papers/pages/     pre-rendered page SVGs (the in-site reading experience — vector, crisp at any zoom)
 the644/           the interactive full-league ranking (July 2026 edition)
-scripts/          render-pages.sh — PDF -> quantized page PNGs (needs poppler + Pillow)
+scripts/          render-pages.sh — PDF -> per-page SVGs (needs poppler's pdftocairo)
 feed.xml          RSS
 ```
 
 ## Publishing a new research note
 
 1. Compile the paper (`tectonic noteN.tex`), put PDF + TeX in `papers/`.
-2. `scripts/render-pages.sh papers/noteN.pdf` (renders 150-dpi quantized page images).
+2. `scripts/render-pages.sh papers/noteN.pdf` (renders one vector SVG per page).
 3. Add the message entry in `index.html` (`M` object: subject, body, pdf, pages, pagesDir).
 4. Add an item to `feed.xml`. Commit, push — Cloudflare deploys automatically.
 
