@@ -803,6 +803,8 @@ function selectMsg(id, push=true){
   const pv = document.getElementById('preview');
   if (pv) pv.scrollTop = 0;
   document.title = M[id] ? `${M[id].subject.replace(/^[^A-Za-z№]*/, '')} — GRAVITY` : 'GRAVITY';
+  beacon('pv', `#${curFolder}/${id}`);
+  if (M[id] && M[id].pdf && M[id].pages){ beacon('read', id); watchDepth(id); }
   if (push) pushHash(`#${curFolder}/${id}`);
 }
 function selectFolder(id, push=true){
@@ -813,6 +815,7 @@ function selectFolder(id, push=true){
   // on phones, landing in a folder must not mark its first message read
   if (curMsg){ if (!isMobile()) markRead(curMsg); renderPreview(); }
   setView('list');
+  beacon('pv', `#${id}`);
   if (push) pushHash(isMobile() ? `#${id}` : `#${id}${curMsg?'/'+curMsg:''}`);
 }
 function updateStatus(n){
@@ -825,24 +828,84 @@ function dlg(msg){
 }
 function dlgClose(){ document.getElementById('dlgwrap').classList.remove('show'); }
 
-// drafts voting (local; honest about it)
+// drafts voting — every ballot is counted for real at the editorial desk (/api/vote)
+let TALLY = null;
 function vote(k){
   try{
     const v = JSON.parse(localStorage.getItem('gravity_votes') || '{}');
     if (v.voted){ dlg('One ballot per reader — you voted for ' + (v.voted === 'kawhi' ? 'the Kawhi paper.' : 'the Jokić paper.')); return; }
-    v.voted = k; v[k] = (v[k]||0) + 1;
+    v.voted = k;
     localStorage.setItem('gravity_votes', JSON.stringify(v));
+    fetch('/api/vote', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({c: k})})
+      .then(r => r.json())
+      .then(res => { if (res && res.tally){ TALLY = res.tally; renderVotes(); } })
+      .catch(() => {});
     renderVotes();
-    dlg('Vote recorded. Ballots are tallied by hand at the editorial desk (this machine counts yours locally).');
+    dlg('Ballot received and counted at the editorial desk. №3 goes to the winner.');
   }catch(e){ dlg('Your browser is refusing to remember the vote. It still counts in spirit.'); }
 }
 function renderVotes(){
   let v = {};
   try{ v = JSON.parse(localStorage.getItem('gravity_votes') || '{}'); }catch(e){}
+  const label = (n, mine) => {
+    const parts = [];
+    if (TALLY) parts.push(`${n} ballot${n === 1 ? '' : 's'}`);
+    if (mine) parts.push('✓ your ballot');
+    return parts.length ? ' ' + parts.join(' · ') : '';
+  };
   const k = document.getElementById('votes-kawhi'), j = document.getElementById('votes-jokic');
-  if (k) k.textContent = v.voted==='kawhi' ? ' ✓ your ballot' : '';
-  if (j) j.textContent = v.voted==='jokic' ? ' ✓ your ballot' : '';
+  if (k) k.textContent = label(TALLY ? TALLY.kawhi : 0, v.voted==='kawhi');
+  if (j) j.textContent = label(TALLY ? TALLY.jokic : 0, v.voted==='jokic');
+  if (!TALLY && !renderVotes._loading){
+    renderVotes._loading = true;
+    fetch('/api/votes').then(r => r.json()).then(t => { TALLY = t; renderVotes(); }).catch(() => {});
+  }
 }
+
+// --- reading telemetry: anonymous, aggregate, humans-only, respects DNT ---
+const SEEN_PREFIX = 'gravity_seen_';
+function beacon(t, i){
+  try{
+    if (navigator.doNotTrack === '1') return;
+    let nv = 0;
+    if (t === 'pv'){
+      const today = SEEN_PREFIX + new Date().toISOString().slice(0, 10);
+      if (!localStorage.getItem(today)){
+        nv = 1;
+        for (let x = localStorage.length - 1; x >= 0; x--){
+          const key = localStorage.key(x);
+          if (key && key.startsWith(SEEN_PREFIX) && key !== today) localStorage.removeItem(key);
+        }
+        localStorage.setItem(today, '1');
+      }
+    }
+    const body = JSON.stringify({t, i: i || '', n: nv});
+    if (navigator.sendBeacon) navigator.sendBeacon('/api/e', new Blob([body], {type: 'application/json'}));
+    else fetch('/api/e', {method: 'POST', keepalive: true, headers: {'content-type': 'application/json'}, body});
+  }catch(e){}
+}
+const DEPTH_SENT = new Set();
+function watchDepth(msgId){
+  if (!('IntersectionObserver' in window)) return;
+  const sheets = document.querySelectorAll('img.sheet');
+  if (!sheets.length) return;
+  const marks = [[sheets[Math.min(2, sheets.length - 1)], 'd3'], [sheets[sheets.length - 1], 'fin']];
+  for (const [el, type] of marks){
+    const key = type + ':' + msgId;
+    if (DEPTH_SENT.has(key)) continue;
+    const ob = new IntersectionObserver((entries) => {
+      for (const en of entries){
+        if (en.isIntersecting && !DEPTH_SENT.has(key)){
+          DEPTH_SENT.add(key);
+          beacon(type, msgId);
+          ob.disconnect();
+        }
+      }
+    }, {threshold: 0.4});
+    ob.observe(el);
+  }
+}
+setTimeout(() => beacon('dwell', 'site'), 60000);
 
 // keyboard: ↑/↓ move through current folder, Esc restores layout
 document.addEventListener('keydown', (e) => {
@@ -888,6 +951,11 @@ tickClock(); setInterval(tickClock, 30000);
     history.pushState({_g:1}, '', `#${curFolder}/${curMsg}`);
   }
   setView(hash === 'folders' ? 'folders' : (deep ? 'msg' : 'list'));
+  beacon('pv', location.hash || '#inbox');
+  if (curMsg && M[curMsg].pdf && M[curMsg].pages){
+    watchDepth(curMsg);
+    if (deep) beacon('read', curMsg);
+  }
 })();
 window.addEventListener('hashchange', () => {
   const hash = location.hash.replace('#','');

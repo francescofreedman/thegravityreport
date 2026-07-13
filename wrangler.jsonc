@@ -1,8 +1,17 @@
-// The Gravity Report — static assets, no worker script needed.
+// The Gravity Report — static assets + a small API worker (votes, reading telemetry).
 {
   "name": "thegravityreport",
+  "main": "worker.js",
   "compatibility_date": "2026-07-10",
   "assets": {
-    "directory": "."
-  }
+    "directory": ".",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "gravity",
+      "database_id": "cd6ffa0d-e407-4605-b0ef-c5584f665e2b"
+    }
+  ]
 }

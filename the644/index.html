@@ -601,5 +601,42 @@ tickClock(); setInterval(tickClock, 30000);
 selectRow(1, false);
 render();
 </script>
+<script>
+(function(){
+  try{
+    if (navigator.doNotTrack === '1') return;
+    var item = '/the644';
+    function send(t, nv){
+      try{
+        var body = JSON.stringify({t: t, i: item, n: nv || 0});
+        if (navigator.sendBeacon) navigator.sendBeacon('/api/e', new Blob([body], {type: 'application/json'}));
+        else fetch('/api/e', {method: 'POST', keepalive: true, headers: {'content-type': 'application/json'}, body: body});
+      }catch(e){}
+    }
+    var nv = 0;
+    try{
+      var today = 'gravity_seen_' + new Date().toISOString().slice(0, 10);
+      if (!localStorage.getItem(today)){
+        nv = 1;
+        for (var x = localStorage.length - 1; x >= 0; x--){
+          var key = localStorage.key(x);
+          if (key && key.indexOf('gravity_seen_') === 0 && key !== today) localStorage.removeItem(key);
+        }
+        localStorage.setItem(today, '1');
+      }
+    }catch(e){}
+    send('pv', nv);
+    var used = false;
+    function markUse(){ if (!used){ used = true; send('use'); } }
+    var ctl = document.getElementById('controls');
+    if (ctl){ ctl.addEventListener('input', markUse, true); ctl.addEventListener('change', markUse, true); }
+    var tb = document.getElementById('tb');
+    if (tb) tb.addEventListener('click', markUse, true);
+    var lg = document.getElementById('legend');
+    if (lg) lg.addEventListener('click', markUse, true);
+    setTimeout(function(){ send('dwell'); }, 60000);
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
