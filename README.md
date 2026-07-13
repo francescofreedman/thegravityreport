@@ -16,6 +16,10 @@ the644/           the interactive full-league ranking (July 2026 edition)
 scripts/          render-pages.sh — PDF -> per-page SVGs (needs poppler's pdftocairo)
                   make-cards.py  — social cards (PIL; add new notes to CARDS)
 feed.xml          RSS · sitemap.xml + robots.txt for crawlers
+worker.js         the API: /api/vote + /api/votes (real Drafts tally, D1-backed),
+                  /api/e (humans-only reading telemetry: pv/read/depth/dwell,
+                  no cookies, no IPs, DNT respected), /api/stats?key=STATS_KEY
+                  (30-day aggregates; the key is a Worker secret)
 ```
 
 ## Publishing a new research note
