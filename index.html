@@ -238,6 +238,24 @@ pre.mono{
 /* ---------- win98 dialog ---------- */
 .dlgwrap{position:absolute; inset:0; display:none; align-items:center; justify-content:center; z-index:9;}
 .dlgwrap.show{display:flex;}
+/* ---------- welcome (first visit) ---------- */
+.wdlg{width:min(440px, 94vw);}
+.wbody{padding:12px 14px 10px; font-size:11.5px; line-height:1.55;}
+.wbody > p{margin-bottom:10px;}
+.wstart{font-weight:bold; color:var(--amber); font-size:10px; letter-spacing:.09em; margin:4px 0 5px; text-transform:uppercase;}
+.wrow{
+  display:flex; gap:9px; align-items:center; width:100%; text-align:left; background:#fff;
+  border:1px solid; border-color:var(--chrome-dk) var(--chrome-lt) var(--chrome-lt) var(--chrome-dk);
+  padding:7px 9px; margin-bottom:5px; cursor:pointer; font:inherit; color:inherit; text-decoration:none;
+  line-height:1.35;
+}
+.wrow:hover{background:#EAF0EA;}
+.wrow:focus-visible{outline:1px dotted #000;}
+.wrow .wic{font-size:17px; flex:0 0 auto;}
+.wrow b{color:var(--court);}
+.wfoot{display:flex; align-items:center; justify-content:space-between; margin-top:10px;}
+.wfoot a{color:#003399; font-size:10.5px;}
+.whint{color:#888; font-size:9.5px; margin-top:7px; text-align:center;}
 .dlg{
   width:330px; background:var(--chrome); border:1px solid var(--chrome-dkr);
   box-shadow:inset 1px 1px 0 var(--chrome-lt), inset -1px -1px 0 var(--chrome-dk), 3px 3px 0 rgba(0,0,0,.35);
@@ -364,6 +382,9 @@ pre.mono{
     <a class="dicon" href="#deleted" onclick="selectFolder('deleted');return false;">
       <div class="glyph">🗑</div><div class="lbl">Recycle Bin</div>
     </a>
+    <a class="dicon" href="about/">
+      <div class="glyph">ℹ️</div><div class="lbl">About the<br>Project</div>
+    </a>
   </nav>
 
   <main class="window" aria-label="GRAVITY Mail">
@@ -417,10 +438,31 @@ pre.mono{
       <div class="foot"><button class="btn" onclick="dlgClose()" style="min-width:70px; text-align:center;">OK</button></div>
     </div>
   </div>
+
+  <div class="dlgwrap" id="welcomewrap" role="dialog" aria-modal="true" aria-label="Welcome to The Gravity Report">
+    <div class="dlg wdlg">
+      <div class="tbar"><span class="tglyph">📥</span><span class="title">Welcome to The Gravity Report</span><span class="tbtn" onclick="welcomeClose()" role="button" aria-label="Close">✕</span></div>
+      <div class="wbody">
+        <p>You've opened an inbox. Every message in it is real basketball research: an original
+        player-value model — <b>GRAVITY</b> — applied to all 644 NBA players, with its bets
+        registered in public. Predictions age in the Outbox; mistakes stay in the trash, labeled.</p>
+        <div class="wstart">Where do you want to rank today?</div>
+        <button class="wrow" onclick="welcomeGo('inbox','spec')"><span class="wic">⚖</span><span><b>What is GRAVITY?</b><br>the two-minute version, pinned at the top of the inbox</span></button>
+        <button class="wrow" onclick="welcomeGo('inbox','queta')"><span class="wic">❗</span><span><b>The Queta Problem</b><br>the live bet: 75% he finishes top-50, graded next July</span></button>
+        <a class="wrow" href="the644/"><span class="wic">🏀</span><span><b>The 644</b><br>every NBA player plus the draft class, one number each</span></a>
+        <button class="wrow" onclick="welcomeGo('ledger',null)"><span class="wic">📌</span><span><b>The Forecast Ledger</b><br>our predictions, graded in public — wins and misses alike</span></button>
+        <div class="wfoot">
+          <a href="about/">ℹ️ About the project</a>
+          <button class="btn" onclick="welcomeClose()" style="min-width:110px; text-align:center;">Start reading</button>
+        </div>
+        <div class="whint">Reopen this anytime from the Start button.</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="taskbar">
-  <button class="start" onclick="dlg('Where do you want to rank today?')"><span>🟢</span><span>Start</span></button>
+  <button class="start" onclick="welcomeOpen()"><span>🟢</span><span>Start</span></button>
   <div class="task">📥 GRAVITY Mail — Inbox</div>
   <div class="tray"><span>📶</span><span>🔊</span><span id="clock"></span></div>
 </div>
@@ -730,6 +772,7 @@ function renderFolders(){
   }
   h += '<div class="fsep monly"></div><div class="fhead monly" style="font-size:10px;color:#777">DESKTOP</div>';
   h += '<a class="folder monly" href="the644/"><span>🏀</span><span>The 644 — the full ranking</span></a>';
+  h += '<a class="folder monly" href="about/"><span>ℹ️</span><span>About the project</span></a>';
   h += '<a class="folder monly" href="feed.xml"><span>📮</span><span>RSS feed</span></a>';
   h += '<div class="fsep"></div><div class="fnote">Everything here is permanent.<br>Predictions age in the Outbox;<br>mistakes stay in the trash,<br>labeled.</div>';
   el.innerHTML = h;
@@ -828,6 +871,18 @@ function dlg(msg){
 }
 function dlgClose(){ document.getElementById('dlgwrap').classList.remove('show'); }
 
+// first-visit welcome — shows once on an organic landing; Start reopens it anytime
+function welcomeOpen(){ document.getElementById('welcomewrap').classList.add('show'); }
+function welcomeClose(){
+  document.getElementById('welcomewrap').classList.remove('show');
+  try{ localStorage.setItem('gravity_welcomed', '1'); }catch(e){}
+}
+function welcomeGo(folder, msg){
+  welcomeClose();
+  selectFolder(folder);
+  if (msg) selectMsg(msg);
+}
+
 // drafts voting — every ballot is counted for real at the editorial desk (/api/vote)
 let TALLY = null;
 function vote(k){
@@ -909,6 +964,7 @@ setTimeout(() => beacon('dwell', 'site'), 60000);
 
 // keyboard: ↑/↓ move through current folder, Esc restores layout
 document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && document.getElementById('welcomewrap').classList.contains('show')){ welcomeClose(); return; }
   if (e.key === 'Escape' && expanded){ toggleExpand(); return; }
   if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
   const f = FOLDERS.find(x => x.id===curFolder);
@@ -956,6 +1012,10 @@ tickClock(); setInterval(tickClock, 30000);
     watchDepth(curMsg);
     if (deep) beacon('read', curMsg);
   }
+  // first organic landing (front door, not a deep link): offer the tour once
+  try{
+    if (!localStorage.getItem('gravity_welcomed') && (!hash || hash === 'inbox')) welcomeOpen();
+  }catch(e){}
 })();
 window.addEventListener('hashchange', () => {
   const hash = location.hash.replace('#','');
