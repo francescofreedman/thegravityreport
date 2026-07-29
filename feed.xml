@@ -5,7 +5,14 @@
   <link>https://thegravityreport.com/</link>
   <description>The Gravity Report: an independent NBA analytics publication built around GRAVITY, an original player-value model — numbered research notes, registered forecasts, annual audits.</description>
   <language>en-us</language>
-  <lastBuildDate>Sat, 11 Jul 2026 18:00:00 -0400</lastBuildDate>
+  <lastBuildDate>Wed, 29 Jul 2026 12:00:00 -0400</lastBuildDate>
+  <item>
+    <title>The 30 — every NBA team, one number (July 2026)</title>
+    <link>https://thegravityreport.com/the644/#teams</link>
+    <guid isPermaLink="false">gravity-the30-2026-07</guid>
+    <pubDate>Wed, 29 Jul 2026 12:00:00 -0400</pubDate>
+    <description>Team GRAVITY: the expected force of one minute of a team's floor time, built from a fixed 240-minute game — counted-on minutes from a two-season blend, draft-slot priors for rookies, uncovered minutes priced at replacement. Starters vs bench force, top-3 concentration, and each team's full allocation. Registered forecast E1: 75% that the July ranking tracks the 2026-27 standings at Spearman ρ ≥ 0.60, graded July 2027. CSV export included.</description>
+  </item>
   <item>
     <title>The GRAVITY Specification (v3) — the full mathematics of the player-value model</title>
     <link>https://thegravityreport.com/notes/spec/</link>

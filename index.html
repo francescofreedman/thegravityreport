@@ -527,7 +527,8 @@ const M = {
   4  Giannis      MIA  83.9      9  Mitchell   CLE  68.1
   5  Dončić       LAL  83.0     10  Maxey      PHI  67.3</pre>
       <p>The full database is searchable, sortable, and filterable — every player, every tier, exportable as CSV.
-      Editions are permanent once published.</p>
+      Editions are permanent once published. New (Jul 29): the same database now ranks all thirty rosters —
+      <a href="the644/#teams">The 30</a>, minutes-weighted Team GRAVITY.</p>
       <pre class="mono">EDITION CALENDAR
   Jul 2026   THE 644 — July 2026 ......... [ FINAL ]
   Feb 2027   All-Star Break edition ...... scheduled
@@ -538,7 +539,7 @@ const M = {
       <div class="sig">Four editions per season cycle. Old numbers never get quietly revised.</div>`
   },
   ledger: {
-    from:'Forecast Ledger', subject:'📌 Open predictions: 1 — the ledger is public and permanent',
+    from:'Forecast Ledger', subject:'📌 Open predictions: 2 — the ledger is public and permanent',
     date:'Jul 10 2026, 9:10 AM', pinned:true, flag:'📌',
     body:`
       <div class="kicker">Pinned · The Prediction Ledger</div>
@@ -546,7 +547,9 @@ const M = {
       wrong. After the season, every call gets graded in the annual <b>Forecast Audit</b> — wins and misses alike.</p>
       <pre class="mono">№   CLAIM                          P      REGISTERED    SCORES      STATUS
 2   Queta top-50 in July 2027     75%    Jul 10 2026   Jul 2027    [ OPEN ]
-2b  Queta top-25 in July 2027     40%    Jul 10 2026   Jul 2027    [ OPEN ]</pre>
+2b  Queta top-25 in July 2027     40%    Jul 10 2026   Jul 2027    [ OPEN ]
+E1  The 30 calls the standings    75%    Jul 29 2026   Jul 2027    [ OPEN ]
+    (Spearman ≥ 0.60 vs final 2026-27 wins)</pre>
       <p style="text-align:left"><span class="chip open">OPEN</span> &nbsp;→&nbsp; becomes &nbsp;<span class="chip win">WIN</span> /
       <span class="chip">NEAR MISS</span> / <span class="chip" style="background:#8a2f2f;color:#fff">MISS</span>
       &nbsp;when scored. No deletions, no edits, no quiet revisions.</p>
@@ -556,6 +559,42 @@ const M = {
       The claims, probabilities, and thresholds above stand exactly as registered.</p>
       <div class="plain"><b>In plain terms:</b> anyone can highlight wins. The audit is the product.</div>
       <div class="sig">Forecast Audit 2027 — an annual report. What the model got right, what it got wrong, and why.</div>`
+  },
+  ed30: {
+    from:'The 30 (Rankings Desk)', subject:'NEW — The 30: every team, one number (July 2026)',
+    date:'Jul 29 2026, 11:58 AM', unread:true, isnew:true, flag:'🏟', clip:true,
+    attach:'the30-2026-07.csv · <a href="the644/#teams">interactive table</a>',
+    body:`
+      <div class="kicker">New database view · 30 teams · Team GRAVITY</div>
+      <p><b>Team GRAVITY</b> is the expected force of one minute of a team's floor time, built from a fixed
+      240-minute game. Every roster spot supplies the minutes a team can actually count on (a two-season blend;
+      draft-slot priors for rookies); minutes nobody on the roster can cover are priced at replacement force
+      <b>35.0</b>. Because availability enters through minutes, a fragile star is priced once — never twice.
+      Teams land on the same scale as players: 50 is a league-average minute.</p>
+      <pre class="mono">TOP 10 — JULY 2026 · official rosters, Jul 29
+  1  Thunder    OKC  55.1      6  Rockets   HOU  50.6
+  2  Knicks     NYK  52.4      7  Sixers    PHI  50.4
+  3  Spurs      SAS  52.0      8  Magic     ORL  50.3
+  4  Nuggets    DEN  51.5      9  Wolves    MIN  50.2
+  5  Celtics    BOS  50.6     10  Pistons   DET  49.8</pre>
+      <p>The table shows what the average hides: starters vs bench force, how much of each team's value sits in
+      its top three players, and how many minutes each roster still can't cover. Click any team for its full
+      240-minute allocation.</p>
+      <p>Two honesty notes. <b>Unsigned is unsigned:</b> free agents — restricted ones included — are nobody's
+      minutes yet, so Cleveland is priced without Harden, Detroit without Duren, Sacramento without DeRozan.
+      Those holes show up as replacement-priced fill, and the All-Star edition re-prices whatever has been signed
+      by then. <b>And one trade doesn't exist yet:</b> the agreed Leonard–Ingram swap is unconsummated while the
+      league's investigation runs, so Kawhi is a Clipper here and Toronto keeps Ingram. Official rosters only.</p>
+      <div class="betbox"><b>Registered forecast E1:</b> P ≈ <b>75%</b> that The 30 predicts the 2026-27
+      standings to Spearman ρ ≥ 0.60 (final regular-season wins). ρ ≥ 0.60 = win · 0.50–0.60 = near miss ·
+      below 0.50 = miss. For calibration: weighted by who <i>actually</i> played the minutes, team force explained
+      the 2025-26 win column at ρ = 0.963 — the forward number prices roster churn, injuries, and our own
+      minute-projection errors. Scored in Forecast Audit №1, July 2027.</div>
+      <div class="plain"><b>In plain terms:</b> a talent ranking of rosters, weighted by playing time, honest
+      about its depth charts — and on the record about how well it should track the standings.</div>
+      <a class="btn" href="the644/#teams">Open The 30</a>
+      <a class="btn" href="the644/the30-2026-07.csv" download>Save the30.csv</a>
+      <div class="sig">Same edition calendar as The 644 — rebuilt at the All-Star break, never quietly revised.</div>`
   },
   queta: {
     from:'Research Note №2', subject:'The Queta Problem — why he’s a top-50 player, and why 2026-27 proves it (rev. v2)',
@@ -673,6 +712,19 @@ Forecast №2 (75% top-50):  [ WIN / NEAR MISS / MISS ]</pre>
       The claim, the 75%, and the thresholds are untouched.</p>
       <div class="plain"><b>In plain terms:</b> the bet is in the mail. See you in twelve months.</div>`
   },
+  outbox_the30: {
+    from:'Forecast Ledger', subject:'⏳ SCHEDULED — Grading The 30 vs the standings (sends July 2027)',
+    date:'queued', flag:'⏳',
+    body:`
+      <div class="kicker">Outbox · scheduled send</div>
+      <p>This message sends itself when the 2026-27 regular season is final. It will contain one line:</p>
+      <pre class="mono">The 30 (July 2026) vs final wins:  ρ = .___
+Forecast E1 (75%, ρ ≥ 0.60):  [ WIN / NEAR MISS / MISS ]</pre>
+      <p>The July edition it grades is frozen — rosters as of July 29, 2026, replacement fill and all. Teams that
+      got better or worse after that date count against us, not for us. That's the point of an outbox.</p>
+      <div class="plain"><b>In plain terms:</b> we ranked all 30 rosters and told you how well the ranking should
+      track the standings. In twelve months the standings answer.</div>`
+  },
   del_butler: {
     from:'The 644 (Rankings Desk)', subject:'♻️ RECALLED — Jimmy Butler at #13 (v1)',
     date:'Jul 10 2026, 10:20 AM', flag:'♻️',
@@ -688,14 +740,14 @@ Forecast №2 (75% top-50):  [ WIN / NEAR MISS / MISS ]</pre>
 };
 
 const FOLDERS = [
-  {id:'inbox',   icon:'📥', name:'Inbox', msgs:['spec','ed644','ledger','queta','morant','welcome']},
+  {id:'inbox',   icon:'📥', name:'Inbox', msgs:['spec','ed644','ledger','ed30','queta','morant','welcome']},
   {id:'drafts',  icon:'✏️', name:'Drafts', msgs:['draft_kawhi','draft_jokic']},
-  {id:'outbox',  icon:'📤', name:'Outbox', msgs:['outbox_queta']},
+  {id:'outbox',  icon:'📤', name:'Outbox', msgs:['outbox_queta','outbox_the30']},
   {id:'deleted', icon:'🗑', name:'Deleted Items', msgs:['del_butler']},
   {sep:true},
   {id:'spec',    icon:'⚖', name:'The Specification', msgs:['specdoc','spec']},
-  {id:'644',     icon:'🏀', name:'The 644 (editions)', msgs:['ed644']},
-  {id:'ledger',  icon:'📌', name:'Forecast Ledger', msgs:['ledger','outbox_queta']},
+  {id:'644',     icon:'🏀', name:'The 644 (editions)', msgs:['ed644','ed30']},
+  {id:'ledger',  icon:'📌', name:'Forecast Ledger', msgs:['ledger','outbox_queta','outbox_the30']},
   {id:'audit',   icon:'📊', name:'Forecast Audit 2027', msgs:[]},
 ];
 
