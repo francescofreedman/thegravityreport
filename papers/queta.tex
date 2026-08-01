@@ -24,6 +24,27 @@
 \colorbox{court!8}{\parbox{0.93\textwidth}{\small \textbf{\textcolor{court}{In plain terms:}} #1}}%
 \end{center}\medskip}
 
+% --- publication status: this is self-published, unreviewed research. The footer
+% repeats on every page so a saved screenshot of any interior page carries it too.
+\usepackage{fancyhdr}
+\newcommand{\statusfoot}{%
+  \fancyhf{}%
+  \fancyfoot[L]{\footnotesize\textcolor{steel}{Working paper · not peer reviewed}}%
+  \fancyfoot[C]{\thepage}%
+  \fancyfoot[R]{\footnotesize\textcolor{steel}{thegravityreport.com}}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+\fancypagestyle{gravity}{\statusfoot}
+\fancypagestyle{plain}{\statusfoot}
+\pagestyle{gravity}
+
+\newcommand{\statusnote}{\par\noindent\begin{center}%
+\colorbox{fade!25}{\parbox{0.93\textwidth}{\centering\small
+\textbf{Working paper --- independent research, not peer reviewed.}\\[2pt]
+Findings are provisional and subject to revision. Errors are the author's own.}}%
+\end{center}\smallskip}
+
 \title{\textbf{The Queta Problem}\\[4pt]
 \large Why Neemias Queta Is a Top-50 Player, and Why 2026--27 Proves It\\[2pt]
 \normalsize \gravity{} Research Note No.\ 2 --- a prediction paper}
@@ -33,6 +54,7 @@
 \begin{document}
 \maketitle
 \vspace{-2.5em}
+\statusnote
 
 \begin{abstract}
 \noindent
@@ -262,7 +284,7 @@ We test the claim against both, and quote the harsher one in the summary.
   legend style={font=\small, at={(0.97,0.03)}, anchor=south east},
 ]
 \addplot[only marks, mark=*, mark size=1.3pt, color=steel!70, opacity=0.55]
-  table {onoff_pairs.dat};
+  table[col sep=comma, x=onoff_25, y=onoff_26] {onoff_pairs.csv};
 \addplot[color=fade!60!black, dashed, thick, domain=-16:18] {x};
 \addplot[color=court, thick, domain=-16:18] {1.18+0.322*(x-1.16)};
 \addplot[only marks, mark=diamond*, amberx, mark options={fill=amberx}, mark size=4pt]

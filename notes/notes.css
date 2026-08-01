@@ -49,6 +49,13 @@ h1{font-size:34px; line-height:1.15; margin:0 0 6px; font-weight:bold;}
   border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:7px 0; margin:14px 0 22px;
 }
 .byline b{color:var(--ink);}
+/* Publication status. Self-published, unreviewed research — say so above the fold. */
+.pubstatus{
+  font-family:Tahoma,Verdana,sans-serif; font-size:12px; line-height:1.5;
+  background:#F4F4F1; border:1px solid #d8d5cc; color:#444;
+  padding:10px 14px; margin:0 0 18px; text-align:center;
+}
+.pubstatus b{color:var(--ink);}
 h2{font-size:16px; margin:26px 0 10px; color:var(--court); font-variant:small-caps; letter-spacing:.8px;}
 p{margin:0 0 12px;}
 a{color:#003399;}

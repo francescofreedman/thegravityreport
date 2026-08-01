@@ -502,8 +502,9 @@ const M = {
   specdoc: {
     from:'GRAVITY (The Editor)', subject:'The GRAVITY Specification, v3 — the full mathematics (technical document)',
     date:'Jul 10 2026, 9:02 AM', clip:true, flag:'⚖', pdf:'papers/spec.pdf',
-    pages:5, pagesDir:'papers/pages/spec',
-    attach:'spec.pdf (80 KB) · <a href="papers/spec.tex">spec.tex</a> · <a href="notes/spec/">web edition</a>',
+    pages:5, pagesDir:'papers/pages/spec', status:true,
+    attach:'spec.pdf (85 KB) · <a href="papers/spec.tex">spec.tex</a> · <a href="notes/spec/">web edition</a>',
+    rev:'Jul 31 2026 — working-paper status labels added to every page (PDF footer + status notice, also on the web edition); no content changes — still v3.',
     body:`
       <div class="kicker">Technical document · v3 · citable</div>
       <p>The complete specification: standardization, all seven component constructions, every weight,
@@ -599,9 +600,9 @@ E1  The 30 calls the standings    75%    Jul 29 2026   Jul 2027    [ OPEN ]
   queta: {
     from:'Research Note №2', subject:'The Queta Problem — why he’s a top-50 player, and why 2026-27 proves it (rev. v2)',
     date:'Jul 10 2026, 4:10 AM', unread:true, clip:true, flag:'❗', isnew:true, pdf:'papers/queta.pdf',
-    pages:10, pagesDir:'papers/pages/queta',
-    attach:'queta.pdf (129 KB) · <a href="papers/queta.tex">queta.tex</a> · <a href="notes/queta/">web edition</a>',
-    rev:'v2, Jul 11 2026, after external review — model output separated from editorial scenario weights (each weight now anchored to an observable rate); on/off language corrected to cross-season persistence, and the shrunk-input counterfactual re-run properly: #53–55, not ≈#48 (the harshest reading grazes the claim); comparables disclosed as 33 seasons / 22 players (32% per-player rate) + cutoff-sensitivity table; grading tightened: #51–70 = near miss, not push. The registered 75% is unchanged — that is the bet.',
+    pages:10, pagesDir:'papers/pages/queta', status:true,
+    attach:'queta.pdf (133 KB) · <a href="papers/queta.tex">queta.tex</a> · <a href="notes/queta/">web edition</a>',
+    rev:'v2, Jul 11 2026, after external review — model output separated from editorial scenario weights (each weight now anchored to an observable rate); on/off language corrected to cross-season persistence, and the shrunk-input counterfactual re-run properly: #53–55, not ≈#48 (the harshest reading grazes the claim); comparables disclosed as 33 seasons / 22 players (32% per-player rate) + cutoff-sensitivity table; grading tightened: #51–70 = near miss, not push. The registered 75% is unchanged — that is the bet. Then Jul 31 2026 — working-paper status labels added to every page (PDF footer + status notice, also on the web edition); no findings or numbers changed.',
     body:`
       <div class="kicker">№ 41 · Trust the data — a prediction paper · revised v2</div>
       <p>Our ranking put Neemias Queta — twice waived, 39th pick — at <span class="badge">58.8 · #41 · T4</span>,
@@ -631,9 +632,9 @@ E1  The 30 calls the standings    75%    Jul 29 2026   Jul 2027    [ OPEN ]
   morant: {
     from:'Research Note №1', subject:'The Rise and Fall of Ja Morant — a statistical account, 2017–2026 (rev. v2)',
     date:'Jul 10 2026, 2:39 AM', clip:true, flag:'', pdf:'papers/morant.pdf',
-    pages:12, pagesDir:'papers/pages/morant',
-    attach:'morant.pdf (127 KB) · <a href="papers/morant.tex">morant.tex</a> · <a href="notes/morant/">web edition</a>',
-    rev:'v2, Jul 11 2026, after external review — absence ledger corrected (the shoulder cost 48 games, not 73; 79 of 246 = 32.1%), inference language tightened, forward scenarios → availability × impact matrix, sensitivity appendix added (#112–#147 across all variations). Full note on the last page. The errors were ours.',
+    pages:12, pagesDir:'papers/pages/morant', status:true,
+    attach:'morant.pdf (132 KB) · <a href="papers/morant.tex">morant.tex</a> · <a href="notes/morant/">web edition</a>',
+    rev:'v2, Jul 11 2026, after external review — absence ledger corrected (the shoulder cost 48 games, not 73; 79 of 246 = 32.1%), inference language tightened, forward scenarios → availability × impact matrix, sensitivity appendix added (#112–#147 across all variations). Full note on the last page. The errors were ours. Then Jul 31 2026 — working-paper status labels added to every page (PDF footer + status notice, also on the web edition); no findings or numbers changed.',
     body:`
       <div class="kicker">№ 140 · The steepest fall — a career autopsy · revised v2</div>
       <p>Seven seasons, one instrument: from unranked recruit to the 97th percentile of the league (2021-22),
@@ -865,6 +866,7 @@ function renderPreview(){
       <div class="row"><span class="k">Subject:</span><span class="v">${m.subject}</span></div>
       ${m.attach?`<div class="attachline">📎 Attachments: <a href="${m.pdf}" target="_blank">${m.attach.split(' · ')[0]}</a> · ${m.attach.split(' · ').slice(1).join(' · ')}</div>`:''}
       ${m.rev?`<div class="attachline">♻️ <b>Revised:</b> ${m.rev}</div>`:''}
+      ${m.status?`<div class="attachline">⚠️ <b>Working paper</b> — independent research, not peer reviewed. Findings are provisional and subject to revision.</div>`:''}
     </div>`;
   const right = document.getElementById('rightPane');
   const pv = document.getElementById('preview');

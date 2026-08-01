@@ -11,11 +11,34 @@
 
 \definecolor{court}{HTML}{0E5A3A}
 \definecolor{amberx}{HTML}{B26A1F}
+\definecolor{steel}{HTML}{5E6E75}
+\definecolor{fade}{HTML}{AEB3B5}
 \newcommand{\gravity}{\textsc{gravity}}
 \newcommand{\ctg}{\textsc{ctg}}
 \newcommand{\plainbox}[1]{\par\medskip\noindent\begin{center}%
 \colorbox{court!8}{\parbox{0.93\textwidth}{\small \textbf{\textcolor{court}{In plain terms:}} #1}}%
 \end{center}\medskip}
+
+% --- publication status: this is self-published, unreviewed research. The footer
+% repeats on every page so a saved screenshot of any interior page carries it too.
+\usepackage{fancyhdr}
+\newcommand{\statusfoot}{%
+  \fancyhf{}%
+  \fancyfoot[L]{\footnotesize\textcolor{steel}{Working paper · not peer reviewed}}%
+  \fancyfoot[C]{\thepage}%
+  \fancyfoot[R]{\footnotesize\textcolor{steel}{thegravityreport.com}}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+\fancypagestyle{gravity}{\statusfoot}
+\fancypagestyle{plain}{\statusfoot}
+\pagestyle{gravity}
+
+\newcommand{\statusnote}{\par\noindent\begin{center}%
+\colorbox{fade!25}{\parbox{0.93\textwidth}{\centering\small
+\textbf{Working paper --- independent research, not peer reviewed.}\\[2pt]
+Findings are provisional and subject to revision. Errors are the author's own.}}%
+\end{center}\smallskip}
 
 \title{\textbf{The GRAVITY Specification}\\[4pt]
 \large Game-Rate Adjusted Value, Impact, Talent, and Yield\\[2pt]
@@ -26,6 +49,7 @@
 \begin{document}
 \maketitle
 \vspace{-2.5em}
+\statusnote
 
 \begin{abstract}
 \noindent
