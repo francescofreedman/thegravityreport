@@ -3,8 +3,8 @@
  * Static assets are served by Cloudflare's asset handling; only non-asset
  * routes (/api/*) reach this script.
  *
- *   POST /api/vote   {c: "kawhi" | "jokic"}     -> {ok, tally}
- *   GET  /api/votes                              -> {kawhi, jokic}
+ *   POST /api/vote   {c: "kawhi" | "jokic" | "flagg"}  -> {ok, tally}
+ *   GET  /api/votes                              -> {kawhi, jokic, flagg}
  *   POST /api/e      {t, i, n}                   -> 204  (reading telemetry)
  *   GET  /api/stats?key=STATS_KEY                -> 30-day aggregates
  *
@@ -13,7 +13,7 @@
  * store type + item + country + a client-declared first-visit-today flag.
  */
 
-const VOTE_CHOICES = new Set(["kawhi", "jokic"]);
+const VOTE_CHOICES = new Set(["kawhi", "jokic", "flagg"]);
 const EVENT_TYPES = new Set(["pv", "read", "d3", "fin", "dwell", "use"]);
 const BOT_RE = /bot|crawl|spider|slurp|preview|scan|monitor|probe|headless|lighthouse|curl|wget|python|httpx|axios|node-fetch|go-http/i;
 
@@ -75,7 +75,7 @@ async function handleVote(request, env) {
 async function tally(env) {
   await ensureSchema(env);
   const { results } = await env.DB.prepare("SELECT choice, n FROM votes").all();
-  const out = { kawhi: 0, jokic: 0 };
+  const out = { kawhi: 0, jokic: 0, flagg: 0 };
   for (const row of results) out[row.choice] = row.n;
   return out;
 }

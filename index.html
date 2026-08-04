@@ -397,7 +397,7 @@ pre.mono{
       <span>File</span><span>Edit</span><span>View</span><span>Go</span><span>Tools</span><span>Compose</span><span>Help</span>
     </div>
     <div class="toolbar">
-      <button class="tool" onclick="dlg('Compose is reserved for the editor. №3 ships after the vote — see Drafts.')"><span class="ic">📝</span><span class="tl">New Note</span></button>
+      <button class="tool" onclick="dlg('Compose is reserved for the editor. №3 (Duren) is in progress; №4 goes to the ballot — see Drafts.')"><span class="ic">📝</span><span class="tl">New Note</span></button>
       <button class="tool" onclick="dlg('Reply-all to a research note? Bold. The newsletter will have a reply address.')"><span class="ic">↩</span><span class="tl">Reply</span></button>
       <button class="tool" onclick="dlg('Forwarding is encouraged. That is, roughly, the entire growth strategy.')"><span class="ic">↪</span><span class="tl">Forward</span></button>
       <div class="tool sep"></div>
@@ -677,27 +677,41 @@ E1  The 30 calls the standings    75%    Jul 29 2026   Jul 2027    [ OPEN ]
       <div class="plain"><b>In plain terms:</b> an institution, not a feed. Slower on purpose.</div>
       <div class="sig">GRAVITY · How good, times how often.</div>`
   },
-  draft_kawhi: {
-    from:'Drafts', subject:'№3 (draft) — The Kawhi Anomaly: top-8 in 2027?',
-    date:'not sent', flag:'✏️',
+  draft_duren: {
+    from:'Drafts', subject:'№3 (in progress) — Duren: the best traditional center is 22',
+    date:'in progress', flag:'✏️',
     body:`
-      <div class="kicker">Draft · unwritten · voting open</div>
-      <p>Career-best offense at 34 (8.0 BPM, +14.4 filtered on/off), zero playoff test, one cap-circumvention
-      investigation holding up his trade. The aging-curve math would be the spine: how rare is elite at 35?</p>
-      <p><i>This note has no content yet. The next paper goes to the draft with more votes.</i></p>
-      <button class="btn" onclick="vote('kawhi')">Vote: write this one</button>
-      <span id="votes-kawhi" style="font-family:Tahoma; font-size:10.5px; color:#666"></span>`
+      <div class="kicker">Draft · in progress · confirmed Jul 31 2026</div>
+      <p>GRAVITY already believes it: Jalen Duren sits <b>#14 of 644</b> — a traditional center inside the
+      top 15 that no consensus board has. He is also already part of this publication's evidence: Research
+      Note №2's comparables table lists his 2024–25 season as the cohort's best follow-up
+      (+1.02 → +1.60, 97th percentile). №3 extends published machinery — silhouette, base rates,
+      shrinks, and a registered bet with an audit date.</p>
+      <p><i>Confirmed by the editorial desk with the ballot at 0–0. The ballot below now decides №4.</i></p>`
   },
-  draft_jokic: {
-    from:'Drafts', subject:'№3 (draft) — Jokić: still the best, and 2027 proves it',
+  draft_no4: {
+    from:'Drafts', subject:'№4 (ballot) — Kawhi, Jokić, or Flagg: readers pick the next note',
     date:'not sent', flag:'✏️',
     body:`
       <div class="kicker">Draft · unwritten · voting open</div>
-      <p>GRAVITY #1 by five clear points (97.8 vs 92.9) — yet two straight MVPs went elsewhere. The paper would
+      <p>№3 (Duren) is in progress. This ballot decides №4 — one ballot per reader, counted for real.</p>
+      <p style="margin-bottom:2px"><b>The Kawhi Anomaly: top-8 in 2027?</b><br>
+      Career-best offense at 34 (8.0 BPM, +14.4 filtered on/off), zero playoff test, one cap-circumvention
+      investigation holding up his trade. The aging-curve math would be the spine: how rare is elite at 35?</p>
+      <p><button class="btn" onclick="vote('kawhi')">Vote: Kawhi</button>
+      <span id="votes-kawhi" style="font-family:Tahoma; font-size:10.5px; color:#666"></span></p>
+      <p style="margin-bottom:2px"><b>Jokić: still the best, and 2027 proves it.</b><br>
+      GRAVITY #1 by five clear points (97.8 vs 92.9) — yet two straight MVPs went elsewhere. The paper would
       quantify the voter-vs-data gap and the aging math for why a 31-year-old repeats at #1.</p>
-      <p><i>This note has no content yet. The next paper goes to the draft with more votes.</i></p>
-      <button class="btn" onclick="vote('jokic')">Vote: write this one</button>
-      <span id="votes-jokic" style="font-family:Tahoma; font-size:10.5px; color:#666"></span>`
+      <p><button class="btn" onclick="vote('jokic')">Vote: Jokić</button>
+      <span id="votes-jokic" style="font-family:Tahoma; font-size:10.5px; color:#666"></span></p>
+      <p style="margin-bottom:2px"><b>Flagg: top-10 in year two?</b><br>
+      Rookie of the Year at 19 (21.0 / 6.7 / 4.5), and the rookie module was built for exactly this
+      question: how often does a season like that become top-10 by year two? The bet would grade against
+      the July 2027 edition.</p>
+      <p><button class="btn" onclick="vote('flagg')">Vote: Flagg</button>
+      <span id="votes-flagg" style="font-family:Tahoma; font-size:10.5px; color:#666"></span></p>
+      <p><i>№4 goes to the option with the most ballots.</i></p>`
   },
   outbox_queta: {
     from:'Forecast Ledger', subject:'⏳ SCHEDULED — Grading Research Note №2 (sends July 2027)',
@@ -742,7 +756,7 @@ Forecast E1 (75%, ρ ≥ 0.60):  [ WIN / NEAR MISS / MISS ]</pre>
 
 const FOLDERS = [
   {id:'inbox',   icon:'📥', name:'Inbox', msgs:['spec','ed644','ledger','ed30','queta','morant','welcome']},
-  {id:'drafts',  icon:'✏️', name:'Drafts', msgs:['draft_kawhi','draft_jokic']},
+  {id:'drafts',  icon:'✏️', name:'Drafts', msgs:['draft_duren','draft_no4']},
   {id:'outbox',  icon:'📤', name:'Outbox', msgs:['outbox_queta','outbox_the30']},
   {id:'deleted', icon:'🗑', name:'Deleted Items', msgs:['del_butler']},
   {sep:true},
@@ -890,7 +904,7 @@ function renderPreview(){
     mainEl.classList.remove('max');
     pv.innerHTML = head + `<div class="pbody">${m.body}</div>`;
   }
-  if (curMsg === 'draft_kawhi' || curMsg === 'draft_jokic') renderVotes();
+  if (curMsg === 'draft_no4') renderVotes();
 }
 function selectMsg(id, push=true){
   curMsg = id;
@@ -942,7 +956,8 @@ let TALLY = null;
 function vote(k){
   try{
     const v = JSON.parse(localStorage.getItem('gravity_votes') || '{}');
-    if (v.voted){ dlg('One ballot per reader — you voted for ' + (v.voted === 'kawhi' ? 'the Kawhi paper.' : 'the Jokić paper.')); return; }
+    const NAMES = {kawhi:'the Kawhi paper', jokic:'the Jokić paper', flagg:'the Flagg paper'};
+    if (v.voted){ dlg('One ballot per reader — you voted for ' + (NAMES[v.voted] || 'a paper') + '.'); return; }
     v.voted = k;
     localStorage.setItem('gravity_votes', JSON.stringify(v));
     fetch('/api/vote', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({c: k})})
@@ -950,7 +965,7 @@ function vote(k){
       .then(res => { if (res && res.tally){ TALLY = res.tally; renderVotes(); } })
       .catch(() => {});
     renderVotes();
-    dlg('Ballot received and counted at the editorial desk. №3 goes to the winner.');
+    dlg('Ballot received and counted at the editorial desk. №4 goes to the winner.');
   }catch(e){ dlg('Your browser is refusing to remember the vote. It still counts in spirit.'); }
 }
 function renderVotes(){
@@ -962,9 +977,11 @@ function renderVotes(){
     if (mine) parts.push('✓ your ballot');
     return parts.length ? ' ' + parts.join(' · ') : '';
   };
-  const k = document.getElementById('votes-kawhi'), j = document.getElementById('votes-jokic');
-  if (k) k.textContent = label(TALLY ? TALLY.kawhi : 0, v.voted==='kawhi');
-  if (j) j.textContent = label(TALLY ? TALLY.jokic : 0, v.voted==='jokic');
+  const k = document.getElementById('votes-kawhi'), j = document.getElementById('votes-jokic'),
+        f = document.getElementById('votes-flagg');
+  if (k) k.textContent = label(TALLY ? (TALLY.kawhi || 0) : 0, v.voted==='kawhi');
+  if (j) j.textContent = label(TALLY ? (TALLY.jokic || 0) : 0, v.voted==='jokic');
+  if (f) f.textContent = label(TALLY ? (TALLY.flagg || 0) : 0, v.voted==='flagg');
   if (!TALLY && !renderVotes._loading){
     renderVotes._loading = true;
     fetch('/api/votes').then(r => r.json()).then(t => { TALLY = t; renderVotes(); }).catch(() => {});
