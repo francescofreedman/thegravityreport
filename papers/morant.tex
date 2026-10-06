@@ -24,12 +24,12 @@
 \colorbox{court!8}{\parbox{0.93\textwidth}{\small \textbf{\textcolor{court}{In plain terms:}} #1}}%
 \end{center}\medskip}
 
-% --- publication status: this is self-published, unreviewed research. The footer
+% --- publication status: this is a self-published article, not a research paper. The footer
 % repeats on every page so a saved screenshot of any interior page carries it too.
 \usepackage{fancyhdr}
 \newcommand{\statusfoot}{%
   \fancyhf{}%
-  \fancyfoot[L]{\footnotesize\textcolor{steel}{Working paper · not peer reviewed}}%
+  \fancyfoot[L]{\footnotesize\textcolor{steel}{An article, not a research paper}}%
   \fancyfoot[C]{\thepage}%
   \fancyfoot[R]{\footnotesize\textcolor{steel}{thegravityreport.com}}%
   \renewcommand{\headrulewidth}{0pt}%
@@ -41,13 +41,13 @@
 
 \newcommand{\statusnote}{\par\noindent\begin{center}%
 \colorbox{fade!25}{\parbox{0.93\textwidth}{\centering\small
-\textbf{Working paper --- independent research, not peer reviewed.}\\[2pt]
-Findings are provisional and subject to revision. Errors are the author's own.}}%
+\textbf{Not a research paper. This is an article, typeset in \LaTeX.}\\[2pt]
+Independent analysis, not peer reviewed. Findings may be revised. Errors are the author's own.}}%
 \end{center}\smallskip}
 
 \title{\textbf{The Rise and Fall of Ja Morant}\\[4pt]
 \large A Statistical Account, 2017--2026\\[2pt]
-\normalsize \gravity{} Research Note No.\ 1}
+\normalsize \gravity{} Article No.\ 1}
 \author{}
 \date{July 10, 2026 \ $\cdot$ \ revised July 11, 2026 (v2)}
 
@@ -60,7 +60,7 @@ Findings are provisional and subject to revision. Errors are the author's own.}}
 \noindent
 We measure every season of Ja Morant's career --- college, rise, peak, and collapse ---
 with one rating system (\gravity{}) applied the same way to every player in every season,
-so his trajectory can be read in a single currency. Three findings organize the paper.
+so his trajectory can be read in a single currency. Three findings organize the article.
 \textbf{(1) The rise was real:} from an average-ish rookie to the 97th percentile of the
 league in 2021--22. \textbf{(2) The collapse was about missing, not choosing:} measured
 across shot zones, 88\% of his 2025--26 efficiency crash came from worse conversion and
@@ -83,7 +83,7 @@ pick of the draft, Rookie of the Year, Most Improved Player, All-NBA, and the fa
 (33 games), a season-ending shoulder surgery, a season-ending elbow injury, a one-game
 team suspension, and finally a trade to Portland for two role players.
 
-Everyone has a story about this arc. This paper has measurements. We run every Morant
+Everyone has a story about this arc. This article has measurements. We run every Morant
 season through \gravity{}, the player-rating system behind our July 2026 ranking of all
 644 NBA players, and we show the arithmetic at every step. Where the numbers can't support
 a firm conclusion --- and in a 569-minute season they often can't --- we say so with
@@ -112,7 +112,7 @@ so that 50 = an average NBA minute, 60+ = a quality starter, 80+ = a franchise e
 (the 2025--26 maximum is Nikola Joki\'c at 97.8). The full specification --- every
 component, weight, and shrinkage rule, seventeen equations of it --- is in
 Appendix~\ref{app:spec}, and the historical variant used for the seven-season series
-(\gravity-RS) is defined there too. Nothing in the body of the paper requires it; every
+(\gravity-RS) is defined there too. Nothing in the body of the article requires it; every
 table can be read with the z-score guide above.
 
 \plainbox{\gravity{} = (how good per minute) $\times$ (how reliably he's on the floor),
@@ -188,7 +188,7 @@ count. Lesson learned: creation now belongs in the draft model.}
 \section{The rise, 2019--2022}
 \label{sec:rise}
 
-Table~\ref{tab:zmatrix} is the paper's centerpiece: every component of Morant's game,
+Table~\ref{tab:zmatrix} is the article's centerpiece: every component of Morant's game,
 every season, graded against that season's league. Figure~\ref{fig:arc} plots the
 combined rating.
 
@@ -308,7 +308,7 @@ games after he returned from a calf absence. We ask three questions of it.
 
 \subsection{Question 1: did his whole game collapse?}
 
-No --- and this is the strangest fact in the paper. Compare the last two rows of
+No --- and this is the strangest fact in the article. Compare the last two rows of
 Table~\ref{tab:zmatrix}, drawn in Figure~\ref{fig:dumbbell}. Every efficiency-linked
 number cratered to career-worst levels. And at the same time his \textbf{creation
 ($+3.19$) and offensive load ($+2.90$) hit career highs} --- his assist rate (44.7\%) was
@@ -617,7 +617,7 @@ Portland's return on a healthy Morant is as large as its return on a resurgent o
 Third, top-50 requires \emph{both}: no 25-game column reaches it, and no collapse-level
 row does.
 
-Which cells deserve weight is a judgment the reader can make with the paper's evidence:
+Which cells deserve weight is a judgment the reader can make with the article's evidence:
 the skills that collapse first in genuinely declining guards --- rim conversion, foul
 drawing, free-throw touch --- are respectively stable, elite (seven straight seasons at
 the 86th percentile or better), and improving, while the stats that cratered are the
@@ -656,6 +656,11 @@ were replaced by the availability~$\times$~impact matrix of Table~\ref{tab:matri
 recomputed under a single stated convention; and Appendix~\ref{app:sens} (model
 sensitivity) was added. The errors were ours. Nothing in the correction changes the
 ranking itself, which is computed from the data, not from the prose.
+
+\section*{Relabel note (October 6, 2026)}
+This document was first published as a research note. It is relabeled as an article: our own
+analysis, typeset in \LaTeX, not a research paper and not peer reviewed. No numbers, findings, or
+forecasts changed.
 
 \appendix
 \section{The full GRAVITY specification}
@@ -733,7 +738,7 @@ A transparent model is not the same thing as a validated one. The weights in
 Appendix~\ref{app:spec} --- and the replacement anchor, the availability standard, and
 the injury overrides --- were specified by judgment before any player was ranked; they
 were not fitted to a target variable. Publishing them makes the judgment inspectable.
-It does not make it correct. The honest next question is: how much does this paper's
+It does not make it correct. The honest next question is: how much does this article's
 conclusion depend on those choices?
 
 Table~\ref{tab:sens} answers it by re-running the \emph{entire} 644-player pipeline ---
@@ -766,7 +771,7 @@ equal season weights, and deleting the reliability machinery altogether --- are 
 versions of the same question, \emph{how much should the solid 2024--25 season count?},
 and both answer \#112: even the reading most generous to his track record does not put
 him inside the top 100 on this data. In the other direction, no tightening we tested
-pushes him past \#147. The paper's headline number is not an artifact of any single
+pushes him past \#147. The article's headline number is not an artifact of any single
 judgment call; within this family of specifications, ``a clearly good player, heavily
 discounted for delivery risk'' is the only available conclusion.
 

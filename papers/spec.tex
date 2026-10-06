@@ -19,12 +19,12 @@
 \colorbox{court!8}{\parbox{0.93\textwidth}{\small \textbf{\textcolor{court}{In plain terms:}} #1}}%
 \end{center}\medskip}
 
-% --- publication status: this is self-published, unreviewed research. The footer
+% --- publication status: this is a self-published article, not a research paper. The footer
 % repeats on every page so a saved screenshot of any interior page carries it too.
 \usepackage{fancyhdr}
 \newcommand{\statusfoot}{%
   \fancyhf{}%
-  \fancyfoot[L]{\footnotesize\textcolor{steel}{Working paper · not peer reviewed}}%
+  \fancyfoot[L]{\footnotesize\textcolor{steel}{An article, not a research paper}}%
   \fancyfoot[C]{\thepage}%
   \fancyfoot[R]{\footnotesize\textcolor{steel}{thegravityreport.com}}%
   \renewcommand{\headrulewidth}{0pt}%
@@ -36,8 +36,8 @@
 
 \newcommand{\statusnote}{\par\noindent\begin{center}%
 \colorbox{fade!25}{\parbox{0.93\textwidth}{\centering\small
-\textbf{Working paper --- independent research, not peer reviewed.}\\[2pt]
-Findings are provisional and subject to revision. Errors are the author's own.}}%
+\textbf{Not a research paper. This is an article, typeset in \LaTeX.}\\[2pt]
+Independent analysis, not peer reviewed. Findings may be revised. Errors are the author's own.}}%
 \end{center}\smallskip}
 
 \title{\textbf{The GRAVITY Specification}\\[4pt]
@@ -54,7 +54,7 @@ Findings are provisional and subject to revision. Errors are the author's own.}}
 \begin{abstract}
 \noindent
 This document is the complete, citable specification of \gravity{}, the player-value
-system behind ``The 644'' rankings and every numbered research note published at
+system behind ``The 644'' rankings and every numbered article published at
 \texttt{thegravityreport.com}. It defines all inputs, transformations, weights,
 adjustments, and boundary rules; the retrospective variant used for historical series;
 the rookie module; and the version history. Everything here is sufficient to reproduce
@@ -138,7 +138,7 @@ I_y(i) = \Bigl[0.44\, z_{\mathrm{BPM}} + 0.12\, z_{\mathrm{WS/48}}
 where $\Delta_{\text{on/off}}$ is the garbage-time-filtered on/off differential
 (Cleaning the Glass), regressed by minutes before standardization. The trailing factor is
 a \emph{within-season} shrink: a scorching 300-minute stretch regresses toward league
-average before it can move a ranking. Research Note №2 measured the year-to-year
+average before it can move a ranking. Article №2 measured the year-to-year
 reliability of filtered on/off at $r = 0.317$ ($n = 184$ players with 1{,}000+ minutes in
 consecutive seasons) --- which is why the term carries only 14\% weight and a minutes
 regression.
@@ -270,7 +270,7 @@ where $z^c$ standardizes within the draft-class cohort. Slot priors (league perc
 pick 1 $\to$ 84; 2--3 $\to$ 78; 4--7 $\to$ 66; 8--14 $\to$ 56; 15--22 $\to$ 46;
 23--30 $\to$ 38; 31--45 $\to$ 28; 46--60 $\to$ 20; minus $0.06$ per pick as a tie-break.
 
-\textbf{Known deficiency, scheduled for v4:} Research Note №1 showed the production blend
+\textbf{Known deficiency, scheduled for v4:} Article №1 showed the production blend
 \eqref{eq:rookie} would have graded 2019-prospect Ja Morant as ordinary while his college
 assist rate sat $+3.5\sigma$ above the 2026 cohort --- creation is the one skill his
 collapse never touched. A creation term enters the rookie blend at the next model
@@ -317,6 +317,11 @@ boards are consulted at any stage of the pipeline.
 two-thirds noise year-over-year and is weighted accordingly; rookie placements are
 priors, not measurements; availability and role discounts are stated choices, and a pure
 talent ranking would order some players differently.
+
+\subsection*{Relabel note (October 6, 2026)}
+This document was first published as a research note. It is relabeled as an article: our own
+analysis, typeset in \LaTeX, not a research paper and not peer reviewed. No numbers, findings, or
+forecasts changed.
 
 \subsection*{Citation}
 \begin{quote}

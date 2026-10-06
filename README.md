@@ -1,7 +1,7 @@
 # The Gravity Report (GRAVITY)
 
 **Game-Rate Adjusted Value, Impact, Talent, and Yield** — an independent basketball
-research publication, delivered through a vintage inbox.
+basketball analysis publication, delivered through a vintage inbox.
 
 Static site, no build step, no dependencies.
 
@@ -22,9 +22,9 @@ worker.js         the API: /api/vote + /api/votes (real Drafts tally, D1-backed)
                   (30-day aggregates; the key is a Worker secret)
 ```
 
-## Publishing a new research note
+## Publishing a new article
 
-1. Compile the paper (`tectonic noteN.tex`), put PDF + TeX in `papers/`.
+1. Compile the article (`tectonic noteN.tex`), put PDF + TeX in `papers/`.
 2. `scripts/render-pages.sh papers/noteN.pdf` (renders one vector SVG per page).
 3. Add the message entry in `index.html` (`M` object: subject, body, pdf, pages, pagesDir,
    attach incl. a `notes/<name>/` web-edition link; `rev` field for revisions).
@@ -56,8 +56,8 @@ Domain: **thegravityreport.com** (Cloudflare Registrar; feed.xml already points 
 
 ## Permalinks
 
-- `https://thegravityreport.com/#inbox/queta` — Research Note №2 (the reading pane opens the PDF)
-- `https://thegravityreport.com/#inbox/morant` — Research Note №1
+- `https://thegravityreport.com/#inbox/queta` — Article №2 (the reading pane opens the PDF)
+- `https://thegravityreport.com/#inbox/morant` — Article №1
 - `/#ledger` — the Forecast Ledger
 - `/#drafts` — vote on №3
 - `/the644/` — the full player ranking

@@ -24,12 +24,12 @@
 \colorbox{court!8}{\parbox{0.93\textwidth}{\small \textbf{\textcolor{court}{In plain terms:}} #1}}%
 \end{center}\medskip}
 
-% --- publication status: this is self-published, unreviewed research. The footer
+% --- publication status: this is a self-published article, not a research paper. The footer
 % repeats on every page so a saved screenshot of any interior page carries it too.
 \usepackage{fancyhdr}
 \newcommand{\statusfoot}{%
   \fancyhf{}%
-  \fancyfoot[L]{\footnotesize\textcolor{steel}{Working paper · not peer reviewed}}%
+  \fancyfoot[L]{\footnotesize\textcolor{steel}{An article, not a research paper}}%
   \fancyfoot[C]{\thepage}%
   \fancyfoot[R]{\footnotesize\textcolor{steel}{thegravityreport.com}}%
   \renewcommand{\headrulewidth}{0pt}%
@@ -41,13 +41,13 @@
 
 \newcommand{\statusnote}{\par\noindent\begin{center}%
 \colorbox{fade!25}{\parbox{0.93\textwidth}{\centering\small
-\textbf{Working paper --- independent research, not peer reviewed.}\\[2pt]
-Findings are provisional and subject to revision. Errors are the author's own.}}%
+\textbf{Not a research paper. This is an article, typeset in \LaTeX.}\\[2pt]
+Independent analysis, not peer reviewed. Findings may be revised. Errors are the author's own.}}%
 \end{center}\smallskip}
 
 \title{\textbf{The Queta Problem}\\[4pt]
 \large Why Neemias Queta Is a Top-50 Player, and Why 2026--27 Proves It\\[2pt]
-\normalsize \gravity{} Research Note No.\ 2 --- a prediction paper}
+\normalsize \gravity{} Article No.\ 2 --- a registered forecast}
 \author{}
 \date{July 10, 2026 \ $\cdot$ \ revised July 11, 2026 (v2)}
 
@@ -60,7 +60,7 @@ Findings are provisional and subject to revision. Errors are the author's own.}}
 \noindent
 Our July 2026 ranking of all 644 NBA players (\gravity{}) placed Neemias Queta ---
 undrafted-adjacent, twice-waived, the 39th pick of 2021 --- at \textbf{\#41}, ahead of
-household names and a full tier above his public reputation. This paper treats that
+household names and a full tier above his public reputation. This article treats that
 placement as a testable scientific claim rather than a quirk. We audit it three ways:
 we discount the model's own shiniest input (his $+8.6$ on/off) with an empirical
 persistence model built from 184 player-pairs --- read as uniform noise the ranking is
@@ -70,7 +70,7 @@ big-man season since 2020 (33 seasons from 22 players --- the Gobert / Robert Wi
 Jarrett Allen family) and find a top-50-caliber follow-up rate of 39\% by season and
 32\% by player, before adjusting for Queta's unusually secure situation; and we stress
 the one real threat, Boston's signing of Mitchell Robinson --- noting that the Celtics
-answered it themselves by extending Queta for \$56 million \emph{afterward}. The paper
+answered it themselves by extending Queta for \$56 million \emph{afterward}. The article
 ends with a falsifiable forecast. \gravity{} prices the scenarios; the scenario weights
 are ours, anchored to observable rates in Section~\ref{sec:predict}. Under those
 weights we assign roughly \textbf{75\%} to Queta finishing 2026--27 as a top-50 player,
@@ -87,7 +87,7 @@ on a title roster, fine. The statistical model of Queta is a starting center on 
 team who posted one of the most efficient high-volume finishing seasons in basketball,
 protected the rim, and led all Boston regulars in filtered on/off impact.
 
-When a model and the crowd disagree this sharply, one of them is wrong, and papers that
+When a model and the crowd disagree this sharply, one of them is wrong, and articles that
 only ever defend their model are advertising. So this note does three things: it explains
 where \#41 comes from, it attacks the number with the two strongest counterarguments we
 know how to formalize (noise and regression), and it converts what survives into a
@@ -170,7 +170,7 @@ Season & Team & G & MP & TS\% & WS/48 & BPM & IMPACT & Pct & Ctr-Pct \\
 \end{tikzpicture}
 \caption{Five seasons: per-minute impact (top) and the role that finally arrived
 (bottom). The 2024--25 dip is real --- his box value that year was ordinary --- and the
-paper does not hide it.}
+article does not hide it.}
 \label{fig:arc}
 \end{figure}
 
@@ -301,7 +301,7 @@ must be discounted by \eqref{eq:shrunkreg}--\eqref{eq:shrunk} before you believe
 \label{fig:onoff}
 \end{figure}
 
-This is the paper attacking its own best exhibit, so state the result plainly --- and
+This is the article attacking its own best exhibit, so state the result plainly --- and
 the attack draws real blood. There are two coherent readings of ``on/off is mostly
 noise,'' and they cut very differently. \emph{If every player's on/off is equally
 unstable}, the discount changes nothing: \gravity{} uses on/off as a within-season
@@ -311,7 +311,7 @@ therefore be sharper: that \emph{Queta's number specifically} is inflated relati
 his peers'. We tested that harshest reading by forcing his on/off input alone down to
 the discounted values and re-running the entire 644-player pipeline. At the
 regression value ($+3.5$) he lands at 57.2, \textbf{\#53}; at the toward-zero value
-($+2.7$), 56.9, \textbf{\#55}. (Version 1 of this paper reported $\approx$\#48 here,
+($+2.7$), 56.9, \textbf{\#55}. (Version 1 of this article reported $\approx$\#48 here,
 from a shortcut recomputation; the full re-run is the correct number, and it is worse
 for us.) So the honest summary: under the harshest single-player discount, Queta slips
 just \emph{outside} the top 50 --- the placement is carried mostly, but not entirely,
@@ -480,7 +480,7 @@ is a bet the data supports.
 \label{sec:predict}
 
 Now the arithmetic --- with the division of labor stated plainly, because it is the
-part of this paper most deserving of scrutiny. The two-year \gravity{} machinery
+part of this article most deserving of scrutiny. The two-year \gravity{} machinery
 (Appendix~\ref{app:spec}) converts any assumed 2026--27 performance level and workload
 into a score; the top-50 cutoff in the July 2026 distribution is \textbf{57.4}.
 \emph{Those scores are model output.} The four scenarios and their weights are
@@ -536,7 +536,7 @@ probability is about 75\%.}
 \subsection*{Where the weights come from}
 
 The move from a one-in-three base rate to a 75\% forecast is the least-supported leap a
-skeptic will find in this paper, so here is each weight against the observable that
+skeptic will find in this article, so here is each weight against the observable that
 disciplines it. \textbf{Bust, 15\%:} losing the job outright requires Mitchell Robinson
 to be simultaneously healthy and clearly better --- Robinson has reached 60 games in
 three of his last seven seasons ($\approx$43\%), and the incumbent he must displace was
@@ -551,7 +551,7 @@ slightly below the naked retention rate out of respect for Robinson. \textbf{Bul
 for the crowded frontcourt. These anchors discipline the weights; they do not compute
 them. A reader who rejects every situational adjustment should simply hold the cohort
 rate --- roughly one in three --- and the distance between that number and 75\% is
-exactly the size of the bet this paper places on incumbency, the extension, Robinson's
+exactly the size of the bet this article places on incumbency, the extension, Robinson's
 availability record, and Tatum's return.
 
 Note also what makes the claim robust: it does not require a leap. The base case is
@@ -600,7 +600,7 @@ says \emph{persistence}, reports the regression slope alongside $r$ (they are
 numerically equal here), and gives both shrink targets. (3) The shrunk-on/off
 counterfactual was corrected: a full re-run of the 644-player pipeline gives \#53--55,
 not the $\approx$\#48 a shortcut recomputation produced in v1 --- the harshest
-single-player discount moves Queta just outside the top 50, and the paper now says so;
+single-player discount moves Queta just outside the top 50, and the article now says so;
 the uniform-discount case (ranks unchanged) was added for the same honesty. (4) The
 comparables cohort now discloses 33 seasons from 22 unique players, reports per-player
 rates (32\% vs.\ 39\%), and adds a cutoff-sensitivity table. (5) The grading of the
@@ -612,11 +612,16 @@ were softened to what the evidence supports. The registered forecast itself --- 
 top-50, 40\% top-25, scored July 2027 --- is unchanged: that is the bet, and moving it
 after registration is the one revision this publication does not allow.
 
+\section*{Relabel note (October 6, 2026)}
+This document was first published as a research note. It is relabeled as an article: our own
+analysis, typeset in \LaTeX, not a research paper and not peer reviewed. No numbers, findings, or
+forecasts changed.
+
 \appendix
 \section{The GRAVITY specification (compact)}
 \label{app:spec}
 
-Identical to Research Note No.\ 1 and the July 10, 2026 ``The 644'' ranking (v3). For
+Identical to Article No.\ 1 and the July 10, 2026 ``The 644'' ranking (v3). For
 season $y$, minutes-weighted moments define clipped z-scores
 $z_k(i) = \mathrm{clip}((x_k(i)-\mu_k)/\sigma_k, \pm 4)$. Components: efficiency-under-load
 $(\mathrm{TS}-\mu_{\mathrm{TS}})\cdot 100\cdot(\mathrm{clip}(\mathrm{USG},8,36)/20)^{0.7}$;
@@ -658,7 +663,7 @@ Yahoo Sports / NBC Sports Boston, October 2025.
 Robinson addition,'' Yahoo Sports, July 2026.
 \bibitem{robinson} ``Mitchell Robinson joining Celtics on 3-year, \$47.4M deal,''
 NBA.com / Hoops Rumors, July 6, 2026.
-\bibitem{n1} \gravity{} Research Note No.\ 1, ``The Rise and Fall of Ja Morant,''
+\bibitem{n1} \gravity{} Article No.\ 1, ``The Rise and Fall of Ja Morant,''
 July 10, 2026.
 \end{thebibliography}
 
