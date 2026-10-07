@@ -1,0 +1,20 @@
+# Files in the repo that must NOT be served by Cloudflare's static-asset handler.
+# (The assets directory is the repo root; see wrangler.jsonc.)
+.git
+.gitignore
+.assetsignore
+.dev.vars
+node_modules
+content/legacy
+review
+tests
+OVERNIGHT-LOG.md
+MORNING-REPORT.md
+SETUP.md
+PROGRESS.md
+docs/outreach
+social/queue*
+social/adapters
+social/test
+package.json
+package-lock.json
