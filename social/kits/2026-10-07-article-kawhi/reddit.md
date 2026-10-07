@@ -1,0 +1,21 @@
+# r/torontoraptors (post by hand; read the sub's self-promotion rules first)
+
+**Title:** The Kawhi Anomaly: The biggest rebound ever recorded by a 34-year-old
+
+**Body:**
+
+Kawhi Leonard went from a good starter to the fifth-best player in the league per minute, at 34. No player 34 or older has ever jumped that far in one season.
+
+Late surges have an unkind history. Eight players surged to star level after 31. None kept three-quarters of the improvement the next season.
+
+His surge came in two parts: a heavier role and hotter shooting. His bigger role usually lasts. His hot shooting usually doesn't.
+
+Our calls, registered before tip-off and graded in public:
+65%  His true shooting falls below .610
+60%  His usage stays at 30% or more
+50%  He stays top 8 in The 644
+30%  He finishes top 8 in Box Plus/Minus
+
+Full article (free, no ads): https://thegravityreport.com/notes/kawhi/
+
+Happy to answer questions about the method in the comments.

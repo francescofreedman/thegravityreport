@@ -1,0 +1,21 @@
+# r/bostonceltics (post by hand; read the sub's self-promotion rules first)
+
+**Title:** The Queta Problem: Why he’s a top-50 player, and why 2026-27 proves it
+
+**Body:**
+
+Neemias Queta was waived twice and picked 39th. Our ranking puts him #41 of 644, a full tier above his reputation.
+
+His workload grew nearly 6× (333 → 1,926 minutes) and his efficiency went up anyway.
+
+We attacked our own number twice. Of 33 comparable big-man seasons since 2020, 39% delivered a top-50-caliber follow-up.
+
+We wrote down in advance what counts as being wrong: #51–70 is a near miss, below #70 a clean miss.
+
+Our calls, registered before tip-off and graded in public:
+75%  Neemias Queta finishes top 50 in The 644
+40%  Queta finishes top 25 in The 644
+
+Full article (free, no ads): https://thegravityreport.com/notes/queta/
+
+Happy to answer questions about the method in the comments.
