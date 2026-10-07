@@ -1,153 +1,104 @@
 #!/usr/bin/env python3
-"""Social-preview cards (og:image), 1200x630, drawn in the site's Win98 language.
-Usage: python3 scripts/make-cards.py          (writes cards/*.png)
-Add new notes to CARDS below when publishing."""
+"""Social-preview cards (og:image, 1200x630) in the site's look (design J).
+
+Usage:
+  python3 scripts/make-cards.py            site + article cards (cards/*.png) and one card per player
+  python3 scripts/make-cards.py --site     site + article cards only
+
+Every number comes from content/the644.json and content/articles.json.
+"""
+import json
 import os
+import sys
 
-from PIL import Image, ImageDraw, ImageFont
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import cardlib as cl  # noqa: E402
 
-F = "/System/Library/Fonts/Supplemental"
-GEORGIA_B = f"{F}/Georgia Bold.ttf"
-GEORGIA = f"{F}/Georgia.ttf"
-TAHOMA_B = f"{F}/Tahoma Bold.ttf"
-TAHOMA = f"{F}/Tahoma.ttf"
-
-TEAL = (10, 122, 112)
-CHROME = (212, 208, 200)
-CHROME_DK = (128, 128, 128)
-CHROME_DKR = (64, 64, 64)
-COURT = (14, 90, 58)
-COURT2 = (46, 107, 79)
-AMBER = (178, 106, 31)
-INK = (23, 26, 30)
-
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 W, H = 1200, 630
-
-CARDS = [
-    dict(out="site.png",
-         kicker="AN INDEPENDENT NBA ANALYTICS PUBLICATION",
-         title=["The Gravity Report"],
-         chips=["articles", "registered forecasts", "The 644"],
-         tag="GRAVITY, the player-value model  ·  How good × how often"),
-    dict(out="kawhi.png",
-         kicker="ARTICLE No. 4  ·  PRESEASON 2026-27",
-         title=["The Kawhi Anomaly"],
-         chips=["5th-best player at age 34", "biggest jump ever at 34+", "forecast: top-ten level"],
-         tag="The GRAVITY player-value model  ·  thegravityreport.com"),
-    dict(out="queta.png",
-         kicker="ARTICLE No. 2  ·  A REGISTERED FORECAST",
-         title=["The Queta Problem"],
-         chips=["#41 of 644", "registered bet: 75% top-50", "scores July 2027"],
-         tag="The GRAVITY player-value model  ·  thegravityreport.com"),
-    dict(out="morant.png",
-         kicker="ARTICLE No. 1  ·  A CAREER AUTOPSY",
-         title=["The Rise and Fall", "of Ja Morant"],
-         chips=["97th percentile, 2021-22", "#140 of 644", "79 of 246 games"],
-         tag="The GRAVITY player-value model  ·  thegravityreport.com"),
-    dict(out="spec.png",
-         kicker="TECHNICAL DOCUMENT  ·  VERSION 3  ·  CITABLE",
-         title=["The GRAVITY", "Specification"],
-         chips=["the player-value model", "every equation & weight", "5 pages"],
-         tag="Game-Rate Adjusted Value, Impact, Talent, and Yield"),
-    dict(out="the644.png",
-         kicker="FLAGSHIP RANKING  ·  JULY 2026 EDITION  ·  FINAL",
-         title=["The 644"],
-         chips=["every NBA player, ranked", "GRAVITY v3", "next: All-Star 2027"],
-         tag="The GRAVITY player-value model  ·  thegravityreport.com"),
-]
+PAD = 64
 
 
-def bevel(d, x0, y0, x1, y1, raised=True, w=3):
-    lt = (255, 255, 255) if raised else CHROME_DKR
-    rb = CHROME_DKR if raised else (255, 255, 255)
-    for i in range(w):
-        d.line([(x0 + i, y0 + i), (x1 - i, y0 + i)], fill=lt)   # top
-        d.line([(x0 + i, y0 + i), (x0 + i, y1 - i)], fill=lt)   # left
-        d.line([(x0 + i, y1 - i), (x1 - i, y1 - i)], fill=rb)   # bottom
-        d.line([(x1 - i, y0 + i), (x1 - i, y1 - i)], fill=rb)   # right
+def load(rel):
+    with open(os.path.join(ROOT, rel), encoding="utf-8") as f:
+        return json.load(f)
 
 
-def titlebar_gradient(img, x0, y0, x1, y1):
-    for x in range(x0, x1):
-        t = (x - x0) / max(1, (x1 - x0))
-        c = tuple(int(COURT[i] + (79 + i * 0 - COURT[i] + (79, 122, 99)[i] - 79 + COURT2[i] - COURT2[i]) * 0) for i in range(3))
-        # simple two-stop lerp court -> (79,122,99)
-        end = (79, 122, 99)
-        c = tuple(int(COURT[i] + (end[i] - COURT[i]) * t) for i in range(3))
-        for y in range(y0, y1):
-            img.putpixel((x, y), c)
+def site_card(out, kicker, title, dek, band_label, band_text):
+    img, d = cl.canvas(W, H)
+    cl.brand(d, PAD, 52, 30)
+    d.text((PAD, 150), kicker, font=cl.mono(22, 600), fill=cl.ACCENT)
+    ft = cl.fit_archivo(d, title, W - 2 * PAD, 116, minimum=64)
+    lines = cl.wrap(d, title, ft, W - 2 * PAD)
+    if len(lines) > 1:
+        ft = cl.archivo(84)
+        lines = cl.wrap(d, title, ft, W - 2 * PAD)
+    y = cl.draw_lines(d, (PAD - 4, 184), lines, ft, cl.INK, int(ft.size * 0.98))
+    fd = cl.archivo(32, 400, 100)
+    cl.draw_lines(d, (PAD, y + 22), cl.wrap(d, dek, fd, W - 2 * PAD)[:2], fd, cl.INK2, 42)
+    cl.band(img, d, H - 84, 84, band_label, band_text)
+    cl.save(img, os.path.join(ROOT, out))
 
 
-def make(card):
-    img = Image.new("RGB", (W, H), TEAL)
-    d = ImageDraw.Draw(img)
-    # subtle desktop vignette
-    for y in range(H):
-        if y % 3 == 0:
-            continue
-    # window
-    wx0, wy0, wx1, wy1 = 46, 42, W - 46, H - 42
-    d.rectangle([wx0, wy0, wx1, wy1], fill=CHROME)
-    # drop shadow
-    d.rectangle([wx1 + 1, wy0 + 8, wx1 + 8, wy1 + 8], fill=(6, 74, 68))
-    d.rectangle([wx0 + 8, wy1 + 1, wx1 + 8, wy1 + 8], fill=(6, 74, 68))
-    bevel(d, wx0, wy0, wx1, wy1, raised=True, w=3)
-    # titlebar
-    tx0, ty0, tx1, ty1 = wx0 + 8, wy0 + 8, wx1 - 8, wy0 + 62
-    titlebar_gradient(img, tx0, ty0, tx1, ty1)
-    d = ImageDraw.Draw(img)
-    f_title = ImageFont.truetype(TAHOMA_B, 26)
-    d.text((tx0 + 18, (ty0 + ty1) // 2), "The Gravity Report", font=f_title,
-           fill=(255, 255, 255), anchor="lm")
-    # window buttons
-    for i, glyph in enumerate(["_", "□", "×"][::-1]):
-        bx1 = tx1 - 12 - i * 44
-        bx0 = bx1 - 36
-        by0 = ty0 + 10
-        by1 = ty1 - 10
-        d.rectangle([bx0, by0, bx1, by1], fill=CHROME)
-        bevel(d, bx0, by0, bx1, by1, raised=True, w=2)
-        fb = ImageFont.truetype(TAHOMA_B, 20)
-        d.text(((bx0 + bx1) // 2, (by0 + by1) // 2 - 2), glyph, font=fb, fill=INK, anchor="mm")
-    # content pane (white, sunken)
-    px0, py0, px1, py1 = wx0 + 8, ty1 + 8, wx1 - 8, wy1 - 64
-    d.rectangle([px0, py0, px1, py1], fill=(255, 255, 255))
-    bevel(d, px0, py0, px1, py1, raised=False, w=2)
-    # kicker
-    f_kick = ImageFont.truetype(TAHOMA_B, 24)
-    d.text((px0 + 44, py0 + 46), card["kicker"], font=f_kick, fill=AMBER)
-    # title (Georgia bold, up to 2 lines)
-    lines = card["title"]
-    size = 96 if len(lines) == 1 and len(lines[0]) <= 20 else 76
-    f_big = ImageFont.truetype(GEORGIA_B, size)
-    ty = py0 + 108
-    for ln in lines:
-        d.text((px0 + 40, ty), ln, font=f_big, fill=INK)
-        ty += int(size * 1.12)
-    # rule
-    d.line([(px0 + 44, ty + 18), (px1 - 44, ty + 18)], fill=(200, 197, 189), width=2)
-    # chips
-    f_chip = ImageFont.truetype(TAHOMA_B, 25)
-    cx = px0 + 44
-    cy = ty + 44
-    for chip in card["chips"]:
-        tw = d.textlength(chip, font=f_chip)
-        pad = 16
-        d.rectangle([cx, cy, cx + tw + 2 * pad, cy + 46], fill=(237, 242, 238),
-                    outline=COURT, width=2)
-        d.text((cx + pad, cy + 9), chip, font=f_chip, fill=COURT)
-        cx += tw + 2 * pad + 16
-    # status bar
-    sx0, sy0, sx1, sy1 = wx0 + 8, wy1 - 52, wx1 - 8, wy1 - 8
-    d.rectangle([sx0, sy0, sx1, sy1], fill=CHROME)
-    bevel(d, sx0, sy0, sx1, sy1, raised=False, w=2)
-    f_tag = ImageFont.truetype(TAHOMA, 21)
-    d.text((sx0 + 16, (sy0 + sy1) // 2), card["tag"], font=f_tag, fill=(60, 60, 60), anchor="lm")
-    out = os.path.join(os.path.dirname(__file__), "..", "cards", card["out"])
-    os.makedirs(os.path.dirname(out), exist_ok=True)
-    img.save(out, optimize=True)
-    print(f"cards/{card['out']}  ({os.path.getsize(out)//1024} KB)")
+def player_card(p, n, edition, team_name, tiers):
+    img, d = cl.canvas(W, H)
+    cl.brand(d, PAD, 52, 30)
+    ed = f"THE 644 · {edition.upper()}"
+    d.text((W - PAD, 62), ed, font=cl.mono(20, 500), fill=cl.MUTED, anchor="ra")
+    score = f"{p['s']:.1f}"
+    fs = cl.archivo(190, 800, 75)
+    d.text((W - PAD, 150), score, font=fs, fill=cl.INK, anchor="ra")
+    sw = cl.text_w(d, score, fs)
+    d.text((W - PAD, 346), "GRAVITY SCORE", font=cl.mono(18, 600), fill=cl.MUTED, anchor="ra")
+    d.text((PAD, 156), f"#{p['r']} OF {n}", font=cl.mono(30, 600), fill=cl.ACCENT)
+    max_name = int(W - 2 * PAD - sw - 48)
+    fn = cl.fit_archivo(d, p["n"], max_name, 110, minimum=60)
+    lines = [p["n"]]
+    if cl.text_w(d, p["n"], fn) > max_name:
+        fn = cl.archivo(76)
+        lines = cl.wrap(d, p["n"], fn, max_name)[:2]
+    y = cl.draw_lines(d, (PAD - 3, 200), lines, fn, cl.INK, int(fn.size * 0.98))
+    pos = p["p"] if p["p"] not in ("", "—") else "position TBD"
+    sub = f"{team_name} · {pos}" + (f" · age {p['a']}" if p.get("a") not in ("", None) else "")
+    if p.get("rk"):
+        sub += f" · rookie, pick #{p['pk']}" if p.get("pk") else " · rookie"
+    d.text((PAD, max(y + 18, 392)), sub, font=cl.archivo(32, 400, 100), fill=cl.INK2)
+    d.text((PAD, max(y + 18, 392) + 52), f"TIER {p['tier']} — {tiers[str(p['tier'])].upper()}",
+           font=cl.mono(20, 500), fill=cl.MUTED)
+    cl.band(img, d, H - 84, 84, "THE 644", "50 = A LEAGUE-AVERAGE MINUTE · THEGRAVITYREPORT.COM")
+    return img
 
 
-for c in CARDS:
-    make(c)
+def main():
+    site = load("content/site.json")
+    arts = load("content/articles.json")
+    t644 = load("content/the644.json")
+    players = t644["players"]
+    top = "  ·  ".join(f"{p['r']} {p['n'].split(' ', 1)[-1].upper()} {p['s']:.1f}" for p in players[:4])
+    site_card("cards/site.png", "INDEPENDENT NBA ANALYSIS", "The Gravity Report",
+              "One model, every player, every forecast on the record.", "THE 644", top)
+    site_card("cards/the644.png", f"THE 644 · {site['edition']['name'].upper()} EDITION",
+              "The 644", "Every NBA player, one number. How good, times how often.", "THE 644", top)
+    for a in arts:
+        if a["kind"] == "article":
+            kicker = a["kicker"].upper()
+            label = f"ARTICLE №{a['n']}"
+        else:
+            kicker = "THE MODEL · VERSION 3 · TECHNICAL DOCUMENT"
+            label = "THE MODEL"
+        site_card(f"cards/{a['slug']}.png", kicker, a["title"], a["dek"], label,
+                  "THEGRAVITYREPORT.COM" + a["web"].upper().rstrip("/"))
+    print("site cards done")
+    if "--site" in sys.argv:
+        return
+    # player cards: slugs come from players/index.json, written by build_site.py
+    idx = {x["r"]: x for x in load("players/index.json")["players"]}
+    team_name = {t["t"]: t["name"] for t in t644["TEAMS30"]}
+    for p in players:
+        img = player_card(p, len(players), site["edition"]["name"], team_name.get(p["t"], p["t"]), t644["TIERS"])
+        cl.save(img, os.path.join(ROOT, "players", idx[p["r"]]["slug"], "card.png"))
+    print(f"player cards done: {len(players)}")
+
+
+if __name__ == "__main__":
+    main()

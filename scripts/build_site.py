@@ -608,7 +608,8 @@ def build_players_pages():
                           + "</div>")
             impact = (f'<section class="sec"><h2 class="h-m" style="margin-top:0">How a rookie gets a score</h2>'
                       f'<p class="lede">Rookies have no NBA minutes yet, so their score starts from a prior based on draft slot'
-                      f'{" and an adjusted college line" if p.get("col") else ""}. It will be replaced by real minutes in the next editions.</p>{inputs}</section>')
+                      f'{" and an adjusted college line" if p.get("col") else ""}.</p>'
+                      f'{"<p class=small style=margin-top:14px>COLLEGE, 2025–26</p>" if inputs and p.get("col") else ""}{inputs}</section>')
         else:
             cells = (stat_cell("g", p["g"] if p["g"] is not None else "—")
                      + stat_cell("mp", f'{int(p["mp"]):,}' if p.get("mp") else "—")
