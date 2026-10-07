@@ -759,7 +759,8 @@ def build_corrections():
                     f'<p style="margin:6px 0 0">{e(r)}</p><p class="small" style="margin:6px 0 0"><a href="{a["web"]}">Read the current version</a></p></li>')
     butler = MSGS["del_butler"]
     bbody = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", butler["body"])).strip()
-    bbody = html.unescape(bbody).replace("Deleted Items · kept visible on purpose ", "").replace("RECALLED  ", "")
+    bbody = html.unescape(bbody).replace("Deleted Items · kept visible on purpose ", "")
+    bbody = re.sub(r"^RECALLED\s+", "", bbody)
     amend = "".join(f'<li style="display:block"><div class="meta mono small">FORECAST LEDGER · {e(a["label"]).upper()}</div><p style="margin:6px 0 0">{e(a["text"])}</p></li>'
                     for a in LEDGER["amendments"])
     body = f"""<div class="wrap">

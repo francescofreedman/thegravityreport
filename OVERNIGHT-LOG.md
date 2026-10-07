@@ -15,7 +15,7 @@ Prompt: `/Users/francesco2/gravity/.claude/overnight-build-prompt.md`
 | 6 Post-kit generator | done | `scripts/social/make_kit.py`; number guard; 10 Python tests; kits for 3 articles + 1 player + edition |
 | 7 Auto-posting pipeline | done | `social/pipeline.js`, adapters (X, Bluesky, Threads, Instagram), `/api/admin/*`, `/admin/`, cron; 11 Node tests incl. X's OAuth example vector |
 | 8 Automatic content | done | player of the day (Worker, off by default), `ledger_tracker.py` (+tests; sample in review/), `substack_export.py` (3 articles), `docs/outreach/podcast-pitch.md` |
-| 9 Docs + handoff | todo | |
+| 9 Docs + handoff | done | SETUP.md, README.md, MORNING-REPORT.md; PROGRESS.md is on preseason-2026 (untouched by rule) |
 
 ## Decisions (running)
 - Legacy data source: everything is extracted from commit b18e539 (not the working tree), so the build is reproducible after index.html is replaced.
