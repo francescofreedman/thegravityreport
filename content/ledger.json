@@ -1,0 +1,17 @@
+{
+  "intro": "Every forecast is registered before the season with its probability, thresholds, and what counts as being wrong. After the season, every call gets graded in the annual Forecast Audit — wins and misses alike.",
+  "rule": "No deletions, no edits, no quiet revisions.",
+  "outcomes": "OPEN becomes WIN, NEAR MISS or MISS when scored.",
+  "amendments": [
+    {"date": "2026-07-11", "label": "Jul 11, 2026", "text": "Grading tightened against ourselves, following external review: №2's registered #51–70 band, originally labeled a \"push,\" will be graded a near miss — a failed prediction owing a diagnosis, not partial credit. The claims, probabilities, and thresholds above stand exactly as registered."}
+  ],
+  "entries": [
+    {"id": "2", "p": 75, "claim": "Neemias Queta finishes top 50 in The 644", "short": "Queta top 50 in The 644", "legacy": "Queta top-50 in July 2027", "note": "", "registered": "2026-07-10", "grades": "2027-07", "status": "open", "article": "queta", "player": "Neemias Queta"},
+    {"id": "2b", "p": 40, "claim": "Queta finishes top 25 in The 644", "short": "Queta top 25 in The 644", "legacy": "Queta top-25 in July 2027", "note": "", "registered": "2026-07-10", "grades": "2027-07", "status": "open", "article": "queta", "player": "Neemias Queta"},
+    {"id": "E1", "p": 75, "claim": "The 30 team ranking calls the standings", "short": "The 30 calls the standings", "legacy": "The 30 calls the standings", "note": "Spearman ≥ 0.60 vs final 2026-27 wins", "registered": "2026-07-29", "grades": "2027-07", "status": "open", "article": null, "player": null},
+    {"id": "K1", "p": 50, "claim": "Kawhi Leonard stays top 8 in The 644", "short": "Kawhi top 8 in The 644", "box": "He stays top 8 in The 644", "legacy": "Kawhi top 8 in The 644", "note": "", "registered": "2026-10-06", "grades": "2027-07", "status": "open", "article": "kawhi", "player": "Kawhi Leonard"},
+    {"id": "K3", "p": 30, "claim": "Kawhi finishes top 8 in Box Plus/Minus", "short": "Kawhi top 8 in Box Plus/Minus", "box": "He finishes top 8 in Box Plus/Minus", "legacy": "Kawhi top 8 in BPM", "note": "players with 1,500+ minutes, Basketball Reference", "registered": "2026-10-06", "grades": "2027-04", "status": "open", "article": "kawhi", "player": "Kawhi Leonard"},
+    {"id": "K4", "p": 60, "claim": "Kawhi's usage stays at 30% or more", "short": "Kawhi usage 30% or more", "box": "His usage stays at 30% or more", "legacy": "Kawhi usage 30% or more", "note": "Void under 1,000 minutes", "registered": "2026-10-06", "grades": "2027-04", "status": "open", "article": "kawhi", "player": "Kawhi Leonard"},
+    {"id": "K5", "p": 65, "claim": "Kawhi's true shooting falls below .610", "short": "Kawhi true shooting below .610", "box": "His true shooting falls below .610", "legacy": "Kawhi true shooting < .610", "note": "He shot .629 last season. Void under 1,000 minutes", "registered": "2026-10-06", "grades": "2027-04", "status": "open", "article": "kawhi", "player": "Kawhi Leonard"}
+  ]
+}

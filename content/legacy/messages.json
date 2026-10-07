@@ -1,0 +1,219 @@
+{
+ "M": {
+  "spec": {
+   "from": "GRAVITY (The Editor)",
+   "subject": "📌 START HERE — What is GRAVITY? (The Specification, v3)",
+   "date": "Jul 10 2026, 9:00 AM",
+   "pinned": true,
+   "flag": "📌",
+   "body": "\n      <div class=\"kicker\">Pinned · Methodology</div>\n      <p><b class=\"gsc\">GRAVITY</b> stands for <b>Game-Rate Adjusted Value, Impact, Talent, and Yield</b>. It estimates a player's\n      per-minute quality and adjusts for role, availability, and documented injury risk — measuring not just how good a\n      player is, but how much of that ability a team actually receives.</p>\n      <div class=\"plain\"><b>In plain terms:</b> GRAVITY = (how good per minute) × (how reliably he's on the floor),\n      graded against the whole league by the same formula. No reputation inputs, no external rankings — the\n      judgment lives in the formula, which is published in full and applied identically to all 644 players.</div>\n      <pre class=\"mono\">THE SCALE\n  50   league-average minute\n  60+  quality starter\n  80+  franchise engine\n  97.8 Nikola Jokić (2025-26 max)</pre>\n      <h3>Version history</h3>\n      <p style=\"line-height:2; text-align:left\">\n        <span class=\"chip\">v1.0 · Jul 10</span> initial 644-player ranking &nbsp;→&nbsp;\n        <span class=\"chip\">v2 · Jul 10</span> Butler ACL correction (#13→#58) &nbsp;→&nbsp;\n        <span class=\"chip\">v3 · Jul 10</span> CTG filtered on/off integrated\n      </p>\n      <p>House rule for reading anything here: <b style=\"color:var(--court)\">green is the model speaking</b>,\n      <b style=\"color:var(--amber)\">amber is the model betting</b>, grey is the world providing context.</p>\n      <p>The full mathematics — every equation, weight, shrinkage rule, tier cut, and the complete injury-override\n      table — is published as a standalone technical document, typeset like everything else here.</p>\n      <button class=\"btn\" onclick=\"selectFolder('spec');selectMsg('specdoc')\">Open the full specification (5 pp)</button>\n      <a class=\"btn\" href=\"papers/spec.pdf\" download>Save spec.pdf</a>\n      <div class=\"sig\">GRAVITY · The Gravity Report · thegravityreport.com · est. July 2026</div>"
+  },
+  "specdoc": {
+   "from": "GRAVITY (The Editor)",
+   "subject": "The GRAVITY Specification, v3 — the full mathematics (technical document)",
+   "date": "Jul 10 2026, 9:02 AM",
+   "clip": true,
+   "flag": "⚖",
+   "pdf": "papers/spec.pdf",
+   "pages": 5,
+   "pagesDir": "papers/pages/spec",
+   "status": true,
+   "attach": "spec.pdf (86 KB) · <a href=\"papers/spec.tex\">spec.tex</a> · <a href=\"notes/spec/\">web edition</a>",
+   "rev": "Oct 6 2026 — relabeled: an article typeset in LaTeX, not a research paper; GRAVITY-RS now defined as GRAVITY Retrospective; no numbers changed. Earlier: Jul 31 2026 — working-paper status labels added to every page (PDF footer + status notice, also on the web edition); no content changes — still v3.",
+   "body": "\n      <div class=\"kicker\">Technical document · v3 · citable</div>\n      <p>The complete specification: standardization, all seven component constructions, every weight,\n      the two-year blend and credibility shrinkage, playoff/age adjustments, the full injury-override\n      table, tier definitions, the GRAVITY-RS variant, the rookie module, version history, and the\n      reproducibility statement.</p>\n      <a class=\"btn\" href=\"papers/spec.pdf\" target=\"_blank\">Open the article (PDF)</a>\n      <a class=\"btn\" href=\"papers/spec.pdf\" download>Save spec.pdf</a>"
+  },
+  "ed644": {
+   "from": "The 644 (Rankings Desk)",
+   "subject": "📌 [CURRENT EDITION] The 644 — Every NBA Player, Ranked (July 2026)",
+   "date": "Jul 10 2026, 9:05 AM",
+   "pinned": true,
+   "flag": "📌",
+   "clip": true,
+   "body": "\n      <div class=\"kicker\">Pinned · Flagship edition · 644 players · 60 rookies</div>\n      <p>Every NBA player plus the 2026 draft class, one number each, built from two seasons of data with\n      Cleaning the Glass filtered on/off. Rebuilt annually; old editions stay up so changes never look retroactive.</p>\n      <pre class=\"mono\">TOP 10 — JULY 2026 (v3)\n  1  Jokić        DEN  97.8      6  Kawhi      TOR  77.3\n  2  SGA          OKC  92.9      7  Cade       DET  70.3\n  3  Wembanyama   SAS  85.7      8  KAT        NYK  69.3\n  4  Giannis      MIA  83.9      9  Mitchell   CLE  68.1\n  5  Dončić       LAL  83.0     10  Maxey      PHI  67.3</pre>\n      <p>The full database is searchable, sortable, and filterable — every player, every tier, exportable as CSV.\n      Editions are permanent once published. New (Jul 29): the same database now ranks all thirty rosters —\n      <a href=\"the644/#teams\">The 30</a>, minutes-weighted Team GRAVITY.</p>\n      <pre class=\"mono\">EDITION CALENDAR\n  Jul 2026   THE 644 — July 2026 ......... [ FINAL ]\n  Feb 2027   All-Star Break edition ...... scheduled\n  Apr 2027   End of Season edition ....... scheduled\n  Jun 2027   Post-Playoffs edition ....... scheduled\n             + Forecast Audit No. 1 (grades the Queta bet)</pre>\n      <a class=\"btn\" href=\"the644/\">Open The 644</a>\n      <div class=\"sig\">Four editions per season cycle. Old numbers never get quietly revised.</div>"
+  },
+  "ledger": {
+   "from": "Forecast Ledger",
+   "subject": "📌 Open predictions: 7 — the ledger is public and permanent",
+   "date": "Jul 10 2026, 9:10 AM",
+   "pinned": true,
+   "flag": "📌",
+   "body": "\n      <div class=\"kicker\">Pinned · The Prediction Ledger</div>\n      <p>Every forecast is registered before the season with its probability, thresholds, and what counts as being\n      wrong. After the season, every call gets graded in the annual <b>Forecast Audit</b> — wins and misses alike.</p>\n      <pre class=\"mono\">№   CLAIM                          P      REGISTERED    SCORES      STATUS\n2   Queta top-50 in July 2027     75%    Jul 10 2026   Jul 2027    [ OPEN ]\n2b  Queta top-25 in July 2027     40%    Jul 10 2026   Jul 2027    [ OPEN ]\nE1  The 30 calls the standings    75%    Jul 29 2026   Jul 2027    [ OPEN ]\n    (Spearman ≥ 0.60 vs final 2026-27 wins)\nK1  Kawhi top 8 in The 644       50%    Oct 6 2026    Jul 2027    [ OPEN ]\nK3  Kawhi top 8 in BPM            30%    Oct 6 2026    Apr 2027    [ OPEN ]\n    (players with 1,500+ minutes, Basketball Reference)\nK4  Kawhi usage 30% or more       60%    Oct 6 2026    Apr 2027    [ OPEN ]\nK5  Kawhi true shooting < .610    65%    Oct 6 2026    Apr 2027    [ OPEN ]</pre>\n      <p style=\"text-align:left\"><span class=\"chip open\">OPEN</span> &nbsp;→&nbsp; becomes &nbsp;<span class=\"chip win\">WIN</span> /\n      <span class=\"chip\">NEAR MISS</span> / <span class=\"chip\" style=\"background:#8a2f2f;color:#fff\">MISS</span>\n      &nbsp;when scored. No deletions, no edits, no quiet revisions.</p>\n      <p style=\"text-align:left\"><span class=\"chip recall\">AMENDED</span> &nbsp;<b>Jul 11, 2026</b> — grading tightened\n      <i>against ourselves</i>, following external review: №2's registered #51–70 band, originally labeled a\n      \"push,\" will be graded a <b>near miss</b> — a failed prediction owing a diagnosis, not partial credit.\n      The claims, probabilities, and thresholds above stand exactly as registered.</p>\n      <div class=\"plain\"><b>In plain terms:</b> anyone can highlight wins. The audit is the product.</div>\n      <div class=\"sig\">Forecast Audit 2027 — an annual report. What the model got right, what it got wrong, and why.</div>"
+  },
+  "ed30": {
+   "from": "The 30 (Rankings Desk)",
+   "subject": "NEW — The 30: every team, one number (July 2026)",
+   "date": "Jul 29 2026, 11:58 AM",
+   "unread": true,
+   "isnew": true,
+   "flag": "🏟",
+   "clip": true,
+   "attach": "the30-2026-07.csv · <a href=\"the644/#teams\">interactive table</a>",
+   "body": "\n      <div class=\"kicker\">New database view · 30 teams · Team GRAVITY</div>\n      <p><b>Team GRAVITY</b> is the expected force of one minute of a team's floor time, built from a fixed\n      240-minute game. Every roster spot supplies the minutes a team can actually count on (a two-season blend;\n      draft-slot priors for rookies); minutes nobody on the roster can cover are priced at replacement force\n      <b>35.0</b>. Because availability enters through minutes, a fragile star is priced once — never twice.\n      Teams land on the same scale as players: 50 is a league-average minute.</p>\n      <pre class=\"mono\">TOP 10 — JULY 2026 · official rosters, Jul 29\n  1  Thunder    OKC  55.1      6  Rockets   HOU  50.6\n  2  Knicks     NYK  52.4      7  Sixers    PHI  50.4\n  3  Spurs      SAS  52.0      8  Magic     ORL  50.3\n  4  Nuggets    DEN  51.5      9  Wolves    MIN  50.2\n  5  Celtics    BOS  50.6     10  Pistons   DET  49.8</pre>\n      <p>The table shows what the average hides: starters vs bench force, how much of each team's value sits in\n      its top three players, and how many minutes each roster still can't cover. Click any team for its full\n      240-minute allocation.</p>\n      <p>Two honesty notes. <b>Unsigned is unsigned:</b> free agents — restricted ones included — are nobody's\n      minutes yet, so Cleveland is priced without Harden, Detroit without Duren, Sacramento without DeRozan.\n      Those holes show up as replacement-priced fill, and the All-Star edition re-prices whatever has been signed\n      by then. <b>And one trade doesn't exist yet:</b> the agreed Leonard–Ingram swap is unconsummated while the\n      league's investigation runs, so Kawhi is a Clipper here and Toronto keeps Ingram. Official rosters only.</p>\n      <div class=\"betbox\"><b>Registered forecast E1:</b> P ≈ <b>75%</b> that The 30 predicts the 2026-27\n      standings to Spearman ρ ≥ 0.60 (final regular-season wins). ρ ≥ 0.60 = win · 0.50–0.60 = near miss ·\n      below 0.50 = miss. For calibration: weighted by who <i>actually</i> played the minutes, team force explained\n      the 2025-26 win column at ρ = 0.963 — the forward number prices roster churn, injuries, and our own\n      minute-projection errors. Scored in Forecast Audit №1, July 2027.</div>\n      <div class=\"plain\"><b>In plain terms:</b> a talent ranking of rosters, weighted by playing time, honest\n      about its depth charts — and on the record about how well it should track the standings.</div>\n      <a class=\"btn\" href=\"the644/#teams\">Open The 30</a>\n      <a class=\"btn\" href=\"the644/the30-2026-07.csv\" download>Save the30.csv</a>\n      <div class=\"sig\">Same edition calendar as The 644 — rebuilt at the All-Star break, never quietly revised.</div>"
+  },
+  "kawhi": {
+   "from": "Article №4",
+   "subject": "The Kawhi Anomaly — the biggest rebound ever recorded by a 34-year-old",
+   "date": "Oct 6 2026, 9:00 AM",
+   "unread": true,
+   "clip": true,
+   "flag": "❗",
+   "isnew": true,
+   "pdf": "papers/kawhi/kawhi.pdf",
+   "pages": 5,
+   "pagesDir": "papers/pages/kawhi",
+   "status": true,
+   "attach": "kawhi.pdf (67 KB) · <a href=\"papers/kawhi/kawhi.tex\">kawhi.tex</a> · <a href=\"notes/kawhi/\">web edition</a>",
+   "body": "\n      <div class=\"kicker\">Article №4 · Preseason 2026–27 · the ballot winner</div>\n      <p>Kawhi Leonard went from a good starter to the fifth-best player in the league per minute, at 34. That jump\n      is the biggest one-year gain ever recorded by a player his age. Late surges usually fade. This article asks\n      which half of his will last.</p>\n      <ul class=\"findings\">\n        <li><b>Two records:</b> the biggest one-year jump ever by a player 34 or older, and the only star since\n        1978 to set career highs in usage and true shooting in the same season after 33.</li>\n        <li><b>Late surges fade:</b> eight players surged to star level after 31. None kept three-quarters of the\n        improvement the next season.</li>\n        <li><b>Two kinds of improvement:</b> his bigger role usually lasts; his hot shooting usually doesn't.</li>\n        <li><b>The forecast:</b> rebuilt piece by piece, we predict an impact of +1.31 next season, roughly a\n        top-ten level.</li>\n      </ul>\n      <p><b>Registered forecasts:</b> top 8 in The 644 (July 2027) <b>50%</b> · top 8 in Box Plus/Minus\n      <b>30%</b> · usage stays at 30% or more <b>60%</b> · true shooting falls below .610 <b>65%</b>.</p>\n      <a class=\"btn\" href=\"papers/kawhi/kawhi.pdf\" target=\"_blank\">Open the article (PDF)</a>\n      <a class=\"btn\" href=\"papers/kawhi/kawhi.pdf\" download>Save kawhi.pdf</a>\n      <div class=\"sig\">Built on GRAVITY Retrospective, run over every season since 1977–78.</div>"
+  },
+  "queta": {
+   "from": "Article №2",
+   "subject": "The Queta Problem — why he’s a top-50 player, and why 2026-27 proves it (rev. v2)",
+   "date": "Jul 10 2026, 4:10 AM",
+   "clip": true,
+   "flag": "❗",
+   "pdf": "papers/queta.pdf",
+   "pages": 10,
+   "pagesDir": "papers/pages/queta",
+   "status": true,
+   "attach": "queta.pdf (135 KB) · <a href=\"papers/queta.tex\">queta.tex</a> · <a href=\"notes/queta/\">web edition</a>",
+   "rev": "Oct 6 2026 — relabeled: an article typeset in LaTeX, not a research paper; no content changes. Earlier: v2, Jul 11 2026, after external review — model output separated from editorial scenario weights (each weight now anchored to an observable rate); on/off language corrected to cross-season persistence, and the shrunk-input counterfactual re-run properly: #53–55, not ≈#48 (the harshest reading grazes the claim); comparables disclosed as 33 seasons / 22 players (32% per-player rate) + cutoff-sensitivity table; grading tightened: #51–70 = near miss, not push. The registered 75% is unchanged — that is the bet. Then Jul 31 2026 — working-paper status labels added to every page (PDF footer + status notice, also on the web edition); no findings or numbers changed.",
+   "body": "\n      <div class=\"kicker\">№ 41 · Trust the data — a registered forecast · revised v2</div>\n      <p>Our ranking put Neemias Queta — twice waived, 39th pick — at <span class=\"badge\">58.8 · #41 · T4</span>,\n      a full tier above his reputation. Instead of defending the number, this note attacks it twice, keeps what\n      survives, and converts it into a registered bet.</p>\n      <ul class=\"findings\">\n        <li><b>The anti-fluke chart:</b> his season workload grew nearly 6× (333 → 1,926 minutes) and his\n        efficiency went <i>up</i> — PSA 130 → 132 → 134, with a 97th-percentile playoff series shown separately.</li>\n        <li><b>Stress test I:</b> only ~⅓ of on/off persists year to year (r = 0.317, n = 184). Discounted uniformly,\n        #41 doesn't move; discount <i>his number alone</i> — the harshest reading — and he lands #53–55, just outside.\n        The bet never rested on the shiny number, and v2 owes you that it grazes the claim.</li>\n        <li><b>Stress test II:</b> 33 comparable big-man seasons from 22 players since 2020 (the Gobert / Robert\n        Williams / Jarrett Allen family): 39% by season, 32% by player, delivered a top-50-caliber follow-up —\n        robust to every cutoff we varied.</li>\n        <li><b>The market agrees:</b> Boston signed Mitchell Robinson July 6 — then extended Queta for\n        <b>$56M anyway</b>.</li>\n      </ul>\n      <div class=\"betbox\"><b>Registered forecast:</b> we assign P(top-50 in July 2027) ≈ <b>75%</b> ·\n      P(top-25) ≈ <b>40%</b> — GRAVITY prices the scenarios, the weights are ours, and the article shows the anchors.\n      Falsification on the record: #50+ = win · #51–70 = near miss (a failure owing a diagnosis) · below #70 = clean miss.</div>\n      <div class=\"plain\"><b>In plain terms:</b> it's not a moonshot claim — it just requires this season to mostly\n      repeat. We wrote down in advance exactly what counts as being wrong, and #51 counts.</div>\n      <a class=\"btn\" href=\"papers/queta.pdf\" target=\"_blank\">Open the article (PDF)</a>\n      <a class=\"btn\" href=\"papers/queta.pdf\" download>Save queta.pdf</a>\n      <div class=\"sig\">Implications for GRAVITY: + empirical on/off persistence (r = 0.317) is now a candidate model input.</div>"
+  },
+  "morant": {
+   "from": "Article №1",
+   "subject": "The Rise and Fall of Ja Morant — a statistical account, 2017–2026 (rev. v2)",
+   "date": "Jul 10 2026, 2:39 AM",
+   "clip": true,
+   "flag": "",
+   "pdf": "papers/morant.pdf",
+   "pages": 12,
+   "pagesDir": "papers/pages/morant",
+   "status": true,
+   "attach": "morant.pdf (134 KB) · <a href=\"papers/morant.tex\">morant.tex</a> · <a href=\"notes/morant/\">web edition</a>",
+   "rev": "Oct 6 2026 — relabeled: an article typeset in LaTeX, not a research paper; no content changes. Earlier: v2, Jul 11 2026, after external review — absence ledger corrected (the shoulder cost 48 games, not 73; 79 of 246 = 32.1%), inference language tightened, forward scenarios → availability × impact matrix, sensitivity appendix added (#112–#147 across all variations). Full note on the last page. The errors were ours. Then Jul 31 2026 — working-paper status labels added to every page (PDF footer + status notice, also on the web edition); no findings or numbers changed.",
+   "body": "\n      <div class=\"kicker\">№ 140 · The steepest fall — a career autopsy · revised v2</div>\n      <p>Seven seasons, one instrument: from unranked recruit to the 97th percentile of the league (2021-22),\n      then an availability catastrophe — <b>79 of 246 games since 2023</b> — and one 569-minute season the data\n      cannot fully judge.</p>\n      <ul class=\"findings\">\n        <li><b>Missing, not choosing:</b> of his eFG collapse, 88% was shot-<i>making</i>, only 0.7 points of it\n        shot-selection (exact Shapley split over shot zones — what zone data can't see is scoped in §6.2).</li>\n        <li><b>The sample-size problem:</b> the three-point collapse covers 20-of-85; its Wilson interval\n        [.158, .336] contains his career norm — too few attempts to tell decline from variance.</li>\n        <li><b>The touch paradox:</b> the only split that moved beyond doubt was his free throw — <i>upward</i>,\n        to .897.</li>\n        <li><b>What the draft model missed:</b> his college assist rate was +3.5σ against the 2026 cohort —\n        the skill the formula didn't count is the one that survived everything.</li>\n        <li><b>New in v2 — the stress test:</b> every model variation tested (overrides off, equal season\n        weights, different anchors, reliability stack deleted) lands him <b>#112–#147</b>. The number isn't\n        an artifact of any single judgment call.</li>\n      </ul>\n      <div class=\"plain\"><b>In plain terms:</b> #140 is a defensible price for the delivery risk. It is probably the\n      wrong forecast of the talent. Both statements are the same mathematics, read in two directions.</div>\n      <a class=\"btn\" href=\"papers/morant.pdf\" target=\"_blank\">Open the article (PDF)</a>\n      <a class=\"btn\" href=\"papers/morant.pdf\" download>Save morant.pdf</a>\n      <div class=\"sig\">rev. v2, Jul 11 2026, following external review: absence ledger corrected (the shoulder cost 48\n      games, not 73 — the other 25 were the suspension; denominator 246, not 249), inference language tightened to\n      what the intervals support, forward scenarios replaced by an availability × impact matrix, sensitivity\n      appendix added. The errors were ours; the full revision note is on the article's last page.<br>\n      Implications for GRAVITY: + creation added to the rookie blend · + zone mix ≠ shot difficulty · + CIs before adjectives.</div>"
+  },
+  "welcome": {
+   "from": "The Editor",
+   "subject": "Why this looks like 1999 (read once, then archive)",
+   "date": "Jul 10 2026, 8:45 AM",
+   "flag": "",
+   "body": "\n      <div class=\"kicker\">About this publication</div>\n      <p>Articles are letters: numbered, dated, permanent, addressed to anyone who takes basketball arguments\n      seriously. An inbox is the honest interface for that — nothing trends, nothing autoplays, the archive\n      <i>is</i> the product.</p>\n      <p>Each note ships three ways: the <b>PDF</b> proves depth, the <b>web version</b> gets read, the\n      <b>thread</b> gets discovered. The Ledger keeps us honest and the Audit grades us annually.</p>\n      <p>Subscribe by RSS (<a href=\"feed.xml\">feed.xml</a>) — the email edition is coming.</p>\n      <div class=\"plain\"><b>In plain terms:</b> an institution, not a feed. Slower on purpose.</div>\n      <div class=\"sig\">GRAVITY · How good, times how often.</div>"
+  },
+  "draft_duren": {
+   "from": "Drafts",
+   "subject": "№3 (in progress) — Duren: the best traditional center is 22",
+   "date": "in progress",
+   "flag": "✏️",
+   "body": "\n      <div class=\"kicker\">Draft · in progress · confirmed Jul 31 2026</div>\n      <p>GRAVITY already believes it: Jalen Duren sits <b>#14 of 644</b> — a traditional center inside the\n      top 15 that no consensus board has. He is also already part of this publication's evidence: Article\n      №2's comparables table lists his 2024–25 season as the cohort's best follow-up\n      (+1.02 → +1.60, 97th percentile). №3 extends published machinery — silhouette, base rates,\n      shrinks, and a registered bet with an audit date.</p>\n      <p><i>Confirmed by the editorial desk with the ballot at 0–0. The ballot below now decides №4.</i></p>"
+  },
+  "draft_no4": {
+   "from": "Drafts",
+   "subject": "№4 (ballot closed) — Kawhi won; Jokić and Flagg are being written too",
+   "date": "not sent",
+   "flag": "✏️",
+   "body": "\n      <div class=\"kicker\">Ballot closed · Kawhi won</div>\n      <p>The ballot is closed. Kawhi won it, and №4, <b>The Kawhi Anomaly</b>, is in the Inbox. №3 (Duren) is in progress, and the Jokić and Flagg articles are being written too.</p>\n      <p style=\"margin-bottom:2px\"><b>The Kawhi Anomaly: top-8 in 2027?</b><br>\n      Published October 6 as Article №4 — see the Inbox.</p>\n      <p style=\"margin-bottom:2px\"><b>Jokić: still the best, and 2027 proves it.</b><br>\n      GRAVITY #1 by 4.9 points (97.8 vs 92.9) — yet two straight MVPs went elsewhere. The article would\n      quantify the voter-vs-data gap and the aging math for why a 31-year-old repeats at #1.</p>\n      <p style=\"margin-bottom:2px\"><b>Flagg: top-10 in year two?</b><br>\n      Rookie of the Year at 19 (21.0 / 6.7 / 4.5), and the rookie module was built for exactly this\n      question: how often does a season like that become top-10 by year two? The bet would grade against\n      the July 2027 edition.</p>\n      <p><i>Final result: Kawhi won the ballot.</i></p>"
+  },
+  "outbox_queta": {
+   "from": "Forecast Ledger",
+   "subject": "⏳ SCHEDULED — Grading Article №2 (sends July 2027)",
+   "date": "queued",
+   "flag": "⏳",
+   "body": "\n      <div class=\"kicker\">Outbox · scheduled send</div>\n      <p>This message sends itself when the July 2027 edition of The 644 is computed. It will contain one line:</p>\n      <pre class=\"mono\">Queta finished #__ of 6__.\nForecast №2 (75% top-50):  [ WIN / NEAR MISS / MISS ]</pre>\n      <p>Nothing about the claim can be edited between now and then. That's the point of an outbox.</p>\n      <p style=\"font-size:10.5px; color:#666\">Amended Jul 11, 2026 (grading only, tightened against ourselves):\n      the middle outcome grades as a <b>near miss</b> — a failure owing a diagnosis — not a \"push.\"\n      The claim, the 75%, and the thresholds are untouched.</p>\n      <div class=\"plain\"><b>In plain terms:</b> the bet is in the mail. See you in twelve months.</div>"
+  },
+  "outbox_the30": {
+   "from": "Forecast Ledger",
+   "subject": "⏳ SCHEDULED — Grading The 30 vs the standings (sends July 2027)",
+   "date": "queued",
+   "flag": "⏳",
+   "body": "\n      <div class=\"kicker\">Outbox · scheduled send</div>\n      <p>This message sends itself when the 2026-27 regular season is final. It will contain one line:</p>\n      <pre class=\"mono\">The 30 (July 2026) vs final wins:  ρ = .___\nForecast E1 (75%, ρ ≥ 0.60):  [ WIN / NEAR MISS / MISS ]</pre>\n      <p>The July edition it grades is frozen — rosters as of July 29, 2026, replacement fill and all. Teams that\n      got better or worse after that date count against us, not for us. That's the point of an outbox.</p>\n      <div class=\"plain\"><b>In plain terms:</b> we ranked all 30 rosters and told you how well the ranking should\n      track the standings. In twelve months the standings answer.</div>"
+  },
+  "del_butler": {
+   "from": "The 644 (Rankings Desk)",
+   "subject": "♻️ RECALLED — Jimmy Butler at #13 (v1)",
+   "date": "Jul 10 2026, 10:20 AM",
+   "flag": "♻️",
+   "body": "\n      <div class=\"kicker\">Deleted Items · kept visible on purpose</div>\n      <p style=\"text-align:left\"><span class=\"chip recall\">RECALLED</span> &nbsp;The sender recalled this ranking on Jul 10, 2026.</p>\n      <p><b>Reason:</b> the model rated 38 games of elite per-minute play as \"availability risk.\" It didn't know\n      the season ended with a torn ACL on Jan 19. With the same injury discount every rehab case gets,\n      Butler moved <b>#13 → #58</b>, and the correction shipped the same day, in public.</p>\n      <div class=\"plain\"><b>In plain terms:</b> the trash folder is part of the methodology. Errors get corrected\n      in public and kept on display — that's what makes the wins believable.</div>"
+  }
+ },
+ "FOLDERS": [
+  {
+   "id": "inbox",
+   "icon": "📥",
+   "name": "Inbox",
+   "msgs": [
+    "spec",
+    "kawhi",
+    "ed644",
+    "ledger",
+    "ed30",
+    "queta",
+    "morant",
+    "welcome"
+   ]
+  },
+  {
+   "id": "drafts",
+   "icon": "✏️",
+   "name": "Drafts",
+   "msgs": [
+    "draft_duren",
+    "draft_no4"
+   ]
+  },
+  {
+   "id": "outbox",
+   "icon": "📤",
+   "name": "Outbox",
+   "msgs": [
+    "outbox_queta",
+    "outbox_the30"
+   ]
+  },
+  {
+   "id": "deleted",
+   "icon": "🗑",
+   "name": "Deleted Items",
+   "msgs": [
+    "del_butler"
+   ]
+  },
+  {
+   "sep": true
+  },
+  {
+   "id": "spec",
+   "icon": "⚖",
+   "name": "The Specification",
+   "msgs": [
+    "specdoc",
+    "spec"
+   ]
+  },
+  {
+   "id": "644",
+   "icon": "🏀",
+   "name": "The 644 (editions)",
+   "msgs": [
+    "ed644",
+    "ed30"
+   ]
+  },
+  {
+   "id": "ledger",
+   "icon": "📌",
+   "name": "Forecast Ledger",
+   "msgs": [
+    "ledger",
+    "outbox_queta",
+    "outbox_the30"
+   ]
+  },
+  {
+   "id": "audit",
+   "icon": "📊",
+   "name": "Forecast Audit 2027",
+   "msgs": []
+  }
+ ]
+}

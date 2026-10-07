@@ -1,0 +1,10 @@
+{
+  "name": "The Gravity Report",
+  "url": "https://thegravityreport.com",
+  "tagline": "Independent NBA analysis. One model, every player, every forecast on the record.",
+  "model_line": "GRAVITY: Game-Rate Adjusted Value, Impact, Talent, and Yield. How good, times how often.",
+  "edition": {"name": "July 2026", "published": "2026-07-10", "next": "the All-Star break (February 2027)", "csv": "/the644/the644-2026-07.csv", "teams_csv": "/the644/the30-2026-07.csv"},
+  "on_the_desk": ["Jalen Duren", "Nikola Jokić", "Cooper Flagg"],
+  "newsletter_url": "",
+  "newsletter_note": "One email when a new article lands or a forecast gets graded. Free."
+}

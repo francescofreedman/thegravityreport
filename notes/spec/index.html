@@ -3,23 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0E5A3A">
+<meta name="theme-color" content="#FFFFFF">
 <title>The GRAVITY Specification — the player-value model, v3 · The Gravity Report</title>
-<meta name="description" content="The full mathematics of GRAVITY, The Gravity Report's original NBA player-value model: every equation, weight, shrinkage rule, tier cut, and the complete injury-override table. Version 3, citable. Not the NBA's defensive-attention 'gravity' statistic.">
+<meta name="description" content="The full mathematics of GRAVITY, The Gravity Report&#x27;s original NBA player-value model: every equation, weight, shrinkage rule, tier cut, and the complete injury-override table. Version 3, citable. Not the NBA&#x27;s defensive-attention &#x27;gravity&#x27; statistic.">
 <link rel="canonical" href="https://thegravityreport.com/notes/spec/">
-<link rel="alternate" type="application/rss+xml" title="GRAVITY Articles" href="../../feed.xml">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📥</text></svg>">
+<link rel="alternate" type="application/rss+xml" title="The Gravity Report" href="/feed.xml">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/Archivo-400-900-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts.css">
+<link rel="stylesheet" href="/assets/site.css">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="The Gravity Report">
-<meta property="og:title" content="The GRAVITY Specification — the full mathematics of the player-value model">
-<meta property="og:description" content="Every equation, weight, shrinkage rule, tier cut, and injury override in GRAVITY v3 — published as a standalone, citable technical document.">
+<meta property="og:title" content="The GRAVITY Specification — the player-value model, v3 · The Gravity Report">
+<meta property="og:description" content="The full mathematics of GRAVITY, The Gravity Report&#x27;s original NBA player-value model: every equation, weight, shrinkage rule, tier cut, and the complete injury-override table. Version 3, citable. Not the NBA&#x27;s defensive-attention &#x27;gravity&#x27; statistic.">
 <meta property="og:url" content="https://thegravityreport.com/notes/spec/">
 <meta property="og:image" content="https://thegravityreport.com/cards/spec.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta property="article:published_time" content="2026-07-10">
-<link rel="stylesheet" href="../notes.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -38,16 +40,10 @@
 </script>
 </head>
 <body>
-
-<main class="window">
-  <div class="tbar">
-    <span>⚖</span><span class="title">The Gravity Report — The Specification (web edition)</span>
-    <a class="tbtn" href="../../#spec/specdoc" title="Open in the inbox">□</a><span class="tbtn">×</span>
-  </div>
-  <nav class="crumbs"><a href="../../">📥 The inbox</a> › <a href="../../#spec/specdoc">The Specification</a> › web edition
-    &nbsp;·&nbsp; <a href="../morant/">№1: Ja Morant</a> &nbsp;·&nbsp; <a href="../queta/">№2: The Queta Problem</a> &nbsp;·&nbsp; <a href="../../the644/">The 644</a></nav>
-
-  <article class="paper">
+<a class="skip" href="#main">Skip to content</a><header class="site-head"><div class="wrap"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span><span class="brand-name">The Gravity Report</span></a><nav class="nav" aria-label="Main"><a href="/the644/">The 644</a><a href="/articles/">Articles</a><a href="/ledger/">Ledger</a><a href="/model/" aria-current="page">Model</a><a class="btn-sub" href="/#subscribe">Subscribe</a></nav></div></header>
+<div class="ticker"><a class="ticker-label" href="/the644/">THE 644</a><div class="ticker-view"><div class="ticker-track"><span>   <a href="/players/nikola-jokic/">1 JOKIĆ <b>97.8</b></a>   ·   <a href="/players/shai-gilgeous-alexander/">2 GILGEOUS-ALEXANDER <b>92.9</b></a>   ·   <a href="/players/victor-wembanyama/">3 WEMBANYAMA <b>85.7</b></a>   ·   <a href="/players/giannis-antetokounmpo/">4 ANTETOKOUNMPO <b>83.9</b></a>   ·   <a href="/players/luka-doncic/">5 DONČIĆ <b>83.0</b></a>   ·   <a href="/players/kawhi-leonard/">6 LEONARD <b>77.3</b></a>   ·   <a href="/players/cade-cunningham/">7 CUNNINGHAM <b>70.3</b></a>   ·   <a href="/players/karl-anthony-towns/">8 TOWNS <b>69.3</b></a>   ·   <a href="/players/donovan-mitchell/">9 MITCHELL <b>68.1</b></a>   ·   <a href="/players/tyrese-maxey/">10 MAXEY <b>67.3</b></a>   ·   <a href="/players/lamelo-ball/">11 BALL <b>66.8</b></a>   ·   <a href="/players/chet-holmgren/">12 HOLMGREN <b>66.6</b></a>   ·   <a href="/players/stephen-curry/">13 CURRY <b>66.5</b></a>   ·   <a href="/players/jalen-duren/">14 DUREN <b>65.9</b></a>   ·   <a href="/players/scottie-barnes/">15 BARNES <b>65.8</b></a></span><span aria-hidden="true">   1 JOKIĆ <b>97.8</b>   ·   2 GILGEOUS-ALEXANDER <b>92.9</b>   ·   3 WEMBANYAMA <b>85.7</b>   ·   4 ANTETOKOUNMPO <b>83.9</b>   ·   5 DONČIĆ <b>83.0</b>   ·   6 LEONARD <b>77.3</b>   ·   7 CUNNINGHAM <b>70.3</b>   ·   8 TOWNS <b>69.3</b>   ·   9 MITCHELL <b>68.1</b>   ·   10 MAXEY <b>67.3</b>   ·   11 BALL <b>66.8</b>   ·   12 HOLMGREN <b>66.6</b>   ·   13 CURRY <b>66.5</b>   ·   14 DUREN <b>65.9</b>   ·   15 BARNES <b>65.8</b></span></div></div></div>
+<main id="main">
+<div class="wrap"><article class="paper">
     <div class="kicker">Technical document · Version 3 · Citable</div>
     <h1>The GRAVITY Specification</h1>
     <div class="subtitle">Game-Rate Adjusted Value, Impact, Talent, and Yield — the player-value model, in full.</div>
@@ -64,7 +60,7 @@
     <p><b>GRAVITY</b> is an original player-value model: it estimates a player's per-minute quality and
     adjusts for role, availability, and documented injury risk — measuring not just how good a player is,
     but how much of that ability a team actually receives. It is the system behind
-    <a href="../../the644/">The 644</a>, the full-league ranking, and every article this publication
+    <a href="/the644/">The 644</a>, the full-league ranking, and every article this publication
     ships. (It is unrelated to the NBA's defensive-attention "gravity" statistic — different quantity,
     different purpose. Ours is a value model.)</p>
 
@@ -91,11 +87,11 @@
     </ul>
 
     <figure>
-      <img src="../../papers/pages/spec/p-01.svg" alt="Page 1 of the GRAVITY specification: standardization and component constructions." loading="lazy" width="612" height="792">
+      <img src="/papers/pages/spec/p-01.svg" alt="Page 1 of the GRAVITY specification: standardization and component constructions." loading="lazy" width="612" height="792">
       <figcaption><b>Page 1.</b> Standardization and the component constructions.</figcaption>
     </figure>
     <figure>
-      <img src="../../papers/pages/spec/p-02.svg" alt="Page 2 of the GRAVITY specification: the impact blend, two-year machinery, and reliability multipliers." loading="lazy" width="612" height="792">
+      <img src="/papers/pages/spec/p-02.svg" alt="Page 2 of the GRAVITY specification: the impact blend, two-year machinery, and reliability multipliers." loading="lazy" width="612" height="792">
       <figcaption><b>Page 2.</b> The impact blend and the reliability machinery — availability, role size,
       injury overrides.</figcaption>
     </figure>
@@ -103,13 +99,13 @@
     <div class="plain"><b>House rule:</b> the weights are specified by judgment before any player is ranked
     — they are not fitted to a target. Transparency makes the judgment inspectable; the sensitivity analyses
     published with the articles test how much conclusions depend on it, and the
-    <a href="../../#ledger">Forecast Ledger</a> validates the model the only way that counts: registered
+    <a href="/ledger/">Forecast Ledger</a> validates the model the only way that counts: registered
     predictions, graded in public, annually.</div>
 
     <div class="btnrow">
-      <a class="btn" href="../../papers/spec.pdf">📄 Read the specification (PDF, 5 pp)</a>
-      <a class="btn" href="../../#spec/specdoc">📥 Read it in the inbox</a>
-      <a class="btn" href="../../papers/spec.tex">LaTeX source</a>
+      <a class="btn" href="/papers/spec.pdf">Read the specification (PDF, 5 pp)</a>
+      <a class="btn" href="/classic/#spec/specdoc">Read it in the inbox</a>
+      <a class="btn" href="/papers/spec.tex">LaTeX source</a>
     </div>
 
     <h2>Cite the model</h2>
@@ -127,25 +123,14 @@ https://thegravityreport.com/notes/spec/
   month       = {7},
   url         = {https://thegravityreport.com/notes/spec/}
 }</pre>
-  </article>
-
-  <div class="status">
-    <div class="sseg">The Specification · v3</div>
-    <div class="sseg grow">GRAVITY — the player-value model · How good × how often</div>
-    <div class="sseg">© The Gravity Report</div>
-  </div>
+  </article></div>
 </main>
-
-<p class="sitefoot">The Gravity Report is an independent NBA analytics publication built around GRAVITY, an
-original player-value model that explains careers, identifies mispriced players, and publishes falsifiable
-forecasts. · <a href="../../">the inbox</a> · <a href="../../the644/">The 644</a> ·
-<a href="../../about/">about</a> · <a href="../../feed.xml">RSS</a> · No external rankings consulted.</p>
-
+<footer class="site-foot" id="about-foot"><div class="wrap"><div class="fb"><b>The Gravity Report</b><br>GRAVITY: Game-Rate Adjusted Value, Impact, Talent, and Yield. How good, times how often.<br>Articles are typeset in LaTeX and revised in public. An article, not a research paper.</div><nav aria-label="Footer"><a href="/model/">Model</a><a href="/ledger/">Ledger</a><a href="/data/">Data</a><a href="/corrections/">Corrections</a><a href="/about/">About</a><a href="/feed.xml">RSS</a><a href="/classic/">The original inbox edition</a></nav></div></footer>
 <script>
 (function(){
   try{
     if (navigator.doNotTrack === '1') return;
-    var item = '/notes/spec';
+    var item = "/notes/spec", depth = true;
     function send(t, nv){
       try{
         var body = JSON.stringify({t: t, i: item, n: nv || 0});
@@ -166,6 +151,7 @@ forecasts. · <a href="../../">the inbox</a> · <a href="../../the644/">The 644<
       }
     }catch(e){}
     send('pv', nv);
+    if (!depth) return;
     var d3 = false, fin = false;
     addEventListener('scroll', function(){
       var p = (scrollY + innerHeight) / document.documentElement.scrollHeight;

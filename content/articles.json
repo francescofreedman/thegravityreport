@@ -1,0 +1,55 @@
+[
+  {
+    "n": 4, "slug": "kawhi", "kind": "article",
+    "title": "The Kawhi Anomaly",
+    "dek": "The biggest rebound ever recorded by a 34-year-old.",
+    "home_dek": "The biggest rebound ever recorded by a 34-year-old. Late surges usually fade. Which half of his will last?",
+    "teaser": "The biggest rebound ever recorded by a 34-year-old.",
+    "kicker": "Article №4 · Preseason 2026–27",
+    "date": "2026-10-06", "pages": 5,
+    "pdf": "/papers/kawhi/kawhi.pdf", "tex": "/papers/kawhi/kawhi.tex", "web": "/notes/kawhi/", "card": "/cards/kawhi.png",
+    "lead": [
+      "Kawhi Leonard went from a good starter to the fifth-best player in the league per minute, at 34. No player 34 or older has ever jumped that far in one season.",
+      "Eight players have surged to star level after 31. None kept three-quarters of the gain the next year. His bigger role usually lasts. His hot shooting usually doesn't."
+    ],
+    "findings": [
+      "The biggest one-year jump ever by a player 34 or older, and the only star since 1978 to set career highs in usage and true shooting in the same season after 33.",
+      "Eight players surged to star level after 31. None kept three-quarters of the improvement the next season.",
+      "His bigger role usually lasts; his hot shooting usually doesn't. The forecast: an impact of +1.31 next season, roughly a top-ten level."
+    ],
+    "players": ["Kawhi Leonard"], "stat_player": "Kawhi Leonard",
+    "ledger": ["K5", "K4", "K1", "K3"]
+  },
+  {
+    "n": 2, "slug": "queta", "kind": "article",
+    "title": "The Queta Problem",
+    "dek": "Why he’s a top-50 player, and why 2026-27 proves it.",
+    "teaser": "Twice waived, 39th pick, #41 in The 644. Why he's a top-50 player.",
+    "kicker": "Article №2 · Trust the data · revised v2",
+    "date": "2026-07-10", "pages": 10,
+    "pdf": "/papers/queta.pdf", "tex": "/papers/queta.tex", "web": "/notes/queta/", "card": "/cards/queta.png",
+    "players": ["Neemias Queta"], "stat_player": "Neemias Queta",
+    "ledger": ["2", "2b"]
+  },
+  {
+    "n": 1, "slug": "morant", "kind": "article",
+    "title": "The Rise and Fall of Ja Morant",
+    "dek": "A statistical account, 2017–2026.",
+    "teaser": "From the 97th percentile to 79 of 246 games.",
+    "kicker": "Article №1 · A career autopsy · revised v2",
+    "date": "2026-07-10", "pages": 12,
+    "pdf": "/papers/morant.pdf", "tex": "/papers/morant.tex", "web": "/notes/morant/", "card": "/cards/morant.png",
+    "players": ["Ja Morant"], "stat_player": "Ja Morant",
+    "ledger": []
+  },
+  {
+    "n": null, "slug": "spec", "kind": "model",
+    "title": "The GRAVITY Specification",
+    "dek": "Every equation and every weight, published in full.",
+    "teaser": "Every equation and every weight, published in full.",
+    "kicker": "The Model · Version 3",
+    "date": "2026-07-10", "pages": 5,
+    "pdf": "/papers/spec.pdf", "tex": "/papers/spec.tex", "web": "/notes/spec/", "card": "/cards/spec.png",
+    "players": [], "ledger": []
+  }
+]
