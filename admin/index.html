@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Post queue — The Gravity Report</title>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/fonts.css">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.q-row{border-bottom:1px solid var(--rule-lt);padding:16px 0;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:flex-start}
+.q-meta{width:220px;font-family:var(--mono);font-size:12px;color:var(--muted);flex:0 0 auto}
+.q-meta b{display:block;font-size:14px;color:var(--ink)}
+.q-text{flex:1 1 320px;min-width:0;white-space:pre-wrap;font-size:15px;line-height:1.45}
+.q-text img{display:block;max-width:240px;margin-top:8px;border:1px solid var(--rule-lt)}
+.q-act{display:flex;flex-wrap:wrap;gap:8px}
+.q-act button,.bar button,.kits button{min-height:44px;padding:0 14px;border:1px solid var(--ink);background:#fff;font-family:var(--mono);font-size:13px;cursor:pointer}
+.q-act button.go,.bar button.go{background:var(--accent);border-color:var(--accent);color:#fff}
+.st{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:600;padding:2px 6px;border:1px solid currentColor;margin-top:6px}
+.st-draft{color:#555}.st-approved{color:var(--accent)}.st-posted{color:#0A7A3A}.st-simulated{color:#7A5A00}.st-failed,.st-held{color:#B00020}.st-rejected{color:#999}
+.banner{padding:14px 16px;border:2px solid var(--ink);margin-top:20px;font-size:15px}
+.banner.dry{background:#FFF7DD}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:18px}
+.bar label{display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:12px;font-weight:600}
+.bar input[type=password]{height:44px;border:1px solid var(--ink);padding:0 12px;font-size:16px;min-width:240px}
+.kits li{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--rule-lt)}
+#msg{font-family:var(--mono);font-size:13px;margin-top:12px;min-height:1.4em}
+</style>
+</head>
+<body>
+<header class="site-head"><div class="wrap"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span><span class="brand-name">The Gravity Report</span></a><nav class="nav" aria-label="Admin"><a href="#queue">Queue</a><a href="#kits">Kits</a><a href="#settings">Settings</a></nav></div></header>
+<main id="main"><div class="wrap">
+<section class="page-head"><div class="kicker">Admin · not public</div><h1 class="h-l">Post queue</h1>
+<p class="lede">Nothing posts until you approve it. While dry run is on, approved posts are only simulated and logged.</p>
+<form class="bar" id="keyform"><label>ADMIN KEY<input type="password" id="key" autocomplete="current-password" required></label><button type="submit" class="go">Unlock</button><button type="button" id="lock">Lock</button></form>
+<div id="msg" role="status" aria-live="polite"></div>
+<div id="status"></div>
+</section>
+<section class="sec" id="queue"><div class="sec-head"><h2 class="h-m" style="margin-top:0">Queue</h2>
+<div class="bar"><button type="button" class="go" id="week">Approve the whole week</button><button type="button" id="run">Run due posts now</button><button type="button" id="reload">Refresh</button></div></div>
+<div id="rows"><p class="muted">Unlock to see the queue.</p></div></section>
+<section class="sec" id="kits"><h2 class="h-m" style="margin-top:0">Kits ready to import</h2><p class="lede">Each kit becomes one draft per platform: X, Bluesky, Threads, Instagram. Reddit is always by hand: open the kit's reddit.md.</p><ul class="kits" id="kitlist" style="list-style:none;padding:0"></ul></section>
+<section class="sec" id="settings"><h2 class="h-m" style="margin-top:0">Player of the day</h2>
+<div class="bar"><label style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="potd_on" style="width:22px;height:22px"> Queue a player every day</label>
+<label style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="potd_auto_approve" style="width:22px;height:22px"> Approve them automatically</label></div>
+<p class="small" style="margin-top:10px">Posts at 16:00 UTC (noon Eastern) on X, Bluesky and Threads. Text uses only rank, name, team, position and score from The 644.</p></section>
+</div></main>
+<script src="/admin/admin.js"></script>
+</body>
+</html>

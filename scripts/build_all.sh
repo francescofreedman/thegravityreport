@@ -5,3 +5,4 @@ cd "$(dirname "$0")/.."
 python3 scripts/build_site.py
 python3 scripts/make-cards.py
 python3 scripts/check_site.py
+python3 scripts/social/kits_index.py

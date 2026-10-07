@@ -1,3 +1,6 @@
+import { handleAdmin } from "./social/admin-api.js";
+import { runScheduled } from "./social/pipeline.js";
+
 /**
  * The Gravity Report — API worker.
  * Static assets are served by Cloudflare's asset handling; only non-asset
@@ -7,6 +10,10 @@
  *   GET  /api/votes                              -> {kawhi, jokic, flagg}
  *   POST /api/e      {t, i, n}                   -> 204  (reading telemetry)
  *   GET  /api/stats?key=STATS_KEY                -> 30-day aggregates
+ *   *    /api/admin/*  (header x-admin-key)       -> social posting queue (social/admin-api.js)
+ *   cron (wrangler.jsonc triggers)               -> social/pipeline.js runScheduled()
+ *
+ * Social posting is DRY-RUN unless SOCIAL_DRY_RUN === "0" and the platform's secrets exist.
  *
  * Telemetry design: no cookies, no IPs, no fingerprints. Events only fire
  * from JS-executing browsers (which excludes crawlers), respect DNT, and
@@ -156,11 +163,16 @@ export default {
       if (path === "/api/e" && request.method === "POST")
         return await handleEvent(request, env, request.cf);
       if (path === "/api/stats" && request.method === "GET") return await handleStats(request, env);
+      if (path.startsWith("/api/admin/")) return await handleAdmin(request, env);
     } catch (e) {
       return json({ error: "server" }, 500);
     }
     // Not an API route: fall through to static assets (404 handling included).
     if (env.ASSETS) return env.ASSETS.fetch(request);
     return new Response("not found", { status: 404 });
+  },
+
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(runScheduled(env, event.scheduledTime));
   },
 };

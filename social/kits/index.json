@@ -1,0 +1,34 @@
+{
+ "kits": [
+  {
+   "id": "2026-10-07-player-jalen-duren",
+   "kind": "player",
+   "title": "Jalen Duren",
+   "date": "2026-10-07"
+  },
+  {
+   "id": "2026-10-07-edition-the644",
+   "kind": "edition",
+   "title": "The 644",
+   "date": "2026-10-07"
+  },
+  {
+   "id": "2026-10-07-article-queta",
+   "kind": "article",
+   "title": "The Queta Problem",
+   "date": "2026-10-07"
+  },
+  {
+   "id": "2026-10-07-article-morant",
+   "kind": "article",
+   "title": "The Rise and Fall of Ja Morant",
+   "date": "2026-10-07"
+  },
+  {
+   "id": "2026-10-07-article-kawhi",
+   "kind": "article",
+   "title": "The Kawhi Anomaly",
+   "date": "2026-10-07"
+  }
+ ]
+}

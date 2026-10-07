@@ -12,8 +12,8 @@ Prompt: `/Users/francesco2/gravity/.claude/overnight-build-prompt.md`
 | 3 Other pages | done | articles, the644 (+The 30), ledger, model, corrections, data, about, subscribe, 404, classic |
 | 4 Player pages | done | 644 pages + 644 cards; players/index.json |
 | 5 Site QA | done | 0 broken links (27k checked), legacy sitemap OK, article text identical x5, no h-scroll at 390, alt text OK, review/*.png |
-| 6 Post-kit generator | in progress | |
-| 7 Auto-posting pipeline | todo | |
+| 6 Post-kit generator | done | `scripts/social/make_kit.py`; number guard; 10 Python tests; kits for 3 articles + 1 player + edition |
+| 7 Auto-posting pipeline | done | `social/pipeline.js`, adapters (X, Bluesky, Threads, Instagram), `/api/admin/*`, `/admin/`, cron; 11 Node tests incl. X's OAuth example vector |
 | 8 Automatic content | todo | |
 | 9 Docs + handoff | todo | |
 
@@ -25,3 +25,7 @@ Prompt: `/Users/francesco2/gravity/.claude/overnight-build-prompt.md`
 - `.assetsignore` keeps build notes, docs drafts, the social queue and adapters, and the legacy message dump off the public site. Scripts and LaTeX stay public as before.
 - Unconfigured newsletter: the signup form's email field has no `name`, so nothing is sent; the button lands on `/subscribe/` ("opens soon" + RSS).
 - Player rookies: page labels college numbers as college; method wording limited to what the old 644 page said (draft-slot priors, college-adjusted).
+- Social: posting is dry-run unless `SOCIAL_DRY_RUN="0"` (set in wrangler.jsonc vars) AND that platform's secrets exist. Failed posts are never retried automatically (no double posts); retry is a button.
+- X monthly cap defaults to 60 posts (pay-per-use pricing). A thread counts each post.
+- Kits under `/social/kits/` are public assets on purpose: Instagram and Threads fetch images from public URLs. Their text is visible at an unlisted URL before posting.
+- Player of the day: OFF by default. Rotation is rank order starting at tip-off (Oct 20 = #1). Text uses only rank, name, team, position, score.
