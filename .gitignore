@@ -4,3 +4,5 @@ outreach/
 .dev.vars
 study/
 lab/
+papers/common/*.csv
+voice/

@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\input{../common/preamble}
+
+\title{\textbf{The Kawhi Anomaly}\\[4pt]
+\large The biggest rebound ever recorded by a 34-year-old\\[2pt]
+\normalsize A Gravity Report Article}
+\author{}
+\date{October 6, 2026}
+
+\begin{document}
+\maketitle
+\vspace{-2.5em}
+\versionline{October 6, 2026}
+
+\begin{abstract}
+\noindent
+In the 2024--25 season, Kawhi Leonard played 37 games and was graded as a good starter. In
+the 2025--26 season, at 34 years old, he played 65 games and was graded as the 5th best player
+in the league per minute. His jump in impact score (+1.31) is the biggest one-year gain ever
+recorded by a player 34 or older, and he is the only star since 1978 to set career highs in
+usage and true shooting in the same season after 33. Late surges have an unkind history. Only
+eight players have surged to star level after 31. None of them kept $\tfrac{3}{4}$ of that gain,
+and the median kept almost none of it. Leonard's surge came in two parts, taking on a heavier
+role and hotter shooting. Both of those parts age differently historically. When we rebuild his
+season piece by piece, we predict an impact of +1.31 next season, roughly a top-ten level, which
+means he keeps about a third of his surge.
+\end{abstract}
+
+\section*{Two records}
+
+The latest edition of The 644 ranks Leonard at sixth with a score of 77.3, the oldest player in
+the top ten by three years.\src{1}{https://thegravityreport.com/the644/the644-2026-07.csv} The
+season that earned him that score came out of nowhere. We ran every NBA season since 1977--78
+through the model's public variant, \gravity-RS. We use this version because the full 644 leans
+on on/off data from Cleaning the Glass, a subscription stats site that strips out garbage time
+(minutes when the game is already decided). That data only goes back to 2003--04 and can't be
+shared.
+\gravity-RS, short for \gravity{} Retrospective, is the same formula without that one input, so
+it works for every season and anyone can check it. It reproduces the historical values in
+Articles No.~1 and No.~2 to within 0.03.\src{2}{https://www.basketball-reference.com/leagues/}
+Two records fall out of that table.
+
+Before going further, a quick note on what the numbers mean. Every rating in this article is an
+impact score: how much a player helps his team per minute, compared with an average NBA minute.
+Zero is average. A plus number is better than average, and the bigger it is, the better. To give
+you a sense of the scale from last season: +0.6 was better than 80\% of the league's regular
+rotation players, +1.3 was roughly a top-ten player, and +2.0 or more was a top-six player. Only
+five players got there.
+
+The first record is the size of the jump. Leonard went from +0.86, which was better than 84\% of
+rotation players, to +2.17, the fifth-best in the league, a gain of 1.31. Among players 34 or
+older with 1,500 minutes, nobody has ever improved their impact score by more in one year. P.J.
+Tucker is the next closest, at +1.27, and he climbed from below average to just average. Only one
+player aged 32 or older has made a bigger jump, Damian Lillard in 2022--23, and he gave most of it
+back the next season, keeping only 17\% of the improvement.
+
+The second is the shape of the season. Leonard used 33.5\% of the Clippers' possessions and shot
+.629 true shooting, and both numbers were career
+highs.\src{3}{https://www.basketball-reference.com/players/l/leonaka01.html} Since 1978, four
+players have set career highs in these categories in the same season after turning 33. The other
+three players are Bojan Bogdanović (2022--23), Elden Campbell (2001--02), and John Lucas
+(1986--87). However, none of them were graded higher than +1.04 that year. Kawhi was graded
++2.17.
+
+\section*{What happens to late surges}
+
+A 34-year-old who suddenly plays better than he did at 33 raises an obvious question: is he
+reaching a new level, or is it just a good year? Historically, we have an answer for the general
+case. Since 1978, 70 players aged 31 or older have improved their impact score by 0.6 or more in a
+single season, about the distance between an average player and one better than 80\% of the
+league. For the 66 of those who played the next year, the median player dropped by 0.57. The
+median player kept a third of his gain, and 13 of them kept three-quarters or more. Those 13 are
+mostly role players who climbed towards average; however, the stars tell a much harsher story.
+
+\begin{table}[H]
+\centering\small
+\caption{Every player since 1977--78 who improved by 0.6 or more after turning 31 and reached a
+star-level +1.5. ``Kept'' is the share of that one-season improvement still there the next
+season.}
+\begin{tabular}{llccccr}
+\toprule
+Player & Season & Age & Before & Surge & Next year & Kept \\
+\midrule
+Clyde Drexler & 1994--95 & 32 & $+0.81$ & $+1.81$ & $+1.07$ & 26\% \\
+Chauncey Billups & 2007--08 & 31 & $+1.51$ & $+2.21$ & $+1.07$ & $-62$\% \\
+Kevin Garnett & 2007--08 & 31 & $+1.51$ & $+2.27$ & $+1.50$ & $-2$\% \\
+Steve Nash & 2009--10 & 35 & $+0.85$ & $+1.51$ & $+1.15$ & 45\% \\
+Tim Duncan & 2012--13 & 36 & $+1.00$ & $+1.60$ & $+0.98$ & $-3$\% \\
+Dirk Nowitzki & 2013--14 & 35 & $+0.89$ & $+1.57$ & $+0.70$ & $-28$\% \\
+Jimmy Butler & 2022--23 & 33 & $+1.82$ & $+2.47$ & $+1.35$ & $-71$\% \\
+Damian Lillard & 2022--23 & 32 & $+0.45$ & $+2.15$ & $+0.73$ & 17\% \\
+\midrule
+\textbf{Kawhi Leonard} & 2025--26 & 34 & $+0.86$ & $\mathbf{+2.17}$ & ? & \\
+\bottomrule
+\end{tabular}
+\label{tab:stars}
+\end{table}
+
+Eight players surged to star level after 31. Not one of them kept three-quarters of the
+improvement they made in their surge season the following year. Nash kept the most with 45\%.
+Only five finished the next season at or below where they started. This record alone would
+settle the question of whether Leonard's surge would stay next year, but it doesn't. Kawhi's
+surge is entirely different.
+
+\section*{The anatomy of the surge}
+
+\gravity-RS builds a season from nine measured parts, and some of them repeat from one year to the
+next more reliably than others. Think of it as a reliability score from 0 to 1. At 1, last season
+tells you exactly what to expect next season. At 0, it tells you nothing. Among players 31 and
+older, a player's scoring volume, creation, and offensive load all score above 0.9, and shooting
+efficiency scores 0.72, the least reliable part of the whole thing.
+
+
+This table splits Leonard's surge into what he did more of, and what he did better. Last year, he
+took on far more of the offense. His load and volume each rose by about a full point on that
+scale, and those are the parts that usually hold. His efficiency also jumped from about average
+to +1.5, close to elite, and that's the part that's supposed to hold least. The two box-score
+numbers the model leans on most, Box Plus/Minus and win shares, sit in between: more reliable than
+shooting, less reliable than role.
+
+Cleaning The Glass, which filters out garbage time, shows where the efficiency came from. Kawhi
+scored 126.9 points per 100 shot attempts, the best mark of his career and putting him in the 91st
+percentile at his position. Half of his shots came from mid-range, as they have for a decade, and
+he made 52\% of them, also a career high. He drew shooting fouls on 13.9\% of his shots, up from
+8.7\% a year earlier. However, his three-point percentage fell from 41\% to
+38\%.\src{4}{https://cleaningtheglass.com/stats/player/2173}
+
+That shows us two different kinds of improvements. The foul drawing might glimpse a return to his
+own prime. He drew fouls on 13\% to 15\% of his shots every season from 2016 to 2020, and getting
+to the free-throw line is one of the more reliable parts of an older player's game, scoring 0.86
+on that same 0-to-1 scale. The mid-range makes are a career high on the shot he takes most;
+however, the shooting efficiency is the part that carries over least. If the forecast we make is
+wrong, the mid-range shot will most likely be where it goes wrong.
+
+Put simply, our forecast expects him to keep about half to 60\% of his bigger role in the offense but
+only about a third of his shooting jump. We predict a 2026--27 impact of +1.31, roughly a top-ten level.
+A simpler model that only uses his last two overall ratings predicts +1.29. Both of these would put
+him a little below his 2023--24 level of +1.45. A very good player, but not quite the one from last
+season.
+
+\begin{table}[H]
+\centering\small
+\caption{A look at Leonard's season, part by part. Each value shows how far above (+) or below
+($-$) an average NBA minute he was, where +1 is clearly good and +2 is elite. Reliability (0 to 1)
+is how well each part carries over from one season to the next for players 31 and older (1,009
+player seasons). The forecast predicts each part from its last two seasons.}
+\begin{tabular}{lcccc}
+\toprule
+Part of his game & 2024--25 & 2025--26 & Reliability & 2026--27 forecast \\
+\midrule
+Scoring volume & $+1.47$ & $+2.83$ & 0.91 & $+2.14$ \\
+Offensive load & $+0.93$ & $+1.85$ & 0.93 & $+1.46$ \\
+Creation & $+0.17$ & $+0.81$ & 0.93 & $+0.49$ \\
+Efficiency under load & $+0.33$ & $\mathbf{+1.48}$ & \textbf{0.72} & $+0.69$ \\
+Box Plus/Minus & $+1.04$ & $+2.62$ & 0.82 & $+1.55$ \\
+Win shares per 48 & $+0.67$ & $+1.87$ & 0.75 & $+1.01$ \\
+Steals and blocks & $+0.52$ & $+0.78$ & 0.86 & $+0.52$ \\
+Rebounding & $+0.11$ & $+0.35$ & 0.97 & $+0.21$ \\
+Getting to the line & $-0.42$ & $+0.59$ & 0.86 & $+0.15$ \\
+\midrule
+\textbf{Impact score} & $+0.86$ & $\mathbf{+2.17}$ & & $\mathbf{+1.31}$ \\
+\bottomrule
+\end{tabular}
+\label{tab:anatomy}
+\end{table}
+
+\section*{Can he stay in the top eight?}
+
+The 644 has a 2-year blend, meaning that part of his 2025--26 season would carry forward.
+Therefore, Kawhi doesn't have to repeat it to stay near the top. Over 65 games, he would need an
+impact of +1.28 to be given a \gravity{} score of 69.3 (8th place score from last
+edition).\src{5}{https://thegravityreport.com/notes/spec/} That bar is lower than you'd think: +1.28
+is roughly the 12th-best per-minute season in the league, because his great 2025--26 still counts
+toward next year's score. An impact of +1.1 would still keep him in the top 10. Our forecast of
++1.31 clears that top-eight bar by just 0.03, which is about as close as it gets. For players 31
+and older, forecasts like this one usually miss by about 0.40 in either direction. Taking that into
+account, his chance of staying top 8 is about 50\%, and top 10 about two in three.
+
+In this situation, games matter less than they seem. The availability term gives last season's 65
+games 30\% of the weight, so a 45-game season would actually lower the bar slightly, from +1.28 to
++1.25, because his great 2025--26 counts for more when next season is short. What's going to end up
+moving the answer is whether the shooting holds or not.
+
+There's also a simpler way to ask the question that doesn't depend on our model at all: will Kawhi
+finish top eight in Box Plus/Minus (BPM), a public stat on Basketball Reference that estimates how
+many points per 100 possessions a player adds over an average player? That version is harder for
+him. It only counts next season, and he has to play at least 1,500 minutes to qualify. Our forecast
+works out to a BPM of about 4.7. In the last eleven seasons, eighth place has never taken less than
+5.1, and it has taken as much as 7.4. He's also only reached 1,500 minutes in six of his last eight
+seasons.\src{6}{https://www.basketball-reference.com/leagues/NBA_2026_advanced.html}
+
+\section*{Toronto}
+
+Kawhi's trade finally got completed on September 14th after the investigation of his endorsement
+deal closed.\src{7}{https://www.nba.com/news/raptors-clippers-kawhi-leonard-trade} The Raptors
+extended him for 2 years and \$115
+million.\src{8}{https://www.tsn.ca/nba/article/raptors-confirm-contract-extension-for-kawhi/}
+Toronto's other creator, Scottie Barnes, used 23.4\% of the team's possessions last season. If
+Kawhi's load falls in Toronto, the part of his surge that history says should last is the part that
+the new role would take away. That's one way that the trade could change our forecast, and it
+would definitely change it for the worse.
+
+\section*{The forecast}
+
+\forecastscale
+\forecastitem{50}{Kawhi Leonard ranks top 8 in The 644, July 2027 edition.}{\#1--8 = Win \quad \#9 or below = Miss. This is our own ranking; we keep one bet on it each article so the model
+gets graded too.}
+\forecastitem{30}{Kawhi Leonard finishes 2026--27 top 8 in Box Plus/Minus among players with 1,500
+regular-season minutes.}{Basketball Reference, final regular-season table.}
+\forecastitem{60}{Kawhi Leonard uses 30\% or more of Toronto's possessions in 2026--27.}{The part of his
+surge we expect to hold. He used 33.5\% last season. Basketball Reference usage rate; void if he plays
+under 1,000 minutes.}
+\forecastitem{65}{Kawhi Leonard's true shooting falls below .610 in 2026--27.}{The part we expect to fade.
+He shot .629 last season. Basketball Reference; void if he plays under 1,000 minutes.}
+
+\medskip\noindent{\footnotesize\textcolor{steel}{Public-stat bets are graded on Basketball Reference's final regular-season
+tables by April 30, 2027. Registered October 6, 2026. Scored by Brier score in the
+Forecast Ledger.}}
+
+\section*{Method and sources}
+\small
+\gravity-RS (\gravity{} Retrospective) follows the specification's retrospective equation,
+1977--78 to 2025--26. Late surge: age 31 or older, 1,500+ minutes, prior season 1,000+, improvement
+of 0.6 or more. The part-by-part forecast predicts each part from its current and prior value,
+fitted on players 31 and older (1,009 cases). Rank and percentile translations use 2025--26
+players with 1,000+ minutes (percentiles) and 1,500+ minutes (ranks). Code:
+\texttt{papers/kawhi/surge.py}, \texttt{papers/common/gravity\_rs.py},
+\texttt{papers/common/pipeline.py}.
+\begin{enumerate}[label={[\arabic*]}]
+\item The Gravity Report, The 644, July 2026 edition (CSV). \url{https://thegravityreport.com/the644/the644-2026-07.csv}
+\item Basketball Reference, league advanced and per-100 tables, 1977--78 to 2025--26. \url{https://www.basketball-reference.com/leagues/}
+\item Basketball Reference, Kawhi Leonard. \url{https://www.basketball-reference.com/players/l/leonaka01.html}
+\item Cleaning the Glass, Kawhi Leonard (garbage time filtered; percentiles by position), accessed September 29, 2026. \url{https://cleaningtheglass.com/stats/player/2173}
+\item The Gravity Report, The \gravity{} Specification, v3. \url{https://thegravityreport.com/notes/spec/}
+\item Basketball Reference, 2025--26 advanced table. \url{https://www.basketball-reference.com/leagues/NBA_2026_advanced.html}
+\item NBA.com, Raptors--Clippers Leonard trade. \url{https://www.nba.com/news/raptors-clippers-kawhi-leonard-trade}
+\item TSN, Raptors confirm Leonard extension. \url{https://www.tsn.ca/nba/article/raptors-confirm-contract-extension-for-kawhi/}
+\end{enumerate}
+
+\end{document}

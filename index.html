@@ -397,7 +397,7 @@ pre.mono{
       <span>File</span><span>Edit</span><span>View</span><span>Go</span><span>Tools</span><span>Compose</span><span>Help</span>
     </div>
     <div class="toolbar">
-      <button class="tool" onclick="dlg('Compose is reserved for the editor. №3 (Duren) is in progress; №4 goes to the ballot — see Drafts.')"><span class="ic">📝</span><span class="tl">New Note</span></button>
+      <button class="tool" onclick="dlg('Compose is reserved for the editor. №4 (Kawhi) is out; №3 (Duren) is in progress — see Drafts.')"><span class="ic">📝</span><span class="tl">New Note</span></button>
       <button class="tool" onclick="dlg('Reply-all to an article? Bold. The newsletter will have a reply address.')"><span class="ic">↩</span><span class="tl">Reply</span></button>
       <button class="tool" onclick="dlg('Forwarding is encouraged. That is, roughly, the entire growth strategy.')"><span class="ic">↪</span><span class="tl">Forward</span></button>
       <div class="tool sep"></div>
@@ -426,7 +426,7 @@ pre.mono{
 
     <div class="status">
       <div class="sseg" id="statusCount"></div>
-      <div class="sseg grow"><span class="scroller">GRAVITY — Game-Rate Adjusted Value, Impact, Talent, and Yield · How good, times how often · Open predictions: 2 (both score July 2027) · Use ↑ ↓ to read the mail · No external rankings were consulted in the making of this inbox</span></div>
+      <div class="sseg grow"><span class="scroller">GRAVITY — Game-Rate Adjusted Value, Impact, Talent, and Yield · How good, times how often · Open predictions: 7 (scoring April–July 2027) · Use ↑ ↓ to read the mail · No external rankings were consulted in the making of this inbox</span></div>
       <div class="sseg">GRAVITY v3 (CTG)</div>
     </div>
   </main>
@@ -448,6 +448,7 @@ pre.mono{
         registered in public. Predictions age in the Outbox; mistakes stay in the trash, labeled.</p>
         <div class="wstart">Where do you want to rank today?</div>
         <button class="wrow" onclick="welcomeGo('inbox','spec')"><span class="wic">⚖</span><span><b>What is GRAVITY?</b><br>the two-minute version, pinned at the top of the inbox</span></button>
+        <button class="wrow" onclick="welcomeGo('inbox','kawhi')"><span class="wic">❗</span><span><b>The Kawhi Anomaly</b><br>new: the biggest rebound ever at 34, and which half of it lasts</span></button>
         <button class="wrow" onclick="welcomeGo('inbox','queta')"><span class="wic">❗</span><span><b>The Queta Problem</b><br>the live bet: 75% he finishes top-50, graded next July</span></button>
         <a class="wrow" href="the644/"><span class="wic">🏀</span><span><b>The 644</b><br>every NBA player plus the draft class, one number each</span></a>
         <button class="wrow" onclick="welcomeGo('ledger',null)"><span class="wic">📌</span><span><b>The Forecast Ledger</b><br>our predictions, graded in public — wins and misses alike</span></button>
@@ -540,7 +541,7 @@ const M = {
       <div class="sig">Four editions per season cycle. Old numbers never get quietly revised.</div>`
   },
   ledger: {
-    from:'Forecast Ledger', subject:'📌 Open predictions: 2 — the ledger is public and permanent',
+    from:'Forecast Ledger', subject:'📌 Open predictions: 7 — the ledger is public and permanent',
     date:'Jul 10 2026, 9:10 AM', pinned:true, flag:'📌',
     body:`
       <div class="kicker">Pinned · The Prediction Ledger</div>
@@ -550,7 +551,12 @@ const M = {
 2   Queta top-50 in July 2027     75%    Jul 10 2026   Jul 2027    [ OPEN ]
 2b  Queta top-25 in July 2027     40%    Jul 10 2026   Jul 2027    [ OPEN ]
 E1  The 30 calls the standings    75%    Jul 29 2026   Jul 2027    [ OPEN ]
-    (Spearman ≥ 0.60 vs final 2026-27 wins)</pre>
+    (Spearman ≥ 0.60 vs final 2026-27 wins)
+K1  Kawhi top 8 in The 644       50%    Oct 6 2026    Jul 2027    [ OPEN ]
+K3  Kawhi top 8 in BPM            30%    Oct 6 2026    Apr 2027    [ OPEN ]
+    (players with 1,500+ minutes, Basketball Reference)
+K4  Kawhi usage 30% or more       60%    Oct 6 2026    Apr 2027    [ OPEN ]
+K5  Kawhi true shooting < .610    65%    Oct 6 2026    Apr 2027    [ OPEN ]</pre>
       <p style="text-align:left"><span class="chip open">OPEN</span> &nbsp;→&nbsp; becomes &nbsp;<span class="chip win">WIN</span> /
       <span class="chip">NEAR MISS</span> / <span class="chip" style="background:#8a2f2f;color:#fff">MISS</span>
       &nbsp;when scored. No deletions, no edits, no quiet revisions.</p>
@@ -597,9 +603,34 @@ E1  The 30 calls the standings    75%    Jul 29 2026   Jul 2027    [ OPEN ]
       <a class="btn" href="the644/the30-2026-07.csv" download>Save the30.csv</a>
       <div class="sig">Same edition calendar as The 644 — rebuilt at the All-Star break, never quietly revised.</div>`
   },
+  kawhi: {
+    from:'Article №4', subject:'The Kawhi Anomaly — the biggest rebound ever recorded by a 34-year-old',
+    date:'Oct 6 2026, 9:00 AM', unread:true, clip:true, flag:'❗', isnew:true, pdf:'papers/kawhi/kawhi.pdf',
+    pages:5, pagesDir:'papers/pages/kawhi', status:true,
+    attach:'kawhi.pdf (67 KB) · <a href="papers/kawhi/kawhi.tex">kawhi.tex</a> · <a href="notes/kawhi/">web edition</a>',
+    body:`
+      <div class="kicker">Article №4 · Preseason 2026–27 · the ballot winner</div>
+      <p>Kawhi Leonard went from a good starter to the fifth-best player in the league per minute, at 34. That jump
+      is the biggest one-year gain ever recorded by a player his age. Late surges usually fade. This article asks
+      which half of his will last.</p>
+      <ul class="findings">
+        <li><b>Two records:</b> the biggest one-year jump ever by a player 34 or older, and the only star since
+        1978 to set career highs in usage and true shooting in the same season after 33.</li>
+        <li><b>Late surges fade:</b> eight players surged to star level after 31. None kept three-quarters of the
+        improvement the next season.</li>
+        <li><b>Two kinds of improvement:</b> his bigger role usually lasts; his hot shooting usually doesn't.</li>
+        <li><b>The forecast:</b> rebuilt piece by piece, we predict an impact of +1.31 next season, roughly a
+        top-ten level.</li>
+      </ul>
+      <p><b>Registered forecasts:</b> top 8 in The 644 (July 2027) <b>50%</b> · top 8 in Box Plus/Minus
+      <b>30%</b> · usage stays at 30% or more <b>60%</b> · true shooting falls below .610 <b>65%</b>.</p>
+      <a class="btn" href="papers/kawhi/kawhi.pdf" target="_blank">Open the article (PDF)</a>
+      <a class="btn" href="papers/kawhi/kawhi.pdf" download>Save kawhi.pdf</a>
+      <div class="sig">Built on GRAVITY Retrospective, run over every season since 1977–78.</div>`
+  },
   queta: {
     from:'Article №2', subject:'The Queta Problem — why he’s a top-50 player, and why 2026-27 proves it (rev. v2)',
-    date:'Jul 10 2026, 4:10 AM', unread:true, clip:true, flag:'❗', isnew:true, pdf:'papers/queta.pdf',
+    date:'Jul 10 2026, 4:10 AM', clip:true, flag:'❗', pdf:'papers/queta.pdf',
     pages:10, pagesDir:'papers/pages/queta', status:true,
     attach:'queta.pdf (135 KB) · <a href="papers/queta.tex">queta.tex</a> · <a href="notes/queta/">web edition</a>',
     rev:'Oct 6 2026 — relabeled: an article typeset in LaTeX, not a research paper; no content changes. Earlier: v2, Jul 11 2026, after external review — model output separated from editorial scenario weights (each weight now anchored to an observable rate); on/off language corrected to cross-season persistence, and the shrunk-input counterfactual re-run properly: #53–55, not ≈#48 (the harshest reading grazes the claim); comparables disclosed as 33 seasons / 22 players (32% per-player rate) + cutoff-sensitivity table; grading tightened: #51–70 = near miss, not push. The registered 75% is unchanged — that is the bet. Then Jul 31 2026 — working-paper status labels added to every page (PDF footer + status notice, also on the web edition); no findings or numbers changed.',
@@ -690,28 +721,21 @@ E1  The 30 calls the standings    75%    Jul 29 2026   Jul 2027    [ OPEN ]
       <p><i>Confirmed by the editorial desk with the ballot at 0–0. The ballot below now decides №4.</i></p>`
   },
   draft_no4: {
-    from:'Drafts', subject:'№4 (ballot) — Kawhi, Jokić, or Flagg: readers pick the next note',
+    from:'Drafts', subject:'№4 (ballot closed) — Kawhi won; Jokić and Flagg are being written too',
     date:'not sent', flag:'✏️',
     body:`
-      <div class="kicker">Draft · unwritten · voting open</div>
-      <p>№3 (Duren) is in progress. This ballot decides №4 — one ballot per reader, counted for real.</p>
+      <div class="kicker">Ballot closed · Kawhi won</div>
+      <p>The ballot is closed. Kawhi won it, and №4, <b>The Kawhi Anomaly</b>, is in the Inbox. №3 (Duren) is in progress, and the Jokić and Flagg articles are being written too.</p>
       <p style="margin-bottom:2px"><b>The Kawhi Anomaly: top-8 in 2027?</b><br>
-      Career-best offense at 34 (8.0 BPM, +14.4 filtered on/off), zero playoff test, one cap-circumvention
-      investigation holding up his trade. The aging-curve math would be the spine: how rare is elite at 35?</p>
-      <p><button class="btn" onclick="vote('kawhi')">Vote: Kawhi</button>
-      <span id="votes-kawhi" style="font-family:Tahoma; font-size:10.5px; color:#666"></span></p>
+      Published October 6 as Article №4 — see the Inbox.</p>
       <p style="margin-bottom:2px"><b>Jokić: still the best, and 2027 proves it.</b><br>
-      GRAVITY #1 by five clear points (97.8 vs 92.9) — yet two straight MVPs went elsewhere. The article would
+      GRAVITY #1 by 4.9 points (97.8 vs 92.9) — yet two straight MVPs went elsewhere. The article would
       quantify the voter-vs-data gap and the aging math for why a 31-year-old repeats at #1.</p>
-      <p><button class="btn" onclick="vote('jokic')">Vote: Jokić</button>
-      <span id="votes-jokic" style="font-family:Tahoma; font-size:10.5px; color:#666"></span></p>
       <p style="margin-bottom:2px"><b>Flagg: top-10 in year two?</b><br>
       Rookie of the Year at 19 (21.0 / 6.7 / 4.5), and the rookie module was built for exactly this
       question: how often does a season like that become top-10 by year two? The bet would grade against
       the July 2027 edition.</p>
-      <p><button class="btn" onclick="vote('flagg')">Vote: Flagg</button>
-      <span id="votes-flagg" style="font-family:Tahoma; font-size:10.5px; color:#666"></span></p>
-      <p><i>№4 goes to the option with the most ballots.</i></p>`
+      <p><i>Final result: Kawhi won the ballot.</i></p>`
   },
   outbox_queta: {
     from:'Forecast Ledger', subject:'⏳ SCHEDULED — Grading Article №2 (sends July 2027)',
@@ -755,7 +779,7 @@ Forecast E1 (75%, ρ ≥ 0.60):  [ WIN / NEAR MISS / MISS ]</pre>
 };
 
 const FOLDERS = [
-  {id:'inbox',   icon:'📥', name:'Inbox', msgs:['spec','ed644','ledger','ed30','queta','morant','welcome']},
+  {id:'inbox',   icon:'📥', name:'Inbox', msgs:['spec','kawhi','ed644','ledger','ed30','queta','morant','welcome']},
   {id:'drafts',  icon:'✏️', name:'Drafts', msgs:['draft_duren','draft_no4']},
   {id:'outbox',  icon:'📤', name:'Outbox', msgs:['outbox_queta','outbox_the30']},
   {id:'deleted', icon:'🗑', name:'Deleted Items', msgs:['del_butler']},
@@ -766,7 +790,7 @@ const FOLDERS = [
   {id:'audit',   icon:'📊', name:'Forecast Audit 2027', msgs:[]},
 ];
 
-let curFolder = 'inbox', curMsg = 'queta';
+let curFolder = 'inbox', curMsg = 'kawhi';
 
 // ---- phone drill-down: folders → list → msg, one screen at a time ----
 const mq = window.matchMedia('(max-width:700px)');

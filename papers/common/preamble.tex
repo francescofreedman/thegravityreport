@@ -1,0 +1,77 @@
+% Shared preamble for the preseason 2026 articles. House style follows papers/queta.tex.
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepgfplotslibrary{groupplots}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!50!black]{hyperref}
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage{enumitem}
+\usepackage{float}
+
+\definecolor{court}{HTML}{0E5A3A}
+\definecolor{amberx}{HTML}{B26A1F}
+\definecolor{steel}{HTML}{5E6E75}
+\definecolor{fade}{HTML}{AEB3B5}
+
+\newcommand{\gravity}{\textsc{gravity}}
+\newcommand{\ctg}{\textsc{ctg}}
+\newcommand{\plainbox}[1]{\par\medskip\noindent\begin{center}%
+\colorbox{court!8}{\parbox{0.93\textwidth}{\small \textbf{\textcolor{court}{In plain terms:}} #1}}%
+\end{center}\medskip}
+
+% Inline source marker: \src{n}{url} prints a linked superscript [n].
+\newcommand{\src}[2]{\textsuperscript{\href{#2}{[#1]}}}
+
+\usepackage{fancyhdr}
+\newcommand{\statusfoot}{%
+  \fancyhf{}%
+  \fancyfoot[L]{\footnotesize\textcolor{steel}{An article, not a research paper}}%
+  \fancyfoot[C]{\thepage}%
+  \fancyfoot[R]{\footnotesize\textcolor{steel}{thegravityreport.com}}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+\fancypagestyle{gravity}{\statusfoot}
+\fancypagestyle{plain}{\statusfoot}
+\pagestyle{gravity}
+
+% Version line required at the top of every preseason article.
+\newcommand{\versionline}[1]{\par\noindent\begin{center}%
+\colorbox{fade!25}{\parbox{0.93\textwidth}{\centering\small
+\textbf{v1 --- methodology and figures verified against public sources as of #1.
+This article will be revised.}\\[2pt]
+Not a research paper: an article, typeset in \LaTeX. Independent analysis, not peer reviewed.}}%
+\end{center}\smallskip}
+
+\newcommand{\betbox}[1]{\par\medskip\noindent\begin{center}%
+\fcolorbox{court}{court!6}{\parbox{0.93\textwidth}{\small #1}}%
+\end{center}\medskip}
+
+\setlist{nosep,leftmargin=1.4em}
+\setlength{\emergencystretch}{3em}
+
+% Forecast display: plain-text claim, a bar filled to the probability, a tick at 50% (coin flip).
+% Usage: \forecastitem{50}{Claim text.}{Grading note.}
+\newcommand{\forecastscale}{%
+  \par\noindent\begin{tikzpicture}
+  \node[font=\scriptsize, text=steel, anchor=west] at (0,0) {0\%};
+  \node[font=\scriptsize, text=steel] at (4.5,0) {coin flip};
+  \node[font=\scriptsize, text=steel, anchor=east] at (9,0) {100\%};
+  \end{tikzpicture}\par\vspace{-2pt}}
+\newcommand{\forecastitem}[3]{%
+  \par\medskip\noindent{\small\textbf{#2}}\par\vspace{3pt}\noindent
+  \begin{tikzpicture}[baseline=(b.base)]
+  \fill[fade!30] (0,0) rectangle (9,0.34);
+  \fill[court!80] (0,0) rectangle ({9*#1/100},0.34);
+  \draw[steel, line width=0.6pt] (4.5,-0.07) -- (4.5,0.41);
+  \node[anchor=west, font=\large\bfseries, text=court] (b) at (9.25,0.17) {#1\%};
+  \end{tikzpicture}%
+  \ifx\relax#3\relax\else\par\vspace{1pt}\noindent{\footnotesize\textcolor{steel}{#3}}\fi\par}
