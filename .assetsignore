@@ -19,3 +19,4 @@ social/test
 package.json
 package-lock.json
 social/*.js
+social/.cache

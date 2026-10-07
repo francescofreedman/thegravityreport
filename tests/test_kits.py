@@ -70,3 +70,39 @@ class KitTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TrackerTests(unittest.TestCase):
+    """Synthetic Basketball Reference page built from the published 644 CSV (TEST FIXTURE, never published)."""
+
+    def fixture(self):
+        import csv
+        rows = []
+        with open(os.path.join(ROOT, "the644", "the644-2026-07.csv"), encoding="utf-8") as f:
+            for r in csv.DictReader(f):
+                if r["is_rookie"] == "True" or not r["mp26"]:
+                    continue
+                rows.append(
+                    f'<tr><td data-stat="name_display"><a>{r["player"]}</a></td><td data-stat="team_name_abbr">{r["team"]}</td>'
+                    f'<td data-stat="games">{int(float(r["gp26"]))}</td><td data-stat="mp">{int(float(r["mp26"]))}</td>'
+                    f'<td data-stat="ts_pct">{r["ts26"]}</td><td data-stat="usg_pct">{r["usg26"]}</td><td data-stat="bpm">{r["bpm26"]}</td></tr>')
+        return '<table id="advanced"><tbody>' + "".join(rows) + "</tbody></table>"
+
+    def test_status_lines_and_kit(self):
+        sys.path.insert(0, os.path.join(ROOT, "scripts", "social"))
+        import ledger_tracker as lt
+        stats = lt.parse(self.fixture())
+        self.assertIn("Kawhi Leonard", stats)
+        rows, src = lt.status_lines(stats, mk.load("content/ledger.json"))
+        by = {r["id"]: r["status_line"] for r in rows}
+        self.assertIn("so far", by["K4"])
+        self.assertIn("graded from the July 2027 edition", by["K1"])
+        with tempfile.TemporaryDirectory() as d:
+            kit, _ = mk.build_ledger_kit(rows, "Oct 7, 2026", "2026-10-07", outdir=d, images=False, source_text=src + " Oct 7, 2026")
+            mk.check_limits(kit)
+
+    def test_no_games_yet(self):
+        sys.path.insert(0, os.path.join(ROOT, "scripts", "social"))
+        import ledger_tracker as lt
+        rows, _ = lt.status_lines({}, mk.load("content/ledger.json"))
+        self.assertTrue(all(r["status_line"] in ("no games yet",) or "graded" in r["status_line"] for r in rows))

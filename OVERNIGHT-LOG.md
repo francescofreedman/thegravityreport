@@ -14,7 +14,7 @@ Prompt: `/Users/francesco2/gravity/.claude/overnight-build-prompt.md`
 | 5 Site QA | done | 0 broken links (27k checked), legacy sitemap OK, article text identical x5, no h-scroll at 390, alt text OK, review/*.png |
 | 6 Post-kit generator | done | `scripts/social/make_kit.py`; number guard; 10 Python tests; kits for 3 articles + 1 player + edition |
 | 7 Auto-posting pipeline | done | `social/pipeline.js`, adapters (X, Bluesky, Threads, Instagram), `/api/admin/*`, `/admin/`, cron; 11 Node tests incl. X's OAuth example vector |
-| 8 Automatic content | todo | |
+| 8 Automatic content | done | player of the day (Worker, off by default), `ledger_tracker.py` (+tests; sample in review/), `substack_export.py` (3 articles), `docs/outreach/podcast-pitch.md` |
 | 9 Docs + handoff | todo | |
 
 ## Decisions (running)
@@ -29,3 +29,5 @@ Prompt: `/Users/francesco2/gravity/.claude/overnight-build-prompt.md`
 - X monthly cap defaults to 60 posts (pay-per-use pricing). A thread counts each post.
 - Kits under `/social/kits/` are public assets on purpose: Instagram and Threads fetch images from public URLs. Their text is visible at an unlisted URL before posting.
 - Player of the day: OFF by default. Rotation is rank order starting at tip-off (Oct 20 = #1). Text uses only rank, name, team, position, score.
+- Ledger tracker: K3 compares Kawhi with players on pace for 1,500 minutes (1,500 × games so far / 82), so mid-season ranks are fair. It makes one request per run at most every 6 hours (cached in social/.cache, gitignored).
+- Substack: no official API, so the export is a paste-ready post.html + bars.png + 6-step README per article. Article text unchanged.
