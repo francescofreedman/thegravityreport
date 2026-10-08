@@ -87,6 +87,20 @@ ARTICLES = (sorted([a for a in _ALL if a["kind"] == "article"], key=lambda a: (a
 LEDGER = load("content/ledger.json")
 T644 = load("content/the644.json")
 MSGS = load("content/legacy/messages.json")["M"]
+REVS = load("content/revisions.json")
+
+
+def apply_relabels(slug, text, with_note=False):
+    """Published series relabels (content/revisions.json): label swaps only, plus a dated public note."""
+    for r in REVS["relabels"]:
+        if slug not in r["applies_to"]:
+            continue
+        for a, z in r["replace"]:
+            text = text.replace(a, z)
+        if with_note and slug in r["notes_for"]:
+            note = f'<div class="revnote relabel">{html.escape(r["note"])}</div>'
+            text = re.sub(r'(<div class="pubstatus">.*?</div>)', lambda m: m.group(1) + note, text, count=1, flags=re.S)
+    return text
 TIERS = {int(k): v for k, v in T644["TIERS"].items()}
 TEAMS30 = T644["TEAMS30"]
 TEAM_NAME = {t["t"]: t["name"] for t in TEAMS30}
@@ -596,7 +610,8 @@ def article_side(a):
 def build_web_edition(slug, path, active):
     pg = load(f"content/pages/{slug}.json")
     a = next((x for x in ARTICLES if x["slug"] == slug), None)
-    body_html = transform_body(pg["body"])
+    body_html = transform_body(apply_relabels(slug, pg["body"], with_note=True))
+    pg = dict(pg, title=apply_relabels(slug, pg["title"]), ld_json=apply_relabels(slug, pg.get("ld_json") or "") or None)
     side = ""  # forecasts already live inside each article body
     inner = (f'<div class="paper-wrap"><article class="paper">{body_html}</article>{side}</div>'
              if side else f'<article class="paper">{body_html}</article>')
@@ -880,6 +895,11 @@ def build_model():
 
 def build_corrections():
     revs = []
+    for r in sorted(REVS["relabels"], key=lambda r: r["date"], reverse=True):
+        for slug in r["notes_for"]:
+            a = next(x for x in ARTICLES if x["slug"] == slug)
+            revs.append(f'<li id="rev-{slug}-{r["date"]}" style="display:block"><div class="meta mono small" style="text-transform:uppercase">{e(a["title"])} · {e(r["label"])}</div>'
+                        f'<p style="margin:6px 0 0">{e(r["note"])}</p><p class="small" style="margin:6px 0 0"><a href="{a["web"]}">Read the current version</a></p></li>')
     for key, slug in [("kawhi", "kawhi"), ("specdoc", "spec"), ("queta", "queta"), ("morant", "morant")]:
         r = MSGS[key].get("rev")
         if not r:

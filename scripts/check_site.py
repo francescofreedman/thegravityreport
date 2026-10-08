@@ -105,7 +105,14 @@ def check_article_text():
                        ("queta", "notes/queta/index.html"), ("spec", "notes/spec/index.html"),
                        ("about", "about/index.html")]:
         legacy = json.load(open(os.path.join(ROOT, "content/pages", slug + ".json"), encoding="utf-8"))["body"]
+        # published relabels are the only allowed change: apply them to the legacy text, drop their notes
+        revs = json.load(open(os.path.join(ROOT, "content/revisions.json"), encoding="utf-8"))["relabels"]
+        for r in revs:
+            if slug in r["applies_to"]:
+                for x, z in r["replace"]:
+                    legacy = legacy.replace(x, z)
         now = open(os.path.join(ROOT, path), encoding="utf-8").read()
+        now = re.sub(r'<div class="revnote relabel">.*?</div>', "", now, flags=re.S)
         m = re.search(r'<article class="paper">(.*?)</article>', now, re.S)
         a, b = visible_text(legacy), visible_text(m.group(1) if m else "")
         out.append((slug, a == b, a, b))

@@ -1,0 +1,17 @@
+{
+  "relabels": [
+    {
+      "date": "2026-10-08",
+      "label": "Oct 8, 2026",
+      "applies_to": ["kawhi", "queta", "morant", "about"],
+      "notes_for": ["kawhi", "queta", "morant"],
+      "replace": [
+        ["GRAVITY Article №", "GRAVITY Deep Dive №"],
+        ["GRAVITY Article No.", "GRAVITY Deep Dive No."],
+        ["{GRAVITY Article}", "{GRAVITY Deep Dive}"],
+        ["Article №", "Deep Dive №"]
+      ],
+      "note": "Relabeled October 8, 2026: the series is now called Deep Dives (it was Articles), because The Gravity Report now publishes two formats, Deep Dives (long, with the full method) and Articles (short). Same number, same address. No numbers, findings, or forecasts changed."
+    }
+  ]
+}
