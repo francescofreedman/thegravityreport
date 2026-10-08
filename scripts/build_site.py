@@ -27,6 +27,63 @@ def load(rel):
 
 SITE = load("content/site.json")
 ARTICLES = load("content/articles.json")
+
+
+def read_short(path):
+    """A short article: a JSON header between '---' lines, then a tiny markup:
+    '## Heading', blank-line-separated paragraphs, and '!call 25% | claim | note' lines.
+    Inline sources: [n](https://...) become superscript links."""
+    text = open(path, encoding="utf-8").read()
+    _, head, body = text.split("---\n", 2)
+    a = json.loads(head)
+    a.setdefault("kind", "article")
+    a["format"] = "short"
+    a["web"] = f"/articles/{a['slug']}/"
+    blocks, para = [], []
+
+    def flush():
+        if para:
+            blocks.append({"t": "p", "text": " ".join(para)})
+            para.clear()
+    for line in body.splitlines():
+        ln = line.strip()
+        if not ln:
+            flush()
+        elif ln.startswith("## "):
+            flush()
+            blocks.append({"t": "h2", "text": ln[3:]})
+        elif ln.startswith("!call "):
+            flush()
+            pct, claim, note = (x.strip() for x in ln[6:].split("|", 2))
+            blocks.append({"t": "call", "p": int(pct.rstrip("%")), "claim": claim, "note": note})
+        else:
+            para.append(ln)
+    flush()
+    a["blocks"] = blocks
+    words = sum(len(re.sub(r"\[(\d+)\]\([^)]*\)", "", b.get("text", "") + " " + b.get("claim", "") + " " + b.get("note", "")).split())
+                for b in blocks)
+    a["read_min"] = max(1, round(words / 220))
+    a.setdefault("pages", None)
+    return a
+
+
+def load_shorts():
+    out = []
+    dirs = [os.path.join(ROOT, "content", "short")]
+    if os.environ.get("GR_DRAFTS"):
+        dirs.append(os.environ["GR_DRAFTS"])
+    for d in dirs:
+        if os.path.isdir(d):
+            for f in sorted(os.listdir(d)):
+                if f.endswith(".md"):
+                    out.append(read_short(os.path.join(d, f)))
+    return out
+
+
+_ALL = ARTICLES + load_shorts()
+# newest first; same-day pieces by number, highest first; the model doc last
+ARTICLES = (sorted([a for a in _ALL if a["kind"] == "article"], key=lambda a: (a["date"], a.get("n") or 0), reverse=True)
+            + [a for a in _ALL if a["kind"] != "article"])
 LEDGER = load("content/ledger.json")
 T644 = load("content/the644.json")
 MSGS = load("content/legacy/messages.json")["M"]
@@ -317,13 +374,24 @@ def subscribe_block():
             f'<p class="lede" style="margin-top:10px">{e(SITE["newsletter_note"])}</p></div>{form}</div></section>')
 
 
+def series_label(a):
+    if a["kind"] != "article":
+        return "The Model · Version 3"
+    if a.get("format") == "short":
+        return "Article"
+    return f'Deep Dive №{a["n"]}'
+
+
+def length_label(a):
+    if a.get("format") == "short":
+        return f'{a["read_min"]}-minute read'
+    return f'{a["pages"]} pages'
+
+
 def archive_links(items):
     out = []
     for a in items:
-        if a["kind"] == "article":
-            meta = f'№{a["n"]} · {short_date(a["date"])}'
-        else:
-            meta = "The Model · Version 3"
+        meta = f'{series_label(a)} · {short_date(a["date"])}' if a["kind"] == "article" else series_label(a)
         out.append(f'<a href="{a["web"]}"><div class="meta">{e(meta)}</div><div class="t">{e(a["title"])}</div>'
                    f'<div class="d">{e(a["teaser"])}</div></a>')
     return '<div class="arch">' + "".join(out) + "</div>"
@@ -341,12 +409,22 @@ def kawhi_stats(p):
 # ---------------------------------------------------------------- pages
 
 def build_home():
-    lead = next(a for a in ARTICLES if a["kind"] == "article")  # newest first in articles.json
-    sp = BY_NAME[lead["stat_player"]]
-    box = "".join(pitem(ledger_entry(i).get("box", ledger_entry(i)["claim"]), ledger_entry(i)["p"])
-                  for i in lead["ledger"])
-    lead_cols = "".join(f"<p>{e(t)}</p>" for t in lead["lead"])
-    top10 = "".join(rank_li(p, hl=(p["n"] == sp["n"])) for p in PLAYERS[:10])
+    lead = next(a for a in ARTICLES if a["kind"] == "article")  # newest piece of either format
+    sp = BY_NAME.get(lead.get("stat_player", ""))
+    if lead.get("format") == "short":
+        calls = [b for b in lead["blocks"] if b["t"] == "call"][:4]
+        box = "".join(pitem(SRC_RE.sub("", b["claim"]), b["p"]) for b in calls)
+        paras = lead.get("lead") or [b["text"] for b in lead["blocks"] if b["t"] == "p"][:1]
+        lead_cols = "".join(f"<p>{inline(t)}</p>" for t in paras)
+        registered = lead["date"]
+    else:
+        box = "".join(pitem(ledger_entry(i).get("box", ledger_entry(i)["claim"]), ledger_entry(i)["p"])
+                      for i in lead["ledger"])
+        lead_cols = "".join(f"<p>{e(t)}</p>" for t in lead["lead"])
+        registered = ledger_entry(lead["ledger"][0])["registered"]
+    lead_kicker = lead.get("kicker") or f'Article · {short_date(lead["date"])}'
+    lead_len = length_label(lead)
+    top10 = "".join(rank_li(p, hl=(sp is not None and p["n"] == sp["n"])) for p in PLAYERS[:10])
     rows = sorted(LEDGER["entries"], key=lambda x: (-x["p"], x["id"]))
     n_open = sum(1 for x in LEDGER["entries"] if x["status"] == "open")
     n_graded = len(LEDGER["entries"]) - n_open
@@ -354,17 +432,17 @@ def build_home():
     body = f"""<div class="wrap">
 <section class="sec"><div class="split">
 <article class="col-2">
-<div class="kicker">{e(lead['kicker'])}</div>
+<div class="kicker">{e(lead_kicker)}</div>
 <h1 class="h-xl">{e(lead['title'])}</h1>
-<p class="dek">{e(lead['home_dek'])}</p>
+<p class="dek">{e(lead.get('home_dek') or lead['dek'])}</p>
 <div class="lead-cols">{lead_cols}</div>
 <div class="btn-row"><a class="btn-dark" href="{lead['web']}">Read the article {ARROW}</a>
-<span class="small">{lead['pages']} pages · web and <a href="{lead['pdf']}">PDF</a> · {short_date(lead['date'])}</span></div>
+<span class="small">{e(lead_len)}{(' · web and <a href="' + lead['pdf'] + '">PDF</a>') if lead.get('pdf') else ''} · {short_date(lead['date'])}</span></div>
 </article>
 <aside class="col-1" style="display:flex;flex-direction:column;gap:28px">
 <div class="box"><div class="box-title">What we think happens next</div>{pscale()}<div class="pitems">{box}</div>
-<p class="small" style="margin:18px 0 0">Registered {short_date(ledger_entry(lead['ledger'][0])['registered'])}. Graded by Brier score.</p></div>
-{kawhi_stats(sp)}
+<p class="small" style="margin:18px 0 0">Registered {short_date(registered)}. Graded by Brier score.</p></div>
+{kawhi_stats(sp) if sp and lead.get('format') != 'short' else ''}
 </aside>
 </div></section>
 
@@ -408,21 +486,73 @@ def build_home():
 
 
 def build_articles_index():
-    items = []
-    for a in ARTICLES:
-        label = f'Article №{a["n"]}' if a["kind"] == "article" else "The Model · technical document"
-        items.append(
-            f'<a href="{a["web"]}"><div class="meta">{e(label)} · {short_date(a["date"])} · {a["pages"]} pages</div>'
-            f'<div class="t">{e(a["title"])}</div><div class="d">{e(a["dek"])}</div></a>')
+    def items(rows):
+        return "".join(
+            f'<a href="{a["web"]}"><div class="meta">{e(series_label(a))} · {short_date(a["date"])} · {e(length_label(a))}</div>'
+            f'<div class="t">{e(a["title"])}</div><div class="d">{e(a["dek"])}</div></a>' for a in rows)
+    deep = [a for a in ARTICLES if a.get("format") == "deep"]
+    short = [a for a in ARTICLES if a.get("format") == "short"]
+    model = [a for a in ARTICLES if a["kind"] != "article"]
+    short_sec = (f'<section class="sec" id="articles-short"><div class="kicker">Articles</div><h2 class="h-m">Short and fast</h2>'
+                 '<p class="lede" style="margin:10px 0 18px;font-size:16px">Quick takes and rapid-fire calls. A few minutes each, every call still on the record.</p>'
+                 f'<div class="arch">{items(short)}</div></section>') if short else ""
     body = f"""<div class="wrap">
-<section class="page-head"><div class="kicker">The archive</div><h1 class="h-xl">Articles</h1>
-<p class="lede">One player, one question, one forecast you can check. Every piece is an article typeset in LaTeX, not a research paper, and every revision ships with a public note.</p></section>
-<section class="sec"><div class="arch">{''.join(items)}</div>
+<section class="page-head"><div class="kicker">The archive</div><h1 class="h-xl">Everything we've published</h1>
+<p class="lede">Two formats. <b>Deep Dives</b> take one player and one question all the way down, typeset in LaTeX with the full method. <b>Articles</b> are short and fast. Both put their forecasts on the record, and every revision ships with a public note.</p>
+<div class="btn-row"><a class="btn-line" href="#deep-dives">Deep Dives ({len(deep)})</a>{f'<a class="btn-line" href="#articles-short">Articles ({len(short)})</a>' if short else ''}</div></section>
+<section class="sec" id="deep-dives"><div class="kicker">Deep Dives</div><h2 class="h-m">One player, one question, all the way down</h2>
+<p class="lede" style="margin:10px 0 18px;font-size:16px">Typeset in LaTeX, with the method, the tables and a registered forecast. Not research papers: independent analysis, revised in public.</p>
+<div class="arch">{items(deep)}</div>
 <p class="muted" style="margin-top:18px"><b style="color:var(--ink)">On the desk:</b> {e(', '.join(SITE['on_the_desk']))}.</p></section>
+{short_sec}
+<section class="sec"><div class="kicker">The Model</div><div class="arch" style="margin-top:14px">{items(model)}</div></section>
 </div>"""
-    write("articles/index.html", page("/articles/", "Articles — The Gravity Report",
-                                      "Every Gravity Report article: plain-language NBA analysis with a registered forecast.",
+    write("articles/index.html", page("/articles/", "Deep Dives and Articles — The Gravity Report",
+                                      "Every Gravity Report piece: Deep Dives (long, with the full method) and Articles (short and fast), each with forecasts on the record.",
                                       body, active="/articles/"))
+
+
+SRC_RE = re.compile(r"\[(\d+)\]\((https?://[^)\s]+)\)")
+
+
+def inline(text):
+    """Escape, then turn [n](url) source markers into superscript links."""
+    out, last = [], 0
+    for m in SRC_RE.finditer(text):
+        out.append(e(text[last:m.start()]))
+        out.append(f'<sup><a class="src" href="{e(m.group(2))}" title="Source {m.group(1)}">{m.group(1)}</a></sup>')
+        last = m.end()
+    out.append(e(text[last:]))
+    return "".join(out)
+
+
+def build_short(a):
+    parts, scaled = [], False
+    for b in a["blocks"]:
+        if b["t"] in ("h2", "call") and not scaled:
+            parts.append(pscale())
+            scaled = True
+        if b["t"] == "h2":
+            parts.append(f'<h2>{inline(b["text"])}</h2>')
+        elif b["t"] == "p":
+            parts.append(f'<p>{inline(b["text"])}</p>')
+        else:
+            parts.append(f'<div class="call"><div class="call-claim">{inline(b["claim"])}</div>'
+                         f'<div class="pbar-wrap">{pbar(b["p"])}<b class="pbar-pct">{b["p"]}%</b></div>'
+                         f'<p class="call-note">{inline(b["note"])}</p></div>')
+    n_calls = sum(1 for b in a["blocks"] if b["t"] == "call")
+    body = f"""<div class="wrap"><article class="paper short">
+<div class="kicker">Article · {short_date(a['date'])} · {a['read_min']}-minute read</div>
+<h1>{e(a['title'])}</h1>
+<div class="subtitle">{e(a['dek'])}</div>
+<div class="byline"><b>Francesco Freedman</b> · The Gravity Report · {n_calls} calls, every one in the <a href="/ledger/">Forecast Ledger</a></div>
+{''.join(parts)}
+<p class="small" style="margin-top:28px">Registered {short_date(a['date'])}. Every call is scored by Brier score in the <a href="/ledger/">Forecast Ledger</a>. An article, not a research paper.</p>
+</article></div>"""
+    write(f"articles/{a['slug']}/index.html",
+          page(a["web"], f"{a['title']} — The Gravity Report", a["dek"], body, active="/articles/",
+               og_image=a.get("card", "/cards/site.png"), og_type="article", depth=True,
+               extra_head=f'<meta property="article:published_time" content="{e(a["date"])}">\n'))
 
 
 # legacy links inside article bodies -> new homes (link text stays true)
@@ -834,6 +964,9 @@ def build_sitemap():
 def main():
     build_home()
     build_articles_index()
+    for a in ARTICLES:
+        if a.get("format") == "short":
+            build_short(a)
     build_web_edition("kawhi", "notes/kawhi/", "/articles/")
     build_web_edition("queta", "notes/queta/", "/articles/")
     build_web_edition("morant", "notes/morant/", "/articles/")

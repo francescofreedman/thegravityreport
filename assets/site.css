@@ -230,3 +230,12 @@ a:hover{color:var(--accent)}
   .rank-list .nm{font-size:17px}
   .p-score{text-align:left}
 }
+
+/* ---------- short articles ---------- */
+.paper.short h2{margin-top:44px;padding-top:18px;border-top:2px solid var(--ink)}
+.call{padding:16px 0;border-bottom:1px solid var(--rule-lt)}
+.call-claim{font-size:19px;font-weight:700;line-height:1.35}
+.call .pbar-wrap{max-width:560px}
+.call-note{margin:8px 0 0;font-size:16px;line-height:1.6;color:var(--ink2)}
+sup a.src{font-family:var(--mono);font-size:11px;text-decoration:none;color:var(--accent);padding:0 1px}
+sup a.src:hover{text-decoration:underline}

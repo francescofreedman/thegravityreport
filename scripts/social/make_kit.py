@@ -285,7 +285,7 @@ def build_article_kit(slug, date, outdir=None, images=True):
         outdir = os.path.join(ROOT, "social", "kits", f"{date}-article-{slug}")
     write_kit(kit, outdir)
     if images:
-        label = f"ARTICLE №{a['n']}"
+        label = "ARTICLE" if a.get("format") == "short" else f"DEEP DIVE №{a['n']}"
         landscape(os.path.join(outdir, "card-1200x675.png"), a["kicker"].upper(), a["title"], a["dek"], label,
                   "THEGRAVITYREPORT.COM" + a["web"].upper().rstrip("/"))
         ig_cover(os.path.join(outdir, "ig-1080x1350-1.png"), a["kicker"].upper(), a["title"], a["dek"], label, "1/4")

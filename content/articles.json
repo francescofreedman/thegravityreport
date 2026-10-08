@@ -7,7 +7,7 @@
     "dek": "The biggest rebound ever recorded by a 34-year-old.",
     "home_dek": "The biggest rebound ever recorded by a 34-year-old. Late surges usually fade. Which half of his will last?",
     "teaser": "The biggest rebound ever recorded by a 34-year-old.",
-    "kicker": "Article №4 · Preseason 2026–27",
+    "kicker": "Deep Dive №4 · Preseason 2026–27",
     "date": "2026-10-06",
     "pages": 5,
     "pdf": "/papers/kawhi/kawhi.pdf",
@@ -44,7 +44,8 @@
         "label": "years old, and the biggest one-year jump ever recorded at that age"
       },
       "team": "TOR"
-    }
+    },
+    "format": "deep"
   },
   {
     "n": 2,
@@ -53,7 +54,7 @@
     "title": "The Queta Problem",
     "dek": "Why he’s a top-50 player, and why 2026-27 proves it.",
     "teaser": "Twice waived, 39th pick, #41 in The 644. Why he's a top-50 player.",
-    "kicker": "Article №2 · Trust the data · revised v2",
+    "kicker": "Deep Dive №2 · Trust the data · revised v2",
     "date": "2026-07-10",
     "pages": 10,
     "pdf": "/papers/queta.pdf",
@@ -80,7 +81,8 @@
         "label": "of 644: twice waived, 39th pick, a full tier above his reputation"
       },
       "team": "BOS"
-    }
+    },
+    "format": "deep"
   },
   {
     "n": 1,
@@ -89,7 +91,7 @@
     "title": "The Rise and Fall of Ja Morant",
     "dek": "A statistical account, 2017–2026.",
     "teaser": "From the 97th percentile to 79 of 246 games.",
-    "kicker": "Article №1 · A career autopsy · revised v2",
+    "kicker": "Deep Dive №1 · A career autopsy · revised v2",
     "date": "2026-07-10",
     "pages": 12,
     "pdf": "/papers/morant.pdf",
@@ -114,7 +116,8 @@
         "label": "games played since 2023, down from the 97th percentile in 2021-22"
       },
       "team": "POR"
-    }
+    },
+    "format": "deep"
   },
   {
     "n": null,

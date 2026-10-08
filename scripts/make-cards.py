@@ -79,10 +79,18 @@ def main():
               "One model, every player, every forecast on the record.", "THE 644", top)
     site_card("cards/the644.png", f"THE 644 · {site['edition']['name'].upper()} EDITION",
               "The 644", "Every NBA player, one number. How good, times how often.", "THE 644", top)
+    # short articles: JSON header of content/short/*.md (+ GR_DRAFTS for local previews)
+    for d in [os.path.join(ROOT, "content", "short"), os.environ.get("GR_DRAFTS", "")]:
+        if d and os.path.isdir(d):
+            for f in sorted(os.listdir(d)):
+                if f.endswith(".md"):
+                    h = json.loads(open(os.path.join(d, f), encoding="utf-8").read().split("---\n", 2)[1])
+                    h.update(kind="article", format="short", web=f"/articles/{h['slug']}/", kicker=f"ARTICLE · {h['date']}")
+                    arts.append(h)
     for a in arts:
         if a["kind"] == "article":
             kicker = a["kicker"].upper()
-            label = f"ARTICLE №{a['n']}"
+            label = "ARTICLE" if a.get("format") == "short" else f"DEEP DIVE №{a['n']}"
         else:
             kicker = "THE MODEL · VERSION 3 · TECHNICAL DOCUMENT"
             label = "THE MODEL"

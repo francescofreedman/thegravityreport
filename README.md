@@ -39,7 +39,12 @@ python3 -m http.server 8090
 Then open http://localhost:8090. The API and posting queue only run on Cloudflare
 (or `npx wrangler dev`).
 
-## Publishing a new article
+## Two formats
+
+- **Deep Dives** (long): LaTeX PDF + web edition, numbered (Deep Dive №N), listed in `content/articles.json` with `"format": "deep"`. Steps below.
+- **Articles** (short, e.g. rapid-fire predictions): one file, `content/short/<slug>.md`, made of a JSON header between `---` lines, then `## Heading`, plain paragraphs, and `!call 25% | claim | note` lines (sources as `[n](url)`). The build makes `/articles/<slug>/` with probability bars. No LaTeX, no number.
+
+## Publishing a new Deep Dive
 
 1. Compile the PDF (`tectonic`), put PDF + TeX in `papers/`, run `scripts/render-pages.sh`.
 2. Add the article to `content/articles.json` (newest first; the first `article` entry is the homepage lead),
