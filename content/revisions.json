@@ -3,15 +3,45 @@
     {
       "date": "2026-10-08",
       "label": "Oct 8, 2026",
-      "applies_to": ["kawhi", "queta", "morant", "about"],
-      "notes_for": ["kawhi", "queta", "morant"],
+      "applies_to": [
+        "kawhi",
+        "queta",
+        "morant",
+        "about"
+      ],
+      "notes_for": [
+        "kawhi",
+        "queta",
+        "morant"
+      ],
       "replace": [
-        ["GRAVITY Article №", "GRAVITY Deep Dive №"],
-        ["GRAVITY Article No.", "GRAVITY Deep Dive No."],
-        ["{GRAVITY Article}", "{GRAVITY Deep Dive}"],
-        ["Article №", "Deep Dive №"]
+        [
+          "GRAVITY Article №",
+          "GRAVITY Deep Dive №"
+        ],
+        [
+          "GRAVITY Article No.",
+          "GRAVITY Deep Dive No."
+        ],
+        [
+          "{GRAVITY Article}",
+          "{GRAVITY Deep Dive}"
+        ],
+        [
+          "Article №",
+          "Deep Dive №"
+        ]
       ],
       "note": "Relabeled October 8, 2026: the series is now called Deep Dives (it was Articles), because The Gravity Report now publishes two formats, Deep Dives (long, with the full method) and Articles (short). Same number, same address. No numbers, findings, or forecasts changed."
+    }
+  ],
+  "methods": [
+    {
+      "date": "2026-10-14",
+      "label": "Oct 14, 2026",
+      "title": "New team model: TORQUE replaces Team GRAVITY for The 30",
+      "text": "The 30 now ranks teams with TORQUE, a new team model, and lives on its own page. The July method added up player projections weighted by last season's minutes; it ignored rookies and returnees and squeezed every player's minutes equally on deep rosters. TORQUE prices every player and hands out minutes like a real rotation. Tested on 2011–2026 seasons it was never tuned on, it ordered the standings at 0.736 against 0.700 for the July method: a real but modest gain. The July 2026 edition stays published unchanged, and forecast E1 is graded on it as registered.",
+      "link": "/the30/#method"
     }
   ]
 }

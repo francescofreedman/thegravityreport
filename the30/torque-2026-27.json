@@ -1,0 +1,885 @@
+{
+ "model": "TORQUE",
+ "season": "2026-27",
+ "as_of": "2026-10-08",
+ "replacement": 33.7,
+ "wins_line": {
+  "a": -1.0225,
+  "b": 0.03106,
+  "fit": "1990-2026",
+  "league_shift_now": -0.68,
+  "league_shift_july": -0.46
+ },
+ "teams": [
+  {
+   "rank": 1,
+   "code": "OKC",
+   "team": "Oklahoma City Thunder",
+   "torque": 59.4,
+   "wins": 66.7,
+   "rank_july": 1,
+   "torque_july": 58.5,
+   "wins_july": 64.8,
+   "change": 0.8,
+   "top3": [
+    {
+     "player": "Shai Gilgeous-Alexander",
+     "force": 95.8,
+     "min": 28.9
+    },
+    {
+     "player": "Chet Holmgren",
+     "force": 66.7,
+     "min": 24.2
+    },
+    {
+     "player": "Jalen Williams",
+     "force": 64.2,
+     "min": 22.0
+    }
+   ],
+   "unknown_players": 3
+  },
+  {
+   "rank": 2,
+   "code": "SAS",
+   "team": "San Antonio Spurs",
+   "torque": 53.6,
+   "wins": 51.9,
+   "rank_july": 2,
+   "torque_july": 54.1,
+   "wins_july": 53.5,
+   "change": -0.6,
+   "top3": [
+    {
+     "player": "Victor Wembanyama",
+     "force": 88.0,
+     "min": 21.4
+    },
+    {
+     "player": "De'Aaron Fox",
+     "force": 57.0,
+     "min": 22.2
+    },
+    {
+     "player": "Luke Kornet",
+     "force": 62.2,
+     "min": 16.8
+    }
+   ],
+   "unknown_players": 4
+  },
+  {
+   "rank": 3,
+   "code": "DEN",
+   "team": "Denver Nuggets",
+   "torque": 53.3,
+   "wins": 51.3,
+   "rank_july": 3,
+   "torque_july": 53.5,
+   "wins_july": 51.9,
+   "change": -0.2,
+   "top3": [
+    {
+     "player": "Nikola Jokić",
+     "force": 97.4,
+     "min": 25.5
+    },
+    {
+     "player": "Jamal Murray",
+     "force": 62.9,
+     "min": 25.7
+    },
+    {
+     "player": "Aaron Gordon",
+     "force": 55.7,
+     "min": 18.6
+    }
+   ],
+   "unknown_players": 2
+  },
+  {
+   "rank": 4,
+   "code": "DET",
+   "team": "Detroit Pistons",
+   "torque": 53.3,
+   "wins": 51.2,
+   "rank_july": 14,
+   "torque_july": 51.1,
+   "wins_july": 45.7,
+   "change": 2.2,
+   "top3": [
+    {
+     "player": "Cade Cunningham",
+     "force": 71.5,
+     "min": 25.8
+    },
+    {
+     "player": "Jalen Duren",
+     "force": 68.3,
+     "min": 22.3
+    },
+    {
+     "player": "Ausar Thompson",
+     "force": 60.1,
+     "min": 19.4
+    }
+   ],
+   "unknown_players": 2
+  },
+  {
+   "rank": 5,
+   "code": "LAL",
+   "team": "Los Angeles Lakers",
+   "torque": 52.9,
+   "wins": 50.2,
+   "rank_july": 7,
+   "torque_july": 52.5,
+   "wins_july": 49.3,
+   "change": 0.4,
+   "top3": [
+    {
+     "player": "Luka Dončić",
+     "force": 86.3,
+     "min": 26.6
+    },
+    {
+     "player": "Austin Reaves",
+     "force": 60.3,
+     "min": 25.3
+    },
+    {
+     "player": "Sandro Mamukelashvili",
+     "force": 59.9,
+     "min": 17.5
+    }
+   ],
+   "unknown_players": 1
+  },
+  {
+   "rank": 6,
+   "code": "TOR",
+   "team": "Toronto Raptors",
+   "torque": 52.7,
+   "wins": 49.7,
+   "rank_july": 15,
+   "torque_july": 50.5,
+   "wins_july": 44.4,
+   "change": 2.2,
+   "top3": [
+    {
+     "player": "Kawhi Leonard",
+     "force": 76.0,
+     "min": 24.0
+    },
+    {
+     "player": "Scottie Barnes",
+     "force": 66.2,
+     "min": 25.9
+    },
+    {
+     "player": "Immanuel Quickley",
+     "force": 59.1,
+     "min": 22.4
+    }
+   ],
+   "unknown_players": 2
+  },
+  {
+   "rank": 7,
+   "code": "CLE",
+   "team": "Cleveland Cavaliers",
+   "torque": 52.4,
+   "wins": 48.8,
+   "rank_july": 10,
+   "torque_july": 51.7,
+   "wins_july": 47.3,
+   "change": 0.7,
+   "top3": [
+    {
+     "player": "Donovan Mitchell",
+     "force": 68.7,
+     "min": 25.8
+    },
+    {
+     "player": "Evan Mobley",
+     "force": 65.7,
+     "min": 23.6
+    },
+    {
+     "player": "James Harden",
+     "force": 61.3,
+     "min": 25.4
+    }
+   ],
+   "unknown_players": 1
+  },
+  {
+   "rank": 8,
+   "code": "PHI",
+   "team": "Philadelphia 76ers",
+   "torque": 51.9,
+   "wins": 47.6,
+   "rank_july": 8,
+   "torque_july": 51.9,
+   "wins_july": 48.0,
+   "change": -0.1,
+   "top3": [
+    {
+     "player": "Tyrese Maxey",
+     "force": 67.1,
+     "min": 24.3
+    },
+    {
+     "player": "LeBron James",
+     "force": 62.8,
+     "min": 21.9
+    },
+    {
+     "player": "Jaylen Brown",
+     "force": 62.2,
+     "min": 22.3
+    }
+   ],
+   "unknown_players": 1
+  },
+  {
+   "rank": 9,
+   "code": "POR",
+   "team": "Portland Trail Blazers",
+   "torque": 51.6,
+   "wins": 47.0,
+   "rank_july": 11,
+   "torque_july": 51.2,
+   "wins_july": 46.1,
+   "change": 0.4,
+   "top3": [
+    {
+     "player": "Deni Avdija",
+     "force": 65.3,
+     "min": 23.8
+    },
+    {
+     "player": "Damian Lillard",
+     "force": 63.5,
+     "min": 24.2
+    },
+    {
+     "player": "Donovan Clingan",
+     "force": 60.0,
+     "min": 19.4
+    }
+   ],
+   "unknown_players": 0
+  },
+  {
+   "rank": 10,
+   "code": "HOU",
+   "team": "Houston Rockets",
+   "torque": 51.6,
+   "wins": 46.8,
+   "rank_july": 12,
+   "torque_july": 51.2,
+   "wins_july": 46.1,
+   "change": 0.4,
+   "top3": [
+    {
+     "player": "Alperen Şengün",
+     "force": 66.3,
+     "min": 23.5
+    },
+    {
+     "player": "Kevin Durant",
+     "force": 63.2,
+     "min": 24.7
+    },
+    {
+     "player": "Amen Thompson",
+     "force": 61.0,
+     "min": 24.3
+    }
+   ],
+   "unknown_players": 2
+  },
+  {
+   "rank": 11,
+   "code": "BOS",
+   "team": "Boston Celtics",
+   "torque": 51.4,
+   "wins": 46.4,
+   "rank_july": 5,
+   "torque_july": 52.9,
+   "wins_july": 50.3,
+   "change": -1.4,
+   "top3": [
+    {
+     "player": "Jayson Tatum",
+     "force": 70.9,
+     "min": 21.3
+    },
+    {
+     "player": "Payton Pritchard",
+     "force": 59.8,
+     "min": 23.3
+    },
+    {
+     "player": "Derrick White",
+     "force": 56.2,
+     "min": 24.0
+    }
+   ],
+   "unknown_players": 2
+  },
+  {
+   "rank": 12,
+   "code": "NYK",
+   "team": "New York Knicks",
+   "torque": 51.3,
+   "wins": 46.1,
+   "rank_july": 4,
+   "torque_july": 53.0,
+   "wins_july": 50.6,
+   "change": -1.7,
+   "top3": [
+    {
+     "player": "Karl-Anthony Towns",
+     "force": 69.5,
+     "min": 21.9
+    },
+    {
+     "player": "Jalen Brunson",
+     "force": 66.4,
+     "min": 22.8
+    },
+    {
+     "player": "OG Anunoby",
+     "force": 59.8,
+     "min": 21.5
+    }
+   ],
+   "unknown_players": 2
+  },
+  {
+   "rank": 13,
+   "code": "ORL",
+   "team": "Orlando Magic",
+   "torque": 51.0,
+   "wins": 45.3,
+   "rank_july": 13,
+   "torque_july": 51.2,
+   "wins_july": 46.1,
+   "change": -0.2,
+   "top3": [
+    {
+     "player": "Paolo Banchero",
+     "force": 60.6,
+     "min": 23.5
+    },
+    {
+     "player": "Franz Wagner",
+     "force": 63.0,
+     "min": 20.9
+    },
+    {
+     "player": "Desmond Bane",
+     "force": 58.1,
+     "min": 23.5
+    }
+   ],
+   "unknown_players": 1
+  },
+  {
+   "rank": 14,
+   "code": "MIA",
+   "team": "Miami Heat",
+   "torque": 50.4,
+   "wins": 43.9,
+   "rank_july": 6,
+   "torque_july": 52.6,
+   "wins_july": 49.6,
+   "change": -2.2,
+   "top3": [
+    {
+     "player": "Giannis Antetokounmpo",
+     "force": 90.5,
+     "min": 21.5
+    },
+    {
+     "player": "Bam Adebayo",
+     "force": 57.4,
+     "min": 25.0
+    },
+    {
+     "player": "Andrew Wiggins",
+     "force": 52.4,
+     "min": 22.2
+    }
+   ],
+   "unknown_players": 1
+  },
+  {
+   "rank": 15,
+   "code": "MIN",
+   "team": "Minnesota Timberwolves",
+   "torque": 50.0,
+   "wins": 42.9,
+   "rank_july": 9,
+   "torque_july": 51.7,
+   "wins_july": 47.4,
+   "change": -1.7,
+   "top3": [
+    {
+     "player": "Anthony Edwards",
+     "force": 66.1,
+     "min": 25.2
+    },
+    {
+     "player": "LaMelo Ball",
+     "force": 68.2,
+     "min": 22.3
+    },
+    {
+     "player": "Rudy Gobert",
+     "force": 53.4,
+     "min": 22.9
+    }
+   ],
+   "unknown_players": 2
+  },
+  {
+   "rank": 16,
+   "code": "CHO",
+   "team": "Charlotte Hornets",
+   "torque": 49.9,
+   "wins": 42.6,
+   "rank_july": 19,
+   "torque_july": 48.2,
+   "wins_july": 38.4,
+   "change": 1.7,
+   "top3": [
+    {
+     "player": "Kon Knueppel",
+     "force": 63.3,
+     "min": 24.8
+    },
+    {
+     "player": "Brandon Miller",
+     "force": 55.4,
+     "min": 21.8
+    },
+    {
+     "player": "Grayson Allen",
+     "force": 54.6,
+     "min": 19.5
+    }
+   ],
+   "unknown_players": 2
+  },
+  {
+   "rank": 17,
+   "code": "GSW",
+   "team": "Golden State Warriors",
+   "torque": 49.7,
+   "wins": 42.0,
+   "rank_july": 16,
+   "torque_july": 49.9,
+   "wins_july": 42.9,
+   "change": -0.3,
+   "top3": [
+    {
+     "player": "Stephen Curry",
+     "force": 69.5,
+     "min": 21.7
+    },
+    {
+     "player": "Jimmy Butler",
+     "force": 69.1,
+     "min": 20.6
+    },
+    {
+     "player": "Kristaps Porziņģis",
+     "force": 60.7,
+     "min": 16.7
+    }
+   ],
+   "unknown_players": 2
+  },
+  {
+   "rank": 18,
+   "code": "IND",
+   "team": "Indiana Pacers",
+   "torque": 49.3,
+   "wins": 40.9,
+   "rank_july": 20,
+   "torque_july": 47.9,
+   "wins_july": 37.7,
+   "change": 1.4,
+   "top3": [
+    {
+     "player": "Tyrese Haliburton",
+     "force": 74.5,
+     "min": 23.1
+    },
+    {
+     "player": "Ivica Zubac",
+     "force": 56.0,
+     "min": 19.5
+    },
+    {
+     "player": "Pascal Siakam",
+     "force": 53.2,
+     "min": 20.5
+    }
+   ],
+   "unknown_players": 1
+  },
+  {
+   "rank": 19,
+   "code": "PHO",
+   "team": "Phoenix Suns",
+   "torque": 48.2,
+   "wins": 38.1,
+   "rank_july": 17,
+   "torque_july": 49.2,
+   "wins_july": 41.1,
+   "change": -1.1,
+   "top3": [
+    {
+     "player": "Devin Booker",
+     "force": 58.9,
+     "min": 23.5
+    },
+    {
+     "player": "Mark Williams",
+     "force": 62.4,
+     "min": 18.1
+    },
+    {
+     "player": "Miles Bridges",
+     "force": 54.5,
+     "min": 21.2
+    }
+   ],
+   "unknown_players": 1
+  },
+  {
+   "rank": 20,
+   "code": "ATL",
+   "team": "Atlanta Hawks",
+   "torque": 47.7,
+   "wins": 36.9,
+   "rank_july": 22,
+   "torque_july": 46.6,
+   "wins_july": 34.4,
+   "change": 1.0,
+   "top3": [
+    {
+     "player": "Jalen Johnson",
+     "force": 64.0,
+     "min": 24.1
+    },
+    {
+     "player": "Dyson Daniels",
+     "force": 54.5,
+     "min": 23.4
+    },
+    {
+     "player": "Onyeka Okongwu",
+     "force": 54.8,
+     "min": 22.2
+    }
+   ],
+   "unknown_players": 3
+  },
+  {
+   "rank": 21,
+   "code": "DAL",
+   "team": "Dallas Mavericks",
+   "torque": 47.5,
+   "wins": 36.4,
+   "rank_july": 21,
+   "torque_july": 47.1,
+   "wins_july": 35.5,
+   "change": 0.4,
+   "top3": [
+    {
+     "player": "Cooper Flagg",
+     "force": 57.8,
+     "min": 22.2
+    },
+    {
+     "player": "Kyrie Irving",
+     "force": 56.6,
+     "min": 21.1
+    },
+    {
+     "player": "Daniel Gafford",
+     "force": 59.0,
+     "min": 16.2
+    }
+   ],
+   "unknown_players": 4
+  },
+  {
+   "rank": 22,
+   "code": "CHI",
+   "team": "Chicago Bulls",
+   "torque": 46.2,
+   "wins": 33.2,
+   "rank_july": 23,
+   "torque_july": 46.4,
+   "wins_july": 33.8,
+   "change": -0.1,
+   "top3": [
+    {
+     "player": "Josh Giddey",
+     "force": 60.3,
+     "min": 23.0
+    },
+    {
+     "player": "Tre Jones",
+     "force": 58.0,
+     "min": 19.3
+    },
+    {
+     "player": "Norman Powell",
+     "force": 54.9,
+     "min": 21.2
+    }
+   ],
+   "unknown_players": 2
+  },
+  {
+   "rank": 23,
+   "code": "MIL",
+   "team": "Milwaukee Bucks",
+   "torque": 46.2,
+   "wins": 33.1,
+   "rank_july": 24,
+   "torque_july": 46.2,
+   "wins_july": 33.4,
+   "change": -0.0,
+   "top3": [
+    {
+     "player": "Tyler Herro",
+     "force": 60.4,
+     "min": 19.8
+    },
+    {
+     "player": "Kel'el Ware",
+     "force": 58.2,
+     "min": 16.6
+    },
+    {
+     "player": "Kevin Porter Jr.",
+     "force": 55.9,
+     "min": 17.9
+    }
+   ],
+   "unknown_players": 3
+  },
+  {
+   "rank": 24,
+   "code": "NOP",
+   "team": "New Orleans Pelicans",
+   "torque": 45.6,
+   "wins": 31.7,
+   "rank_july": 25,
+   "torque_july": 45.8,
+   "wins_july": 32.3,
+   "change": -0.1,
+   "top3": [
+    {
+     "player": "Zion Williamson",
+     "force": 66.4,
+     "min": 18.6
+    },
+    {
+     "player": "Trey Murphy III",
+     "force": 57.8,
+     "min": 21.4
+    },
+    {
+     "player": "Saddiq Bey",
+     "force": 51.7,
+     "min": 19.8
+    }
+   ],
+   "unknown_players": 1
+  },
+  {
+   "rank": 25,
+   "code": "UTA",
+   "team": "Utah Jazz",
+   "torque": 45.5,
+   "wins": 31.3,
+   "rank_july": 26,
+   "torque_july": 43.3,
+   "wins_july": 26.0,
+   "change": 2.2,
+   "top3": [
+    {
+     "player": "Lauri Markkanen",
+     "force": 57.2,
+     "min": 21.2
+    },
+    {
+     "player": "Keyonte George",
+     "force": 52.6,
+     "min": 21.0
+    },
+    {
+     "player": "Jaren Jackson Jr.",
+     "force": 52.2,
+     "min": 19.1
+    }
+   ],
+   "unknown_players": 1
+  },
+  {
+   "rank": 26,
+   "code": "LAC",
+   "team": "LA Clippers",
+   "torque": 44.7,
+   "wins": 29.2,
+   "rank_july": 18,
+   "torque_july": 48.3,
+   "wins_july": 38.6,
+   "change": -3.6,
+   "top3": [
+    {
+     "player": "Darius Garland",
+     "force": 57.2,
+     "min": 21.0
+    },
+    {
+     "player": "Brandon Ingram",
+     "force": 50.1,
+     "min": 22.7
+    },
+    {
+     "player": "Rui Hachimura",
+     "force": 46.1,
+     "min": 19.1
+    }
+   ],
+   "unknown_players": 3
+  },
+  {
+   "rank": 27,
+   "code": "WAS",
+   "team": "Washington Wizards",
+   "torque": 43.8,
+   "wins": 26.9,
+   "rank_july": 28,
+   "torque_july": 42.6,
+   "wins_july": 24.2,
+   "change": 1.1,
+   "top3": [
+    {
+     "player": "Anthony Davis",
+     "force": 63.2,
+     "min": 18.6
+    },
+    {
+     "player": "Trae Young",
+     "force": 58.2,
+     "min": 17.1
+    },
+    {
+     "player": "Alex Sarr",
+     "force": 49.2,
+     "min": 17.5
+    }
+   ],
+   "unknown_players": 2
+  },
+  {
+   "rank": 28,
+   "code": "MEM",
+   "team": "Memphis Grizzlies",
+   "torque": 42.7,
+   "wins": 24.3,
+   "rank_july": 30,
+   "torque_july": 41.7,
+   "wins_july": 21.8,
+   "change": 1.1,
+   "top3": [
+    {
+     "player": "Ty Jerome",
+     "force": 64.8,
+     "min": 12.4
+    },
+    {
+     "player": "Cam Spencer",
+     "force": 57.5,
+     "min": 12.6
+    },
+    {
+     "player": "Isaiah Stewart",
+     "force": 51.2,
+     "min": 12.5
+    }
+   ],
+   "unknown_players": 3
+  },
+  {
+   "rank": 29,
+   "code": "BRK",
+   "team": "Brooklyn Nets",
+   "torque": 42.6,
+   "wins": 24.1,
+   "rank_july": 29,
+   "torque_july": 42.2,
+   "wins_july": 23.3,
+   "change": 0.4,
+   "top3": [
+    {
+     "player": "Michael Porter Jr.",
+     "force": 57.3,
+     "min": 21.7
+    },
+    {
+     "player": "Julius Randle",
+     "force": 52.5,
+     "min": 22.0
+    },
+    {
+     "player": "Day'Ron Sharpe",
+     "force": 56.3,
+     "min": 14.7
+    }
+   ],
+   "unknown_players": 3
+  },
+  {
+   "rank": 30,
+   "code": "SAC",
+   "team": "Sacramento Kings",
+   "torque": 42.4,
+   "wins": 23.5,
+   "rank_july": 27,
+   "torque_july": 43.1,
+   "wins_july": 25.4,
+   "change": -0.6,
+   "top3": [
+    {
+     "player": "Domantas Sabonis",
+     "force": 63.9,
+     "min": 21.4
+    },
+    {
+     "player": "Zach LaVine",
+     "force": 48.1,
+     "min": 22.9
+    },
+    {
+     "player": "Malik Monk",
+     "force": 45.6,
+     "min": 19.3
+    }
+   ],
+   "unknown_players": 3
+  }
+ ]
+}

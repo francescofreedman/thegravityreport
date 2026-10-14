@@ -77,6 +77,11 @@ def main():
     top = "  ·  ".join(f"{p['r']} {p['n'].split(' ', 1)[-1].upper()} {p['s']:.1f}" for p in players[:4])
     site_card("cards/site.png", "INDEPENDENT NBA ANALYSIS", "The Gravity Report",
               "One model, every player, every forecast on the record.", "THE 644", top)
+    import json as _j
+    t30 = _j.load(open(os.path.join(ROOT, "the30", "torque-2026-27.json"), encoding="utf-8"))["teams"]
+    top30 = "  ·  ".join(f"{r['rank']} {r['code']} {r['torque']:.1f}" for r in t30[:4])
+    site_card("cards/the30.png", "THE 30 · 2026–27 OPENING NIGHT UPDATE",
+              "The 30", "Every NBA team, one number: ranked by TORQUE.", "TORQUE", top30)
     site_card("cards/the644.png", f"THE 644 · {site['edition']['name'].upper()} EDITION",
               "The 644", "Every NBA player, one number. How good, times how often.", "THE 644", top)
     # short articles: JSON header of content/short/*.md (+ GR_DRAFTS for local previews)

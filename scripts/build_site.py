@@ -243,7 +243,7 @@ def rank_li(p, hl=False, link=True, team=True):
 
 # ---------------------------------------------------------------- layout
 
-NAV = [("/the644/", "The 644"), ("/articles/", "Articles"), ("/ledger/", "Ledger"), ("/model/", "Model")]
+NAV = [("/the644/", "The 644"), ("/the30/", "The 30"), ("/articles/", "Articles"), ("/ledger/", "Ledger"), ("/model/", "Model")]
 
 
 def header(active=""):
@@ -652,7 +652,7 @@ def build_the644():
 <section class="page-head"><div class="kicker">The 644 · {e(ed['name'])} edition · final</div>
 <h1 class="h-xl">Every NBA player, one number</h1>
 <p class="lede">{len(PLAYERS)} players ({len(PLAYERS) - n_rook} veterans + {n_rook} rookies), ranked by GRAVITY v3: how good per minute, times how reliably he's on the floor. Published {long_date(ed['published'])}. Next edition: {e(ed['next'])}. Editions are permanent once published; old numbers never get quietly revised.</p>
-<div class="btn-row"><a class="btn-line" href="{ed['csv']}" download>Download the644.csv</a><a class="btn-line" href="#teams">The 30 (teams)</a><a class="btn-line" href="/model/">How the score works</a></div>
+<div class="btn-row"><a class="btn-line" href="{ed['csv']}" download>Download the644.csv</a><a class="btn-line" href="/the30/">The 30 (teams)</a><a class="btn-line" href="/model/">How the score works</a></div>
 </section>
 
 <section class="sec" aria-labelledby="players-h">
@@ -679,22 +679,108 @@ def build_the644():
 </div></section>
 
 <section class="sec" id="teams">
-<div class="kicker">The 30 · {e(ed['name'])} · rosters as of {e(T644.get('ROSTER_DATE30', ''))}</div>
-<h2 class="h-l">Every team, one number</h2>
-<p class="lede">Team GRAVITY is the expected force of one minute of a team's floor time, built from a fixed 240-minute game. Every roster spot supplies the minutes a team can actually count on (a two-season blend; draft-slot priors for rookies); minutes nobody on the roster can cover are priced at replacement force {f1(T644.get('F_REPL30'))}. Because availability enters through minutes, a fragile star is priced once — never twice. Teams land on the same scale as players: 50 is a league-average minute.</p>
-<p class="lede">Two honesty notes. Unsigned is unsigned: free agents — restricted ones included — are nobody's minutes yet, so Cleveland is priced without Harden, Detroit without Duren, Sacramento without DeRozan. Those holes show up as replacement-priced fill, and the All-Star edition re-prices whatever has been signed by then. And one trade doesn't exist yet: the agreed Leonard–Ingram swap is unconsummated while the league's investigation runs, so Kawhi is a Clipper here and Toronto keeps Ingram. Official rosters only.</p>
+<div class="kicker">The 30</div>
+<h2 class="h-m">Team rankings have their own page</h2>
+<p class="lede">Every team, one number, with the 2026–27 Opening Night update and the frozen July 2026 edition.</p>
+<div class="btn-row"><a class="btn-dark" href="/the30/">Open The 30 {ARROW}</a></div>
+</section>
+</div>"""
+    write("the644/index.html", page("/the644/", "The 644 — July 2026 Edition · The Gravity Report",
+                                    "Every NBA player plus the 2026 draft class, ranked by GRAVITY. July 2026 edition — final. Searchable.",
+                                    body, active="/the644/", og_image="/cards/the644.png", beacon="/the644",
+                                    scripts='<script src="/assets/filter644.js"></script>\n'))
+
+
+def build_the30():
+    d = load("the30/torque-2026-27.json")
+    rows = d["teams"]
+    asof = long_date(d["as_of"])
+
+    def mv(r):
+        c = r["change"]
+        if abs(c) < 0.05:
+            return "no change since July"
+        arrow = "up" if c > 0 else "down"
+        moved = r["rank_july"] - r["rank"]
+        rk = f", {abs(moved)} place{'s' if abs(moved) != 1 else ''} {'up' if moved > 0 else 'down'}" if moved else ""
+        return f"{arrow} {abs(c):.1f} since July{rk}"
+    lis = "".join(
+        f'<li><span class="rk">{r["rank"]}</span><span class="nm">{e(r["team"])}<span class="tm">{e(r["code"])}</span>'
+        f'<span class="note">{e(", ".join(t["player"] for t in r["top3"]))} · {e(mv(r))}</span></span>'
+        f'<span class="sc" style="text-align:right">{r["torque"]:.1f}<span class="tm" style="display:block;margin:0">{r["wins"]:.0f} wins</span></span></li>'
+        for r in rows)
+    risers = sorted(rows, key=lambda r: -r["change"])[:5]
+    fallers = sorted(rows, key=lambda r: r["change"])[:5]
+    mvli = lambda lst: "".join(
+        f'<li><span class="rk" style="width:56px">{r["change"]:+.1f}</span><span class="nm">{e(r["team"])}'
+        f'<span class="tm">#{r["rank_july"]} → #{r["rank"]}</span></span><span class="sc">{r["wins_july"]:.0f} → {r["wins"]:.0f} W</span></li>' for r in lst)
+    trows = "".join(
+        f'<tr><td class="n">{t["rk"]}</td><td>{e(t["name"])} <span class="muted mono" style="font-size:12px">{e(t["t"])}</span></td>'
+        f'<td class="n">{f1(t["g"])}</td><td class="n">{f1(t["st"])}</td><td class="n">{f1(t["bn"])}</td>'
+        f'<td class="n">{t["s3"]}%</td><td>{e(t["best"])} <span class="muted mono" style="font-size:12px">({f1(t["bf"])})</span></td>'
+        f'<td class="n">{f1(t["fill"])}</td></tr>' for t in TEAMS30)
+    ed = SITE["edition"]
+    e30 = ledger_entry("E1")
+    body = f"""<div class="wrap">
+<section class="page-head"><div class="kicker">The 30 · 2026–27 Opening Night update · rosters as of {e(asof)}</div>
+<h1 class="h-xl">Every team, one number</h1>
+<p class="lede">Ranked by <b>TORQUE</b>, our team rating. Torque is force applied through a lever: each player's GRAVITY score (how good he is per minute) applied through the minutes he is expected to play. 50 is a rotation of league-average players; one point is worth about 2.5 wins over a season. Projected wins are scaled so the league adds up to 1,230.</p>
+<p class="lede">This is an update to rosters only: no games have been played since July, so every player's GRAVITY score is the July 2026 edition's. A final run follows after rosters are cut on October 19.</p>
+<div class="btn-row"><a class="btn-line" href="#method">How TORQUE works</a><a class="btn-line" href="#movers">Who moved since July</a><a class="btn-line" href="#july">The July 2026 edition</a><a class="btn-line" href="/the30/torque-2026-27.csv" download>Download torque-2026-27.csv</a></div>
+</section>
+
+<section class="sec" aria-labelledby="rank-h">
+<h2 class="vh" id="rank-h">2026–27 rankings</h2>
+<div class="small" style="display:flex;justify-content:space-between;padding:0 0 8px"><span>TEAM · TOP THREE CONTRIBUTORS</span><span>TORQUE · PROJECTED WINS</span></div>
+<ol class="rank-list full-list">{lis}</ol>
+<p class="small" style="margin-top:14px">Top three contributors = expected minutes × quality above replacement level. Rookies are priced too, which the old method did not do.</p>
+</section>
+
+<section class="sec" id="movers"><div class="split">
+<div class="col-h"><div class="kicker">Since July 29</div><h2 class="h-m">Biggest risers</h2><ol class="rank-list" style="margin-top:16px">{mvli(risers)}</ol></div>
+<div class="col-h"><div class="kicker">Since July 29</div><h2 class="h-m">Biggest fallers</h2><ol class="rank-list" style="margin-top:16px">{mvli(fallers)}</ol></div>
+</div>
+<p class="small" style="margin-top:14px">Both columns use TORQUE on both dates, so the change is the roster moves alone.</p></section>
+
+<section class="sec" id="method">
+<div class="kicker">The method</div>
+<h2 class="h-l">How TORQUE works</h2>
+<ol class="rank-list" style="margin-top:18px">
+<li><span class="rk">1</span><span class="nm" style="font-size:17px">Every player on the roster is priced. Veterans carry their GRAVITY projection. Rookies and players back from abroad have no NBA record, so they start at replacement level (what a team can sign for nothing) plus a small bonus for youth.</span></li>
+<li><span class="rk">2</span><span class="nm" style="font-size:17px">Minutes are handed out like a real rotation: the best players get the most, the 13th man a few. Players who missed games last year are expected to miss some again, but not all of them.</span></li>
+<li><span class="rk">3</span><span class="nm" style="font-size:17px">A team plays 240 minutes a night. If the roster's expected minutes run over, everyone shares the cut; any minutes left empty are filled at replacement level.</span></li>
+<li><span class="rk">4</span><span class="nm" style="font-size:17px">A small bonus goes to teams whose value sits in their top three players: stars decide more games than depth.</span></li>
+</ol>
+<h3 class="h-s" style="margin-top:34px">Why we changed the team model</h3>
+<p class="lede">The July edition ranked teams by adding up GRAVITY projections, weighted by last season's minutes. It ignored rookies and returnees, and it squeezed every player's minutes by the same factor when a roster was deep, so signing bench players could lower a team's number. We built and tested 17 team models on 49 seasons of data: every constant was set on 1981–2010, then each model was scored on 2011–2026, seasons it was never tuned on, and checked by independent reviewers. TORQUE won. Blending in a team's own results from last season (margin, playoffs, luck) made every model worse on the unseen seasons: once the roster is priced, last season's record adds nothing.</p>
+<div class="tbl-box"><table class="tbl" style="min-width:560px">
+<thead><tr><th>Model, 2011–2026 (never tuned on)</th><th class="n">Order matches standings*</th><th class="n">Wins off by</th></tr></thead>
+<tbody>
+<tr class="hl"><td><b>TORQUE</b></td><td class="n">0.736</td><td class="n">6.7</td></tr>
+<tr><td>July method + rookies priced</td><td class="n">0.704</td><td class="n">6.9</td></tr>
+<tr><td>July method (as published)</td><td class="n">0.700</td><td class="n">6.9</td></tr>
+<tr><td>Last season's net rating</td><td class="n">0.587</td><td class="n">7.7</td></tr>
+<tr><td>Last season's record</td><td class="n">0.588</td><td class="n">7.8</td></tr>
+</tbody></table></div>
+<p class="small" style="margin-top:12px">*Rank correlation between the preseason order and the final standings, averaged over 16 seasons (1.0 = perfect order). TORQUE beat the July method in 12 of 16 seasons. The edge is real but modest: expect a slightly better order, not a different kind of ranking.</p>
+</section>
+
+<section class="sec" id="july">
+<div class="kicker">The 30 · {e(ed['name'])} edition · rosters as of {e(T644.get('ROSTER_DATE30', ''))} · frozen</div>
+<h2 class="h-l">The July 2026 edition</h2>
+<p class="lede">Kept exactly as published, because forecast E1 is graded on it. It used the old method (Team GRAVITY): the expected force of one minute of a team's floor time, built from a fixed 240-minute game, with minutes nobody on the roster could cover priced at replacement force {f1(T644.get('F_REPL30'))}.</p>
+<p class="lede">Two honesty notes from July. Unsigned is unsigned: free agents — restricted ones included — are nobody's minutes yet, so Cleveland is priced without Harden, Detroit without Duren, Sacramento without DeRozan. And one trade didn't exist yet: the agreed Leonard–Ingram swap was unconsummated while the league's investigation ran, so Kawhi is a Clipper here and Toronto keeps Ingram. Official rosters only.</p>
 <div class="tbl-box"><table class="tbl" style="min-width:820px">
 <thead><tr><th class="n">#</th><th>Team</th><th class="n">Team GRAVITY</th><th class="n">Starters</th><th class="n">Bench</th><th class="n">Top-3 share</th><th>Best player (force)</th><th class="n">Fill min</th></tr></thead>
 <tbody>{trows}</tbody></table></div>
 <div class="lrows" style="margin-top:28px">{lrow(e30)}</div>
-<p class="small" style="margin-top:12px">ρ ≥ 0.60 = win · 0.50–0.60 = near miss · below 0.50 = miss. Scored in Forecast Audit №1, July 2027.</p>
-<div class="btn-row"><a class="btn-line" href="{ed['teams_csv']}" download>Download the30.csv</a></div>
+<p class="small" style="margin-top:12px">ρ ≥ 0.60 = win · 0.50–0.60 = near miss · below 0.50 = miss. Scored in Forecast Audit №1, July 2027, on this July table.</p>
+<div class="btn-row"><a class="btn-line" href="{ed['teams_csv']}" download>Download the30-2026-07.csv</a></div>
 </section>
 </div>"""
-    write("the644/index.html", page("/the644/", "The 644 — July 2026 Edition · The Gravity Report",
-                                    "Every NBA player plus the 2026 draft class, ranked by GRAVITY. July 2026 edition — final. Searchable, with The 30 team ranking.",
-                                    body, active="/the644/", og_image="/cards/the644.png", beacon="/the644",
-                                    scripts='<script src="/assets/filter644.js"></script>\n'))
+    write("the30/index.html", page("/the30/", "The 30 — every NBA team ranked by TORQUE · The Gravity Report",
+                                   "Every NBA team ranked before the 2026–27 season by TORQUE, with projected wins, who moved since July, and the frozen July 2026 edition.",
+                                   body, active="/the30/", og_image="/cards/the30.png", beacon="/the30"))
 
 
 STAT_DEFS = {
@@ -883,6 +969,9 @@ def build_model():
 <li><span class="rk" style="width:60px">v3</span><span class="nm">Jul 10 — Cleaning the Glass filtered on/off integrated</span></li>
 </ol></div>
 </div></section>
+<section class="sec"><h2 class="h-m" style="margin-top:0">Rating teams: TORQUE</h2>
+<p class="lede">Teams are rated by TORQUE: each player's GRAVITY score applied through the minutes he is expected to play, with rookies priced and minutes handed out like a real rotation.</p>
+<div class="btn-row"><a class="btn-line" href="/the30/#method">How TORQUE works</a><a class="btn-line" href="/the30/">The 30 rankings</a></div></section>
 <section class="sec"><h2 class="h-m" style="margin-top:0">The full mathematics</h2>
 <p class="lede">Every equation, weight, shrinkage rule, tier cut, and the complete injury-override table is published as a standalone technical document, typeset like everything else here.</p>
 <div class="btn-row"><a class="btn-dark" href="{spec['web']}">Read the specification {ARROW}</a><a class="btn-line" href="{spec['pdf']}">spec.pdf ({spec['pages']} pp)</a><a class="btn-line" href="{spec['tex']}">LaTeX source</a></div>
@@ -918,6 +1007,8 @@ def build_corrections():
 <p class="lede">Published articles are permanent. Every revision ships with a dated public note, and recalled numbers stay on display. That is what makes the wins believable.</p></section>
 <section class="sec"><h2 class="h-m" style="margin-top:0">Revision notes</h2>
 <ol class="rank-list" style="margin-top:16px">{''.join(revs)}</ol></section>
+<section class="sec" id="methods"><h2 class="h-m" style="margin-top:0">Method changes</h2>
+<ol class="rank-list" style="margin-top:16px">{''.join(f'<li style="display:block"><div class="meta mono small" style="text-transform:uppercase">{e(m["title"])} · {e(m["label"])}</div><p style="margin:6px 0 0">{e(m["text"])}</p><p class="small" style="margin:6px 0 0"><a href="{m["link"]}">Read the method</a></p></li>' for m in REVS.get("methods", []))}</ol></section>
 <section class="sec" id="butler"><h2 class="h-m" style="margin-top:0">Recalled: Jimmy Butler at #13 (v1)</h2>
 <p class="small">{e(butler['date'])} · The 644 (Rankings Desk)</p>
 <p class="lede">{e(bbody)}</p></section>
@@ -944,7 +1035,7 @@ def build_data():
     body = f"""<div class="wrap">
 <section class="page-head"><div class="kicker">Open data</div><h1 class="h-xl">Download the numbers</h1>
 <p class="lede">The full edition of The 644 and The 30, as published. If you use them, please credit The Gravity Report and link to the edition.</p>
-<div class="btn-row"><a class="btn-dark" href="{ed['csv']}" download>the644-2026-07.csv</a><a class="btn-line" href="{ed['teams_csv']}" download>the30-2026-07.csv</a><a class="btn-line" href="/players/index.json">players/index.json</a></div></section>
+<div class="btn-row"><a class="btn-dark" href="{ed['csv']}" download>the644-2026-07.csv</a><a class="btn-line" href="/the30/torque-2026-27.csv" download>torque-2026-27.csv</a><a class="btn-line" href="{ed['teams_csv']}" download>the30-2026-07.csv</a><a class="btn-line" href="/players/index.json">players/index.json</a></div></section>
 <section class="sec"><h2 class="h-m" style="margin-top:0">Columns in the644.csv</h2><ol class="rank-list" style="margin-top:16px">{lis}</ol></section>
 <section class="sec"><h2 class="h-m" style="margin-top:0">How it's made</h2><p class="lede">One published formula, applied to every player. <a href="/model/">How GRAVITY works</a> · <a href="/notes/spec/">the full specification</a>.</p></section>
 </div>"""
@@ -972,7 +1063,7 @@ def build_404():
 
 
 def build_sitemap():
-    urls = [("/", "1.0"), ("/the644/", "0.9"), ("/articles/", "0.8"), ("/ledger/", "0.8"), ("/model/", "0.7"),
+    urls = [("/", "1.0"), ("/the644/", "0.9"), ("/the30/", "0.9"), ("/articles/", "0.8"), ("/ledger/", "0.8"), ("/model/", "0.7"),
             ("/notes/kawhi/", "0.8"), ("/notes/queta/", "0.8"), ("/notes/morant/", "0.8"), ("/notes/spec/", "0.7"),
             ("/about/", "0.6"), ("/corrections/", "0.5"), ("/data/", "0.5"), ("/players/", "0.6")]
     urls += [(f"/players/{p['slug']}/", "0.4") for p in PLAYERS]
@@ -993,6 +1084,7 @@ def main():
     build_web_edition("spec", "notes/spec/", "/model/")
     build_about()
     build_the644()
+    build_the30()
     build_players_pages()
     build_ledger()
     build_model()

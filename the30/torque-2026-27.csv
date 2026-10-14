@@ -1,0 +1,31 @@
+rank,code,team,torque,projected_wins,rank_july,torque_july,projected_wins_july,change_since_july,top_contributor,second,third
+1,OKC,Oklahoma City Thunder,59.4,66.7,1,58.5,64.8,0.8,Shai Gilgeous-Alexander,Chet Holmgren,Jalen Williams
+2,SAS,San Antonio Spurs,53.6,51.9,2,54.1,53.5,-0.6,Victor Wembanyama,De'Aaron Fox,Luke Kornet
+3,DEN,Denver Nuggets,53.3,51.3,3,53.5,51.9,-0.2,Nikola Jokić,Jamal Murray,Aaron Gordon
+4,DET,Detroit Pistons,53.3,51.2,14,51.1,45.7,2.2,Cade Cunningham,Jalen Duren,Ausar Thompson
+5,LAL,Los Angeles Lakers,52.9,50.2,7,52.5,49.3,0.4,Luka Dončić,Austin Reaves,Sandro Mamukelashvili
+6,TOR,Toronto Raptors,52.7,49.7,15,50.5,44.4,2.2,Kawhi Leonard,Scottie Barnes,Immanuel Quickley
+7,CLE,Cleveland Cavaliers,52.4,48.8,10,51.7,47.3,0.7,Donovan Mitchell,Evan Mobley,James Harden
+8,PHI,Philadelphia 76ers,51.9,47.6,8,51.9,48.0,-0.1,Tyrese Maxey,LeBron James,Jaylen Brown
+9,POR,Portland Trail Blazers,51.6,47.0,11,51.2,46.1,0.4,Deni Avdija,Damian Lillard,Donovan Clingan
+10,HOU,Houston Rockets,51.6,46.8,12,51.2,46.1,0.4,Alperen Şengün,Kevin Durant,Amen Thompson
+11,BOS,Boston Celtics,51.4,46.4,5,52.9,50.3,-1.4,Jayson Tatum,Payton Pritchard,Derrick White
+12,NYK,New York Knicks,51.3,46.1,4,53.0,50.6,-1.7,Karl-Anthony Towns,Jalen Brunson,OG Anunoby
+13,ORL,Orlando Magic,51.0,45.3,13,51.2,46.1,-0.2,Paolo Banchero,Franz Wagner,Desmond Bane
+14,MIA,Miami Heat,50.4,43.9,6,52.6,49.6,-2.2,Giannis Antetokounmpo,Bam Adebayo,Andrew Wiggins
+15,MIN,Minnesota Timberwolves,50.0,42.9,9,51.7,47.4,-1.7,Anthony Edwards,LaMelo Ball,Rudy Gobert
+16,CHO,Charlotte Hornets,49.9,42.6,19,48.2,38.4,1.7,Kon Knueppel,Brandon Miller,Grayson Allen
+17,GSW,Golden State Warriors,49.7,42.0,16,49.9,42.9,-0.3,Stephen Curry,Jimmy Butler,Kristaps Porziņģis
+18,IND,Indiana Pacers,49.3,40.9,20,47.9,37.7,1.4,Tyrese Haliburton,Ivica Zubac,Pascal Siakam
+19,PHO,Phoenix Suns,48.2,38.1,17,49.2,41.1,-1.1,Devin Booker,Mark Williams,Miles Bridges
+20,ATL,Atlanta Hawks,47.7,36.9,22,46.6,34.4,1.0,Jalen Johnson,Dyson Daniels,Onyeka Okongwu
+21,DAL,Dallas Mavericks,47.5,36.4,21,47.1,35.5,0.4,Cooper Flagg,Kyrie Irving,Daniel Gafford
+22,CHI,Chicago Bulls,46.2,33.2,23,46.4,33.8,-0.1,Josh Giddey,Tre Jones,Norman Powell
+23,MIL,Milwaukee Bucks,46.2,33.1,24,46.2,33.4,-0.0,Tyler Herro,Kel'el Ware,Kevin Porter Jr.
+24,NOP,New Orleans Pelicans,45.6,31.7,25,45.8,32.3,-0.1,Zion Williamson,Trey Murphy III,Saddiq Bey
+25,UTA,Utah Jazz,45.5,31.3,26,43.3,26.0,2.2,Lauri Markkanen,Keyonte George,Jaren Jackson Jr.
+26,LAC,LA Clippers,44.7,29.2,18,48.3,38.6,-3.6,Darius Garland,Brandon Ingram,Rui Hachimura
+27,WAS,Washington Wizards,43.8,26.9,28,42.6,24.2,1.1,Anthony Davis,Trae Young,Alex Sarr
+28,MEM,Memphis Grizzlies,42.7,24.3,30,41.7,21.8,1.1,Ty Jerome,Cam Spencer,Isaiah Stewart
+29,BRK,Brooklyn Nets,42.6,24.1,29,42.2,23.3,0.4,Michael Porter Jr.,Julius Randle,Day'Ron Sharpe
+30,SAC,Sacramento Kings,42.4,23.5,27,43.1,25.4,-0.6,Domantas Sabonis,Zach LaVine,Malik Monk

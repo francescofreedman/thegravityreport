@@ -5,7 +5,7 @@
   if (!h) return;
   var parts = h.split('/'), folder = parts[0], msg = parts[1] || '';
   var MSG = {
-    spec: '/model/', specdoc: '/notes/spec/', ed644: '/the644/', ed30: '/the644/#teams',
+    spec: '/model/', specdoc: '/notes/spec/', ed644: '/the644/', ed30: '/the30/',
     ledger: '/ledger/', kawhi: '/notes/kawhi/', queta: '/notes/queta/', morant: '/notes/morant/',
     welcome: '/classic/#inbox/welcome', draft_duren: '/classic/#drafts/draft_duren',
     draft_no4: '/classic/#drafts/draft_no4', outbox_queta: '/ledger/#scheduled',
