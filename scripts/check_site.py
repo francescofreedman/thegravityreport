@@ -19,7 +19,7 @@ from urllib.parse import unquote, urldefrag
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 LEGACY = "b18e539"
-SKIP_DIRS = {".git", "classic", "content", "node_modules", "lab", "voice", "social", "review"}
+SKIP_DIRS = {".git", ".claude", "classic", "content", "node_modules", "lab", "voice", "social", "review"}
 
 
 def html_files():

@@ -1063,8 +1063,8 @@ def build_404():
 
 
 def build_sitemap():
-    urls = [("/", "1.0"), ("/the644/", "0.9"), ("/the30/", "0.9"), ("/articles/", "0.8"), ("/ledger/", "0.8"), ("/model/", "0.7"),
-            ("/notes/kawhi/", "0.8"), ("/notes/queta/", "0.8"), ("/notes/morant/", "0.8"), ("/notes/spec/", "0.7"),
+    urls = [("/", "1.0"), ("/the644/", "0.9"), ("/articles/", "0.8"), ("/ledger/", "0.8"), ("/model/", "0.7"),
+            ("/notes/jokic/", "0.8"), ("/notes/duren/", "0.8"), ("/notes/kawhi/", "0.8"), ("/notes/queta/", "0.8"), ("/notes/morant/", "0.8"), ("/notes/spec/", "0.7"),
             ("/about/", "0.6"), ("/corrections/", "0.5"), ("/data/", "0.5"), ("/players/", "0.6")]
     urls += [(f"/players/{p['slug']}/", "0.4") for p in PLAYERS]
     body = "".join(f"  <url><loc>{SITE['url']}{u}</loc><priority>{pr}</priority></url>\n" for u, pr in urls)
@@ -1078,6 +1078,8 @@ def main():
     for a in ARTICLES:
         if a.get("format") == "short":
             build_short(a)
+    build_web_edition("jokic", "notes/jokic/", "/articles/")
+    build_web_edition("duren", "notes/duren/", "/articles/")
     build_web_edition("kawhi", "notes/kawhi/", "/articles/")
     build_web_edition("queta", "notes/queta/", "/articles/")
     build_web_edition("morant", "notes/morant/", "/articles/")

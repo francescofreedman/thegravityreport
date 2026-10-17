@@ -2,10 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://thegravityreport.com/</loc><priority>1.0</priority></url>
   <url><loc>https://thegravityreport.com/the644/</loc><priority>0.9</priority></url>
-  <url><loc>https://thegravityreport.com/the30/</loc><priority>0.9</priority></url>
   <url><loc>https://thegravityreport.com/articles/</loc><priority>0.8</priority></url>
   <url><loc>https://thegravityreport.com/ledger/</loc><priority>0.8</priority></url>
   <url><loc>https://thegravityreport.com/model/</loc><priority>0.7</priority></url>
+  <url><loc>https://thegravityreport.com/notes/jokic/</loc><priority>0.8</priority></url>
+  <url><loc>https://thegravityreport.com/notes/duren/</loc><priority>0.8</priority></url>
   <url><loc>https://thegravityreport.com/notes/kawhi/</loc><priority>0.8</priority></url>
   <url><loc>https://thegravityreport.com/notes/queta/</loc><priority>0.8</priority></url>
   <url><loc>https://thegravityreport.com/notes/morant/</loc><priority>0.8</priority></url>

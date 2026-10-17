@@ -1,5 +1,100 @@
 [
   {
+    "card": "/cards/jokic.png",
+    "date": "2026-10-17",
+    "dek": "By our model, the best player in the league for six straight years. One more would tie Michael Jordan's record.",
+    "findings": [
+      "The 49 number ones: every season since 1977–78 run through GRAVITY Historical. Sixteen players have been number one; Jordan nine times, LeBron seven, Jokić six, Bird and Shaq four each.",
+      "The runs: Jordan's seven straight is the longest and the most dominant. Jokić's six is statistically the highest: an average impact of +3.36, above Jordan's +3.17 and LeBron's +3.19.",
+      "The voters: the MVP went to our number one in 24 of 49 seasons. Jordan lost five of nine. Jokić has lost three of six, partly to voter fatigue. That is normal, not a robbery.",
+      "The seventh year: a number one with a margin this thin kept the spot 7 times in 11. If Jokić repeats his season he scores 100.7; SGA would have to play like Jokić did to reach 100."
+    ],
+    "format": "deep",
+    "home_dek": "By our model, Jokić has been the best player in the league for six straight years, at a higher level than Jordan or LeBron. One more would tie Jordan's record. We give it 55%.",
+    "kicker": "Deep Dive №5 · Preseason 2026–27",
+    "kind": "article",
+    "lead": [
+      "We ran every NBA season since 1977–78 through GRAVITY Historical and asked who was the best player each year. Michael Jordan held the title seven years in a row. By our metrics, Nikola Jokić has now held it for six, and his six were played at a higher level than Jordan's seven or LeBron's six.",
+      "The MVP voters have only agreed with 24 of our 49 number ones, and Jokić has lost three of his six. A seventh straight year would tie Jordan's record in our data. We give it a 55% chance."
+    ],
+    "ledger": [
+      "J1",
+      "J2",
+      "J3"
+    ],
+    "n": 5,
+    "pages": 5,
+    "pdf": "/papers/jokic/jokic.pdf",
+    "players": [
+      "Nikola Jokić"
+    ],
+    "slug": "jokic",
+    "social": {
+      "big": {
+        "label": "straight seasons as the GRAVITY number one, played at a higher level than Jordan's seven",
+        "value": "6"
+      },
+      "hook": "By our model, Nikola Jokić has been the best player in the league for six straight years. One more would tie Michael Jordan's record. We give it a 55% chance.",
+      "points": [
+        "His six seasons average an impact of +3.36, above Jordan's +3.17 and LeBron's +3.19. Statistically, the highest run ever measured.",
+        "The MVP voters have agreed with our number one only 24 times in 49 seasons. Jokić has lost three of his six. That's normal, not a robbery."
+      ],
+      "team": "DEN"
+    },
+    "stat_player": "Nikola Jokić",
+    "teaser": "Six straight years as our number one, at a higher level than Jordan or LeBron. One more ties the record.",
+    "tex": "/papers/jokic/jokic.tex",
+    "title": "Chasing Seven",
+    "web": "/notes/jokic/"
+  },
+  {
+    "card": "/cards/duren.png",
+    "date": "2026-10-17",
+    "dek": "For ten seasons no player who refused to shoot threes was in the top ten, until Jalen Duren.",
+    "findings": [
+      "The odd one out: the ten best players per minute last season all took at least 22% of their shots from three, except Duren, who took none (GRAVITY Historical, 1,500+ minutes).",
+      "Ten years without one: in 2004–05 four of the top ten were pure non-shooters, Kevin Garnett first among them. From 2015–16 through 2024–25 the count was zero.",
+      "How he does it: .688 true shooting on a 23.6% usage rate, 20.9% of available rebounds, a free throw for every two shots. First in efficiency under load among the 164 players with 1,500 minutes.",
+      "Why we rank him 14th: the playoffs. His playoff BPM of −1.7 against Cleveland and Orlando cost him 4.3 points of gravity score, the only player in The 644 at the floor. Without it he would rank 8th."
+    ],
+    "format": "deep",
+    "home_dek": "Every other player in our top ten took at least 22% of his shots from three. Jalen Duren took none. How a 22-year-old center gets to the top without the modern game's one required skill.",
+    "kicker": "Deep Dive №3 · Preseason 2026–27",
+    "kind": "article",
+    "lead": [
+      "Every other player in our top ten last season took at least 22% of his shots from three. Jalen Duren took none of them, and our per-minute rating still put him as the 7th best player in the league. From 2015 to 2025, not a single player who never shot threes finished in the top ten.",
+      "We look at how that kind of player disappeared, how Duren gets to the top without the modern game's one required skill, and why we rank him 14th. With the $200 million contract signed, we give it an 80% chance that he finishes top 15 next July."
+    ],
+    "ledger": [
+      "D1",
+      "D3"
+    ],
+    "n": 3,
+    "pages": 4,
+    "pdf": "/papers/duren/duren.pdf",
+    "players": [
+      "Jalen Duren"
+    ],
+    "slug": "duren",
+    "social": {
+      "big": {
+        "label": "three-point attempts, and the first top-ten season without one in ten years",
+        "value": "0"
+      },
+      "hook": "Every other player in our top ten took at least 22% of his shots from three. Jalen Duren took none, and still graded 7th in the league per minute. The first top-ten non-shooter in ten years.",
+      "points": [
+        "In 2004–05 four of the top ten never shot threes, Kevin Garnett first among them. From 2015–16 through 2024–25 the count was zero.",
+        "He was first in efficiency under load among 164 players with 1,500 minutes. The playoffs are why The 644 ranks him 14th, and the charge expires with the next postseason."
+      ],
+      "team": "DET"
+    },
+    "stat_player": "Jalen Duren",
+    "teaser": "The first top-ten season by a player who never shoots threes in ten years. How he does it, and why we rank him 14th.",
+    "tex": "/papers/duren/duren.tex",
+    "title": "The Last of His Kind",
+    "web": "/notes/duren/"
+  },
+  {
     "n": 4,
     "slug": "kawhi",
     "kind": "article",

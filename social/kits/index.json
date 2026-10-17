@@ -1,6 +1,18 @@
 {
  "kits": [
   {
+   "id": "2026-10-17-article-jokic",
+   "kind": "article",
+   "title": "Chasing Seven",
+   "date": "2026-10-17"
+  },
+  {
+   "id": "2026-10-17-article-duren",
+   "kind": "article",
+   "title": "The Last of His Kind",
+   "date": "2026-10-17"
+  },
+  {
    "id": "2026-10-07-player-jalen-duren",
    "kind": "player",
    "title": "Jalen Duren",
