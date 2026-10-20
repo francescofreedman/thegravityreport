@@ -101,9 +101,13 @@ def visible_text(fragment):
 
 def check_article_text():
     out = []
+    native = {f[:-3] for f in os.listdir(os.path.join(ROOT, "content", "deep")) if f.endswith(".md")} \
+        if os.path.isdir(os.path.join(ROOT, "content", "deep")) else set()
     for slug, path in [("kawhi", "notes/kawhi/index.html"), ("morant", "notes/morant/index.html"),
                        ("queta", "notes/queta/index.html"), ("spec", "notes/spec/index.html"),
                        ("about", "about/index.html")]:
+        if slug in native:  # rewritten as a native web article (content/deep/), checked by tests/test_deep.py
+            continue
         legacy = json.load(open(os.path.join(ROOT, "content/pages", slug + ".json"), encoding="utf-8"))["body"]
         # published relabels are the only allowed change: apply them to the legacy text, drop their notes
         revs = json.load(open(os.path.join(ROOT, "content/revisions.json"), encoding="utf-8"))["relabels"]

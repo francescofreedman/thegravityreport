@@ -25,6 +25,8 @@ def load(rel):
         return json.load(f)
 
 
+import deep  # noqa: E402  (native Deep Dives, content/deep/*.md)
+
 SITE = load("content/site.json")
 ARTICLES = load("content/articles.json")
 
@@ -84,6 +86,11 @@ _ALL = ARTICLES + load_shorts()
 # newest first; same-day pieces by number, highest first; the model doc last
 ARTICLES = (sorted([a for a in _ALL if a["kind"] == "article"], key=lambda a: (a["date"], a.get("n") or 0), reverse=True)
             + [a for a in _ALL if a["kind"] != "article"])
+for _a in ARTICLES:
+    if _a.get("format") == "deep" and deep.has_native(_a["slug"]):
+        _a["native"] = True
+        _a["blocks"] = deep.read(_a["slug"])
+        _a["read_min"] = deep.read_minutes(_a["blocks"])
 LEDGER = load("content/ledger.json")
 T644 = load("content/the644.json")
 MSGS = load("content/legacy/messages.json")["M"]
@@ -397,7 +404,7 @@ def series_label(a):
 
 
 def length_label(a):
-    if a.get("format") == "short":
+    if a.get("format") == "short" or a.get("native"):
         return f'{a["read_min"]}-minute read'
     return f'{a["pages"]} pages'
 
@@ -451,7 +458,7 @@ def build_home():
 <p class="dek">{e(lead.get('home_dek') or lead['dek'])}</p>
 <div class="lead-cols">{lead_cols}</div>
 <div class="btn-row"><a class="btn-dark" href="{lead['web']}">Read the article {ARROW}</a>
-<span class="small">{e(lead_len)}{(' · web and <a href="' + lead['pdf'] + '">PDF</a>') if lead.get('pdf') else ''} · {short_date(lead['date'])}</span></div>
+<span class="small">{e(lead_len)}{(' · web and <a href="' + lead['pdf'] + '">PDF</a>') if lead.get('pdf') and not lead.get('native') else ''} · {short_date(lead['date'])}</span></div>
 </article>
 <aside class="col-1" style="display:flex;flex-direction:column;gap:28px">
 <div class="box"><div class="box-title">What we think happens next</div>{pscale()}<div class="pitems">{box}</div>
@@ -624,6 +631,37 @@ def build_web_edition(slug, path, active):
           page("/" + path, pg["title"], m.get("description", ""), body, active=active, og_image=og,
                og_type=m.get("og:type", "article"), beacon=pg.get("beacon_item"), depth=bool(a),
                extra_head=extra, ld_json=pg.get("ld_json")))
+
+
+FORMAT_NOTE = ("Format change, October 20, 2026: this Deep Dive is now a regular web article instead of a LaTeX PDF. "
+               "Same text, numbers, tables and forecasts. The historical model is now called GRAVITY Historical everywhere "
+               "(it was GRAVITY-RS). The original PDF stays available.")
+
+
+def build_native_deep(a):
+    """A Deep Dive written for the web: content/deep/<slug>.md -> notes/<slug>/."""
+    pub = long_date(a["date"])
+    note = (f'<div class="revnote">{e(FORMAT_NOTE)} <a href="{e(a["pdf"])}">Original PDF</a>.</div>'
+            if a.get("pdf") else "")
+    pdf_btn = f'<a class="btn" href="{e(a["pdf"])}">Original PDF (archived)</a>' if a.get("pdf") else ""
+    body = f"""<div class="wrap"><article class="paper deep">
+<div class="kicker">{e(a['kicker'])}</div>
+<h1>{e(a['title'])}</h1>
+<div class="subtitle">{e(a['dek'])}</div>
+<div class="byline"><b>Francesco Freedman</b> · The Gravity Report · the GRAVITY player-value model ·
+published <b>{e(pub)}</b> · {a['read_min']}-minute read</div>
+<div class="pubstatus"><b>Independent analysis, not peer reviewed.</b> v1, methodology and figures verified against public sources as of {e(pub)}. This article will be revised.</div>
+{note}
+{deep.body_html(a["blocks"], pbar, pscale)}
+<div class="btnrow"><a class="btn" href="/ledger/">The Forecast Ledger</a>{pdf_btn}</div>
+<h2>Cite this article</h2>
+<pre class="mono">Freedman, F. ({a['date'][:4]}). "{e(a['title'])}." The Gravity Report, GRAVITY Deep Dive No. {a['n']}.
+{SITE['url']}{a['web']}</pre>
+</article></div>"""
+    write(a["web"].lstrip("/") + "index.html",
+          page(a["web"], f"{a['title']} — GRAVITY Deep Dive №{a['n']} · The Gravity Report", a.get("home_dek") or a["dek"], body,
+               active="/articles/", og_image=a.get("card", "/cards/site.png"), og_type="article", depth=True,
+               extra_head=f'<meta property="article:published_time" content="{e(a["date"])}">\n'))
 
 
 def build_the644():
@@ -1078,12 +1116,20 @@ def main():
     for a in ARTICLES:
         if a.get("format") == "short":
             build_short(a)
-    build_web_edition("jokic", "notes/jokic/", "/articles/")
-    build_web_edition("duren", "notes/duren/", "/articles/")
-    build_web_edition("kawhi", "notes/kawhi/", "/articles/")
-    build_web_edition("queta", "notes/queta/", "/articles/")
-    build_web_edition("morant", "notes/morant/", "/articles/")
+    if not deep.has_native("jokic"):
+        build_web_edition("jokic", "notes/jokic/", "/articles/")
+    if not deep.has_native("duren"):
+        build_web_edition("duren", "notes/duren/", "/articles/")
+    if not deep.has_native("kawhi"):
+        build_web_edition("kawhi", "notes/kawhi/", "/articles/")
+    if not deep.has_native("queta"):
+        build_web_edition("queta", "notes/queta/", "/articles/")
+    if not deep.has_native("morant"):
+        build_web_edition("morant", "notes/morant/", "/articles/")
     build_web_edition("spec", "notes/spec/", "/model/")
+    for a in ARTICLES:
+        if a.get("native"):
+            build_native_deep(a)
     build_about()
     build_the644()
     build_the30()

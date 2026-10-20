@@ -240,3 +240,39 @@ a:hover{color:var(--accent)}
 .call-note{margin:8px 0 0;font-size:16px;line-height:1.6;color:var(--ink2)}
 sup a.src{font-family:var(--mono);font-size:11px;text-decoration:none;color:var(--accent);padding:0 1px}
 sup a.src:hover{text-decoration:underline}
+
+/* Native Deep Dives (content/deep/*.md): tables, charts, sources. Oct 20, 2026. */
+.paper .small{font-size:14px;line-height:1.55;color:var(--ink2)}
+.paper.deep .call{margin:18px 0}
+.dt-fig{margin:28px 0}
+.dt-fig figcaption,.viz-fig figcaption{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 10px}
+.viz-fig figcaption{margin:10px 0 0}
+.dt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink)}
+.dt{width:100%;border-collapse:collapse;font-size:14px;line-height:1.35}
+.dt th{font-family:var(--mono);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.02em;text-align:left;padding:8px 10px;border-bottom:1px solid var(--ink);white-space:nowrap}
+.dt td{padding:7px 10px;border-bottom:1px solid var(--rule-xlt);white-space:nowrap}
+.dt tbody tr:last-child td{border-bottom:0}
+.dt .num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.dt tr.hl td{background:var(--hl)}
+.viz-fig{margin:32px 0}
+.viz-title{font-weight:700;font-size:16px;margin-bottom:6px}
+.viz-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--mono);font-size:12px;color:var(--ink2);margin-bottom:6px}
+.viz-legend .lg{display:inline-flex;align-items:center;gap:6px}
+.viz{display:block;width:100%;height:auto;overflow:visible}
+.viz .grid{stroke:var(--rule-xlt);stroke-width:1}
+.viz .axis{stroke:var(--ink);stroke-width:1}
+.viz .tick,.viz .axlabel{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.viz .dlabel{font-family:var(--mono);font-size:11px;fill:var(--ink2)}
+.viz .m{stroke:var(--bg);stroke-width:2;paint-order:stroke}
+.viz-legend .m{stroke:none}
+.m.s-context{fill:#B8B8B8}
+.m.s-accent{fill:var(--accent)}
+.m.s-2{fill:#EB6834}
+.m.s-3{fill:#1BAF7A}
+.viz .m:hover{opacity:.75}
+.viz-data{margin-top:10px;font-size:13px}
+.viz-data summary{cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--ink2);min-height:44px;display:flex;align-items:center}
+.sources{padding-left:28px;margin-top:8px}
+.sources li{margin:6px 0;word-break:break-word}
+@media print{.viz-data{display:none}}
+@media (max-width:600px){.viz .tick,.viz .dlabel{font-size:20px}.viz .axlabel{display:none}}

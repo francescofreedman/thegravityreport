@@ -37,6 +37,13 @@
   ],
   "methods": [
     {
+      "date": "2026-10-20",
+      "label": "Oct 20, 2026",
+      "link": "/articles/",
+      "title": "Format change: Deep Dives are now web articles",
+      "text": "Deep Dives №3 (Duren), №4 (Kawhi) and №5 (Jokić) are now regular web articles instead of LaTeX PDFs: same text, numbers, tables and forecasts, with tables and charts drawn on the page. The historical model is now called GRAVITY Historical everywhere (it was GRAVITY-RS). The original PDFs stay available from each article. New Deep Dives are written for the web from the start."
+    },
+    {
       "date": "2026-10-14",
       "label": "Oct 14, 2026",
       "title": "New team model: TORQUE replaces Team GRAVITY for The 30",

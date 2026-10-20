@@ -46,14 +46,22 @@ Then open http://localhost:8090. The API and posting queue only run on Cloudflar
 
 ## Publishing a new Deep Dive
 
-1. Compile the PDF (`tectonic`), put PDF + TeX in `papers/`, run `scripts/render-pages.sh`.
+Deep Dives are written for the web (no LaTeX, since Oct 20, 2026).
+
+1. Write `content/deep/<slug>.md`. Markup: `## Heading`, plain paragraphs (`**bold**`, sources as `[n](url)`),
+   `!abstract`, `!small`, `!call 55% | claim | note`, `!table Caption` followed by a pipe table,
+   `!chart <id> | Caption` (data in `content/deep/<slug>.charts.json`: `type` `bars` or `dots`), and
+   `!source n | title | url`. Tables and figures number themselves. Full spec: top of `scripts/deep.py`.
 2. Add the article to `content/articles.json` (newest first; the first `article` entry is the homepage lead),
-   including its `social` block (hook, points, big number, team).
-3. Add `content/pages/<slug>.json` with the web-edition body (`body`), title and meta.
-4. Add its forecasts to `content/ledger.json`.
-5. `sh scripts/build_all.sh`, then `python3 scripts/social/make_kit.py article <slug>` and
+   with `"format": "deep"`, its number `n`, `kicker`, `dek`, `home_dek`, `lead`, `ledger` IDs and its `social` block.
+   No `pdf`/`pages` needed. The page is built at `/notes/<slug>/` automatically.
+3. Add its forecasts to `content/ledger.json`, the slug to the sitemap list in `scripts/build_site.py`, and an item to `feed.xml`.
+4. `sh scripts/build_all.sh`, `npm test`, then `python3 scripts/social/make_kit.py article <slug>` and
    `python3 scripts/social/substack_export.py <slug>`.
-6. Commit. Pushing `main` deploys (Cloudflare Workers Builds). Import the kit in `/admin/`.
+5. Commit. Pushing `main` deploys (Cloudflare Workers Builds). Import the kit in `/admin/`.
+
+Older Deep Dives №1 (Morant) and №2 (Queta) are still LaTeX PDFs with a web summary; №3–5 were converted
+on Oct 20, 2026 and keep their original PDF as an archive link.
 
 Revisions to a published article ship with a public revision note (see `/corrections/`).
 
