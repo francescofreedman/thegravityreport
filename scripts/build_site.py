@@ -54,6 +54,9 @@ def read_short(path):
         elif ln.startswith("## "):
             flush()
             blocks.append({"t": "h2", "text": ln[3:]})
+        elif ln == "!editions":
+            flush()
+            blocks.append({"t": "editions"})
         elif ln.startswith("!call "):
             flush()
             pct, claim, note = (x.strip() for x in ln[6:].split("|", 2))
@@ -547,14 +550,43 @@ def inline(text):
     return "".join(out)
 
 
+def editions_html():
+    """The 30 two ways: the July 2026 edition (Team GRAVITY, as published) and the October TORQUE update."""
+    july = read_csv("the644/the30-2026-07.csv")
+    octo = load("the30/torque-2026-27.json")
+    jr = "".join(f'<tr><td class="num">{r["rank"]}</td><td>{e(r["name"])}</td><td class="num">{float(r["team_gravity"]):.1f}</td></tr>'
+                 for r in july)
+    alias = {"BRK": "BKN", "PHO": "PHX", "CHO": "CHA"}
+    jrank = {alias.get(r["team"], r["team"]): int(r["rank"]) for r in july}
+    def move(t):
+        d = jrank[alias.get(t["code"], t["code"])] - t["rank"]
+        return "—" if d == 0 else (f"up {d}" if d > 0 else f"down {-d}")
+    orows = "".join(f'<tr><td class="num">{t["rank"]}</td><td>{e(t["team"])}</td><td class="num">{t["torque"]:.1f}</td>'
+                    f'<td class="num">{t["wins"]:.0f}</td><td class="num">{move(t)}</td></tr>' for t in octo["teams"])
+    asof = long_date(octo["as_of"])
+    return f"""<div class="editions" data-editions>
+<div class="ed-toggle" role="group" aria-label="Choose an edition of The 30">
+<button type="button" data-ed="oct" aria-pressed="true">October update (TORQUE)</button>
+<button type="button" data-ed="jul" aria-pressed="false">July 2026 edition</button>
+</div>
+<div class="ed-panel" data-panel="oct"><p class="small">TORQUE, rosters as of {e(asof)}. One rating point is worth about 2.5 wins. “Since July” is how many places a team moved from the July edition, which used the old method and July rosters.</p>
+<div class="dt-scroll" tabindex="0"><table class="dt"><thead><tr><th class="num">Rank</th><th>Team</th><th class="num">TORQUE</th><th class="num">Projected wins</th><th class="num">Since July</th></tr></thead><tbody>{orows}</tbody></table></div></div>
+<div class="ed-panel" data-panel="jul"><p class="small">The July 2026 edition, published July 29 with the old method (Team GRAVITY), kept exactly as it was. Forecast E1 is graded on this table.</p>
+<div class="dt-scroll" tabindex="0"><table class="dt"><thead><tr><th class="num">Rank</th><th>Team</th><th class="num">Team GRAVITY</th></tr></thead><tbody>{jr}</tbody></table></div></div>
+<p class="small"><a href="/the30/">Full tables, top contributors and method on The 30</a></p>
+</div>"""
+
+
 def build_short(a):
     parts, scaled = [], False
     for b in a["blocks"]:
-        if b["t"] in ("h2", "call") and not scaled:
+        if b["t"] == "call" and not scaled:
             parts.append(pscale())
             scaled = True
         if b["t"] == "h2":
             parts.append(f'<h2>{inline(b["text"])}</h2>')
+        elif b["t"] == "editions":
+            parts.append(editions_html())
         elif b["t"] == "p":
             parts.append(f'<p>{inline(b["text"])}</p>')
         else:
@@ -573,7 +605,8 @@ def build_short(a):
     write(f"articles/{a['slug']}/index.html",
           page(a["web"], f"{a['title']} — The Gravity Report", a["dek"], body, active="/articles/",
                og_image=a.get("card", "/cards/site.png"), og_type="article", depth=True,
-               extra_head=f'<meta property="article:published_time" content="{e(a["date"])}">\n'))
+               extra_head=f'<meta property="article:published_time" content="{e(a["date"])}">\n',
+               scripts='<script src="/assets/editions.js"></script>\n' if any(b["t"] == "editions" for b in a["blocks"]) else ""))
 
 
 # legacy links inside article bodies -> new homes (link text stays true)

@@ -276,3 +276,9 @@ sup a.src:hover{text-decoration:underline}
 .sources li{margin:6px 0;word-break:break-word}
 @media print{.viz-data{display:none}}
 @media (max-width:600px){.viz .tick,.viz .dlabel{font-size:20px}.viz .axlabel{display:none}}
+.editions{margin:20px 0 28px}
+.ed-toggle{display:flex;flex-wrap:wrap;gap:0;margin-bottom:12px;border:1px solid var(--ink);width:max-content;max-width:100%}
+.ed-toggle button{font-family:var(--mono);font-size:13px;min-height:44px;padding:0 16px;border:0;background:var(--bg);color:var(--ink);cursor:pointer}
+.ed-toggle button+button{border-left:1px solid var(--ink)}
+.ed-toggle button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.ed-panel .dt td:nth-child(2){white-space:normal}
