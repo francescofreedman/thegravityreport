@@ -1,6 +1,7 @@
 /* The Gravity Report — site styles (locked design "J", Oct 6, 2026).
    White ground, near-black ink, one electric-blue accent. Archivo + IBM Plex Mono. */
 
+[hidden]{display:none!important}
 :root{
   --bg:#FFFFFF; --ink:#0A0A0A; --ink2:#333333; --muted:#555555;
   --rule:#0A0A0A; --rule-lt:#D4D4D4; --rule-xlt:#E6E6E6; --track:#E6E6E6;
