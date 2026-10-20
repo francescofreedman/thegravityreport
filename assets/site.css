@@ -282,3 +282,4 @@ sup a.src:hover{text-decoration:underline}
 .ed-toggle button+button{border-left:1px solid var(--ink)}
 .ed-toggle button[aria-pressed="true"]{background:var(--ink);color:#fff}
 .ed-panel .dt td:nth-child(2){white-space:normal}
+.paper .byline{margin-bottom:22px}
