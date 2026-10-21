@@ -47,6 +47,21 @@ class KitTests(unittest.TestCase):
                 self.assertIn("Link in bio", kit["instagram_caption"])
                 self.assertTrue(kit["reddit"]["subreddit"])
 
+    def test_tracking_frame_dates_the_piece_and_never_says_new(self):
+        arts = {a["slug"]: a for a in json.load(open(os.path.join(ROOT, "content", "articles.json"), encoding="utf-8"))}
+        for slug in mk.SUBJECTS:
+            with tempfile.TemporaryDirectory() as d:
+                kit, _ = mk.build_article_kit(slug, "2026-10-21", outdir=d, images=False, frame="tracking")
+                when = mk.pub_date(arts[slug]["date"])
+                self.assertIn(when, kit["x_thread"][0])
+                self.assertIn(when, kit["x_thread"][-1])
+                self.assertIn(when, kit["instagram_caption"])
+                allt = " ".join(kit["x_thread"] + [kit["threads"], kit["instagram_caption"], kit["reddit"]["markdown"]])
+                for banned in ["new article", "out now", "just published", "today"]:
+                    self.assertNotIn(banned, allt.lower())
+                if not arts[slug].get("ledger"):
+                    self.assertNotIn("Every call", allt)
+
     def test_player_kits_build_for_top_and_rookie(self):
         for slug in ["nikola-jokic", "cameron-boozer", "jalen-duren"]:
             with tempfile.TemporaryDirectory() as d:

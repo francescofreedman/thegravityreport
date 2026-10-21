@@ -236,33 +236,71 @@ def article_source(slug):
     return " ".join(parts)
 
 
-def build_article_kit(slug, date, outdir=None, images=True):
+# "tracking" frame: for pieces published before the accounts existed. The posts say when the
+# piece came out and what we're watching, instead of presenting it as news.
+SUBJECTS = {"kawhi": "Kawhi Leonard", "queta": "Neemias Queta", "morant": "Ja Morant",
+            "duren": "Jalen Duren", "jokic": "Nikola Jokić"}
+COUNT_WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine"}
+
+
+def pub_date(iso):
+    d = datetime.date.fromisoformat(iso)
+    return f"{d.strftime('%B')} {d.day}"
+
+
+def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
     arts = load("content/articles.json")
     a = next(x for x in arts if x["slug"] == slug)
     s = a["social"]
     ledger = {e["id"]: e for e in load("content/ledger.json")["entries"]}
     url = SITE_URL + a["web"]
     calls = [ledger[i] for i in a.get("ledger", [])]
-    x_posts = [s["hook"]] + list(s["points"])
+    tracking = frame == "tracking"
+    extra_source = ""
+    if tracking:
+        who, when = SUBJECTS[slug], pub_date(a["date"])
+        extra_source = when
+        if calls:
+            opener = (f"The season is underway. On {when}, before tip-off, we put {COUNT_WORDS[len(calls)]} "
+                      f"calls on {who}'s year. Each one gets graded in public.")
+        else:
+            opener = f"The season is underway. On {when}, we took a hard look at {who}. Here's what we found."
+        call_label, ig_call_label = "What we said:", "What we said:"
+        closer = (f"Every call is tracked on our public ledger. The full piece, from {when}:\n{url}" if calls
+                  else f"The full piece, from {when}:\n{url}")
+        x_posts = [opener, s["hook"]] + list(s["points"])
+    else:
+        call_label = "Our calls, registered before tip-off and graded in public:"
+        ig_call_label = "Our calls, registered before tip-off:"
+        closer = f"The full article, in plain language ({a['pages']} pages):\n{url}"
+        x_posts = [s["hook"]] + list(s["points"])
     if calls:
         lines = "\n".join(f"{c['p']}%  {c.get('box', c['claim'])}" for c in calls)
-        x_posts.append("Our calls, registered before tip-off and graded in public:\n" + lines)
-    x_posts.append(f"The full article, in plain language ({a['pages']} pages):\n{url}")
-    threads = f"{s['hook']}\n\n{s['points'][0]}\n\nRead it: {url}"
+        x_posts.append(call_label + "\n" + lines)
+    x_posts.append(closer)
+    lead = f"{opener}\n\n{s['hook']}" if tracking else s["hook"]
+    threads = f"{lead}\n\n{s['points'][0]}\n\nRead it: {url}"
     if len(threads) > LIMITS["threads"]:
-        threads = f"{s['hook']}\n\nRead it: {url}"
-    ig = "\n\n".join([s["hook"]] + list(s["points"]))
+        threads = f"{lead}\n\nRead it: {url}"
+    ig = "\n\n".join(x_posts[:len(x_posts) - (2 if calls else 1)])
     if calls:
-        ig += "\n\nOur calls, registered before tip-off:\n" + "\n".join(
-            f"{c['p']}% · {c.get('box', c['claim'])}" for c in calls)
-    ig += "\n\nThe full article is free. Link in bio.\n\n#NBA"
+        ig += f"\n\n{ig_call_label}\n" + "\n".join(f"{c['p']}% · {c.get('box', c['claim'])}" for c in calls)
+    ig += (f"\n\nThe full piece, from {pub_date(a['date'])}, is free. Link in bio.\n\n#NBA" if tracking
+           else "\n\nThe full article is free. Link in bio.\n\n#NBA")
     sub = SUBREDDITS.get(s.get("team", ""), "nbadiscussion")
+    if tracking:
+        title = (f"Before the season, we put numbers on {SUBJECTS[slug]}. Here's what we're watching" if calls
+                 else f"{a['title']}: {a['dek'].rstrip('.')} (from {pub_date(a['date'])})")
+        link_line = f"Full piece, from {pub_date(a['date'])} (free, no ads): {url}"
+    else:
+        title = f"{a['title']}: {a['dek'].rstrip('.')}"
+        link_line = f"Full article (free, no ads): {url}"
     reddit = (f"# r/{sub} (post by hand; read the sub's self-promotion rules first)\n\n"
-              f"**Title:** {a['title']}: {a['dek'].rstrip('.')}\n\n**Body:**\n\n" + "\n\n".join(x_posts[:-1]) +
-              f"\n\nFull article (free, no ads): {url}\n\nHappy to answer questions about the method in the comments.\n")
+              f"**Title:** {title}\n\n**Body:**\n\n" + "\n\n".join(x_posts[:-1]) +
+              f"\n\n{link_line}\n\nHappy to answer questions about the method in the comments.\n")
     kit = {
         "kind": "article", "slug": slug, "date": date, "url": url,
-        "title": a["title"],
+        "title": a["title"], "frame": frame,
         "x_thread": x_posts, "bluesky_thread": x_posts, "threads": threads, "instagram_caption": ig,
         "reddit": {"subreddit": sub, "markdown": reddit},
         "images": {
@@ -279,7 +317,7 @@ def build_article_kit(slug, date, outdir=None, images=True):
         },
     }
     texts = x_posts + [threads, ig, reddit] + list(kit["alt"].values()) + [s["big"]["value"], s["big"]["label"]]
-    guard(texts, article_source(slug))
+    guard(texts, article_source(slug) + " " + extra_source)
     check_limits(kit)
     if outdir is None:
         outdir = os.path.join(ROOT, "social", "kits", f"{date}-article-{slug}")
@@ -424,9 +462,11 @@ def main(argv=None):
     ap.add_argument("slug", nargs="?")
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--no-images", action="store_true")
+    ap.add_argument("--frame", choices=["news", "tracking"], default="news",
+                    help="tracking: for back-catalog pieces; says when it came out, never presents it as new")
     a = ap.parse_args(argv)
     if a.kind == "article":
-        kit, out = build_article_kit(a.slug, a.date, images=not a.no_images)
+        kit, out = build_article_kit(a.slug, a.date, images=not a.no_images, frame=a.frame)
     elif a.kind == "player":
         kit, out = build_player_kit(a.slug, a.date, images=not a.no_images)
     else:
