@@ -9,7 +9,7 @@
   },
   // Social posting cron. Harmless until secrets are set: SOCIAL_DRY_RUN stays "1" (simulate only).
   "triggers": { "crons": ["*/15 * * * *"] },
-  "vars": { "SOCIAL_DRY_RUN": "0", "SOCIAL_X_MONTHLY_CAP": "60" },
+  "vars": { "SOCIAL_DRY_RUN": "0", "SOCIAL_X_MONTHLY_CAP": "150" },
   "d1_databases": [
     {
       "binding": "DB",
