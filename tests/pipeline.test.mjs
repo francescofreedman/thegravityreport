@@ -50,7 +50,7 @@ function okAdapter(name, calls) {
   return { name, configured: () => true, async post(e, payload) { calls.push({ name, payload }); return { remote_id: name + "-1", count: (payload.posts || [1]).length }; } };
 }
 
-const KIT = "2026-10-07-article-kawhi";
+const KIT = "2026-10-20-article-kawhi";
 const T0 = Date.parse("2026-10-21T17:00:00Z");
 
 test("OAuth 1.0a signature matches X's published example", async () => {
@@ -205,6 +205,8 @@ test("admin API: off without ADMIN_KEY, rejects wrong key, imports + approves wi
   assert.equal((await handleAdmin(new Request("https://t/api/admin/queue"), e)).status, 503);
   e.ADMIN_KEY = "s3cret-key-123";
   assert.equal((await handleAdmin(new Request("https://t/api/admin/queue", { headers: { "x-admin-key": "nope" } }), e)).status, 401);
+  // a pasted key with a stray space still unlocks (password managers add them)
+  assert.equal((await handleAdmin(new Request("https://t/api/admin/queue", { headers: { "x-admin-key": " s3cret-key-123 " } }), e)).status, 200);
   const H = { "x-admin-key": "s3cret-key-123", "content-type": "application/json" };
   let r = await handleAdmin(new Request("https://t/api/admin/import", { method: "POST", headers: H, body: JSON.stringify({ kit_id: KIT }) }), e);
   assert.equal((await r.json()).added, 4);

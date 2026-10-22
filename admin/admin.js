@@ -58,7 +58,7 @@
     }).catch(function(){});
   }
   function act(path, body){ api(path, body).then(function(j){ msg(path + ': ok' + (j.changed !== undefined ? ' (' + j.changed + ')' : '') + (j.added !== undefined ? ' (' + j.added + ' added)' : '')); load(); }).catch(function(e){ msg('Error: ' + e.message); }); }
-  $('keyform').addEventListener('submit', function(e){ e.preventDefault(); KEY = $('key').value; try { sessionStorage.setItem('gr_admin', KEY); } catch(x){} load(); });
+  $('keyform').addEventListener('submit', function(e){ e.preventDefault(); KEY = $('key').value.trim(); try { sessionStorage.setItem('gr_admin', KEY); } catch(x){} load(); });
   $('lock').addEventListener('click', function(){ KEY = ''; try { sessionStorage.removeItem('gr_admin'); } catch(x){} $('rows').innerHTML = ''; msg('Locked.'); });
   $('week').addEventListener('click', function(){ if (confirm('Approve every draft scheduled in the next 7 days?')) act('approve-week', {}); });
   $('run').addEventListener('click', function(){ act('run-now', {}); });

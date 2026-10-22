@@ -26,7 +26,7 @@ async function body(request) {
 
 export async function handleAdmin(request, env, deps = {}) {
   if (!env.ADMIN_KEY) return json({ ok: false, error: "admin disabled (ADMIN_KEY not set)" }, 503);
-  if (!sameKey(request.headers.get("x-admin-key") || "", env.ADMIN_KEY)) return json({ ok: false, error: "unauthorized" }, 401);
+  if (!sameKey((request.headers.get("x-admin-key") || "").trim(), String(env.ADMIN_KEY).trim())) return json({ ok: false, error: "unauthorized" }, 401);
   await ensureSocialSchema(env);
   const path = new URL(request.url).pathname.replace(/^\/api\/admin\/?/, "");
   try {
