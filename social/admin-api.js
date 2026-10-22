@@ -1,8 +1,8 @@
-// /api/admin/* — the approval queue. Every call needs header `x-admin-key` matching env.ADMIN_KEY.
+// /api/admin/* — the approval queue (+ GET metrics: the weekly follower table). Every call needs header `x-admin-key` matching env.ADMIN_KEY.
 // If ADMIN_KEY is not set, the whole admin API is off (503).
 import {
   ensureSocialSchema, importKit, approve, approveWeek, setStatus, schedule, setSetting, queueView, runScheduled,
-  cancelScheduled, restoreScheduled,
+  cancelScheduled, restoreScheduled, metricsView,
 } from "./pipeline.js";
 
 function json(data, status = 200) {
@@ -32,6 +32,7 @@ export async function handleAdmin(request, env, deps = {}) {
   const path = new URL(request.url).pathname.replace(/^\/api\/admin\/?/, "");
   try {
     if (request.method === "GET" && path === "queue") return json({ ok: true, ...(await queueView(env, deps.adapters)) });
+    if (request.method === "GET" && path === "metrics") return json({ ok: true, weeks: await metricsView(env, 8) });
     if (request.method === "GET" && path === "kits") {
       const r = await env.ASSETS.fetch(new Request("https://thegravityreport.com/social/kits/index.json"));
       return json({ ok: r.ok, kits: r.ok ? (await r.json()).kits : [] });

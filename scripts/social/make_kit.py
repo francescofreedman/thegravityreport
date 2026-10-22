@@ -2,7 +2,10 @@
 """Post-kit generator: one event in, a ready-to-post kit out.
 
   python3 scripts/social/make_kit.py article kawhi [--date 2026-10-07]
+  python3 scripts/social/make_kit.py article kawhi --frame tracking --angle 2   ("From the archive")
   python3 scripts/social/make_kit.py player jalen-duren [--date ...]
+  python3 scripts/social/make_kit.py team OKC [--date ...]          ("The 644 on your team")
+  python3 scripts/social/make_kit.py team all --date 2026-10-24     (all 30, one a day, TORQUE order)
   python3 scripts/social/make_kit.py edition
   (ledger kits come from scripts/social/ledger_tracker.py, which calls build_ledger_kit)
 
@@ -47,6 +50,10 @@ SUBREDDITS = {
     "PHX": "suns", "POR": "ripcity", "SAC": "kings", "SAS": "NBASpurs", "TOR": "torontoraptors",
     "UTA": "UtahJazz", "WAS": "washingtonwizards",
 }
+
+# The 644 uses NBA codes; TORQUE (the30/torque-2026-27.json) uses Basketball Reference's for three teams.
+TORQUE_CODE = {"CHA": "CHO", "PHX": "PHO", "BKN": "BRK"}
+FROM_TORQUE = {v: k for k, v in TORQUE_CODE.items()}
 
 
 class NumberGuardError(ValueError):
@@ -130,6 +137,27 @@ def check_limits(kit):
         raise ValueError("; ".join(errs))
 
 
+def fits(post):
+    return x_len(post) <= LIMITS["x"] and graphemes(post) <= LIMITS["bluesky"]
+
+
+def pack_posts(head, lines, tail=None):
+    """head, then one line per item, split into posts that fit both X and Bluesky; tail is the last post."""
+    posts, cur = [], head
+    for ln in lines:
+        nxt = (cur + ("\n\n" if cur == head else "\n") + ln) if cur else ln
+        if fits(nxt):
+            cur = nxt
+        else:
+            posts.append(cur)
+            cur = ln
+    if cur:
+        posts.append(cur)
+    if tail:
+        posts.append(tail)
+    return posts
+
+
 # ------------------------------------------------------------------ images
 
 def landscape(path, kicker, title, dek, band_label, band_text):
@@ -204,6 +232,49 @@ def ig_bars(path, title, items, n_of, note):
     cl.save(img, path)
 
 
+def latin(s):
+    """Archivo has no Cyrillic: the data spells one name with a Cyrillic ё, which the card swaps for ë."""
+    return s.replace("ё", "ë").replace("Ё", "Ë")
+
+
+def team_card(path, name, rows):
+    """1200x675: a team's top eight in The 644, two columns of rank + name + score."""
+    W, H = 1200, 675
+    img, d = cl.canvas(W, H)
+    cl.brand(d, 64, 52, 30)
+    d.text((64, 130), "THE 644 ON YOUR TEAM", font=cl.mono(22, 600), fill=cl.ACCENT)
+    ft = cl.fit_archivo(d, name, W - 128, 84, minimum=48)
+    y = cl.draw_lines(d, (60, 160), [name], ft, cl.INK, int(ft.size * 1.0)) + 20
+    col_w = (W - 128 - 48) // 2
+    for i, (r, nm, s, rk) in enumerate(rows[:8]):
+        x = 64 + (i // 4) * (col_w + 48)
+        yy = y + (i % 4) * 68
+        d.text((x, yy + 6), f"#{r}", font=cl.mono(24, 600), fill=cl.MUTED)
+        fn = cl.fit_archivo(d, latin(nm), col_w - 190, 32, minimum=20, weight=700, width=100)
+        d.text((x + 86, yy), latin(nm), font=fn, fill=cl.INK)
+        d.text((x + col_w, yy + 2), f"{s:.1f}", font=cl.mono(30, 600), fill=cl.ACCENT, anchor="ra")
+    cl.band(img, d, H - 84, 84, "GRAVITY SCORE", "50 = LEAGUE AVERAGE · THEGRAVITYREPORT.COM/THE644")
+    cl.save(img, path)
+
+
+def ig_table(path, kicker, title, rows, band_label, band_text, note):
+    """1080x1350: a ranked list of up to eight (rank, name, score, rookie) rows."""
+    img, d, W, H = ig_frame()
+    d.text((72, 220), kicker, font=cl.mono(26, 600), fill=cl.ACCENT)
+    ft = cl.fit_archivo(d, title, W - 144, 96, minimum=56)
+    lines = cl.wrap(d, title, ft, W - 144)[:2]
+    y = cl.draw_lines(d, (66, 262), lines, ft, cl.INK, int(ft.size * 1.0)) + 36
+    for r, nm, s, rk in rows[:8]:
+        d.text((72, y + 10), f"#{r}", font=cl.mono(30, 600), fill=cl.MUTED)
+        fn = cl.fit_archivo(d, latin(nm), 640, 44, minimum=28, weight=700, width=100)
+        d.text((190, y), latin(nm), font=fn, fill=cl.INK)
+        d.text((1008, y + 4), f"{s:.1f}", font=cl.mono(40, 600), fill=cl.ACCENT, anchor="ra")
+        y += 86
+    d.text((72, y + 12), note, font=cl.mono(22, 500), fill=cl.MUTED)
+    cl.band(img, d, H - 96, 96, band_label, band_text)
+    cl.save(img, path)
+
+
 def ig_cta(path, title, url_text, n_of):
     img, d, W, H = ig_frame()
     d.text((72, 380), "READ IT FREE", font=cl.mono(28, 600), fill=cl.ACCENT)
@@ -262,7 +333,25 @@ def short_article(slug):
     return a, body
 
 
-def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
+def archive_articles():
+    """Deep Dives with a social block, in Deep Dive order: the "From the archive" rotation."""
+    arts = [a for a in load("content/articles.json") if a.get("social") and a["slug"] in SUBJECTS]
+    return [a["slug"] for a in sorted(arts, key=lambda a: int(a.get("n") or 0))]
+
+
+def all_archive_kits(start_date, images=True):
+    """"From the archive": one tracking-frame, angle-2 kit per article, one Sunday apart from start_date."""
+    d0 = datetime.date.fromisoformat(start_date)
+    outs = []
+    for i, slug in enumerate(archive_articles()):
+        day = (d0 + datetime.timedelta(days=7 * i)).isoformat()
+        outs.append(build_article_kit(slug, day, images=images, frame="tracking", angle=2)[1])
+    return outs
+
+
+def build_article_kit(slug, date, outdir=None, images=True, frame="news", angle=1):
+    """angle 2 (tracking frame only, "From the archive"): the first point leads instead of the hook,
+    and the closer names the publish date."""
     arts = load("content/articles.json")
     a = next((x for x in arts if x["slug"] == slug), None)
     short_body = ""
@@ -275,6 +364,7 @@ def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
     url = SITE_URL + a["web"]
     calls = [ledger[i] for i in a.get("ledger", [])]
     tracking = frame == "tracking"
+    archive = tracking and angle == 2
     extra_source = ""
     if tracking:
         who, when = SUBJECTS[slug], pub_date(a["date"])
@@ -285,9 +375,14 @@ def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
         else:
             opener = f"The season is underway. On {when}, we took a hard look at {who}. Here's what we found."
         call_label, ig_call_label = "What we said:", "What we said:"
-        closer = (f"Every call is tracked on our public ledger. The full piece, from {when}:\n{url}" if calls
-                  else f"The full piece, from {when}:\n{url}")
-        x_posts = [opener, s["hook"]] + list(s["points"])
+        if archive:
+            closer = (f"From the archive: we published this on {when}. Every call is tracked on our public ledger. The full piece, free:\n{url}"
+                      if calls else f"From the archive: we published this on {when}. The full piece, free:\n{url}")
+            x_posts = [s["points"][0], opener, s["hook"]] + list(s["points"][1:])
+        else:
+            closer = (f"Every call is tracked on our public ledger. The full piece, from {when}:\n{url}" if calls
+                      else f"The full piece, from {when}:\n{url}")
+            x_posts = [opener, s["hook"]] + list(s["points"])
     else:
         call_label = "Our calls, registered before tip-off and graded in public:"
         ig_call_label = "Our calls, registered before tip-off:"
@@ -302,10 +397,16 @@ def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
             extra_source += f" {len(calls) - len(shown)}"
         x_posts.append(call_label + "\n" + lines)
     x_posts.append(closer)
-    lead = f"{opener}\n\n{s['hook']}" if tracking else s["hook"]
-    threads = f"{lead}\n\n{s['points'][0]}\n\nRead it: {url}"
-    if len(threads) > LIMITS["threads"]:
-        threads = f"{lead}\n\nRead it: {url}"
+    if archive:
+        lead = f"{s['points'][0]}\n\n{opener}"
+        threads = f"{lead}\n\n{s['hook']}\n\nFrom the archive, {when}: {url}"
+        if len(threads) > LIMITS["threads"]:
+            threads = f"{lead}\n\nFrom the archive, {when}: {url}"
+    else:
+        lead = f"{opener}\n\n{s['hook']}" if tracking else s["hook"]
+        threads = f"{lead}\n\n{s['points'][0]}\n\nRead it: {url}"
+        if len(threads) > LIMITS["threads"]:
+            threads = f"{lead}\n\nRead it: {url}"
     ig = "\n\n".join(x_posts[:len(x_posts) - (2 if calls else 1)])
     if calls:
         ig += f"\n\n{ig_call_label}\n" + "\n".join(f"{c['p']}% · {c.get('box', c['claim'])}" for c in shown)
@@ -326,7 +427,7 @@ def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
               f"\n\n{link_line}\n\nHappy to answer questions about the method in the comments.\n")
     kit = {
         "kind": "article", "slug": slug, "date": date, "url": url,
-        "title": a["title"], "frame": frame,
+        "title": a["title"], "frame": frame, "angle": angle, **({"series": "archive"} if archive else {}),
         "x_thread": x_posts, "bluesky_thread": x_posts, "threads": threads, "instagram_caption": ig,
         "reddit": {"subreddit": sub, "markdown": reddit},
         "images": {
@@ -429,30 +530,115 @@ def build_player_kit(slug, date, outdir=None, images=True):
     return kit, outdir
 
 
+# ------------------------------------------------------------------ "The 644 on your team"
+#
+# One team a day: its top eight players in The 644 by rank, each with his GRAVITY score. Every
+# number comes from content/the644.json (the player's r and s, and the team's player count).
+
+def team_name(code):
+    tc = TORQUE_CODE.get(code, code)
+    return next(x["team"] for x in load("the30/torque-2026-27.json")["teams"] if x["code"] == tc)
+
+
+def team_players(code, t644=None):
+    t644 = t644 or load("content/the644.json")
+    return sorted((p for p in t644["players"] if p["t"] == code), key=lambda p: p["r"])
+
+
+def build_team_kit(code, date, outdir=None, images=True):
+    code = FROM_TORQUE.get(code.upper(), code.upper())
+    if code not in SUBREDDITS:
+        raise KeyError(f"unknown team {code}")
+    name = team_name(code)
+    ps = team_players(code)
+    top = ps[:8]
+    url = SITE_URL + "/the644/"
+    rows = [(p["r"], p["n"], p["s"], bool(p.get("rk"))) for p in top]
+    lines = [f"#{p['r']} {p['n']} {p['s']:.1f}" + (" (rookie)" if p.get("rk") else "") for p in top]
+    count = COUNT_WORDS[len(top)]
+    head = (f"The {name} in The 644, our ranking of every NBA player. The top {count} by rank, "
+            f"with each player's GRAVITY score (50 is a league-average minute):")
+    short_head = f"The {name} in The 644: the top {count} by rank, with each player's GRAVITY score (50 is a league-average minute)."
+    rookie_note = "Rookies start from a draft-slot prior." if any(p.get("rk") for p in top) else ""
+    tail = " ".join(x for x in [f"All {len(ps)} {name} players are in The 644, each with a free profile page.", rookie_note,
+                                 f"Filter by team: {url}"] if x)
+    posts = pack_posts(head, lines, tail)
+    threads = short_head + "\n\n" + "\n".join(lines) + f"\n\nEvery player, with a free page: {url}"
+    while len(threads) > LIMITS["threads"]:
+        lines_t = threads.split("\n")
+        threads = "\n".join(lines_t[:-3] + lines_t[-2:])  # drop the last player line
+    ig = "\n\n".join(x for x in [head, "\n".join(lines), rookie_note, "Every player's page is free. Link in bio.", "#NBA"] if x)
+    sub = SUBREDDITS[code]
+    reddit = (f"# r/{sub} (post by hand; read the sub's self-promotion rules first)\n\n"
+              f"**Title:** Where the {name} stand in The 644, our ranking of all 644 NBA players\n\n**Body:**\n\n"
+              f"{head}\n\n" + "\n".join(f"- {ln}" for ln in lines) + "\n\n" + (rookie_note + " " if rookie_note else "") +
+              "GRAVITY is our one-number player rating: how good, times how often. "
+              f"Every player has a free profile page, and the table filters by team: {url}\n\n"
+              "Happy to answer questions about the method in the comments.\n")
+    alt = f"The {name} in The 644, top {count} by rank with GRAVITY scores: " + "; ".join(lines) + ". 50 is a league-average minute."
+    kit = {"kind": "team", "slug": code.lower(), "team": code, "date": date, "url": url,
+           "title": f"The 644 on your team: {name}",
+           "x_thread": posts, "bluesky_thread": posts, "threads": threads, "instagram_caption": ig,
+           "reddit": {"subreddit": sub, "markdown": reddit},
+           "images": {"card": "card-1200x675.png", "carousel": ["ig-1080x1350-1.png"]},
+           "alt": {"card-1200x675.png": alt, "ig-1080x1350-1.png": alt}}
+    guard(posts + [threads, ig, reddit, alt], json.dumps(top, ensure_ascii=False) + f" {len(ps)} {name}")
+    check_limits(kit)
+    outdir = outdir or os.path.join(ROOT, "social", "kits", f"{date}-team-{code.lower()}")
+    write_kit(kit, outdir)
+    if images:
+        team_card(os.path.join(outdir, "card-1200x675.png"), name, rows)
+        ig_table(os.path.join(outdir, "ig-1080x1350-1.png"), "THE 644 ON YOUR TEAM", name, rows,
+                 "THE 644", "THEGRAVITYREPORT.COM/THE644", "GRAVITY score. 50 is a league-average minute.")
+    return kit, outdir
+
+
+def all_team_kits(start_date, images=True):
+    """One kit per team, dated one day apart from start_date, in The 30's TORQUE order."""
+    teams = sorted(load("the30/torque-2026-27.json")["teams"], key=lambda x: x["rank"])
+    d0 = datetime.date.fromisoformat(start_date)
+    outs = []
+    for i, x in enumerate(teams):
+        code = FROM_TORQUE.get(x["code"], x["code"])
+        outs.append(build_team_kit(code, (d0 + datetime.timedelta(days=i)).isoformat(), images=images)[1])
+    return outs
+
+
 def build_ledger_kit(rows, as_of, date, outdir=None, images=True, source_text=""):
-    """rows: [{id, claim, p, status_line}] — status lines come from ledger_tracker.py with their own source."""
+    """rows: [{id, claim, p, status_line, later}] — status lines come from ledger_tracker.py with their own source.
+
+    Calls tracked week by week get a line each, misses included. Calls that can only be graded on a
+    fixed date (`later`) are grouped by that date so the thread stays short but still names every call.
+    """
     url = SITE_URL + "/ledger/"
-    head = f"Is the model winning? Our open calls, as of {as_of}:"
-    lines = [f"{r['id']} · {r['p']}% · {r['claim']}: {r['status_line']}" for r in rows]
-    posts, cur = [], head
+    live = [r for r in rows if not r.get("later")]
+    later = [r for r in rows if r.get("later")]
+    head = f"Is the model winning? Where our {len(rows)} open calls stand, as of {as_of}:"
+    lines = [f"{r['id']} · {r['p']}% · {r['claim']}: {r['status_line']}" for r in live]
+    for when in dict.fromkeys(r["status_line"] for r in later):
+        group = [r for r in later if r["status_line"] == when]
+        for i in range(0, len(group), 4):
+            chunk = group[i:i + 4]
+            lines.append(f"{when[0].upper()}{when[1:]}: " + "; ".join(f"{r['id']} · {r['p']}% · {r['claim']}" for r in chunk))
+    tail = f"Every call was registered before tip-off and is graded in public, misses included.\n{url}"
+    posts = pack_posts(head, lines, tail)
+    threads = head
     for ln in lines:
-        if x_len(cur + "\n\n" + ln) > LIMITS["x"]:
-            posts.append(cur)
-            cur = ln
-        else:
-            cur = cur + "\n\n" + ln
-    posts.append(cur)
-    posts.append(f"Every call was registered before tip-off. Grades are final in April and July 2027.\n{url}")
+        if len(threads + "\n" + ln + f"\n\n{url}") > LIMITS["threads"]:
+            break
+        threads += ("\n\n" if threads == head else "\n") + ln
+    threads += f"\n\n{url}"
     ig = head + "\n\n" + "\n\n".join(lines) + "\n\nLink in bio.\n\n#NBA"
+    while len(ig) > LIMITS["instagram"] and lines:
+        lines = lines[:-1]
+        ig = head + "\n\n" + "\n\n".join(lines) + "\n\nLink in bio.\n\n#NBA"
     kit = {"kind": "ledger", "slug": "tracker", "date": date, "url": url, "title": "Is the model winning?",
-           "x_thread": posts, "bluesky_thread": posts, "threads": (head + "\n\n" + "\n".join(lines))[:470] + f"\n{url}",
+           "x_thread": posts, "bluesky_thread": posts, "threads": threads,
            "instagram_caption": ig, "reddit": None,
            "images": {"card": "card-1200x675.png", "carousel": ["ig-1080x1350-1.png"]},
-           "alt": {"card-1200x675.png": "Forecast Ledger tracker: " + "; ".join(lines),
-                   "ig-1080x1350-1.png": "Open forecasts as probability bars with where each stands so far."}}
-    if len(kit["threads"]) > LIMITS["threads"]:
-        kit["threads"] = head + f"\n{url}"
-    guard(posts + [ig], source_text)
+           "alt": {"card-1200x675.png": f"Forecast Ledger tracker, as of {as_of}: {len(rows)} open calls, tracked against this season's numbers.",
+                   "ig-1080x1350-1.png": "Open forecasts as probability bars: " + "; ".join(f"{r['claim']}, {r['p']}%" for r in live[:6]) + "."}}
+    guard(posts + [threads, ig] + list(kit["alt"].values()), source_text + f" {len(rows)}")
     check_limits(kit)
     if outdir is None:
         outdir = os.path.join(ROOT, "social", "kits", f"{date}-ledger-tracker")
@@ -462,7 +648,7 @@ def build_ledger_kit(rows, as_of, date, outdir=None, images=True, source_text=""
                   "Is the model winning?", f"{len(rows)} open calls, tracked against this season's numbers.",
                   "THE LEDGER", "THEGRAVITYREPORT.COM/LEDGER")
         ig_bars(os.path.join(outdir, "ig-1080x1350-1.png"), "Is the model winning?",
-                [(f"{r['id']}: {r['claim']}", r["p"]) for r in rows[:6]], "1/1", f"As of {as_of}.")
+                [(f"{r['id']}: {r['claim']}", r["p"]) for r in (live or rows)[:6]], "1/1", f"As of {as_of}.")
     return kit, outdir
 
 
@@ -615,22 +801,35 @@ def write_kit(kit, outdir):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("kind", choices=["article", "player", "edition", "the30", "performance"])
+    ap.add_argument("kind", choices=["article", "player", "edition", "the30", "performance", "team"])
     ap.add_argument("--game", help="ESPN event id (performance kits)")
     ap.add_argument("slug", nargs="?")
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--no-images", action="store_true")
     ap.add_argument("--frame", choices=["news", "tracking"], default="news",
                     help="tracking: for back-catalog pieces; says when it came out, never presents it as new")
+    ap.add_argument("--angle", type=int, choices=[1, 2], default=1,
+                    help="2 (with --frame tracking): From the archive; the first point leads, the closer names the publish date")
     a = ap.parse_args(argv)
     if a.kind == "article":
-        kit, out = build_article_kit(a.slug, a.date, images=not a.no_images, frame=a.frame)
+        if (a.slug or "").lower() == "all":
+            # From the archive: every Deep Dive, one Sunday apart from --date
+            for out in all_archive_kits(a.date, images=not a.no_images):
+                print(os.path.relpath(out, ROOT))
+            return
+        kit, out = build_article_kit(a.slug, a.date, images=not a.no_images, frame=a.frame, angle=a.angle)
     elif a.kind == "player":
         kit, out = build_player_kit(a.slug, a.date, images=not a.no_images)
     elif a.kind == "performance":
         kit, out = build_performance_kit(a.slug, a.game, a.date, images=not a.no_images)
     elif a.kind == "the30":
         kit, out = build_the30_kit(a.date, images=not a.no_images)
+    elif a.kind == "team":
+        if (a.slug or "").lower() == "all":
+            for out in all_team_kits(a.date, images=not a.no_images):
+                print(os.path.relpath(out, ROOT))
+            return
+        kit, out = build_team_kit(a.slug, a.date, images=not a.no_images)
     else:
         # a new 644 edition: the edition card + the top-10 post
         idx = load("players/index.json")

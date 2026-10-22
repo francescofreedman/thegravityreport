@@ -13,6 +13,7 @@ import * as bsky from "../social/adapters/bluesky.js";
 import * as xad from "../social/adapters/x.js";
 import { threads, instagram } from "../social/adapters/meta.js";
 import { handleAdmin } from "../social/admin-api.js";
+import * as S from "../social/series.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -44,7 +45,7 @@ function fakeAssets() {
 
 function env(extra = {}) {
   P.resetSchemaCache();
-  return { DB: fakeD1(), ASSETS: fakeAssets(), SOCIAL_DRY_RUN: "1", SOCIAL_POTD: "0", ...extra };
+  return { DB: fakeD1(), ASSETS: fakeAssets(), SOCIAL_DRY_RUN: "1", SOCIAL_POTD: "0", SOCIAL_SERIES: "0", ...extra };
 }
 
 function okAdapter(name, calls) {
@@ -333,4 +334,282 @@ test("dashboard: cancel stops a scheduled post for good; restore brings it back"
   await P.syncSchedule(e, Date.parse("2026-10-22T16:05:00Z"), { adapters, schedule });
   await P.runScheduled(e, Date.parse("2026-10-22T16:05:00Z"), { adapters });
   assert.equal(calls.length, 1);
+});
+
+// ------------------------------------------------------------------ recurring series
+
+test("series off switch: series_team644=0 cancels that series' schedule rows, nothing else", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0", ...BSKY_LIVE });
+  await P.ensureSocialSchema(e);
+  const adapters = { ...P.ADAPTERS, bluesky: okAdapter("bluesky", []) };
+  const schedule = { posts: [
+    { at: "2026-10-24T22:00:00Z", platform: "bluesky", kit: "2026-10-24-team-okc", series: "team644" },
+    { at: "2026-10-24T16:00:00Z", platform: "bluesky", kit: KIT },
+  ] };
+  assert.equal(await P.syncSchedule(e, T0, { adapters, schedule }), 2);
+  await P.setSetting(e, "series_team644", "0");
+  await P.syncSchedule(e, T0, { adapters, schedule });
+  const st = Object.fromEntries((await e.DB.prepare("SELECT kit_id, status FROM social_queue").all()).results.map((r) => [r.kit_id, r.status]));
+  assert.equal(st["2026-10-24-team-okc"], "cancelled");
+  assert.equal(st[KIT], "approved");
+  assert.ok(P.SETTINGS_KEYS.includes("series_team644"));
+});
+
+test("schedule: a re-rendered kit (new v) refreshes a queued post that hasn't gone out", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0", ...BSKY_LIVE });
+  await P.ensureSocialSchema(e);
+  const adapters = { ...P.ADAPTERS, bluesky: okAdapter("bluesky", []) };
+  const row = { at: "2026-10-26T13:00:00Z", platform: "bluesky", kit: KIT, v: "aaaaaaaaaa", series: "tracker" };
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: [row] } });
+  await e.DB.prepare("UPDATE social_queue SET payload = ?").bind(JSON.stringify({ posts: ["old numbers"], images: [], v: "aaaaaaaaaa" })).run();
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: [row] } });
+  let p = JSON.parse((await e.DB.prepare("SELECT payload FROM social_queue").first()).payload);
+  assert.equal(p.posts[0], "old numbers", "same version: untouched");
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: [{ ...row, v: "bbbbbbbbbb" }] } });
+  p = JSON.parse((await e.DB.prepare("SELECT payload FROM social_queue").first()).payload);
+  assert.notEqual(p.posts[0], "old numbers");
+  assert.equal(p.v, "bbbbbbbbbb");
+  await e.DB.prepare("UPDATE social_queue SET status = 'posted'").run();
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: [{ ...row, v: "cccccccccc" }] } });
+  p = JSON.parse((await e.DB.prepare("SELECT payload FROM social_queue").first()).payload);
+  assert.equal(p.v, "bbbbbbbbbb", "a posted row is never rewritten");
+});
+
+// ESPN standings fixture: the real table on Oct 21, 2026 (one game each), trimmed to the fields we read.
+const STANDINGS = JSON.parse(readFileSync(join(ROOT, "tests/fixtures/espn-standings.json"), "utf8"));
+const TORQUE = JSON.parse(readFileSync(join(ROOT, "the30/torque-2026-27.json"), "utf8"));
+// the same table with every record multiplied, so there's a season to talk about
+function scaledStandings(k) {
+  const d = structuredClone(STANDINGS);
+  for (const c of d.children) for (const e of c.standings.entries) for (const s of e.stats) if (s.name === "wins" || s.name === "losses") s.value *= k;
+  return d;
+}
+const standingsFetch = (data, calls = []) => async (url) => { calls.push(String(url)); return new Response(JSON.stringify(data)); };
+
+test("series helpers: ISO week, weekday, date labels, packing", () => {
+  assert.equal(S.isoWeek("2026-10-28"), "2026-W44");
+  assert.equal(S.isoWeek("2027-01-03"), "2026-W53");
+  assert.equal(S.weekday("2026-10-28"), 3, "Wednesday");
+  assert.equal(S.weekday("2026-10-24"), 6, "Saturday");
+  assert.equal(S.addDays("2026-10-30", -7), "2026-10-23");
+  assert.equal(S.rangeLabel("2026-10-23", "2026-10-29"), "Oct 23–29");
+  assert.equal(S.rangeLabel("2026-10-30", "2026-11-05"), "Oct 30–Nov 5");
+  const posts = S.packPosts("head", Array.from({ length: 12 }, (_, i) => `line ${i} ` + "x".repeat(40)), "tail https://thegravityreport.com/");
+  assert.ok(posts.length > 2 && posts.every(S.fits) && posts.at(-1).startsWith("tail"));
+});
+
+test("standings: every ESPN team maps to a TORQUE team, win pace vs projection", () => {
+  const st = S.parseStandings(STANDINGS);
+  assert.equal(Object.keys(st).length, 30);
+  for (const t of TORQUE.teams) assert.ok(st[S.TORQUE_CODES[t.code] || t.code], t.code);
+  assert.deepEqual(st.OKC, { w: 1, l: 0, name: "Oklahoma City Thunder" });
+  assert.deepEqual(st.NYK, { w: 0, l: 1, name: "New York Knicks" });
+  const early = S.paceTable(st, TORQUE);
+  assert.match(early.reason, /too early: 0\.9 games/);
+  const t = S.paceTable(S.parseStandings(scaledStandings(10)), TORQUE);
+  assert.equal(t.reason, undefined);
+  assert.equal(t.above.length, 3);
+  assert.equal(t.below.length, 3);
+  assert.ok(t.above[0].diff > t.above[1].diff && t.below[0].diff < t.below[1].diff);
+  const okc = t.rows.find((r) => r.code === "OKC");
+  assert.equal(okc.pace, 82);
+  assert.equal(okc.projected, 66.7);
+  const kit = S.paceKit(t, "https://thegravityreport.com", "2026-10-28");
+  assert.match(kit.x_thread[0], /^Beating the projection\. TORQUE, our team model/);
+  assert.match(kit.x_thread.join("\n"), /Ahead:\n/);
+  assert.match(kit.x_thread.at(-1), /\/the30\/$/);
+  for (const r of [...t.above, ...t.below]) {
+    assert.ok(kit.instagram_caption.includes(`${S.city(r.team)}: ${r.w}-${r.l}, a pace of ${Math.round(r.pace)} wins; projected ${r.projected.toFixed(1)}`));
+  }
+  assert.equal(kit.images.ig, "/cards/the30.png");
+});
+
+test("beating the projection: Wednesdays 1 PM ET, once a week, skipped and marked when too early", async () => {
+  const e = env({ SOCIAL_SERIES: "1" });
+  await P.ensureSocialSchema(e);
+  const calls = [];
+  const wedEarly = Date.parse("2026-10-28T12:30:00Z"); // 8:30 AM ET: not yet
+  assert.equal(await P.maybeQueuePace(e, wedEarly, { fetchImpl: standingsFetch(STANDINGS, calls) }), null);
+  assert.equal(calls.length, 0);
+  const wed = Date.parse("2026-10-28T13:30:00Z"); // 9:30 AM ET
+  assert.equal(await P.maybeQueuePace(e, wed, { fetchImpl: standingsFetch(STANDINGS, calls) }), null, "one game a team: too early");
+  assert.equal(calls.length, 1);
+  const marked = await e.DB.prepare("SELECT value FROM social_settings WHERE key = 'pace_week_2026-W44'").first();
+  assert.match(marked.value, /too early/);
+  assert.equal(await P.maybeQueuePace(e, wed + 3600e3, { fetchImpl: standingsFetch(scaledStandings(10), calls) }), null, "marked: not retried this week");
+  assert.equal(calls.length, 1);
+  // next Wednesday, with a season's worth of games
+  const e2 = env({ SOCIAL_SERIES: "1" });
+  await P.ensureSocialSchema(e2);
+  const tue = Date.parse("2026-11-03T15:00:00Z");
+  assert.equal(await P.maybeQueuePace(e2, tue, { fetchImpl: standingsFetch(scaledStandings(10)) }), null, "not a Wednesday");
+  const wed2 = Date.parse("2026-11-04T15:00:00Z"); // 10 AM ET
+  assert.equal(await P.maybeQueuePace(e2, wed2, { fetchImpl: standingsFetch(scaledStandings(10)) }), "pace-2026-11-04");
+  assert.equal(await P.maybeQueuePace(e2, wed2 + 60e3, { fetchImpl: standingsFetch(scaledStandings(10)) }), null, "once a week");
+  const rows = (await e2.DB.prepare("SELECT platform, status, scheduled_at, payload FROM social_queue").all()).results;
+  assert.deepEqual(rows.map((r) => r.platform).sort(), ["bluesky", "instagram", "threads", "x"]);
+  assert.ok(rows.every((r) => r.status === "approved" && r.scheduled_at === "2026-11-04T18:00:00.000Z"), "1 PM ET = 18:00 UTC in November");
+  const ig = JSON.parse(rows.find((r) => r.platform === "instagram").payload);
+  assert.deepEqual(ig.image_urls, ["https://thegravityreport.com/cards/the30.png"]);
+  assert.equal(ig.kind, "pace");
+  assert.equal(JSON.parse(rows.find((r) => r.platform === "x").payload).images.length, 0, "text-only on X");
+  // off switch
+  const e3 = env({ SOCIAL_SERIES: "1" });
+  await P.ensureSocialSchema(e3);
+  await P.setSetting(e3, "series_pace", "0");
+  assert.equal(await P.maybeQueuePace(e3, wed2, { fetchImpl: standingsFetch(scaledStandings(10)) }), null);
+});
+
+// ESPN over a week: the fixture game happened on Oct 21 only; a second copy with a different id on Oct 24
+function weekFetch(calls = []) {
+  return async (url) => {
+    calls.push(url);
+    const m = String(url).match(/dates=(\d{8})/);
+    if (m) {
+      const d = m[1];
+      const events = d === "20261021" ? [{ id: "401909091", status: { type: { completed: true } } }]
+        : d === "20261024" ? [{ id: "401909200", status: { type: { completed: true } } }] : [];
+      return new Response(JSON.stringify({ events }));
+    }
+    if (String(url).includes("/summary")) return new Response(JSON.stringify(SUMMARY));
+    return new Response("nf", { status: 404 });
+  };
+}
+
+test("best games of the week: Fridays 1 PM ET, last Friday through Thursday, top 5 Game Scores among The 644, cached per day", async () => {
+  const e = env({ SOCIAL_SERIES: "1" });
+  await P.ensureSocialSchema(e);
+  const calls = [];
+  const thu = Date.parse("2026-10-29T15:00:00Z");
+  assert.equal(await P.maybeQueueBest(e, thu, { fetchImpl: weekFetch(calls) }), null, "not a Friday");
+  const fri = Date.parse("2026-10-30T15:00:00Z"); // 11 AM ET
+  assert.equal(await P.maybeQueueBest(e, fri, { fetchImpl: weekFetch(calls) }), "best-2026-10-30");
+  const days = calls.filter((u) => u.includes("/scoreboard")).map((u) => u.match(/dates=(\d+)/)[1]);
+  assert.deepEqual(days, ["20261023", "20261024", "20261025", "20261026", "20261027", "20261028", "20261029"], "Fri → Thu");
+  assert.equal(await P.maybeQueueBest(e, fri + 60e3, { fetchImpl: weekFetch(calls) }), null, "once a week");
+  const rows = (await e.DB.prepare("SELECT platform, status, scheduled_at, payload FROM social_queue").all()).results;
+  assert.equal(rows.length, 4);
+  assert.ok(rows.every((r) => r.status === "approved" && r.scheduled_at === "2026-10-30T17:00:00.000Z"), "1 PM EDT");
+  const x = JSON.parse(rows.find((r) => r.platform === "x").payload);
+  assert.equal(x.kind, "best");
+  assert.match(x.posts[0], /^The best games of the week \(Oct 23–29\), by Game Score/);
+  assert.match(x.posts.join("\n"), /1\. Anthony Edwards, MIN: 45\/10\/3 at MIA\. #22 in The 644\./);
+  assert.match(x.posts.join("\n"), /2\. /);
+  assert.ok(!x.posts.join("\n").includes("6. "), "five lines at most");
+  assert.match(x.posts.at(-1), /\/the644\/$/);
+  assert.equal(x.images.length, 0, "text-only on X");
+  assert.deepEqual(JSON.parse(rows.find((r) => r.platform === "instagram").payload).image_urls, ["https://thegravityreport.com/cards/the644.png"]);
+  // the per-day cache: the next Friday re-reads Oct 24's lines without fetching them again
+  const n = calls.length;
+  const fri2 = Date.parse("2026-11-06T15:00:00Z");
+  await P.maybeQueueBest(e, fri2, { fetchImpl: weekFetch(calls) });
+  const again = calls.slice(n).filter((u) => u.includes("dates=20261024") || u.includes("dates=20261029"));
+  assert.equal(again.length, 0, "days already fetched come from social_cache");
+  const cached = await e.DB.prepare("SELECT COUNT(*) AS n FROM social_cache").first();
+  assert.ok(cached.n >= 14);
+  const settings = await P.getSettings(e);
+  assert.ok(!Object.keys(settings).some((k) => k.startsWith("lines_")), "cached lines never show up as settings");
+});
+
+test("who's higher: Saturdays 11 AM ET with an X poll, answer queued for Sunday 11 AM, pairs rotate by week", async () => {
+  const players = JSON.parse(readFileSync(join(ROOT, "content/the644.json"), "utf8")).players;
+  const pairs = new Set();
+  for (let w = 1; w <= 50; w++) {
+    const [a, b] = S.pollPair(players, w);
+    assert.equal(Math.abs(a.r - b.r), 1, "adjacent ranks");
+    assert.ok(Math.max(a.r, b.r) <= 100);
+    pairs.add(Math.min(a.r, b.r));
+  }
+  assert.equal(pairs.size, 50, "fifty weeks, fifty different pairs");
+  assert.ok(players.slice(0, 100).every((p) => S.pollOption(p).length <= 25));
+  const e = env({ SOCIAL_SERIES: "1" });
+  await P.ensureSocialSchema(e);
+  const fri = Date.parse("2026-10-30T15:00:00Z");
+  assert.equal(await P.maybeQueuePoll(e, fri), null, "not a Saturday");
+  const sat = Date.parse("2026-10-31T14:00:00Z"); // 10 AM ET
+  assert.equal(await P.maybeQueuePoll(e, sat), "poll-2026-10-31");
+  assert.equal(await P.maybeQueuePoll(e, sat + 60e3), null, "once a week");
+  const rows = (await e.DB.prepare("SELECT kit_id, platform, status, scheduled_at, payload FROM social_queue ORDER BY kit_id, platform").all()).results;
+  assert.equal(rows.length, 8);
+  const q = rows.filter((r) => r.kit_id === "poll-2026-10-31"), a = rows.filter((r) => r.kit_id === "poll-2026-10-31-answer");
+  assert.ok(q.every((r) => r.status === "approved" && r.scheduled_at === "2026-10-31T15:00:00.000Z"), "11 AM EDT");
+  assert.ok(a.every((r) => r.status === "approved" && r.scheduled_at === "2026-11-01T16:00:00.000Z"), "Sunday 11 AM EST (clocks went back)");
+  const x = JSON.parse(q.find((r) => r.platform === "x").payload);
+  assert.equal(x.poll.options.length, 2);
+  assert.equal(x.poll.duration_minutes, 1440);
+  assert.match(x.posts[0], /^Who's higher in The 644, our ranking of every NBA player\? Answer tomorrow at 11 AM ET\./);
+  assert.ok(!/#\d/.test(x.posts[0]), "the question never shows a rank");
+  const b = JSON.parse(q.find((r) => r.platform === "bluesky").payload);
+  assert.match(b.posts[0], /Reply with your pick/);
+  assert.equal(b.poll, undefined);
+  const ans = JSON.parse(a.find((r) => r.platform === "x").payload);
+  assert.match(ans.posts[0], /^Who's higher\? The answer: .+, #\d+ of 644 in The 644, GRAVITY score \d+\.\d \(50 is a league-average minute\)\. .+ is #\d+, GRAVITY score \d+\.\d\./);
+  assert.ok(ans.images[0].path.startsWith("/players/"), "the answer carries the winner's card");
+  for (const r of rows) assert.ok(JSON.parse(r.payload).kind === "poll");
+  // the X adapter sends the poll and never attaches media to it
+  const seen = [];
+  const f = async (url, init) => { seen.push(JSON.parse(init.body)); return new Response(JSON.stringify({ data: { id: "t1" } })); };
+  const xe = { X_API_KEY: "k", X_API_SECRET: "s", X_ACCESS_TOKEN: "t", X_ACCESS_SECRET: "ts" };
+  await xad.post(xe, { ...x, images: [{ bytes: new Uint8Array([1]), alt: "" }] }, f);
+  assert.deepEqual(seen[0].poll, { options: x.poll.options, duration_minutes: 1440 });
+  assert.equal(seen[0].media, undefined);
+  assert.equal(seen.length, 1, "no media upload call for a poll");
+});
+
+test("metrics: once a week, Bluesky from the public API, X null, Threads/Instagram only with tokens, posts sent from the log", async () => {
+  const { followers } = await import("../social/metrics.js");
+  const calls = [];
+  const f = async (url) => {
+    calls.push(String(url));
+    const u = String(url);
+    if (u.startsWith("https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=thegravityreport.bsky.social")) {
+      return new Response(JSON.stringify({ handle: "thegravityreport.bsky.social", followersCount: 12, followsCount: 2, postsCount: 0 }));
+    }
+    if (u.includes("graph.instagram.com")) return new Response(JSON.stringify({ followers_count: 7, id: "2" }));
+    if (u.includes("threads_insights")) return new Response(JSON.stringify({ data: [{ name: "followers_count", total_value: { value: 3 } }] }));
+    return new Response("nf", { status: 404 });
+  };
+  assert.deepEqual(await followers({}, "x", f), { followers: null, skipped: "no free follower endpoint on X's pay-per-use plan" });
+  assert.deepEqual(await followers({}, "threads", f), { followers: null, skipped: "Threads not connected" });
+  assert.equal((await followers({ THREADS_USER_ID: "1", THREADS_ACCESS_TOKEN: "t" }, "threads", f)).followers, 3);
+  assert.equal((await followers({ IG_USER_ID: "2", IG_ACCESS_TOKEN: "t" }, "instagram", f)).followers, 7);
+  const e = env({ SOCIAL_SERIES: "1", SOCIAL_DRY_RUN: "0", ...BSKY_LIVE, BSKY_HANDLE: "thegravityreport.bsky.social" });
+  await P.ensureSocialSchema(e);
+  // two Bluesky posts went out this week, one a month ago
+  await e.DB.prepare("INSERT INTO social_log (ts, platform, queue_id, action, count) VALUES ('2026-10-20T15:00:00.000Z', 'bluesky', 1, 'posted', 2)").run();
+  await e.DB.prepare("INSERT INTO social_log (ts, platform, queue_id, action, count) VALUES ('2026-09-20T15:00:00.000Z', 'bluesky', 2, 'posted', 1)").run();
+  const r = await P.maybeCollectMetrics(e, T0, { fetchImpl: f });
+  assert.equal(r.week, "2026-W43");
+  assert.equal(await P.maybeCollectMetrics(e, T0 + 86400000, { fetchImpl: f }), null, "once a week");
+  assert.equal(calls.filter((u) => u.includes("bsky")).length, 1, "no token needed, one public call");
+  assert.ok(!calls.some((u) => u.includes("api.x.com")), "X is never called");
+  const weeks = await P.metricsView(e);
+  assert.equal(weeks.length, 1);
+  assert.deepEqual(weeks[0].platforms.bluesky, { followers: 12, posts_sent_week: 2, clicks: null });
+  assert.deepEqual(weeks[0].platforms.x, { followers: null, posts_sent_week: 0, clicks: null });
+  assert.equal(weeks[0].platforms.instagram.followers, null, "no token: skipped, not invented");
+  // the admin API serves it
+  e.ADMIN_KEY = "k-k-k-k-k-k";
+  const res = await handleAdmin(new Request("https://t/api/admin/metrics", { headers: { "x-admin-key": "k-k-k-k-k-k" } }), e);
+  assert.equal((await res.json()).weeks[0].platforms.bluesky.followers, 12);
+  // off switch
+  const e2 = env({ SOCIAL_SERIES: "1" });
+  await P.ensureSocialSchema(e2);
+  await P.setSetting(e2, "series_metrics", "0");
+  assert.equal(await P.maybeCollectMetrics(e2, T0, { fetchImpl: f }), null);
+});
+
+test("player of the day shares the day's cached lines with the Friday round-up", async () => {
+  const e = env({ SOCIAL_POTD: "1" });
+  await P.ensureSocialSchema(e);
+  const calls = [];
+  const nine = Date.parse("2026-10-22T13:05:00Z");
+  assert.equal(await P.maybeQueuePotd(e, nine, { fetchImpl: espnFetch(calls) }), "potd-2026-10-22");
+  const row = await e.DB.prepare("SELECT value FROM social_cache WHERE key = 'lines_2026-10-21'").first();
+  const day = JSON.parse(row.value);
+  assert.equal(day.games, 1);
+  assert.equal(day.lines[0].name, "Anthony Edwards");
+  assert.equal(day.lines[0].team, "MIN");
+  assert.equal(day.lines[0].home, false);
+  assert.ok(day.lines.every((l) => l.gs != null));
 });

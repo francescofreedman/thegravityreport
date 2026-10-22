@@ -7,13 +7,17 @@
 import * as x from "./adapters/x.js";
 import * as bluesky from "./adapters/bluesky.js";
 import { threads, instagram } from "./adapters/meta.js";
-import { etParts, etToUtcMs, prevDate, normName, pickBest, potdKitFromPerformance, fetchLastNight, POTD_HOUR_ET } from "./potd.js";
+import { etParts, etToUtcMs, prevDate, normName, gameScore, pickBest, potdKitFromPerformance, fetchLastNight, POTD_HOUR_ET } from "./potd.js";
+import { STANDINGS_URL, weekday, addDays, isoWeek, parseStandings, paceTable, paceKit, bestKit, pollPair, pollKits } from "./series.js";
+import { followers } from "./metrics.js";
 
 export const ADAPTERS = { x, bluesky, threads, instagram };
 export const PLATFORMS = ["x", "bluesky", "threads", "instagram"];
 export const SITE_URL = "https://thegravityreport.com";
 export const SEASON_START = "2026-10-20";
-export const SETTINGS_KEYS = ["potd_on", "potd_auto_approve", "potd_platforms", "potd_hour_utc"];
+// Every recurring series has an off switch: series_<name> = "0" in social_settings (default on).
+export const SERIES = ["team644", "tracker", "pace", "best", "poll", "archive", "metrics"];
+export const SETTINGS_KEYS = ["potd_on", "potd_auto_approve", "potd_platforms", "potd_hour_utc", ...SERIES.map((s) => `series_${s}`)];
 const DEFAULT_CAPS = { x: 60, bluesky: 300, threads: 200, instagram: 60 };
 
 let ready = null;
@@ -29,6 +33,11 @@ export function ensureSocialSchema(env) {
       env.DB.prepare(`CREATE TABLE IF NOT EXISTS social_log (
         id INTEGER PRIMARY KEY AUTOINCREMENT, ts TEXT NOT NULL, platform TEXT, queue_id INTEGER,
         action TEXT NOT NULL, count INTEGER NOT NULL DEFAULT 0, detail TEXT)`),
+      // fetched data kept for the weekly series (a day's best box-score lines), never shown as settings
+      env.DB.prepare("CREATE TABLE IF NOT EXISTS social_cache (key TEXT PRIMARY KEY, value TEXT NOT NULL, ts TEXT NOT NULL)"),
+      env.DB.prepare(`CREATE TABLE IF NOT EXISTS social_metrics (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, ts TEXT NOT NULL, platform TEXT NOT NULL,
+        followers INTEGER, posts_sent_week INTEGER NOT NULL DEFAULT 0, clicks INTEGER)`),
     ]).catch((e) => { ready = null; throw e; });
   }
   return ready;
@@ -43,6 +52,10 @@ export async function getSettings(env) {
   const s = { potd_on: "1", potd_auto_approve: "1", potd_platforms: "x,bluesky,threads,instagram", potd_hour_utc: "14" };
   for (const r of results || []) s[r.key] = r.value;
   return s;
+}
+
+export function seriesOff(settings, name) {
+  return !!name && settings[`series_${name}`] === "0";
 }
 
 export async function setSetting(env, key, value) {
@@ -70,6 +83,7 @@ function absPath(kitId, p) {
 
 export function payloadsFromKit(kitId, kit) {
   const card = kit.images && kit.images.card ? absPath(kitId, kit.images.card) : null;
+  const igOnly = kit.images && kit.images.ig ? absPath(kitId, kit.images.ig) : null; // Instagram needs an image; the others stay text
   const altFor = (p) => (kit.alt && (kit.alt[p] || kit.alt.card)) || "";
   const carousel = ((kit.images && kit.images.carousel) || []).map((p) => absPath(kitId, p));
   const cardAlt = card ? altFor(kit.images.card) : "";
@@ -77,7 +91,7 @@ export function payloadsFromKit(kitId, kit) {
     x: { posts: kit.x_thread, images: card ? [{ path: card, alt: cardAlt }] : [] },
     bluesky: { posts: kit.bluesky_thread, images: card ? [{ path: card, alt: cardAlt, width: 1200, height: card.includes("/players/") || card.includes("/cards/") ? 630 : 675 }] : [] },
     threads: { posts: [kit.threads], image_urls: card ? [SITE_URL + card] : [] },
-    instagram: { caption: kit.instagram_caption, image_urls: (carousel.length ? carousel : card ? [card] : []).map((p) => SITE_URL + p) },
+    instagram: { caption: kit.instagram_caption, image_urls: (carousel.length ? carousel : card ? [card] : igOnly ? [igOnly] : []).map((p) => SITE_URL + p) },
   };
 }
 
@@ -139,25 +153,168 @@ export async function maybeQueuePotd(env, nowMs, { fetchImpl = fetch, schedule =
   const manual = await env.DB.prepare("SELECT id FROM social_queue WHERE kit_id LIKE ? LIMIT 1").bind(`${date}-player-%`).first();
   const inSchedule = schedule && (schedule.posts || []).some((r) => r.kit.startsWith(`${date}-player-`));
   if (manual || inSchedule) { await mark("manual"); return null; }
-  const { games, lines } = await fetchLastNight(prevDate(date), fetchImpl);
+  const { byName, n } = await players644(env);
+  const { games, lines } = await linesFor(env, prevDate(date), fetchImpl, byName);
   if (!games) { await mark("no games"); return null; }
+  const best = pickBest(lines, byName);
+  if (!best) { await mark("no big night"); return null; }
+  const kit = potdKitFromPerformance(best.p, best.p.team, best.g, SITE_URL, n);
+  const at = Math.max(nowMs, etToUtcMs(date, POTD_HOUR_ET));
+  await queueSeries(env, kitId, kit, at, nowMs);
+  await mark(best.p.slug);
+  await log(env, nowMs, null, null, "potd_picked", 0, `${best.p.n} (Game Score ${best.gs.toFixed(1)}): ${kit.x_thread[0]}`);
+  return kitId;
+}
+
+// ------------------------------------------------------------------ Worker-written series: shared pieces
+
+// The 644 by normalised name, each record carrying its slug and team name from players/index.json.
+async function players644(env) {
   const idx = await assetJson(env, "/players/index.json");
   const t644 = await assetJson(env, "/content/the644.json");
   const rec = new Map(t644.players.map((x) => [x.r, x]));
   const byName = new Map(idx.players.map((x) => [normName(x.n), { ...rec.get(x.r), slug: x.slug, team: x.team }]));
-  const best = pickBest(lines, byName);
-  if (!best) { await mark("no big night"); return null; }
-  const kit = potdKitFromPerformance(best.p, best.p.team, best.g, SITE_URL, t644.players.length);
-  const at = Math.max(nowMs, etToUtcMs(date, POTD_HOUR_ET));
+  return { byName, players: t644.players, n: t644.players.length };
+}
+
+// One day's box-score lines for players in The 644 (top 25 by Game Score), fetched once and kept
+// in social_cache so the morning pick and the Friday round-up share one ESPN visit per day.
+export async function linesFor(env, dateStr, fetchImpl, byName) {
+  const key = `lines_${dateStr}`;
+  const hit = await env.DB.prepare("SELECT value FROM social_cache WHERE key = ?").bind(key).first();
+  if (hit) return JSON.parse(hit.value);
+  const { games, lines } = await fetchLastNight(dateStr, fetchImpl);
+  const kept = lines.filter((l) => byName.has(normName(l.name)))
+    .map((l) => ({ ...l, date: dateStr, gs: Number(gameScore(l.line).toFixed(2)) }))
+    .sort((a, b) => b.gs - a.gs).slice(0, 25);
+  const out = { games, lines: kept };
+  await env.DB.prepare("INSERT OR REPLACE INTO social_cache (key, value, ts) VALUES (?, ?, ?)").bind(key, JSON.stringify(out), iso(Date.now())).run();
+  return out;
+}
+
+// Approved rows for a Worker-written kit on every platform; the payload carries title/kind for the dashboard.
+export async function queueSeries(env, kitId, kit, atMs, nowMs, platforms = PLATFORMS) {
   const p = payloadsFromKit(kitId, kit);
-  for (const pl of PLATFORMS) {
-    await env.DB.prepare(
+  let added = 0;
+  for (const pl of platforms) {
+    if (!p[pl]) continue;
+    const payload = { ...p[pl], title: kit.title, kind: kit.kind };
+    if (kit.poll && pl === "x") payload.poll = kit.poll;
+    const r = await env.DB.prepare(
       "INSERT OR IGNORE INTO social_queue (kit_id, platform, payload, scheduled_at, status, created_at, approved_at) VALUES (?, ?, ?, ?, 'approved', ?, ?)"
-    ).bind(kitId, pl, JSON.stringify({ ...p[pl], title: kit.title }), iso(at), iso(nowMs), iso(nowMs)).run();
+    ).bind(kitId, pl, JSON.stringify(payload), iso(atMs), iso(nowMs), iso(nowMs)).run();
+    added += (r.meta && r.meta.changes) || 0;
   }
-  await mark(best.p.slug);
-  await log(env, nowMs, null, null, "potd_picked", 0, `${best.p.n} (Game Score ${best.gs.toFixed(1)}): ${kit.x_thread[0]}`);
+  return added;
+}
+
+// A weekly series runs once per ISO week, on its weekday between 9 AM and 6 PM ET, and posts at
+// hourEt (or right away if the Worker only woke up later that day). Marker: <name>_week_<week>.
+async function weeklySlot(env, name, nowMs, day, hourEt) {
+  if (env.SOCIAL_SERIES === "0") return null; // every Worker-written weekly series off (tests)
+  const s = await getSettings(env);
+  if (seriesOff(s, name)) return null;
+  const { date, hour } = etParts(nowMs);
+  if (weekday(date) !== day || hour < 9 || hour > 18) return null;
+  const week = isoWeek(date);
+  const key = `${name}_week_${week}`;
+  const done = await env.DB.prepare("SELECT value FROM social_settings WHERE key = ?").bind(key).first();
+  if (done) return null;
+  const mark = (v) => env.DB.prepare("INSERT OR REPLACE INTO social_settings (key, value) VALUES (?, ?)").bind(key, String(v)).run();
+  return { date, week, at: Math.max(nowMs, etToUtcMs(date, hourEt)), mark };
+}
+
+// ------------------------------------------------------------------ Beating the projection (Wednesdays 1 PM ET)
+
+export async function maybeQueuePace(env, nowMs, { fetchImpl = fetch } = {}) {
+  const slot = await weeklySlot(env, "pace", nowMs, 3, 13);
+  if (!slot) return null;
+  const res = await fetchImpl(STANDINGS_URL);
+  if (!res.ok) throw new Error(`standings ${res.status}`);
+  const standings = parseStandings(await res.json());
+  const torque = await assetJson(env, "/the30/torque-2026-27.json");
+  const table = paceTable(standings, torque);
+  if (table.reason) { await slot.mark(table.reason); await log(env, nowMs, null, null, "pace_skipped", 0, table.reason); return null; }
+  const kitId = `pace-${slot.date}`;
+  const kit = paceKit(table, SITE_URL, slot.date);
+  await queueSeries(env, kitId, kit, slot.at, nowMs);
+  await slot.mark(kitId);
+  await log(env, nowMs, null, null, "pace_queued", 0, kit.x_thread[0]);
   return kitId;
+}
+
+// ------------------------------------------------------------------ Best games of the week (Fridays 1 PM ET)
+
+export async function maybeQueueBest(env, nowMs, { fetchImpl = fetch } = {}) {
+  const slot = await weeklySlot(env, "best", nowMs, 5, 13);
+  if (!slot) return null;
+  const { byName, n } = await players644(env);
+  const from = addDays(slot.date, -7), to = addDays(slot.date, -1); // last Friday through yesterday (Thursday)
+  const lines = [];
+  for (let d = from; d <= to; d = addDays(d, 1)) lines.push(...(await linesFor(env, d, fetchImpl, byName)).lines);
+  const kit = bestKit(lines, byName, normName, from, to, SITE_URL, slot.date, n);
+  if (!kit) { await slot.mark("no games"); await log(env, nowMs, null, null, "best_skipped", 0, "no games"); return null; }
+  const kitId = `best-${slot.date}`;
+  await queueSeries(env, kitId, kit, slot.at, nowMs);
+  await slot.mark(kitId);
+  await log(env, nowMs, null, null, "best_queued", 0, kit.x_thread[0]);
+  return kitId;
+}
+
+// ------------------------------------------------------------------ Who's higher? (Saturdays 11 AM ET, answer Sunday 11 AM ET)
+
+export async function maybeQueuePoll(env, nowMs) {
+  const slot = await weeklySlot(env, "poll", nowMs, 6, 11);
+  if (!slot) return null;
+  const { byName, players, n } = await players644(env);
+  const pair = pollPair(players, Number(slot.week.slice(-2)));
+  if (!pair) { await slot.mark("no pair"); return null; }
+  const [a, b] = pair.map((p) => byName.get(normName(p.n)) || p);
+  const { poll, answer } = pollKits(a, b, SITE_URL, slot.date, n);
+  const kitId = `poll-${slot.date}`;
+  await queueSeries(env, kitId, poll, slot.at, nowMs);
+  await queueSeries(env, `${kitId}-answer`, answer, etToUtcMs(addDays(slot.date, 1), 11), nowMs);
+  await slot.mark(kitId);
+  await log(env, nowMs, null, null, "poll_queued", 0, poll.x_thread[0]);
+  return kitId;
+}
+
+// ------------------------------------------------------------------ metrics (weekly, first cron tick of each ISO week)
+
+export async function maybeCollectMetrics(env, nowMs, { fetchImpl = fetch } = {}) {
+  if (env.SOCIAL_SERIES === "0") return null;
+  const s = await getSettings(env);
+  if (seriesOff(s, "metrics")) return null;
+  const week = isoWeek(iso(nowMs).slice(0, 10));
+  const key = `metrics_week_${week}`;
+  if (await env.DB.prepare("SELECT value FROM social_settings WHERE key = ?").bind(key).first()) return null;
+  await env.DB.prepare("INSERT OR REPLACE INTO social_settings (key, value) VALUES (?, ?)").bind(key, iso(nowMs)).run();
+  const since = iso(nowMs - 7 * 86400000);
+  const out = [];
+  for (const pl of PLATFORMS) {
+    let f = { followers: null, skipped: null };
+    try { f = await followers(env, pl, fetchImpl); } catch (e) { await log(env, nowMs, pl, null, "metrics_error", 0, e.message); }
+    if (f.skipped) await log(env, nowMs, pl, null, "metrics_skipped", 0, f.skipped);
+    const sent = await env.DB.prepare("SELECT COALESCE(SUM(count), 0) AS n FROM social_log WHERE platform = ? AND action = 'posted' AND ts >= ?")
+      .bind(pl, since).first();
+    await env.DB.prepare("INSERT INTO social_metrics (ts, platform, followers, posts_sent_week, clicks) VALUES (?, ?, ?, ?, NULL)")
+      .bind(iso(nowMs), pl, f.followers, Number((sent && sent.n) || 0)).run();
+    out.push({ platform: pl, followers: f.followers, posts_sent_week: Number((sent && sent.n) || 0) });
+  }
+  return { week, rows: out };
+}
+
+// the last `weeks` collections, newest first: [{ts, platforms: {x: {followers, posts_sent_week, clicks}, …}}]
+export async function metricsView(env, weeks = 8) {
+  const { results } = await env.DB.prepare(
+    "SELECT ts, platform, followers, posts_sent_week, clicks FROM social_metrics ORDER BY ts DESC, id DESC LIMIT ?"
+  ).bind(weeks * PLATFORMS.length).all();
+  const byTs = new Map();
+  for (const r of results || []) {
+    if (!byTs.has(r.ts)) byTs.set(r.ts, { ts: r.ts, platforms: {} });
+    byTs.get(r.ts).platforms[r.platform] = { followers: r.followers, posts_sent_week: r.posts_sent_week, clicks: r.clicks };
+  }
+  return Array.from(byTs.values()).slice(0, weeks);
 }
 
 // ------------------------------------------------------------------ posting
@@ -196,6 +353,8 @@ async function loadImages(env, images) {
 // marked "skip": true is cancelled. Rows only simulated in dry run (or skipped because the platform
 // wasn't connected) are re-armed once the platform is live, unless their time is more than
 // REARM_WINDOW_MS in the past, so going live never dumps a backlog of old posts at once.
+// A row carries "v", a hash of its kit: when the kit is re-rendered (the weekly tracker gets fresh
+// numbers), the queued post that hasn't gone out yet is refreshed from the new kit.
 export const REARM_WINDOW_MS = 2 * 3600 * 1000;
 
 export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTERS, schedule = null } = {}) {
@@ -205,19 +364,20 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
     if (!res.ok) throw new Error(`asset /social/schedule.json: ${res.status}`);
     schedule = await res.json();
   }
+  const settings = await getSettings(env);
   let added = 0;
   for (const row of schedule.posts || []) {
     if (!PLATFORMS.includes(row.platform) || !/^[a-z0-9-]+$/.test(row.kit || "")) continue;
     const at = new Date(row.at).toISOString();
-    if (row.skip) {
+    if (row.skip || seriesOff(settings, row.series)) {
       await env.DB.prepare("UPDATE social_queue SET status = 'cancelled' WHERE kit_id = ? AND platform = ? AND status IN ('draft', 'approved')")
         .bind(row.kit, row.platform).run();
       continue;
     }
-    const exists = await env.DB.prepare("SELECT id FROM social_queue WHERE kit_id = ? AND platform = ?").bind(row.kit, row.platform).first();
+    const exists = await env.DB.prepare("SELECT id, status, payload FROM social_queue WHERE kit_id = ? AND platform = ?").bind(row.kit, row.platform).first();
     if (!exists) {
       const kit = await assetJson(env, `/social/kits/${row.kit}/kit.json`);
-      const p = payloadsFromKit(row.kit, kit)[row.platform];
+      const p = { ...payloadsFromKit(row.kit, kit)[row.platform], v: row.v || null };
       const r = await env.DB.prepare(
         "INSERT OR IGNORE INTO social_queue (kit_id, platform, payload, scheduled_at, status, created_at, approved_at) VALUES (?, ?, ?, ?, 'approved', ?, ?)"
       ).bind(row.kit, row.platform, JSON.stringify(p), at, iso(nowMs), iso(nowMs)).run();
@@ -225,6 +385,11 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
       continue;
     }
     await env.DB.prepare("UPDATE social_queue SET scheduled_at = ? WHERE id = ? AND status IN ('draft', 'approved')").bind(at, exists.id).run();
+    if (row.v && ["draft", "approved"].includes(exists.status) && JSON.parse(exists.payload).v !== row.v) {
+      const kit = await assetJson(env, `/social/kits/${row.kit}/kit.json`);
+      const p = { ...payloadsFromKit(row.kit, kit)[row.platform], v: row.v };
+      await env.DB.prepare("UPDATE social_queue SET payload = ? WHERE id = ? AND status IN ('draft', 'approved')").bind(JSON.stringify(p), exists.id).run();
+    }
     if (isLive(env, row.platform, adapters) && Date.parse(at) >= nowMs - REARM_WINDOW_MS) {
       await env.DB.prepare("UPDATE social_queue SET status = 'approved', scheduled_at = ?, posted_at = NULL, error = NULL WHERE id = ? AND status IN ('simulated', 'skipped')")
         .bind(at, exists.id).run();
@@ -264,6 +429,10 @@ export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTER
   } catch (e) { /* no schedule file */ }
   try { report.schedule = sched ? await syncSchedule(env, nowMs, { adapters, schedule: sched }) : 0; } catch (e) { await log(env, nowMs, null, null, "schedule_error", 0, e.message); }
   try { report.potd = await maybeQueuePotd(env, nowMs, { fetchImpl, schedule: sched }); } catch (e) { await log(env, nowMs, null, null, "potd_error", 0, e.message); }
+  try { report.pace = await maybeQueuePace(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "pace_error", 0, e.message); }
+  try { report.best = await maybeQueueBest(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "best_error", 0, e.message); }
+  try { report.poll = await maybeQueuePoll(env, nowMs); } catch (e) { await log(env, nowMs, null, null, "poll_error", 0, e.message); }
+  try { report.metrics = await maybeCollectMetrics(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "metrics_error", 0, e.message); }
   const { results } = await env.DB.prepare(
     "SELECT * FROM social_queue WHERE status = 'approved' AND scheduled_at IS NOT NULL AND scheduled_at <= ? ORDER BY scheduled_at, id LIMIT 10"
   ).bind(iso(nowMs)).all();

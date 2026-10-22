@@ -6,6 +6,10 @@
   var NAMES = { x: 'X', bluesky: 'Bluesky', threads: 'Threads', instagram: 'Instagram' };
   var HANDLES = { x: '@GravityReportHQ', bluesky: '@thegravityreport.bsky.social', threads: '@thegravityreport', instagram: 'thegravityreport' };
   var AVATAR = '/social/brand/avatar-400.png';
+  var KINDS = { player: 'Player of the day', article: 'Deep Dive', edition: 'Edition', team: 'The 644 on your team',
+    ledger: 'Is the model winning?', archive: 'From the archive', pace: 'Beating the projection', best: 'Best games of the week',
+    poll: 'Who\'s higher?' };
+  function kindLabel(kit){ return kit ? (KINDS[kit.series || kit.kind] || kit.kind || '') : ''; }
   var SCHED = null, KITS = {}, QUEUE = null, FILTER = 'upcoming';
 
   function msg(t){ $('msg').textContent = t; }
@@ -59,6 +63,12 @@
     if (pl === 'x' || pl === 'bluesky'){
       var posts = pl === 'x' ? kit.x_thread : kit.bluesky_thread;
       box.appendChild(threadBody(posts.slice(0, 1)));
+      if (pl === 'x' && kit.poll){
+        var poll = el('div', { cls: 'poll' });
+        (kit.poll.options || []).forEach(function(o){ poll.appendChild(el('div', { cls: 'opt', text: o })); });
+        poll.appendChild(el('div', { cls: 'muted', text: 'Poll · ' + Math.round((kit.poll.duration_minutes || 0) / 60) + ' hours' }));
+        box.appendChild(poll);
+      }
       if (card) box.appendChild(el('img', { cls: 'pv-img', src: card, alt: (kit.alt && (kit.alt[kit.images.card] || kit.alt.card)) || '' }));
       if (posts.length > 1){
         var d = el('details', { cls: 'more' }, [el('summary', { text: 'Thread: ' + (posts.length - 1) + ' more' })]);
@@ -112,7 +122,7 @@
         var kit = KITS[r.kit];
         var g = el('div', { cls: 'post' }, [el('div', { cls: 'post-head' }, [
           el('span', { cls: 't', text: timeLabel(d) }), el('span', { cls: 'k', text: kit ? kit.title : r.kit }),
-          el('span', { cls: 'kind', text: kit ? (kit.kind === 'player' ? 'Player of the day' : kit.kind === 'article' ? 'Deep Dive' : kit.kind) : '' })]),
+          el('span', { cls: 'kind', text: kindLabel(kit) })]),
           el('div', { cls: 'grid' })]);
         groups[gk] = g; dayBox.appendChild(g);
       }
@@ -127,8 +137,8 @@
     SCHED.posts.forEach(function(r){ seen[r.kit + '|' + r.platform] = 1; });
     q.rows.forEach(function(r){
       if (seen[r.kit_id + '|' + r.platform] || !r.scheduled_at) return;
-      var p = JSON.parse(r.payload), k = KITS[r.kit_id] || (KITS[r.kit_id] = { title: p.title || r.kit_id, kind: 'player', images: {}, alt: {} });
-      if (r.platform === 'x') k.x_thread = p.posts;
+      var p = JSON.parse(r.payload), k = KITS[r.kit_id] || (KITS[r.kit_id] = { title: p.title || r.kit_id, kind: p.kind || 'player', images: {}, alt: {} });
+      if (r.platform === 'x'){ k.x_thread = p.posts; if (p.poll) k.poll = p.poll; }
       if (r.platform === 'bluesky') k.bluesky_thread = p.posts;
       if (r.platform === 'threads') k.threads = p.posts[0];
       if (r.platform === 'instagram'){ k.instagram_caption = p.caption; k.images.carousel = p.image_urls || []; }
@@ -142,8 +152,34 @@
       k.instagram_caption = k.instagram_caption || ''; k.images.carousel = k.images.carousel || []; });
   }
 
+  // weekly follower counts (+ posts sent that week) per platform, last 8 weeks, newest first
+  function renderMetrics(weeks){
+    var box = $('metrics'); box.innerHTML = '';
+    if (!weeks || !weeks.length) return;
+    var wrap = el('div', { cls: 'metrics' }, [el('h2', { text: 'Followers · posts sent that week' })]);
+    var head = el('tr', {}, [el('th', { text: 'Week of' })].concat(Object.keys(NAMES).map(function(p){ return el('th', { text: NAMES[p] }); })));
+    var tb = el('tbody', {}, [head]);
+    weeks.forEach(function(w){
+      var d = new Date(w.ts);
+      var cells = [el('td', { text: d.toLocaleDateString('en-US', Object.assign({ month: 'short', day: 'numeric' }, ET)) })];
+      Object.keys(NAMES).forEach(function(p){
+        var m = w.platforms[p];
+        cells.push(el('td', {}, m ? [m.followers == null ? '—' : String(m.followers), el('span', { cls: 'sub', text: ' · ' + m.posts_sent_week })] : ['']));
+      });
+      tb.appendChild(el('tr', {}, cells));
+    });
+    wrap.appendChild(el('table', {}, [tb]));
+    box.appendChild(wrap);
+  }
+
+  function loadMetrics(){
+    if (!KEY){ $('metrics').innerHTML = ''; return; }
+    api('metrics').then(function(m){ renderMetrics(m.weeks); }).catch(function(){ $('metrics').innerHTML = ''; });
+  }
+
   function loadQueue(){
-    if (!KEY){ QUEUE = null; render(); return Promise.resolve(); }
+    if (!KEY){ QUEUE = null; $('metrics').innerHTML = ''; render(); return Promise.resolve(); }
+    loadMetrics();
     return api('queue').then(function(q){
       QUEUE = q; addQueueOnly(q);
       var live = Object.keys(q.platforms).filter(function(p){ return q.platforms[p].live; }).map(function(p){ return NAMES[p]; });
@@ -164,7 +200,7 @@
   }).then(loadQueue).catch(function(e){ $('days').innerHTML = ''; msg('Could not load the schedule: ' + e.message); });
 
   $('keyform').addEventListener('submit', function(e){ e.preventDefault(); KEY = $('key').value.trim(); try { sessionStorage.setItem('gr_admin', KEY); } catch(x){} loadQueue(); });
-  $('lock').addEventListener('click', function(){ KEY = ''; try { sessionStorage.removeItem('gr_admin'); } catch(x){} QUEUE = null; $('status').innerHTML = ''; msg('Locked.'); render(); });
+  $('lock').addEventListener('click', function(){ KEY = ''; try { sessionStorage.removeItem('gr_admin'); } catch(x){} QUEUE = null; $('status').innerHTML = ''; $('metrics').innerHTML = ''; msg('Locked.'); render(); });
   Array.prototype.forEach.call(document.querySelectorAll('#filters button'), function(b){
     b.addEventListener('click', function(){
       FILTER = b.getAttribute('data-f');

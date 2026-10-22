@@ -53,6 +53,7 @@ export function linesFromSummary(summary) {
       if (!num(line.MIN)) continue;
       const won = !!me.winner;
       out.push({ name: a.athlete.displayName, line, won, opp: opp.team.name,
+        team: me.team.abbreviation || null, oppAbbr: opp.team.abbreviation || opp.team.name, home: me.homeAway === "home",
         score: won ? `${me.score}–${opp.score}` : `${opp.score}–${me.score}` });
     }
   }
