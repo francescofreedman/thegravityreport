@@ -37,8 +37,11 @@ KINDS = {"player": "Player of the day", "article": "Deep Dive", "edition": "Edit
 ALL = ["x", "bluesky", "threads", "instagram"]
 PLAN = [
     # Player of the day is automatic (last night's best game, 10 AM ET). Rows here override a day by hand.
-    ("2026-10-22", "10:00", ALL, "2026-10-22-player-anthony-edwards"),
-    ("2026-10-22", "12:00", ALL, "2026-10-21-article-predictions"),
+    # Oct 22: X was connected in the evening, so its two posts went out then (Bluesky had them in the morning).
+    ("2026-10-22", "10:00", ["bluesky", "threads", "instagram"], "2026-10-22-player-anthony-edwards"),
+    ("2026-10-22", "19:45", ["x"], "2026-10-22-player-anthony-edwards"),
+    ("2026-10-22", "12:00", ["bluesky", "threads", "instagram"], "2026-10-21-article-predictions"),
+    ("2026-10-22", "20:00", ["x"], "2026-10-21-article-predictions"),
     ("2026-10-23", "12:00", ALL, "2026-10-21-edition-the30"),
     ("2026-10-24", "12:00", ALL, "2026-10-20-article-kawhi"),
     ("2026-10-25", "12:00", ALL, "2026-10-20-article-duren"),
@@ -136,6 +139,17 @@ def plan_rows():
     return list(PLAN) + team644_rows() + tracker_rows() + archive_rows()
 
 
+# Kits removed from the plan after their rows were already queued on the site. A queued row stays
+# approved until something cancels it, so each of these gets a skip row on every platform.
+RETIRED = [f"{d}-player-{slug}" for d, slug in [
+    ("2026-10-23", "shai-gilgeous-alexander"), ("2026-10-24", "victor-wembanyama"), ("2026-10-25", "giannis-antetokounmpo"),
+    ("2026-10-26", "luka-doncic"), ("2026-10-27", "kawhi-leonard"), ("2026-10-28", "cade-cunningham"),
+    ("2026-10-29", "karl-anthony-towns"), ("2026-10-30", "donovan-mitchell"), ("2026-10-31", "tyrese-maxey"),
+    ("2026-11-01", "lamelo-ball"), ("2026-11-02", "chet-holmgren"), ("2026-11-03", "stephen-curry"),
+    ("2026-11-04", "jalen-duren"),
+]]
+
+
 def main():
     rows, md = [], ["# Posting schedule", "", "Times are US Eastern. Every row here posts on its own; nothing to approve.",
                     "To change it, ask Claude. Source: `scripts/social/make_schedule.py`.", "",
@@ -167,6 +181,9 @@ def main():
            "| Series | When | Comes from | Turn it off |", "|---|---|---|---|"]
     for name, when, source, off in SERIES:
         md.append(f"| {name} | {when} | {source} | {off} |")
+    for kit_id in RETIRED:
+        for p in PLATFORMS:
+            rows.append({"at": f"{kit_id[:10]}T22:00:00Z", "platform": p, "kit": kit_id, "skip": True})
     with open(os.path.join(ROOT, "social", "schedule.json"), "w", encoding="utf-8") as f:
         json.dump({"timezone_note": "times are UTC; SCHEDULE.md shows Eastern", "posts": rows}, f, ensure_ascii=False, indent=1)
         f.write("\n")

@@ -314,6 +314,7 @@ test("schedule file: every row names a real kit, a known platform and a valid ti
   const s = JSON.parse(readFileSync(join(ROOT, "social/schedule.json"), "utf8"));
   for (const r of s.posts) {
     assert.ok(P.PLATFORMS.includes(r.platform), r.platform);
+    if (r.skip) continue; // a retired kit: the row only cancels what's queued
     assert.ok(existsSync(join(ROOT, "social/kits", r.kit, "kit.json")), r.kit);
     assert.ok(!Number.isNaN(Date.parse(r.at)), r.at);
   }

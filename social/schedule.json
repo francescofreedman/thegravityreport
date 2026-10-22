@@ -3,12 +3,6 @@
  "posts": [
   {
    "at": "2026-10-22T14:00:00Z",
-   "platform": "x",
-   "kit": "2026-10-22-player-anthony-edwards",
-   "v": "a0a559a295"
-  },
-  {
-   "at": "2026-10-22T14:00:00Z",
    "platform": "bluesky",
    "kit": "2026-10-22-player-anthony-edwards",
    "v": "a0a559a295"
@@ -27,12 +21,6 @@
   },
   {
    "at": "2026-10-22T16:00:00Z",
-   "platform": "x",
-   "kit": "2026-10-21-article-predictions",
-   "v": "26272b4549"
-  },
-  {
-   "at": "2026-10-22T16:00:00Z",
    "platform": "bluesky",
    "kit": "2026-10-21-article-predictions",
    "v": "26272b4549"
@@ -50,6 +38,18 @@
    "v": "26272b4549"
   },
   {
+   "at": "2026-10-22T23:45:00Z",
+   "platform": "x",
+   "kit": "2026-10-22-player-anthony-edwards",
+   "v": "a0a559a295"
+  },
+  {
+   "at": "2026-10-23T00:00:00Z",
+   "platform": "x",
+   "kit": "2026-10-21-article-predictions",
+   "v": "26272b4549"
+  },
+  {
    "at": "2026-10-23T16:00:00Z",
    "platform": "x",
    "kit": "2026-10-21-edition-the30",
@@ -1200,6 +1200,318 @@
    "kit": "2026-11-29-article-jokic",
    "v": "2b6d043cec",
    "series": "archive"
+  },
+  {
+   "at": "2026-10-23T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-10-23-player-shai-gilgeous-alexander",
+   "skip": true
+  },
+  {
+   "at": "2026-10-23T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-10-23-player-shai-gilgeous-alexander",
+   "skip": true
+  },
+  {
+   "at": "2026-10-23T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-10-23-player-shai-gilgeous-alexander",
+   "skip": true
+  },
+  {
+   "at": "2026-10-23T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-10-23-player-shai-gilgeous-alexander",
+   "skip": true
+  },
+  {
+   "at": "2026-10-24T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-10-24-player-victor-wembanyama",
+   "skip": true
+  },
+  {
+   "at": "2026-10-24T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-10-24-player-victor-wembanyama",
+   "skip": true
+  },
+  {
+   "at": "2026-10-24T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-10-24-player-victor-wembanyama",
+   "skip": true
+  },
+  {
+   "at": "2026-10-24T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-10-24-player-victor-wembanyama",
+   "skip": true
+  },
+  {
+   "at": "2026-10-25T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-10-25-player-giannis-antetokounmpo",
+   "skip": true
+  },
+  {
+   "at": "2026-10-25T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-10-25-player-giannis-antetokounmpo",
+   "skip": true
+  },
+  {
+   "at": "2026-10-25T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-10-25-player-giannis-antetokounmpo",
+   "skip": true
+  },
+  {
+   "at": "2026-10-25T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-10-25-player-giannis-antetokounmpo",
+   "skip": true
+  },
+  {
+   "at": "2026-10-26T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-10-26-player-luka-doncic",
+   "skip": true
+  },
+  {
+   "at": "2026-10-26T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-10-26-player-luka-doncic",
+   "skip": true
+  },
+  {
+   "at": "2026-10-26T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-10-26-player-luka-doncic",
+   "skip": true
+  },
+  {
+   "at": "2026-10-26T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-10-26-player-luka-doncic",
+   "skip": true
+  },
+  {
+   "at": "2026-10-27T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-10-27-player-kawhi-leonard",
+   "skip": true
+  },
+  {
+   "at": "2026-10-27T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-10-27-player-kawhi-leonard",
+   "skip": true
+  },
+  {
+   "at": "2026-10-27T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-10-27-player-kawhi-leonard",
+   "skip": true
+  },
+  {
+   "at": "2026-10-27T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-10-27-player-kawhi-leonard",
+   "skip": true
+  },
+  {
+   "at": "2026-10-28T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-10-28-player-cade-cunningham",
+   "skip": true
+  },
+  {
+   "at": "2026-10-28T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-10-28-player-cade-cunningham",
+   "skip": true
+  },
+  {
+   "at": "2026-10-28T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-10-28-player-cade-cunningham",
+   "skip": true
+  },
+  {
+   "at": "2026-10-28T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-10-28-player-cade-cunningham",
+   "skip": true
+  },
+  {
+   "at": "2026-10-29T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-10-29-player-karl-anthony-towns",
+   "skip": true
+  },
+  {
+   "at": "2026-10-29T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-10-29-player-karl-anthony-towns",
+   "skip": true
+  },
+  {
+   "at": "2026-10-29T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-10-29-player-karl-anthony-towns",
+   "skip": true
+  },
+  {
+   "at": "2026-10-29T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-10-29-player-karl-anthony-towns",
+   "skip": true
+  },
+  {
+   "at": "2026-10-30T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-10-30-player-donovan-mitchell",
+   "skip": true
+  },
+  {
+   "at": "2026-10-30T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-10-30-player-donovan-mitchell",
+   "skip": true
+  },
+  {
+   "at": "2026-10-30T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-10-30-player-donovan-mitchell",
+   "skip": true
+  },
+  {
+   "at": "2026-10-30T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-10-30-player-donovan-mitchell",
+   "skip": true
+  },
+  {
+   "at": "2026-10-31T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-10-31-player-tyrese-maxey",
+   "skip": true
+  },
+  {
+   "at": "2026-10-31T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-10-31-player-tyrese-maxey",
+   "skip": true
+  },
+  {
+   "at": "2026-10-31T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-10-31-player-tyrese-maxey",
+   "skip": true
+  },
+  {
+   "at": "2026-10-31T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-10-31-player-tyrese-maxey",
+   "skip": true
+  },
+  {
+   "at": "2026-11-01T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-11-01-player-lamelo-ball",
+   "skip": true
+  },
+  {
+   "at": "2026-11-01T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-11-01-player-lamelo-ball",
+   "skip": true
+  },
+  {
+   "at": "2026-11-01T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-11-01-player-lamelo-ball",
+   "skip": true
+  },
+  {
+   "at": "2026-11-01T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-11-01-player-lamelo-ball",
+   "skip": true
+  },
+  {
+   "at": "2026-11-02T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-11-02-player-chet-holmgren",
+   "skip": true
+  },
+  {
+   "at": "2026-11-02T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-11-02-player-chet-holmgren",
+   "skip": true
+  },
+  {
+   "at": "2026-11-02T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-11-02-player-chet-holmgren",
+   "skip": true
+  },
+  {
+   "at": "2026-11-02T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-11-02-player-chet-holmgren",
+   "skip": true
+  },
+  {
+   "at": "2026-11-03T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-11-03-player-stephen-curry",
+   "skip": true
+  },
+  {
+   "at": "2026-11-03T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-11-03-player-stephen-curry",
+   "skip": true
+  },
+  {
+   "at": "2026-11-03T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-11-03-player-stephen-curry",
+   "skip": true
+  },
+  {
+   "at": "2026-11-03T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-11-03-player-stephen-curry",
+   "skip": true
+  },
+  {
+   "at": "2026-11-04T22:00:00Z",
+   "platform": "x",
+   "kit": "2026-11-04-player-jalen-duren",
+   "skip": true
+  },
+  {
+   "at": "2026-11-04T22:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-11-04-player-jalen-duren",
+   "skip": true
+  },
+  {
+   "at": "2026-11-04T22:00:00Z",
+   "platform": "threads",
+   "kit": "2026-11-04-player-jalen-duren",
+   "skip": true
+  },
+  {
+   "at": "2026-11-04T22:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-11-04-player-jalen-duren",
+   "skip": true
   }
  ]
 }
