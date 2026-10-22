@@ -614,3 +614,27 @@ test("player of the day shares the day's cached lines with the Friday round-up",
   assert.equal(day.lines[0].home, false);
   assert.ok(day.lines.every((l) => l.gs != null));
 });
+
+test("schedule: moving a failed post's time retries it once; leaving it alone does not", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0", ...BSKY_LIVE });
+  await P.ensureSocialSchema(e);
+  const calls = [];
+  let fail = true;
+  const adapters = { ...P.ADAPTERS, bluesky: { name: "bluesky", configured: () => true, async post(_, payload) {
+    if (fail) throw new Error("bluesky 402: no credit"); calls.push(payload); return { remote_id: "b-1", count: payload.posts.length }; } } };
+  const t1 = "2026-10-22T23:45:00Z";
+  await P.syncSchedule(e, Date.parse(t1), { adapters, schedule: { posts: [{ at: t1, platform: "bluesky", kit: KIT }] } });
+  await P.runScheduled(e, Date.parse(t1), { adapters });
+  let row = await e.DB.prepare("SELECT status FROM social_queue").first();
+  assert.equal(row.status, "failed");
+  fail = false;
+  await P.syncSchedule(e, Date.parse(t1) + 600e3, { adapters, schedule: { posts: [{ at: t1, platform: "bluesky", kit: KIT }] } });
+  await P.runScheduled(e, Date.parse(t1) + 600e3, { adapters });
+  assert.equal(calls.length, 0, "same time: stays failed");
+  const t2 = "2026-10-23T00:10:00Z";
+  await P.syncSchedule(e, Date.parse(t2), { adapters, schedule: { posts: [{ at: t2, platform: "bluesky", kit: KIT }] } });
+  await P.runScheduled(e, Date.parse(t2), { adapters });
+  assert.equal(calls.length, 1, "moved time: retried");
+  row = await e.DB.prepare("SELECT status FROM social_queue").first();
+  assert.equal(row.status, "posted");
+});

@@ -11,8 +11,8 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Thu Oct 22, 12:00 PM | Bluesky | The 2026–27 Gravity Report Predictions | Twenty calls for the 2026–27 season, each with a probability, every one of them scored in … |
 | Thu Oct 22, 12:00 PM | Threads | The 2026–27 Gravity Report Predictions | Twenty calls for the 2026–27 season, each with a probability, every one of them scored in … |
 | Thu Oct 22, 12:00 PM | Instagram | The 2026–27 Gravity Report Predictions | Twenty calls for the 2026–27 season, each with a probability, every one of them scored in … |
-| Thu Oct 22, 7:45 PM | X | Anthony Edwards: player of the day | Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from thr… |
-| Thu Oct 22, 8:00 PM | X | The 2026–27 Gravity Report Predictions | Twenty calls for the 2026–27 season, each with a probability, every one of them scored in … |
+| Thu Oct 22, 8:10 PM | X | Anthony Edwards: player of the day | Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from thr… |
+| Thu Oct 22, 8:12 PM | X | The 2026–27 Gravity Report Predictions | Twenty calls for the 2026–27 season, each with a probability, every one of them scored in … |
 | Fri Oct 23, 12:00 PM | X | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
 | Fri Oct 23, 12:00 PM | Bluesky | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
 | Fri Oct 23, 12:00 PM | Threads | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |

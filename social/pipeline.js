@@ -374,7 +374,7 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
         .bind(row.kit, row.platform).run();
       continue;
     }
-    const exists = await env.DB.prepare("SELECT id, status, payload FROM social_queue WHERE kit_id = ? AND platform = ?").bind(row.kit, row.platform).first();
+    const exists = await env.DB.prepare("SELECT id, status, payload, scheduled_at FROM social_queue WHERE kit_id = ? AND platform = ?").bind(row.kit, row.platform).first();
     if (!exists) {
       const kit = await assetJson(env, `/social/kits/${row.kit}/kit.json`);
       const p = { ...payloadsFromKit(row.kit, kit)[row.platform], v: row.v || null };
@@ -393,6 +393,11 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
     if (isLive(env, row.platform, adapters) && Date.parse(at) >= nowMs - REARM_WINDOW_MS) {
       await env.DB.prepare("UPDATE social_queue SET status = 'approved', scheduled_at = ?, posted_at = NULL, error = NULL WHERE id = ? AND status IN ('simulated', 'skipped')")
         .bind(at, exists.id).run();
+      // a failed post is retried only when its time is moved in the schedule (an explicit "try again")
+      if (exists.status === "failed" && exists.scheduled_at !== at) {
+        await env.DB.prepare("UPDATE social_queue SET status = 'approved', scheduled_at = ?, error = NULL WHERE id = ? AND status = 'failed'")
+          .bind(at, exists.id).run();
+      }
     }
   }
   return added;

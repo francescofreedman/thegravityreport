@@ -39,9 +39,9 @@ PLAN = [
     # Player of the day is automatic (last night's best game, 10 AM ET). Rows here override a day by hand.
     # Oct 22: X was connected in the evening, so its two posts went out then (Bluesky had them in the morning).
     ("2026-10-22", "10:00", ["bluesky", "threads", "instagram"], "2026-10-22-player-anthony-edwards"),
-    ("2026-10-22", "19:45", ["x"], "2026-10-22-player-anthony-edwards"),
+    ("2026-10-22", "20:10", ["x"], "2026-10-22-player-anthony-edwards"),
     ("2026-10-22", "12:00", ["bluesky", "threads", "instagram"], "2026-10-21-article-predictions"),
-    ("2026-10-22", "20:00", ["x"], "2026-10-21-article-predictions"),
+    ("2026-10-22", "20:12", ["x"], "2026-10-21-article-predictions"),
     ("2026-10-23", "12:00", ALL, "2026-10-21-edition-the30"),
     ("2026-10-24", "12:00", ALL, "2026-10-20-article-kawhi"),
     ("2026-10-25", "12:00", ALL, "2026-10-20-article-duren"),
