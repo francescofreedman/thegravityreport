@@ -96,6 +96,9 @@ SERIES = [
      "schedule.json (kit `<monday>-ledger-tracker`, written weekly by `python3 scripts/social/ledger_tracker.py --schedule`, "
      "then commit + push; Basketball Reference can't be fetched from the Worker)",
      "`series_tracker = 0` in social_settings, or TRACKER_ON = False in make_schedule.py"),
+    ("Beating the projection", "Wednesdays, 1 PM ET (skipped, and marked, while teams average under 5 games)",
+     "Worker, automatic (social/series.js: ESPN standings vs TORQUE win projections; Instagram uses /cards/the30.png)",
+     "`series_pace = 0` in social_settings"),
 ]
 
 

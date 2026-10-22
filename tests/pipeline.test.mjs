@@ -13,6 +13,7 @@ import * as bsky from "../social/adapters/bluesky.js";
 import * as xad from "../social/adapters/x.js";
 import { threads, instagram } from "../social/adapters/meta.js";
 import { handleAdmin } from "../social/admin-api.js";
+import * as S from "../social/series.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -44,7 +45,7 @@ function fakeAssets() {
 
 function env(extra = {}) {
   P.resetSchemaCache();
-  return { DB: fakeD1(), ASSETS: fakeAssets(), SOCIAL_DRY_RUN: "1", SOCIAL_POTD: "0", ...extra };
+  return { DB: fakeD1(), ASSETS: fakeAssets(), SOCIAL_DRY_RUN: "1", SOCIAL_POTD: "0", SOCIAL_SERIES: "0", ...extra };
 }
 
 function okAdapter(name, calls) {
@@ -372,4 +373,89 @@ test("schedule: a re-rendered kit (new v) refreshes a queued post that hasn't go
   await P.syncSchedule(e, T0, { adapters, schedule: { posts: [{ ...row, v: "cccccccccc" }] } });
   p = JSON.parse((await e.DB.prepare("SELECT payload FROM social_queue").first()).payload);
   assert.equal(p.v, "bbbbbbbbbb", "a posted row is never rewritten");
+});
+
+// ESPN standings fixture: the real table on Oct 21, 2026 (one game each), trimmed to the fields we read.
+const STANDINGS = JSON.parse(readFileSync(join(ROOT, "tests/fixtures/espn-standings.json"), "utf8"));
+const TORQUE = JSON.parse(readFileSync(join(ROOT, "the30/torque-2026-27.json"), "utf8"));
+// the same table with every record multiplied, so there's a season to talk about
+function scaledStandings(k) {
+  const d = structuredClone(STANDINGS);
+  for (const c of d.children) for (const e of c.standings.entries) for (const s of e.stats) if (s.name === "wins" || s.name === "losses") s.value *= k;
+  return d;
+}
+const standingsFetch = (data, calls = []) => async (url) => { calls.push(String(url)); return new Response(JSON.stringify(data)); };
+
+test("series helpers: ISO week, weekday, date labels, packing", () => {
+  assert.equal(S.isoWeek("2026-10-28"), "2026-W44");
+  assert.equal(S.isoWeek("2027-01-03"), "2026-W53");
+  assert.equal(S.weekday("2026-10-28"), 3, "Wednesday");
+  assert.equal(S.weekday("2026-10-24"), 6, "Saturday");
+  assert.equal(S.addDays("2026-10-30", -7), "2026-10-23");
+  assert.equal(S.rangeLabel("2026-10-23", "2026-10-29"), "Oct 23–29");
+  assert.equal(S.rangeLabel("2026-10-30", "2026-11-05"), "Oct 30–Nov 5");
+  const posts = S.packPosts("head", Array.from({ length: 12 }, (_, i) => `line ${i} ` + "x".repeat(40)), "tail https://thegravityreport.com/");
+  assert.ok(posts.length > 2 && posts.every(S.fits) && posts.at(-1).startsWith("tail"));
+});
+
+test("standings: every ESPN team maps to a TORQUE team, win pace vs projection", () => {
+  const st = S.parseStandings(STANDINGS);
+  assert.equal(Object.keys(st).length, 30);
+  for (const t of TORQUE.teams) assert.ok(st[S.TORQUE_CODES[t.code] || t.code], t.code);
+  assert.deepEqual(st.OKC, { w: 1, l: 0, name: "Oklahoma City Thunder" });
+  assert.deepEqual(st.NYK, { w: 0, l: 1, name: "New York Knicks" });
+  const early = S.paceTable(st, TORQUE);
+  assert.match(early.reason, /too early: 0\.9 games/);
+  const t = S.paceTable(S.parseStandings(scaledStandings(10)), TORQUE);
+  assert.equal(t.reason, undefined);
+  assert.equal(t.above.length, 3);
+  assert.equal(t.below.length, 3);
+  assert.ok(t.above[0].diff > t.above[1].diff && t.below[0].diff < t.below[1].diff);
+  const okc = t.rows.find((r) => r.code === "OKC");
+  assert.equal(okc.pace, 82);
+  assert.equal(okc.projected, 66.7);
+  const kit = S.paceKit(t, "https://thegravityreport.com", "2026-10-28");
+  assert.match(kit.x_thread[0], /^Beating the projection\. TORQUE, our team model/);
+  assert.match(kit.x_thread.join("\n"), /Ahead:\n/);
+  assert.match(kit.x_thread.at(-1), /\/the30\/$/);
+  for (const r of [...t.above, ...t.below]) {
+    assert.ok(kit.instagram_caption.includes(`${S.city(r.team)}: ${r.w}-${r.l}, a pace of ${Math.round(r.pace)} wins; projected ${r.projected.toFixed(1)}`));
+  }
+  assert.equal(kit.images.ig, "/cards/the30.png");
+});
+
+test("beating the projection: Wednesdays 1 PM ET, once a week, skipped and marked when too early", async () => {
+  const e = env({ SOCIAL_SERIES: "1" });
+  await P.ensureSocialSchema(e);
+  const calls = [];
+  const wedEarly = Date.parse("2026-10-28T12:30:00Z"); // 8:30 AM ET: not yet
+  assert.equal(await P.maybeQueuePace(e, wedEarly, { fetchImpl: standingsFetch(STANDINGS, calls) }), null);
+  assert.equal(calls.length, 0);
+  const wed = Date.parse("2026-10-28T13:30:00Z"); // 9:30 AM ET
+  assert.equal(await P.maybeQueuePace(e, wed, { fetchImpl: standingsFetch(STANDINGS, calls) }), null, "one game a team: too early");
+  assert.equal(calls.length, 1);
+  const marked = await e.DB.prepare("SELECT value FROM social_settings WHERE key = 'pace_week_2026-W44'").first();
+  assert.match(marked.value, /too early/);
+  assert.equal(await P.maybeQueuePace(e, wed + 3600e3, { fetchImpl: standingsFetch(scaledStandings(10), calls) }), null, "marked: not retried this week");
+  assert.equal(calls.length, 1);
+  // next Wednesday, with a season's worth of games
+  const e2 = env({ SOCIAL_SERIES: "1" });
+  await P.ensureSocialSchema(e2);
+  const tue = Date.parse("2026-11-03T15:00:00Z");
+  assert.equal(await P.maybeQueuePace(e2, tue, { fetchImpl: standingsFetch(scaledStandings(10)) }), null, "not a Wednesday");
+  const wed2 = Date.parse("2026-11-04T15:00:00Z"); // 10 AM ET
+  assert.equal(await P.maybeQueuePace(e2, wed2, { fetchImpl: standingsFetch(scaledStandings(10)) }), "pace-2026-11-04");
+  assert.equal(await P.maybeQueuePace(e2, wed2 + 60e3, { fetchImpl: standingsFetch(scaledStandings(10)) }), null, "once a week");
+  const rows = (await e2.DB.prepare("SELECT platform, status, scheduled_at, payload FROM social_queue").all()).results;
+  assert.deepEqual(rows.map((r) => r.platform).sort(), ["bluesky", "instagram", "threads", "x"]);
+  assert.ok(rows.every((r) => r.status === "approved" && r.scheduled_at === "2026-11-04T18:00:00.000Z"), "1 PM ET = 18:00 UTC in November");
+  const ig = JSON.parse(rows.find((r) => r.platform === "instagram").payload);
+  assert.deepEqual(ig.image_urls, ["https://thegravityreport.com/cards/the30.png"]);
+  assert.equal(ig.kind, "pace");
+  assert.equal(JSON.parse(rows.find((r) => r.platform === "x").payload).images.length, 0, "text-only on X");
+  // off switch
+  const e3 = env({ SOCIAL_SERIES: "1" });
+  await P.ensureSocialSchema(e3);
+  await P.setSetting(e3, "series_pace", "0");
+  assert.equal(await P.maybeQueuePace(e3, wed2, { fetchImpl: standingsFetch(scaledStandings(10)) }), null);
 });

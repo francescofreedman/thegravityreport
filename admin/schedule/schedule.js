@@ -63,6 +63,12 @@
     if (pl === 'x' || pl === 'bluesky'){
       var posts = pl === 'x' ? kit.x_thread : kit.bluesky_thread;
       box.appendChild(threadBody(posts.slice(0, 1)));
+      if (pl === 'x' && kit.poll){
+        var poll = el('div', { cls: 'poll' });
+        (kit.poll.options || []).forEach(function(o){ poll.appendChild(el('div', { cls: 'opt', text: o })); });
+        poll.appendChild(el('div', { cls: 'muted', text: 'Poll · ' + Math.round((kit.poll.duration_minutes || 0) / 60) + ' hours' }));
+        box.appendChild(poll);
+      }
       if (card) box.appendChild(el('img', { cls: 'pv-img', src: card, alt: (kit.alt && (kit.alt[kit.images.card] || kit.alt.card)) || '' }));
       if (posts.length > 1){
         var d = el('details', { cls: 'more' }, [el('summary', { text: 'Thread: ' + (posts.length - 1) + ' more' })]);
@@ -131,8 +137,8 @@
     SCHED.posts.forEach(function(r){ seen[r.kit + '|' + r.platform] = 1; });
     q.rows.forEach(function(r){
       if (seen[r.kit_id + '|' + r.platform] || !r.scheduled_at) return;
-      var p = JSON.parse(r.payload), k = KITS[r.kit_id] || (KITS[r.kit_id] = { title: p.title || r.kit_id, kind: 'player', images: {}, alt: {} });
-      if (r.platform === 'x') k.x_thread = p.posts;
+      var p = JSON.parse(r.payload), k = KITS[r.kit_id] || (KITS[r.kit_id] = { title: p.title || r.kit_id, kind: p.kind || 'player', images: {}, alt: {} });
+      if (r.platform === 'x'){ k.x_thread = p.posts; if (p.poll) k.poll = p.poll; }
       if (r.platform === 'bluesky') k.bluesky_thread = p.posts;
       if (r.platform === 'threads') k.threads = p.posts[0];
       if (r.platform === 'instagram'){ k.instagram_caption = p.caption; k.images.carousel = p.image_urls || []; }
