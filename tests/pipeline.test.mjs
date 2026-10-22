@@ -353,3 +353,23 @@ test("series off switch: series_team644=0 cancels that series' schedule rows, no
   assert.equal(st[KIT], "approved");
   assert.ok(P.SETTINGS_KEYS.includes("series_team644"));
 });
+
+test("schedule: a re-rendered kit (new v) refreshes a queued post that hasn't gone out", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0", ...BSKY_LIVE });
+  await P.ensureSocialSchema(e);
+  const adapters = { ...P.ADAPTERS, bluesky: okAdapter("bluesky", []) };
+  const row = { at: "2026-10-26T13:00:00Z", platform: "bluesky", kit: KIT, v: "aaaaaaaaaa", series: "tracker" };
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: [row] } });
+  await e.DB.prepare("UPDATE social_queue SET payload = ?").bind(JSON.stringify({ posts: ["old numbers"], images: [], v: "aaaaaaaaaa" })).run();
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: [row] } });
+  let p = JSON.parse((await e.DB.prepare("SELECT payload FROM social_queue").first()).payload);
+  assert.equal(p.posts[0], "old numbers", "same version: untouched");
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: [{ ...row, v: "bbbbbbbbbb" }] } });
+  p = JSON.parse((await e.DB.prepare("SELECT payload FROM social_queue").first()).payload);
+  assert.notEqual(p.posts[0], "old numbers");
+  assert.equal(p.v, "bbbbbbbbbb");
+  await e.DB.prepare("UPDATE social_queue SET status = 'posted'").run();
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: [{ ...row, v: "cccccccccc" }] } });
+  p = JSON.parse((await e.DB.prepare("SELECT payload FROM social_queue").first()).payload);
+  assert.equal(p.v, "bbbbbbbbbb", "a posted row is never rewritten");
+});

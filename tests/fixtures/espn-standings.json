@@ -1,0 +1,1076 @@
+{
+ "name": "National Basketball Association",
+ "abbreviation": "NBA",
+ "season": {
+  "year": 2027,
+  "displayName": "2026-27"
+ },
+ "children": [
+  {
+   "name": "Eastern Conference",
+   "abbreviation": "East",
+   "standings": {
+    "entries": [
+     {
+      "team": {
+       "id": "17",
+       "abbreviation": "BKN",
+       "displayName": "Brooklyn Nets",
+       "name": "Nets",
+       "location": "Brooklyn"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "18",
+       "abbreviation": "NY",
+       "displayName": "New York Knicks",
+       "name": "Knicks",
+       "location": "New York"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "19",
+       "abbreviation": "ORL",
+       "displayName": "Orlando Magic",
+       "name": "Magic",
+       "location": "Orlando"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "2",
+       "abbreviation": "BOS",
+       "displayName": "Boston Celtics",
+       "name": "Celtics",
+       "location": "Boston"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "15",
+       "abbreviation": "MIL",
+       "displayName": "Milwaukee Bucks",
+       "name": "Bucks",
+       "location": "Milwaukee"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "14",
+       "abbreviation": "MIA",
+       "displayName": "Miami Heat",
+       "name": "Heat",
+       "location": "Miami"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "4",
+       "abbreviation": "CHI",
+       "displayName": "Chicago Bulls",
+       "name": "Bulls",
+       "location": "Chicago"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "5",
+       "abbreviation": "CLE",
+       "displayName": "Cleveland Cavaliers",
+       "name": "Cavaliers",
+       "location": "Cleveland"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-0",
+        "summary": "0-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "11",
+       "abbreviation": "IND",
+       "displayName": "Indiana Pacers",
+       "name": "Pacers",
+       "location": "Indiana"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "28",
+       "abbreviation": "TOR",
+       "displayName": "Toronto Raptors",
+       "name": "Raptors",
+       "location": "Toronto"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "27",
+       "abbreviation": "WSH",
+       "displayName": "Washington Wizards",
+       "name": "Wizards",
+       "location": "Washington"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "8",
+       "abbreviation": "DET",
+       "displayName": "Detroit Pistons",
+       "name": "Pistons",
+       "location": "Detroit"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "1",
+       "abbreviation": "ATL",
+       "displayName": "Atlanta Hawks",
+       "name": "Hawks",
+       "location": "Atlanta"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "30",
+       "abbreviation": "CHA",
+       "displayName": "Charlotte Hornets",
+       "name": "Hornets",
+       "location": "Charlotte"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "20",
+       "abbreviation": "PHI",
+       "displayName": "Philadelphia 76ers",
+       "name": "76ers",
+       "location": "Philadelphia"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "Western Conference",
+   "abbreviation": "West",
+   "standings": {
+    "entries": [
+     {
+      "team": {
+       "id": "3",
+       "abbreviation": "NO",
+       "displayName": "New Orleans Pelicans",
+       "name": "Pelicans",
+       "location": "New Orleans"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "24",
+       "abbreviation": "SA",
+       "displayName": "San Antonio Spurs",
+       "name": "Spurs",
+       "location": "San Antonio"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "6",
+       "abbreviation": "DAL",
+       "displayName": "Dallas Mavericks",
+       "name": "Mavericks",
+       "location": "Dallas"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "26",
+       "abbreviation": "UTAH",
+       "displayName": "Utah Jazz",
+       "name": "Jazz",
+       "location": "Utah"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "9",
+       "abbreviation": "GS",
+       "displayName": "Golden State Warriors",
+       "name": "Warriors",
+       "location": "Golden State"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "23",
+       "abbreviation": "SAC",
+       "displayName": "Sacramento Kings",
+       "name": "Kings",
+       "location": "Sacramento"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "21",
+       "abbreviation": "PHX",
+       "displayName": "Phoenix Suns",
+       "name": "Suns",
+       "location": "Phoenix"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-1",
+        "summary": "0-1"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "7",
+       "abbreviation": "DEN",
+       "displayName": "Denver Nuggets",
+       "name": "Nuggets",
+       "location": "Denver"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 0.0,
+        "displayValue": ".000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "0-0",
+        "summary": "0-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "16",
+       "abbreviation": "MIN",
+       "displayName": "Minnesota Timberwolves",
+       "name": "Timberwolves",
+       "location": "Minnesota"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "22",
+       "abbreviation": "POR",
+       "displayName": "Portland Trail Blazers",
+       "name": "Trail Blazers",
+       "location": "Portland"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "12",
+       "abbreviation": "LAC",
+       "displayName": "LA Clippers",
+       "name": "Clippers",
+       "location": "LA"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "13",
+       "abbreviation": "LAL",
+       "displayName": "Los Angeles Lakers",
+       "name": "Lakers",
+       "location": "Los Angeles"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "29",
+       "abbreviation": "MEM",
+       "displayName": "Memphis Grizzlies",
+       "name": "Grizzlies",
+       "location": "Memphis"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "10",
+       "abbreviation": "HOU",
+       "displayName": "Houston Rockets",
+       "name": "Rockets",
+       "location": "Houston"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     },
+     {
+      "team": {
+       "id": "25",
+       "abbreviation": "OKC",
+       "displayName": "Oklahoma City Thunder",
+       "name": "Thunder",
+       "location": "Oklahoma City"
+      },
+      "stats": [
+       {
+        "name": "losses",
+        "value": 0.0,
+        "displayValue": "0",
+        "summary": null
+       },
+       {
+        "name": "winPercent",
+        "value": 1.0,
+        "displayValue": "1.000",
+        "summary": null
+       },
+       {
+        "name": "wins",
+        "value": 1.0,
+        "displayValue": "1",
+        "summary": null
+       },
+       {
+        "name": "overall",
+        "value": null,
+        "displayValue": "1-0",
+        "summary": "1-0"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

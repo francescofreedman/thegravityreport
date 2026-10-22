@@ -141,24 +141,100 @@ class TrackerTests(unittest.TestCase):
                     f'<td data-stat="ts_pct">{r["ts26"]}</td><td data-stat="usg_pct">{r["usg26"]}</td><td data-stat="bpm">{r["bpm26"]}</td></tr>')
         return '<table id="advanced"><tbody>' + "".join(rows) + "</tbody></table>"
 
-    def test_status_lines_and_kit(self):
+    def standings(self, scale=1):
+        """The real ESPN standings fixture (Oct 21, 2026: one game each), optionally with every record multiplied."""
         sys.path.insert(0, os.path.join(ROOT, "scripts", "social"))
+        import ledger_tracker as lt
+        with open(os.path.join(ROOT, "tests", "fixtures", "espn-standings.json"), encoding="utf-8") as f:
+            st = lt.parse_standings(json.load(f))
+        return {k: {**v, "w": v["w"] * scale, "l": v["l"] * scale} for k, v in st.items()}
+
+    def test_standings_parse_covers_all_thirty_with_644_codes(self):
+        st = self.standings()
+        self.assertEqual(len(st), 30)
+        for code in mk.SUBREDDITS:
+            self.assertIn(code, st, code)
+        self.assertEqual(st["OKC"], {"w": 1, "l": 0, "name": "Oklahoma City Thunder"})
+
+    def test_status_lines_and_kit(self):
         import ledger_tracker as lt
         stats = lt.parse(self.fixture())
         self.assertIn("Kawhi Leonard", stats)
-        rows, src = lt.status_lines(stats, mk.load("content/ledger.json"))
-        by = {r["id"]: r["status_line"] for r in rows}
-        self.assertIn("so far", by["K4"])
-        self.assertIn("graded from the July 2027 edition", by["K1"])
+        ledger = mk.load("content/ledger.json")
+        open_ids = {e["id"] for e in ledger["entries"] if e["status"] == "open"}
+        rows, src = lt.status_lines(stats, ledger, self.standings(scale=10))
+        self.assertEqual({r["id"] for r in rows}, open_ids, "every open call gets a line")
+        by = {r["id"]: r for r in rows}
+        self.assertIn("so far", by["K4"]["status_line"])
+        self.assertIn("not yet", by["K5"]["status_line"], "a call that is behind says so")
+        self.assertIn("graded from the July 2027 edition", by["K1"]["status_line"])
+        self.assertTrue(by["K1"]["later"] and by["P3"]["later"] and by["P18"]["later"])
+        self.assertEqual(by["P23"]["status_line"], "10-0 so far, a pace of 82 wins (on track)")
+        self.assertEqual(by["P25"]["status_line"], "0-10 so far, a pace of 0 wins (behind)")
+        self.assertIn("rank correlation", by["E1"]["status_line"])
+        self.assertFalse(by["P20"]["later"])
         with tempfile.TemporaryDirectory() as d:
             kit, _ = mk.build_ledger_kit(rows, "Oct 7, 2026", "2026-10-07", outdir=d, images=False, source_text=src + " Oct 7, 2026")
             mk.check_limits(kit)
+            allt = " ".join(kit["x_thread"])
+            for i in open_ids:
+                self.assertIn(f"{i} · ", allt, f"{i} named in the thread")
+            self.assertIn("/ledger/", kit["x_thread"][-1])
+            self.assertIn("misses included", kit["x_thread"][-1])
+
+    def test_early_season_groups_team_calls(self):
+        import ledger_tracker as lt
+        rows, _ = lt.status_lines(lt.parse(self.fixture()), mk.load("content/ledger.json"), self.standings())
+        by = {r["id"]: r for r in rows}
+        self.assertTrue(by["P23"]["later"])
+        self.assertIn("too early", by["P23"]["status_line"])
+        self.assertTrue(by["E1"]["later"])
 
     def test_no_games_yet(self):
-        sys.path.insert(0, os.path.join(ROOT, "scripts", "social"))
         import ledger_tracker as lt
         rows, _ = lt.status_lines({}, mk.load("content/ledger.json"))
-        self.assertTrue(all(r["status_line"] in ("no games yet",) or "graded" in r["status_line"] for r in rows))
+        for r in rows:
+            self.assertTrue(r["status_line"] == "no games yet" or r["later"], r)
+
+    def test_unpublished_bpm_is_said_not_invented(self):
+        import ledger_tracker as lt
+        page = ('<table id="advanced"><tbody><tr><td data-stat="name_display">Kawhi Leonard</td><td data-stat="games">1</td>'
+                '<td data-stat="mp">30</td><td data-stat="ts_pct">.500</td><td data-stat="usg_pct">31.0</td></tr></tbody></table>')
+        rows, src = lt.status_lines(lt.parse(page), mk.load("content/ledger.json"))
+        by = {r["id"]: r["status_line"] for r in rows}
+        self.assertEqual(by["K3"], "Box Plus/Minus not published yet, 30 minutes")
+        self.assertIn("31.0%", by["K4"])
+        mk.guard([by["K3"], by["K4"]], src)
+
+    def test_team_call_parsing_and_spearman(self):
+        import ledger_tracker as lt
+        cities = lt.city_codes()
+        self.assertEqual(cities["Portland"], "POR")
+        code, ok = lt.team_call("Surprise team: Toronto wins 47 or more games", cities)
+        self.assertEqual(code, "TOR")
+        self.assertTrue(ok(47) and not ok(46))
+        code, ok = lt.team_call("Washington under 34.5.", cities)
+        self.assertEqual(code, "WAS")
+        self.assertTrue(ok(34) and not ok(35))
+        self.assertIsNone(lt.team_call("Jokić wins the 2026–27 MVP", cities))
+        self.assertAlmostEqual(lt.spearman([(1, 1), (2, 2), (3, 3)]), 1.0)
+        self.assertAlmostEqual(lt.spearman([(1, 3), (2, 2), (3, 1)]), -1.0)
+
+    def test_next_monday(self):
+        import datetime
+        import ledger_tracker as lt
+        ET = lt.ET
+        self.assertEqual(lt.next_monday(datetime.datetime(2026, 10, 21, 12, tzinfo=ET)), datetime.date(2026, 10, 26))
+        self.assertEqual(lt.next_monday(datetime.datetime(2026, 10, 26, 7, tzinfo=ET)), datetime.date(2026, 10, 26))
+        self.assertEqual(lt.next_monday(datetime.datetime(2026, 10, 26, 9, tzinfo=ET)), datetime.date(2026, 11, 2))
+
+    def test_schedule_picks_up_tracker_kits_on_mondays_9am(self):
+        import make_schedule as ms
+        for day, hm, platforms, kit_id, series in ms.tracker_rows():
+            self.assertEqual(series, "tracker")
+            self.assertEqual(hm, "09:00")
+            import datetime
+            self.assertEqual(datetime.date.fromisoformat(day).weekday(), 0, f"{kit_id} is not a Monday")
 
 
 if __name__ == "__main__":

@@ -202,6 +202,8 @@ async function loadImages(env, images) {
 // marked "skip": true is cancelled. Rows only simulated in dry run (or skipped because the platform
 // wasn't connected) are re-armed once the platform is live, unless their time is more than
 // REARM_WINDOW_MS in the past, so going live never dumps a backlog of old posts at once.
+// A row carries "v", a hash of its kit: when the kit is re-rendered (the weekly tracker gets fresh
+// numbers), the queued post that hasn't gone out yet is refreshed from the new kit.
 export const REARM_WINDOW_MS = 2 * 3600 * 1000;
 
 export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTERS, schedule = null } = {}) {
@@ -221,10 +223,10 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
         .bind(row.kit, row.platform).run();
       continue;
     }
-    const exists = await env.DB.prepare("SELECT id FROM social_queue WHERE kit_id = ? AND platform = ?").bind(row.kit, row.platform).first();
+    const exists = await env.DB.prepare("SELECT id, status, payload FROM social_queue WHERE kit_id = ? AND platform = ?").bind(row.kit, row.platform).first();
     if (!exists) {
       const kit = await assetJson(env, `/social/kits/${row.kit}/kit.json`);
-      const p = payloadsFromKit(row.kit, kit)[row.platform];
+      const p = { ...payloadsFromKit(row.kit, kit)[row.platform], v: row.v || null };
       const r = await env.DB.prepare(
         "INSERT OR IGNORE INTO social_queue (kit_id, platform, payload, scheduled_at, status, created_at, approved_at) VALUES (?, ?, ?, ?, 'approved', ?, ?)"
       ).bind(row.kit, row.platform, JSON.stringify(p), at, iso(nowMs), iso(nowMs)).run();
@@ -232,6 +234,11 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
       continue;
     }
     await env.DB.prepare("UPDATE social_queue SET scheduled_at = ? WHERE id = ? AND status IN ('draft', 'approved')").bind(at, exists.id).run();
+    if (row.v && ["draft", "approved"].includes(exists.status) && JSON.parse(exists.payload).v !== row.v) {
+      const kit = await assetJson(env, `/social/kits/${row.kit}/kit.json`);
+      const p = { ...payloadsFromKit(row.kit, kit)[row.platform], v: row.v };
+      await env.DB.prepare("UPDATE social_queue SET payload = ? WHERE id = ? AND status IN ('draft', 'approved')").bind(JSON.stringify(p), exists.id).run();
+    }
     if (isLive(env, row.platform, adapters) && Date.parse(at) >= nowMs - REARM_WINDOW_MS) {
       await env.DB.prepare("UPDATE social_queue SET status = 'approved', scheduled_at = ?, posted_at = NULL, error = NULL WHERE id = ? AND status IN ('simulated', 'skipped')")
         .bind(at, exists.id).run();

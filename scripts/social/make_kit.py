@@ -575,29 +575,40 @@ def all_team_kits(start_date, images=True):
 
 
 def build_ledger_kit(rows, as_of, date, outdir=None, images=True, source_text=""):
-    """rows: [{id, claim, p, status_line}] — status lines come from ledger_tracker.py with their own source."""
+    """rows: [{id, claim, p, status_line, later}] — status lines come from ledger_tracker.py with their own source.
+
+    Calls tracked week by week get a line each, misses included. Calls that can only be graded on a
+    fixed date (`later`) are grouped by that date so the thread stays short but still names every call.
+    """
     url = SITE_URL + "/ledger/"
-    head = f"Is the model winning? Our open calls, as of {as_of}:"
-    lines = [f"{r['id']} · {r['p']}% · {r['claim']}: {r['status_line']}" for r in rows]
-    posts, cur = [], head
+    live = [r for r in rows if not r.get("later")]
+    later = [r for r in rows if r.get("later")]
+    head = f"Is the model winning? Where our {len(rows)} open calls stand, as of {as_of}:"
+    lines = [f"{r['id']} · {r['p']}% · {r['claim']}: {r['status_line']}" for r in live]
+    for when in dict.fromkeys(r["status_line"] for r in later):
+        group = [r for r in later if r["status_line"] == when]
+        for i in range(0, len(group), 4):
+            chunk = group[i:i + 4]
+            lines.append(f"{when[0].upper()}{when[1:]}: " + "; ".join(f"{r['id']} · {r['p']}% · {r['claim']}" for r in chunk))
+    tail = f"Every call was registered before tip-off and is graded in public, misses included.\n{url}"
+    posts = pack_posts(head, lines, tail)
+    threads = head
     for ln in lines:
-        if x_len(cur + "\n\n" + ln) > LIMITS["x"]:
-            posts.append(cur)
-            cur = ln
-        else:
-            cur = cur + "\n\n" + ln
-    posts.append(cur)
-    posts.append(f"Every call was registered before tip-off. Grades are final in April and July 2027.\n{url}")
+        if len(threads + "\n" + ln + f"\n\n{url}") > LIMITS["threads"]:
+            break
+        threads += ("\n\n" if threads == head else "\n") + ln
+    threads += f"\n\n{url}"
     ig = head + "\n\n" + "\n\n".join(lines) + "\n\nLink in bio.\n\n#NBA"
+    while len(ig) > LIMITS["instagram"] and lines:
+        lines = lines[:-1]
+        ig = head + "\n\n" + "\n\n".join(lines) + "\n\nLink in bio.\n\n#NBA"
     kit = {"kind": "ledger", "slug": "tracker", "date": date, "url": url, "title": "Is the model winning?",
-           "x_thread": posts, "bluesky_thread": posts, "threads": (head + "\n\n" + "\n".join(lines))[:470] + f"\n{url}",
+           "x_thread": posts, "bluesky_thread": posts, "threads": threads,
            "instagram_caption": ig, "reddit": None,
            "images": {"card": "card-1200x675.png", "carousel": ["ig-1080x1350-1.png"]},
-           "alt": {"card-1200x675.png": "Forecast Ledger tracker: " + "; ".join(lines),
-                   "ig-1080x1350-1.png": "Open forecasts as probability bars with where each stands so far."}}
-    if len(kit["threads"]) > LIMITS["threads"]:
-        kit["threads"] = head + f"\n{url}"
-    guard(posts + [ig], source_text)
+           "alt": {"card-1200x675.png": f"Forecast Ledger tracker, as of {as_of}: {len(rows)} open calls, tracked against this season's numbers.",
+                   "ig-1080x1350-1.png": "Open forecasts as probability bars: " + "; ".join(f"{r['claim']}, {r['p']}%" for r in live[:6]) + "."}}
+    guard(posts + [threads, ig] + list(kit["alt"].values()), source_text + f" {len(rows)}")
     check_limits(kit)
     if outdir is None:
         outdir = os.path.join(ROOT, "social", "kits", f"{date}-ledger-tracker")
@@ -607,7 +618,7 @@ def build_ledger_kit(rows, as_of, date, outdir=None, images=True, source_text=""
                   "Is the model winning?", f"{len(rows)} open calls, tracked against this season's numbers.",
                   "THE LEDGER", "THEGRAVITYREPORT.COM/LEDGER")
         ig_bars(os.path.join(outdir, "ig-1080x1350-1.png"), "Is the model winning?",
-                [(f"{r['id']}: {r['claim']}", r["p"]) for r in rows[:6]], "1/1", f"As of {as_of}.")
+                [(f"{r['id']}: {r['claim']}", r["p"]) for r in (live or rows)[:6]], "1/1", f"As of {as_of}.")
     return kit, outdir
 
 

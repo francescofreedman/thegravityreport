@@ -33,6 +33,10 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Sun Oct 25, 6:00 PM | Bluesky | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
 | Sun Oct 25, 6:00 PM | Threads | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
 | Sun Oct 25, 6:00 PM | Instagram | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
+| Mon Oct 26, 9:00 AM | X | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 21, 2026:  K3 · 30% · Kawhi… |
+| Mon Oct 26, 9:00 AM | Bluesky | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 21, 2026:  K3 · 30% · Kawhi… |
+| Mon Oct 26, 9:00 AM | Threads | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 21, 2026:  K3 · 30% · Kawhi… |
+| Mon Oct 26, 9:00 AM | Instagram | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 21, 2026:  K3 · 30% · Kawhi… |
 | Mon Oct 26, 12:00 PM | X | Chasing Seven | The season is underway. On October 17, before tip-off, we put three calls on Nikola Jokić'… |
 | Mon Oct 26, 12:00 PM | Bluesky | Chasing Seven | The season is underway. On October 17, before tip-off, we put three calls on Nikola Jokić'… |
 | Mon Oct 26, 12:00 PM | Threads | Chasing Seven | The season is underway. On October 17, before tip-off, we put three calls on Nikola Jokić'… |
@@ -166,4 +170,5 @@ Series that come from schedule.json are also removed by editing `scripts/social/
 | Series | When | Comes from | Turn it off |
 |---|---|---|---|
 | Player of the day | Daily, 10 AM ET (picked each morning from last night's box scores) | Worker, automatic (social/potd.js) | `potd_on = 0` in social_settings (admin page toggle) |
-| The 644 on your team | Daily, 6 PM ET, one team a day for 30 days from Fri Oct 24, 2026 (TORQUE order) | schedule.json (kits `<date>-team-<code>`, make_kit.py team all) | `series_team644 = 0` in social_settings, or TEAM644_START = None in make_schedule.py |
+| The 644 on your team | Daily, 6 PM ET, one team a day for 30 days from Sat Oct 24, 2026 (TORQUE order) | schedule.json (kits `<date>-team-<code>`, make_kit.py team all) | `series_team644 = 0` in social_settings, or TEAM644_START = None in make_schedule.py |
+| Is the model winning? | Mondays, 9 AM ET, from Mon Oct 26, 2026 (each week's kit is written Sunday night / Monday morning) | schedule.json (kit `<monday>-ledger-tracker`, written weekly by `python3 scripts/social/ledger_tracker.py --schedule`, then commit + push; Basketball Reference can't be fetched from the Worker) | `series_tracker = 0` in social_settings, or TRACKER_ON = False in make_schedule.py |

@@ -15,6 +15,7 @@ Beating the projection, Best games of the week, Who's higher?) never appear in s
 are listed in SERIES below so SCHEDULE.md documents all of them in one place.
 """
 import datetime
+import hashlib
 import json
 import os
 import sys
@@ -66,19 +67,40 @@ def team644_rows():
     return rows
 
 
+# "Is the model winning?": Mondays 9 AM ET. scripts/social/ledger_tracker.py --schedule writes the kit
+# `<monday>-ledger-tracker`; every such kit is picked up here. Set TRACKER_ON = False to stop the series.
+TRACKER_ON = True
+TRACKER_TIME = "09:00"
+
+
+def tracker_rows():
+    if not TRACKER_ON:
+        return []
+    kits = os.path.join(ROOT, "social", "kits")
+    rows = []
+    for d in sorted(os.listdir(kits)):
+        if d.endswith("-ledger-tracker") and os.path.exists(os.path.join(kits, d, "kit.json")):
+            rows.append((d[:10], TRACKER_TIME, ALL, d, "tracker"))
+    return rows
+
+
 # Every recurring series, for the "Recurring series" section of SCHEDULE.md.
 # (name, when, source, how to turn it off)
 SERIES = [
     ("Player of the day", "Daily, 10 AM ET (picked each morning from last night's box scores)",
      "Worker, automatic (social/potd.js)", "`potd_on = 0` in social_settings (admin page toggle)"),
-    ("The 644 on your team", "Daily, 6 PM ET, one team a day for 30 days from Fri Oct 24, 2026 (TORQUE order)",
+    ("The 644 on your team", "Daily, 6 PM ET, one team a day for 30 days from Sat Oct 24, 2026 (TORQUE order)",
      "schedule.json (kits `<date>-team-<code>`, make_kit.py team all)",
      "`series_team644 = 0` in social_settings, or TEAM644_START = None in make_schedule.py"),
+    ("Is the model winning?", "Mondays, 9 AM ET, from Mon Oct 26, 2026 (each week's kit is written Sunday night / Monday morning)",
+     "schedule.json (kit `<monday>-ledger-tracker`, written weekly by `python3 scripts/social/ledger_tracker.py --schedule`, "
+     "then commit + push; Basketball Reference can't be fetched from the Worker)",
+     "`series_tracker = 0` in social_settings, or TRACKER_ON = False in make_schedule.py"),
 ]
 
 
 def plan_rows():
-    return list(PLAN) + team644_rows()
+    return list(PLAN) + team644_rows() + tracker_rows()
 
 
 def main():
@@ -91,15 +113,17 @@ def main():
         kit_path = os.path.join(ROOT, "social", "kits", kit_id, "kit.json")
         if not os.path.exists(kit_path):
             sys.exit(f"missing kit: {kit_id}")
-        kit = json.load(open(kit_path, encoding="utf-8"))
+        raw = open(kit_path, "rb").read()
+        kit = json.loads(raw)
         mk.check_limits(kit)
+        version = hashlib.sha1(raw).hexdigest()[:10]  # a re-rendered kit (new numbers) refreshes its queued post
         local = datetime.datetime.fromisoformat(f"{day}T{hm}").replace(tzinfo=ET)
         at = local.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         first = (kit.get("x_thread") or [kit.get("threads", "")])[0].replace("|", "/").replace("\n", " ")
         for p in platforms:
             if p not in PLATFORMS:
                 sys.exit(f"unknown platform: {p}")
-            row = {"at": at, "platform": p, "kit": kit_id}
+            row = {"at": at, "platform": p, "kit": kit_id, "v": version}
             if series:
                 row["series"] = series
             rows.append(row)
