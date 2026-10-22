@@ -39,17 +39,25 @@ export async function uploadImage(env, f, bytes) {
 }
 
 /**
- * payload: {posts: [text...], images: [{bytes, alt}] (first post only)}
+ * payload: {posts: [text...], images: [{bytes, alt}] (first post only),
+ *           poll: {options: [2-4 strings <= 25 chars], duration_minutes: 5..10080} (first post only; a poll can't carry media)}
  * returns {remote_id, ids, count}
  */
+export function pollBody(poll) {
+  const options = (poll.options || []).map((o) => String(o).slice(0, 25)).slice(0, 4);
+  if (options.length < 2) throw new Error("a poll needs 2 to 4 options");
+  return { options, duration_minutes: Math.min(10080, Math.max(5, Number(poll.duration_minutes) || 1440)) };
+}
+
 export async function post(env, payload, f = fetch) {
   const ids = [];
   let mediaIds = [];
-  for (const img of payload.images || []) mediaIds.push(await uploadImage(env, f, img.bytes));
+  if (!payload.poll) for (const img of payload.images || []) mediaIds.push(await uploadImage(env, f, img.bytes));
   mediaIds = mediaIds.slice(0, 4);
   for (let i = 0; i < payload.posts.length; i++) {
     const body = { text: payload.posts[i] };
-    if (i === 0 && mediaIds.length) body.media = { media_ids: mediaIds };
+    if (i === 0 && payload.poll) body.poll = pollBody(payload.poll);
+    else if (i === 0 && mediaIds.length) body.media = { media_ids: mediaIds };
     if (ids.length) body.reply = { in_reply_to_tweet_id: ids[ids.length - 1] };
     const d = await call(env, f, `${API}/tweets`, body);
     ids.push(d.data.id);

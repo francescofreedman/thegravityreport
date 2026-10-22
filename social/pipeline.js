@@ -392,6 +392,7 @@ export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTER
   try { report.potd = await maybeQueuePotd(env, nowMs, { fetchImpl, schedule: sched }); } catch (e) { await log(env, nowMs, null, null, "potd_error", 0, e.message); }
   try { report.pace = await maybeQueuePace(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "pace_error", 0, e.message); }
   try { report.best = await maybeQueueBest(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "best_error", 0, e.message); }
+  try { report.poll = await maybeQueuePoll(env, nowMs); } catch (e) { await log(env, nowMs, null, null, "poll_error", 0, e.message); }
   const { results } = await env.DB.prepare(
     "SELECT * FROM social_queue WHERE status = 'approved' AND scheduled_at IS NOT NULL AND scheduled_at <= ? ORDER BY scheduled_at, id LIMIT 10"
   ).bind(iso(nowMs)).all();

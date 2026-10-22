@@ -511,6 +511,51 @@ test("best games of the week: Fridays 1 PM ET, last Friday through Thursday, top
   assert.ok(!Object.keys(settings).some((k) => k.startsWith("lines_")), "cached lines never show up as settings");
 });
 
+test("who's higher: Saturdays 11 AM ET with an X poll, answer queued for Sunday 11 AM, pairs rotate by week", async () => {
+  const players = JSON.parse(readFileSync(join(ROOT, "content/the644.json"), "utf8")).players;
+  const pairs = new Set();
+  for (let w = 1; w <= 50; w++) {
+    const [a, b] = S.pollPair(players, w);
+    assert.equal(Math.abs(a.r - b.r), 1, "adjacent ranks");
+    assert.ok(Math.max(a.r, b.r) <= 100);
+    pairs.add(Math.min(a.r, b.r));
+  }
+  assert.equal(pairs.size, 50, "fifty weeks, fifty different pairs");
+  assert.ok(players.slice(0, 100).every((p) => S.pollOption(p).length <= 25));
+  const e = env({ SOCIAL_SERIES: "1" });
+  await P.ensureSocialSchema(e);
+  const fri = Date.parse("2026-10-30T15:00:00Z");
+  assert.equal(await P.maybeQueuePoll(e, fri), null, "not a Saturday");
+  const sat = Date.parse("2026-10-31T14:00:00Z"); // 10 AM ET
+  assert.equal(await P.maybeQueuePoll(e, sat), "poll-2026-10-31");
+  assert.equal(await P.maybeQueuePoll(e, sat + 60e3), null, "once a week");
+  const rows = (await e.DB.prepare("SELECT kit_id, platform, status, scheduled_at, payload FROM social_queue ORDER BY kit_id, platform").all()).results;
+  assert.equal(rows.length, 8);
+  const q = rows.filter((r) => r.kit_id === "poll-2026-10-31"), a = rows.filter((r) => r.kit_id === "poll-2026-10-31-answer");
+  assert.ok(q.every((r) => r.status === "approved" && r.scheduled_at === "2026-10-31T15:00:00.000Z"), "11 AM EDT");
+  assert.ok(a.every((r) => r.status === "approved" && r.scheduled_at === "2026-11-01T16:00:00.000Z"), "Sunday 11 AM EST (clocks went back)");
+  const x = JSON.parse(q.find((r) => r.platform === "x").payload);
+  assert.equal(x.poll.options.length, 2);
+  assert.equal(x.poll.duration_minutes, 1440);
+  assert.match(x.posts[0], /^Who's higher in The 644, our ranking of every NBA player\? Answer tomorrow at 11 AM ET\./);
+  assert.ok(!/#\d/.test(x.posts[0]), "the question never shows a rank");
+  const b = JSON.parse(q.find((r) => r.platform === "bluesky").payload);
+  assert.match(b.posts[0], /Reply with your pick/);
+  assert.equal(b.poll, undefined);
+  const ans = JSON.parse(a.find((r) => r.platform === "x").payload);
+  assert.match(ans.posts[0], /^Who's higher\? The answer: .+, #\d+ of 644 in The 644, GRAVITY score \d+\.\d \(50 is a league-average minute\)\. .+ is #\d+, GRAVITY score \d+\.\d\./);
+  assert.ok(ans.images[0].path.startsWith("/players/"), "the answer carries the winner's card");
+  for (const r of rows) assert.ok(JSON.parse(r.payload).kind === "poll");
+  // the X adapter sends the poll and never attaches media to it
+  const seen = [];
+  const f = async (url, init) => { seen.push(JSON.parse(init.body)); return new Response(JSON.stringify({ data: { id: "t1" } })); };
+  const xe = { X_API_KEY: "k", X_API_SECRET: "s", X_ACCESS_TOKEN: "t", X_ACCESS_SECRET: "ts" };
+  await xad.post(xe, { ...x, images: [{ bytes: new Uint8Array([1]), alt: "" }] }, f);
+  assert.deepEqual(seen[0].poll, { options: x.poll.options, duration_minutes: 1440 });
+  assert.equal(seen[0].media, undefined);
+  assert.equal(seen.length, 1, "no media upload call for a poll");
+});
+
 test("player of the day shares the day's cached lines with the Friday round-up", async () => {
   const e = env({ SOCIAL_POTD: "1" });
   await P.ensureSocialSchema(e);

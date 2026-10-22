@@ -102,6 +102,9 @@ SERIES = [
     ("Best games of the week", "Fridays, 1 PM ET (last Friday through Thursday)",
      "Worker, automatic (social/series.js: top 5 Game Scores among players in The 644 from ESPN box scores, cached per day; "
      "Instagram uses /cards/the644.png)", "`series_best = 0` in social_settings"),
+    ("Who's higher?", "Saturdays, 11 AM ET; the answer Sundays, 11 AM ET",
+     "Worker, automatic (social/series.js: two adjacent ranks in the top 100 of The 644, rotating by week; an X poll, "
+     "'reply with your pick' elsewhere; the answer post names both ranks and scores)", "`series_poll = 0` in social_settings"),
 ]
 
 
