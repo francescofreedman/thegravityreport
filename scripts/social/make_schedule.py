@@ -24,13 +24,29 @@ ET = ZoneInfo("America/New_York")
 PLATFORMS = ["x", "bluesky", "threads", "instagram"]
 NAMES = {"x": "X", "bluesky": "Bluesky", "threads": "Threads", "instagram": "Instagram"}
 
-# (date, time ET, platforms, kit id). One post a weekday, noon Eastern.
+# (date, time ET, platforms, kit id).
+# Deep Dives: one a weekday at noon. Player of the day: The 644 from #1 down, every day at 6 PM.
+ALL = ["x", "bluesky", "threads", "instagram"]
 PLAN = [
-    ("2026-10-22", "12:00", ["bluesky"], "2026-10-20-article-kawhi"),
-    ("2026-10-23", "12:00", ["bluesky"], "2026-10-20-article-duren"),
-    ("2026-10-26", "12:00", ["bluesky"], "2026-10-20-article-jokic"),
-    ("2026-10-27", "12:00", ["bluesky"], "2026-10-20-article-queta"),
-    ("2026-10-28", "12:00", ["bluesky"], "2026-10-20-article-morant"),
+    ("2026-10-22", "12:00", ALL, "2026-10-20-article-kawhi"),
+    ("2026-10-23", "12:00", ALL, "2026-10-20-article-duren"),
+    ("2026-10-26", "12:00", ALL, "2026-10-20-article-jokic"),
+    ("2026-10-27", "12:00", ALL, "2026-10-20-article-queta"),
+    ("2026-10-28", "12:00", ALL, "2026-10-20-article-morant"),
+    ("2026-10-22", "18:00", ALL, "2026-10-22-player-nikola-jokic"),
+    ("2026-10-23", "18:00", ALL, "2026-10-23-player-shai-gilgeous-alexander"),
+    ("2026-10-24", "18:00", ALL, "2026-10-24-player-victor-wembanyama"),
+    ("2026-10-25", "18:00", ALL, "2026-10-25-player-giannis-antetokounmpo"),
+    ("2026-10-26", "18:00", ALL, "2026-10-26-player-luka-doncic"),
+    ("2026-10-27", "18:00", ALL, "2026-10-27-player-kawhi-leonard"),
+    ("2026-10-28", "18:00", ALL, "2026-10-28-player-cade-cunningham"),
+    ("2026-10-29", "18:00", ALL, "2026-10-29-player-karl-anthony-towns"),
+    ("2026-10-30", "18:00", ALL, "2026-10-30-player-donovan-mitchell"),
+    ("2026-10-31", "18:00", ALL, "2026-10-31-player-tyrese-maxey"),
+    ("2026-11-01", "18:00", ALL, "2026-11-01-player-lamelo-ball"),
+    ("2026-11-02", "18:00", ALL, "2026-11-02-player-chet-holmgren"),
+    ("2026-11-03", "18:00", ALL, "2026-11-03-player-stephen-curry"),
+    ("2026-11-04", "18:00", ALL, "2026-11-04-player-jalen-duren"),
 ]
 
 

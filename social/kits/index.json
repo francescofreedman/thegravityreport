@@ -1,6 +1,90 @@
 {
  "kits": [
   {
+   "id": "2026-11-04-player-jalen-duren",
+   "kind": "player",
+   "title": "Jalen Duren",
+   "date": "2026-11-04"
+  },
+  {
+   "id": "2026-11-03-player-stephen-curry",
+   "kind": "player",
+   "title": "Stephen Curry",
+   "date": "2026-11-03"
+  },
+  {
+   "id": "2026-11-02-player-chet-holmgren",
+   "kind": "player",
+   "title": "Chet Holmgren",
+   "date": "2026-11-02"
+  },
+  {
+   "id": "2026-11-01-player-lamelo-ball",
+   "kind": "player",
+   "title": "LaMelo Ball",
+   "date": "2026-11-01"
+  },
+  {
+   "id": "2026-10-31-player-tyrese-maxey",
+   "kind": "player",
+   "title": "Tyrese Maxey",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "2026-10-30-player-donovan-mitchell",
+   "kind": "player",
+   "title": "Donovan Mitchell",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "2026-10-29-player-karl-anthony-towns",
+   "kind": "player",
+   "title": "Karl-Anthony Towns",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "2026-10-28-player-cade-cunningham",
+   "kind": "player",
+   "title": "Cade Cunningham",
+   "date": "2026-10-28"
+  },
+  {
+   "id": "2026-10-27-player-kawhi-leonard",
+   "kind": "player",
+   "title": "Kawhi Leonard",
+   "date": "2026-10-27"
+  },
+  {
+   "id": "2026-10-26-player-luka-doncic",
+   "kind": "player",
+   "title": "Luka Dončić",
+   "date": "2026-10-26"
+  },
+  {
+   "id": "2026-10-25-player-giannis-antetokounmpo",
+   "kind": "player",
+   "title": "Giannis Antetokounmpo",
+   "date": "2026-10-25"
+  },
+  {
+   "id": "2026-10-24-player-victor-wembanyama",
+   "kind": "player",
+   "title": "Victor Wembanyama",
+   "date": "2026-10-24"
+  },
+  {
+   "id": "2026-10-23-player-shai-gilgeous-alexander",
+   "kind": "player",
+   "title": "Shai Gilgeous-Alexander",
+   "date": "2026-10-23"
+  },
+  {
+   "id": "2026-10-22-player-nikola-jokic",
+   "kind": "player",
+   "title": "Nikola Jokić",
+   "date": "2026-10-22"
+  },
+  {
    "id": "2026-10-20-article-queta",
    "kind": "article",
    "title": "The Queta Problem",
