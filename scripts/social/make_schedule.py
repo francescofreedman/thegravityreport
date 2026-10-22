@@ -126,6 +126,9 @@ SERIES = [
     ("From the archive", "Sundays, 12 PM ET, one Deep Dive a week from Sun Nov 1, 2026 (Deep Dive order)",
      "schedule.json (kits `<sunday>-article-<slug>`, make_kit.py article all --date 2026-11-01: tracking frame, angle 2)",
      "`series_archive = 0` in social_settings, or ARCHIVE_START = None in make_schedule.py"),
+    ("Metrics panel (not a post)", "Weekly, first cron tick of each ISO week",
+     "Worker, automatic (social/metrics.js: Bluesky followers from the public API, Threads/Instagram only with tokens, X left blank; "
+     "posts sent that week from social_log; shown at the top of /admin/schedule/ when unlocked)", "`series_metrics = 0` in social_settings"),
 ]
 
 

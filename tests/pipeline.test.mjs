@@ -556,6 +556,49 @@ test("who's higher: Saturdays 11 AM ET with an X poll, answer queued for Sunday 
   assert.equal(seen.length, 1, "no media upload call for a poll");
 });
 
+test("metrics: once a week, Bluesky from the public API, X null, Threads/Instagram only with tokens, posts sent from the log", async () => {
+  const { followers } = await import("../social/metrics.js");
+  const calls = [];
+  const f = async (url) => {
+    calls.push(String(url));
+    const u = String(url);
+    if (u.startsWith("https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=thegravityreport.bsky.social")) {
+      return new Response(JSON.stringify({ handle: "thegravityreport.bsky.social", followersCount: 12, followsCount: 2, postsCount: 0 }));
+    }
+    if (u.includes("graph.instagram.com")) return new Response(JSON.stringify({ followers_count: 7, id: "2" }));
+    if (u.includes("threads_insights")) return new Response(JSON.stringify({ data: [{ name: "followers_count", total_value: { value: 3 } }] }));
+    return new Response("nf", { status: 404 });
+  };
+  assert.deepEqual(await followers({}, "x", f), { followers: null, skipped: "no free follower endpoint on X's pay-per-use plan" });
+  assert.deepEqual(await followers({}, "threads", f), { followers: null, skipped: "Threads not connected" });
+  assert.equal((await followers({ THREADS_USER_ID: "1", THREADS_ACCESS_TOKEN: "t" }, "threads", f)).followers, 3);
+  assert.equal((await followers({ IG_USER_ID: "2", IG_ACCESS_TOKEN: "t" }, "instagram", f)).followers, 7);
+  const e = env({ SOCIAL_SERIES: "1", SOCIAL_DRY_RUN: "0", ...BSKY_LIVE, BSKY_HANDLE: "thegravityreport.bsky.social" });
+  await P.ensureSocialSchema(e);
+  // two Bluesky posts went out this week, one a month ago
+  await e.DB.prepare("INSERT INTO social_log (ts, platform, queue_id, action, count) VALUES ('2026-10-20T15:00:00.000Z', 'bluesky', 1, 'posted', 2)").run();
+  await e.DB.prepare("INSERT INTO social_log (ts, platform, queue_id, action, count) VALUES ('2026-09-20T15:00:00.000Z', 'bluesky', 2, 'posted', 1)").run();
+  const r = await P.maybeCollectMetrics(e, T0, { fetchImpl: f });
+  assert.equal(r.week, "2026-W43");
+  assert.equal(await P.maybeCollectMetrics(e, T0 + 86400000, { fetchImpl: f }), null, "once a week");
+  assert.equal(calls.filter((u) => u.includes("bsky")).length, 1, "no token needed, one public call");
+  assert.ok(!calls.some((u) => u.includes("api.x.com")), "X is never called");
+  const weeks = await P.metricsView(e);
+  assert.equal(weeks.length, 1);
+  assert.deepEqual(weeks[0].platforms.bluesky, { followers: 12, posts_sent_week: 2, clicks: null });
+  assert.deepEqual(weeks[0].platforms.x, { followers: null, posts_sent_week: 0, clicks: null });
+  assert.equal(weeks[0].platforms.instagram.followers, null, "no token: skipped, not invented");
+  // the admin API serves it
+  e.ADMIN_KEY = "k-k-k-k-k-k";
+  const res = await handleAdmin(new Request("https://t/api/admin/metrics", { headers: { "x-admin-key": "k-k-k-k-k-k" } }), e);
+  assert.equal((await res.json()).weeks[0].platforms.bluesky.followers, 12);
+  // off switch
+  const e2 = env({ SOCIAL_SERIES: "1" });
+  await P.ensureSocialSchema(e2);
+  await P.setSetting(e2, "series_metrics", "0");
+  assert.equal(await P.maybeCollectMetrics(e2, T0, { fetchImpl: f }), null);
+});
+
 test("player of the day shares the day's cached lines with the Friday round-up", async () => {
   const e = env({ SOCIAL_POTD: "1" });
   await P.ensureSocialSchema(e);

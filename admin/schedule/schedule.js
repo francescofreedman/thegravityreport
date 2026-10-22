@@ -152,8 +152,34 @@
       k.instagram_caption = k.instagram_caption || ''; k.images.carousel = k.images.carousel || []; });
   }
 
+  // weekly follower counts (+ posts sent that week) per platform, last 8 weeks, newest first
+  function renderMetrics(weeks){
+    var box = $('metrics'); box.innerHTML = '';
+    if (!weeks || !weeks.length) return;
+    var wrap = el('div', { cls: 'metrics' }, [el('h2', { text: 'Followers · posts sent that week' })]);
+    var head = el('tr', {}, [el('th', { text: 'Week of' })].concat(Object.keys(NAMES).map(function(p){ return el('th', { text: NAMES[p] }); })));
+    var tb = el('tbody', {}, [head]);
+    weeks.forEach(function(w){
+      var d = new Date(w.ts);
+      var cells = [el('td', { text: d.toLocaleDateString('en-US', Object.assign({ month: 'short', day: 'numeric' }, ET)) })];
+      Object.keys(NAMES).forEach(function(p){
+        var m = w.platforms[p];
+        cells.push(el('td', {}, m ? [m.followers == null ? '—' : String(m.followers), el('span', { cls: 'sub', text: ' · ' + m.posts_sent_week })] : ['']));
+      });
+      tb.appendChild(el('tr', {}, cells));
+    });
+    wrap.appendChild(el('table', {}, [tb]));
+    box.appendChild(wrap);
+  }
+
+  function loadMetrics(){
+    if (!KEY){ $('metrics').innerHTML = ''; return; }
+    api('metrics').then(function(m){ renderMetrics(m.weeks); }).catch(function(){ $('metrics').innerHTML = ''; });
+  }
+
   function loadQueue(){
-    if (!KEY){ QUEUE = null; render(); return Promise.resolve(); }
+    if (!KEY){ QUEUE = null; $('metrics').innerHTML = ''; render(); return Promise.resolve(); }
+    loadMetrics();
     return api('queue').then(function(q){
       QUEUE = q; addQueueOnly(q);
       var live = Object.keys(q.platforms).filter(function(p){ return q.platforms[p].live; }).map(function(p){ return NAMES[p]; });
@@ -174,7 +200,7 @@
   }).then(loadQueue).catch(function(e){ $('days').innerHTML = ''; msg('Could not load the schedule: ' + e.message); });
 
   $('keyform').addEventListener('submit', function(e){ e.preventDefault(); KEY = $('key').value.trim(); try { sessionStorage.setItem('gr_admin', KEY); } catch(x){} loadQueue(); });
-  $('lock').addEventListener('click', function(){ KEY = ''; try { sessionStorage.removeItem('gr_admin'); } catch(x){} QUEUE = null; $('status').innerHTML = ''; msg('Locked.'); render(); });
+  $('lock').addEventListener('click', function(){ KEY = ''; try { sessionStorage.removeItem('gr_admin'); } catch(x){} QUEUE = null; $('status').innerHTML = ''; $('metrics').innerHTML = ''; msg('Locked.'); render(); });
   Array.prototype.forEach.call(document.querySelectorAll('#filters button'), function(b){
     b.addEventListener('click', function(){
       FILTER = b.getAttribute('data-f');

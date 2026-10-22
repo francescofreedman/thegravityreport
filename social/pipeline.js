@@ -9,6 +9,7 @@ import * as bluesky from "./adapters/bluesky.js";
 import { threads, instagram } from "./adapters/meta.js";
 import { etParts, etToUtcMs, prevDate, normName, gameScore, pickBest, potdKitFromPerformance, fetchLastNight, POTD_HOUR_ET } from "./potd.js";
 import { STANDINGS_URL, weekday, addDays, isoWeek, parseStandings, paceTable, paceKit, bestKit, pollPair, pollKits } from "./series.js";
+import { followers } from "./metrics.js";
 
 export const ADAPTERS = { x, bluesky, threads, instagram };
 export const PLATFORMS = ["x", "bluesky", "threads", "instagram"];
@@ -278,6 +279,44 @@ export async function maybeQueuePoll(env, nowMs) {
   return kitId;
 }
 
+// ------------------------------------------------------------------ metrics (weekly, first cron tick of each ISO week)
+
+export async function maybeCollectMetrics(env, nowMs, { fetchImpl = fetch } = {}) {
+  if (env.SOCIAL_SERIES === "0") return null;
+  const s = await getSettings(env);
+  if (seriesOff(s, "metrics")) return null;
+  const week = isoWeek(iso(nowMs).slice(0, 10));
+  const key = `metrics_week_${week}`;
+  if (await env.DB.prepare("SELECT value FROM social_settings WHERE key = ?").bind(key).first()) return null;
+  await env.DB.prepare("INSERT OR REPLACE INTO social_settings (key, value) VALUES (?, ?)").bind(key, iso(nowMs)).run();
+  const since = iso(nowMs - 7 * 86400000);
+  const out = [];
+  for (const pl of PLATFORMS) {
+    let f = { followers: null, skipped: null };
+    try { f = await followers(env, pl, fetchImpl); } catch (e) { await log(env, nowMs, pl, null, "metrics_error", 0, e.message); }
+    if (f.skipped) await log(env, nowMs, pl, null, "metrics_skipped", 0, f.skipped);
+    const sent = await env.DB.prepare("SELECT COALESCE(SUM(count), 0) AS n FROM social_log WHERE platform = ? AND action = 'posted' AND ts >= ?")
+      .bind(pl, since).first();
+    await env.DB.prepare("INSERT INTO social_metrics (ts, platform, followers, posts_sent_week, clicks) VALUES (?, ?, ?, ?, NULL)")
+      .bind(iso(nowMs), pl, f.followers, Number((sent && sent.n) || 0)).run();
+    out.push({ platform: pl, followers: f.followers, posts_sent_week: Number((sent && sent.n) || 0) });
+  }
+  return { week, rows: out };
+}
+
+// the last `weeks` collections, newest first: [{ts, platforms: {x: {followers, posts_sent_week, clicks}, …}}]
+export async function metricsView(env, weeks = 8) {
+  const { results } = await env.DB.prepare(
+    "SELECT ts, platform, followers, posts_sent_week, clicks FROM social_metrics ORDER BY ts DESC, id DESC LIMIT ?"
+  ).bind(weeks * PLATFORMS.length).all();
+  const byTs = new Map();
+  for (const r of results || []) {
+    if (!byTs.has(r.ts)) byTs.set(r.ts, { ts: r.ts, platforms: {} });
+    byTs.get(r.ts).platforms[r.platform] = { followers: r.followers, posts_sent_week: r.posts_sent_week, clicks: r.clicks };
+  }
+  return Array.from(byTs.values()).slice(0, weeks);
+}
+
 // ------------------------------------------------------------------ posting
 
 export function isLive(env, platform, adapters = ADAPTERS) {
@@ -393,6 +432,7 @@ export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTER
   try { report.pace = await maybeQueuePace(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "pace_error", 0, e.message); }
   try { report.best = await maybeQueueBest(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "best_error", 0, e.message); }
   try { report.poll = await maybeQueuePoll(env, nowMs); } catch (e) { await log(env, nowMs, null, null, "poll_error", 0, e.message); }
+  try { report.metrics = await maybeCollectMetrics(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "metrics_error", 0, e.message); }
   const { results } = await env.DB.prepare(
     "SELECT * FROM social_queue WHERE status = 'approved' AND scheduled_at IS NOT NULL AND scheduled_at <= ? ORDER BY scheduled_at, id LIMIT 10"
   ).bind(iso(nowMs)).all();
