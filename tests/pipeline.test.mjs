@@ -34,6 +34,7 @@ function fakeAssets() {
   return {
     async fetch(req) {
       const path = decodeURIComponent(new URL(req.url).pathname);
+      if (path === "/social/schedule.json") return new Response("nf", { status: 404 }); // schedule tests pass their own
       const file = join(ROOT, path);
       if (!existsSync(file)) return new Response("nf", { status: 404 });
       return new Response(readFileSync(file));
@@ -91,7 +92,7 @@ test("live only when SOCIAL_DRY_RUN=0 AND platform configured", async () => {
   const r = await P.runScheduled(e, T0 + 1000, { adapters });
   const res = Object.fromEntries(r.processed.map((x) => [x.platform, x.result]));
   assert.equal(res.x, "posted");
-  assert.equal(res.bluesky, "simulated");
+  assert.equal(res.bluesky, "skipped", "live but not connected: skipped, never silently consumed");
   assert.equal(calls.length, 1);
   assert.ok(calls[0].payload.images[0].bytes.length > 1000, "card image bytes loaded from assets");
 });
@@ -218,4 +219,69 @@ test("admin API: off without ADMIN_KEY, rejects wrong key, imports + approves wi
   assert.equal(q.rows.length, 4);
   r = await handleAdmin(new Request("https://t/api/admin/import", { method: "POST", headers: H, body: JSON.stringify({ kit_id: "../etc" }) }), e);
   assert.equal(r.status, 400);
+});
+
+
+// ------------------------------------------------------------------ schedule
+
+const BSKY_LIVE = { BSKY_HANDLE: "h", BSKY_APP_PASSWORD: "p" };
+
+test("schedule: rows go in approved at their time, post when due, never twice", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0", ...BSKY_LIVE });
+  await P.ensureSocialSchema(e);
+  const schedule = { posts: [{ at: "2026-10-22T16:00:00Z", platform: "bluesky", kit: KIT }] };
+  const calls = [];
+  const adapters = { ...P.ADAPTERS, bluesky: okAdapter("bluesky", calls) };
+  assert.equal(await P.syncSchedule(e, T0, { adapters, schedule }), 1);
+  assert.equal(await P.syncSchedule(e, T0, { adapters, schedule }), 0, "sync is idempotent");
+  let r = await P.runScheduled(e, Date.parse("2026-10-22T15:59:00Z"), { adapters });
+  assert.equal(calls.length, 0, "not before its time");
+  r = await P.runScheduled(e, Date.parse("2026-10-22T16:00:00Z"), { adapters });
+  assert.equal(calls.length, 1);
+  await P.syncSchedule(e, Date.parse("2026-10-22T16:20:00Z"), { adapters, schedule });
+  await P.runScheduled(e, Date.parse("2026-10-22T16:30:00Z"), { adapters });
+  assert.equal(calls.length, 1, "a posted row is never re-armed");
+});
+
+test("schedule: moving a row's time moves the queued post; skip cancels it", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0", ...BSKY_LIVE });
+  await P.ensureSocialSchema(e);
+  const adapters = { ...P.ADAPTERS, bluesky: okAdapter("bluesky", []) };
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: [{ at: "2026-10-22T16:00:00Z", platform: "bluesky", kit: KIT }] } });
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: [{ at: "2026-10-23T16:00:00Z", platform: "bluesky", kit: KIT }] } });
+  let row = await e.DB.prepare("SELECT scheduled_at, status FROM social_queue").first();
+  assert.equal(row.scheduled_at, "2026-10-23T16:00:00.000Z");
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: [{ at: "2026-10-23T16:00:00Z", platform: "bluesky", kit: KIT, skip: true }] } });
+  row = await e.DB.prepare("SELECT status FROM social_queue").first();
+  assert.equal(row.status, "cancelled");
+});
+
+test("schedule: a dry-run simulation is re-armed when the platform goes live, but stale rows are not", async () => {
+  const dry = env();
+  await P.ensureSocialSchema(dry);
+  const calls = [];
+  const adapters = { ...P.ADAPTERS, bluesky: okAdapter("bluesky", calls) };
+  const schedule = { posts: [
+    { at: "2026-10-21T17:00:00Z", platform: "bluesky", kit: KIT },
+    { at: "2026-10-22T16:00:00Z", platform: "bluesky", kit: "2026-10-20-article-duren" },
+  ] };
+  await P.syncSchedule(dry, T0, { adapters, schedule });
+  await P.runScheduled(dry, Date.parse("2026-10-22T16:00:00Z"), { adapters }); // both simulated
+  assert.equal(calls.length, 0);
+  const live = { ...dry, SOCIAL_DRY_RUN: "0", ...BSKY_LIVE };
+  // going live on the 22nd at 16:30: the Duren row (30 min old) is re-armed, the Kawhi row (day old) is not
+  await P.syncSchedule(live, Date.parse("2026-10-22T16:30:00Z"), { adapters, schedule });
+  await P.runScheduled(live, Date.parse("2026-10-22T16:30:00Z"), { adapters });
+  assert.deepEqual(calls.map((c) => c.payload.posts[0].slice(0, 40)).length, 1);
+  const st = (await live.DB.prepare("SELECT kit_id, status FROM social_queue ORDER BY kit_id").all()).results;
+  assert.deepEqual(st.map((x) => x.status), ["posted", "simulated"]);
+});
+
+test("schedule file: every row names a real kit, a known platform and a valid time", () => {
+  const s = JSON.parse(readFileSync(join(ROOT, "social/schedule.json"), "utf8"));
+  for (const r of s.posts) {
+    assert.ok(P.PLATFORMS.includes(r.platform), r.platform);
+    assert.ok(existsSync(join(ROOT, "social/kits", r.kit, "kit.json")), r.kit);
+    assert.ok(!Number.isNaN(Date.parse(r.at)), r.at);
+  }
 });

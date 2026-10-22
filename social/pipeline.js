@@ -190,9 +190,55 @@ async function loadImages(env, images) {
   return out;
 }
 
+// ------------------------------------------------------------------ schedule
+//
+// social/schedule.json is the plan: "this post goes on this platform at this time". Approving the
+// schedule (committing it) approves every row in it. Each cron tick copies rows into the queue as
+// approved; a row already in the queue is moved to its new time if it hasn't gone out yet. A row
+// marked "skip": true is cancelled. Rows only simulated in dry run (or skipped because the platform
+// wasn't connected) are re-armed once the platform is live, unless their time is more than
+// REARM_WINDOW_MS in the past, so going live never dumps a backlog of old posts at once.
+export const REARM_WINDOW_MS = 2 * 3600 * 1000;
+
+export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTERS, schedule = null } = {}) {
+  if (!schedule) {
+    const res = await env.ASSETS.fetch(new Request(SITE_URL + "/social/schedule.json"));
+    if (res.status === 404) return 0;
+    if (!res.ok) throw new Error(`asset /social/schedule.json: ${res.status}`);
+    schedule = await res.json();
+  }
+  let added = 0;
+  for (const row of schedule.posts || []) {
+    if (!PLATFORMS.includes(row.platform) || !/^[a-z0-9-]+$/.test(row.kit || "")) continue;
+    const at = new Date(row.at).toISOString();
+    if (row.skip) {
+      await env.DB.prepare("UPDATE social_queue SET status = 'cancelled' WHERE kit_id = ? AND platform = ? AND status IN ('draft', 'approved')")
+        .bind(row.kit, row.platform).run();
+      continue;
+    }
+    const exists = await env.DB.prepare("SELECT id FROM social_queue WHERE kit_id = ? AND platform = ?").bind(row.kit, row.platform).first();
+    if (!exists) {
+      const kit = await assetJson(env, `/social/kits/${row.kit}/kit.json`);
+      const p = payloadsFromKit(row.kit, kit)[row.platform];
+      const r = await env.DB.prepare(
+        "INSERT OR IGNORE INTO social_queue (kit_id, platform, payload, scheduled_at, status, created_at, approved_at) VALUES (?, ?, ?, ?, 'approved', ?, ?)"
+      ).bind(row.kit, row.platform, JSON.stringify(p), at, iso(nowMs), iso(nowMs)).run();
+      added += (r.meta && r.meta.changes) || 0;
+      continue;
+    }
+    await env.DB.prepare("UPDATE social_queue SET scheduled_at = ? WHERE id = ? AND status IN ('draft', 'approved')").bind(at, exists.id).run();
+    if (isLive(env, row.platform, adapters) && Date.parse(at) >= nowMs - REARM_WINDOW_MS) {
+      await env.DB.prepare("UPDATE social_queue SET status = 'approved', scheduled_at = ?, posted_at = NULL, error = NULL WHERE id = ? AND status IN ('simulated', 'skipped')")
+        .bind(at, exists.id).run();
+    }
+  }
+  return added;
+}
+
 export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTERS, fetchImpl = fetch } = {}) {
   await ensureSocialSchema(env);
-  const report = { potd: null, processed: [] };
+  const report = { potd: null, schedule: 0, processed: [] };
+  try { report.schedule = await syncSchedule(env, nowMs, { adapters }); } catch (e) { await log(env, nowMs, null, null, "schedule_error", 0, e.message); }
   try { report.potd = await maybeQueuePotd(env, nowMs); } catch (e) { await log(env, nowMs, null, null, "potd_error", 0, e.message); }
   const { results } = await env.DB.prepare(
     "SELECT * FROM social_queue WHERE status = 'approved' AND scheduled_at IS NOT NULL AND scheduled_at <= ? ORDER BY scheduled_at, id LIMIT 10"
@@ -202,6 +248,11 @@ export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTER
     if (!claim.meta || claim.meta.changes !== 1) continue; // another run took it
     const payload = JSON.parse(row.payload);
     const n = payload.posts ? payload.posts.length : 1;
+    if (env.SOCIAL_DRY_RUN === "0" && !isLive(env, row.platform, adapters)) {
+      await env.DB.prepare("UPDATE social_queue SET status = 'skipped', error = 'platform not connected' WHERE id = ?").bind(row.id).run();
+      report.processed.push({ id: row.id, platform: row.platform, result: "skipped" });
+      continue;
+    }
     if (!isLive(env, row.platform, adapters)) {
       await env.DB.prepare("UPDATE social_queue SET status = 'simulated', posted_at = ? WHERE id = ?").bind(iso(nowMs), row.id).run();
       await log(env, nowMs, row.platform, row.id, "would_post", n, (payload.posts || [payload.caption])[0]);
