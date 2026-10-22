@@ -13,7 +13,9 @@ export const ADAPTERS = { x, bluesky, threads, instagram };
 export const PLATFORMS = ["x", "bluesky", "threads", "instagram"];
 export const SITE_URL = "https://thegravityreport.com";
 export const SEASON_START = "2026-10-20";
-export const SETTINGS_KEYS = ["potd_on", "potd_auto_approve", "potd_platforms", "potd_hour_utc"];
+// Every recurring series has an off switch: series_<name> = "0" in social_settings (default on).
+export const SERIES = ["team644", "tracker", "pace", "best", "poll", "archive", "metrics"];
+export const SETTINGS_KEYS = ["potd_on", "potd_auto_approve", "potd_platforms", "potd_hour_utc", ...SERIES.map((s) => `series_${s}`)];
 const DEFAULT_CAPS = { x: 60, bluesky: 300, threads: 200, instagram: 60 };
 
 let ready = null;
@@ -43,6 +45,10 @@ export async function getSettings(env) {
   const s = { potd_on: "1", potd_auto_approve: "1", potd_platforms: "x,bluesky,threads,instagram", potd_hour_utc: "14" };
   for (const r of results || []) s[r.key] = r.value;
   return s;
+}
+
+export function seriesOff(settings, name) {
+  return !!name && settings[`series_${name}`] === "0";
 }
 
 export async function setSetting(env, key, value) {
@@ -205,11 +211,12 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
     if (!res.ok) throw new Error(`asset /social/schedule.json: ${res.status}`);
     schedule = await res.json();
   }
+  const settings = await getSettings(env);
   let added = 0;
   for (const row of schedule.posts || []) {
     if (!PLATFORMS.includes(row.platform) || !/^[a-z0-9-]+$/.test(row.kit || "")) continue;
     const at = new Date(row.at).toISOString();
-    if (row.skip) {
+    if (row.skip || seriesOff(settings, row.series)) {
       await env.DB.prepare("UPDATE social_queue SET status = 'cancelled' WHERE kit_id = ? AND platform = ? AND status IN ('draft', 'approved')")
         .bind(row.kit, row.platform).run();
       continue;

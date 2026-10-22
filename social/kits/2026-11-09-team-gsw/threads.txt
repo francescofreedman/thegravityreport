@@ -1,0 +1,12 @@
+The Golden State Warriors in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+
+#13 Stephen Curry 66.5
+#58 Jimmy Butler 56.7
+#83 Kristaps Porziņģis 53.6
+#99 Brandin Podziemski 52.3
+#134 Moses Moody 48.2
+#164 Gary Payton II 46.4
+#183 Gui Santos 45.2
+#193 Al Horford 44.6
+
+Every player, with a free page: https://thegravityreport.com/the644/

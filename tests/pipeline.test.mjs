@@ -334,3 +334,22 @@ test("dashboard: cancel stops a scheduled post for good; restore brings it back"
   await P.runScheduled(e, Date.parse("2026-10-22T16:05:00Z"), { adapters });
   assert.equal(calls.length, 1);
 });
+
+// ------------------------------------------------------------------ recurring series
+
+test("series off switch: series_team644=0 cancels that series' schedule rows, nothing else", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0", ...BSKY_LIVE });
+  await P.ensureSocialSchema(e);
+  const adapters = { ...P.ADAPTERS, bluesky: okAdapter("bluesky", []) };
+  const schedule = { posts: [
+    { at: "2026-10-24T22:00:00Z", platform: "bluesky", kit: "2026-10-24-team-okc", series: "team644" },
+    { at: "2026-10-24T16:00:00Z", platform: "bluesky", kit: KIT },
+  ] };
+  assert.equal(await P.syncSchedule(e, T0, { adapters, schedule }), 2);
+  await P.setSetting(e, "series_team644", "0");
+  await P.syncSchedule(e, T0, { adapters, schedule });
+  const st = Object.fromEntries((await e.DB.prepare("SELECT kit_id, status FROM social_queue").all()).results.map((r) => [r.kit_id, r.status]));
+  assert.equal(st["2026-10-24-team-okc"], "cancelled");
+  assert.equal(st[KIT], "approved");
+  assert.ok(P.SETTINGS_KEYS.includes("series_team644"));
+});

@@ -83,8 +83,46 @@ class KitTests(unittest.TestCase):
                 mk.build_player_kit(p["slug"], "2026-10-07", outdir=d, images=False)
 
 
-if __name__ == "__main__":
-    unittest.main()
+class TeamKitTests(unittest.TestCase):
+    """"The 644 on your team": every team builds, passes the number guard and fits every platform."""
+
+    def test_every_team_kit_builds(self):
+        t644 = json.load(open(os.path.join(ROOT, "content", "the644.json"), encoding="utf-8"))
+        for code in mk.SUBREDDITS:
+            with tempfile.TemporaryDirectory() as d:
+                kit, _ = mk.build_team_kit(code, "2026-10-24", outdir=d, images=False)
+                mk.check_limits(kit)
+                self.assertEqual(kit["kind"], "team")
+                self.assertEqual(kit["reddit"]["subreddit"], mk.SUBREDDITS[code])
+                self.assertIn("50 is a league-average minute", kit["x_thread"][0])
+                self.assertIn("/the644/", kit["x_thread"][-1])
+                self.assertTrue(os.path.exists(os.path.join(d, "reddit.md")))
+                top = sorted((p for p in t644["players"] if p["t"] == code), key=lambda p: p["r"])[:8]
+                for p in top:  # the top eight by rank, each with his real rank and score
+                    self.assertIn(f"#{p['r']} {p['n']} {p['s']:.1f}", kit["threads"])
+                    self.assertIn(f"#{p['r']} {p['n']} {p['s']:.1f}", kit["instagram_caption"])
+
+    def test_torque_codes_map_to_644_codes(self):
+        for code in ("CHO", "PHO", "BRK"):
+            with tempfile.TemporaryDirectory() as d:
+                kit, _ = mk.build_team_kit(code, "2026-10-24", outdir=d, images=False)
+                self.assertEqual(kit["team"], mk.FROM_TORQUE[code])
+        self.assertEqual(mk.team_name("PHX"), "Phoenix Suns")
+
+    def test_schedule_has_thirty_team_days_at_six_pm_et(self):
+        import make_schedule as ms
+        rows = ms.team644_rows()
+        self.assertEqual(len(rows), 30)
+        self.assertEqual(rows[0][0], "2026-10-24")
+        self.assertEqual(rows[0][3], "2026-10-24-team-okc")
+        self.assertEqual(rows[-1][0], "2026-11-22")
+        self.assertEqual({r[1] for r in rows}, {"18:00"})
+        self.assertEqual(len({r[3].rsplit("-", 1)[1] for r in rows}), 30, "every team exactly once")
+        for r in rows:
+            self.assertTrue(os.path.exists(os.path.join(ROOT, "social", "kits", r[3], "kit.json")), r[3])
+        sched = json.load(open(os.path.join(ROOT, "social", "schedule.json"), encoding="utf-8"))
+        tagged = [p for p in sched["posts"] if p.get("series") == "team644"]
+        self.assertEqual(len(tagged), 120)
 
 
 class TrackerTests(unittest.TestCase):
@@ -121,3 +159,7 @@ class TrackerTests(unittest.TestCase):
         import ledger_tracker as lt
         rows, _ = lt.status_lines({}, mk.load("content/ledger.json"))
         self.assertTrue(all(r["status_line"] in ("no games yet",) or "graded" in r["status_line"] for r in rows))
+
+
+if __name__ == "__main__":
+    unittest.main()

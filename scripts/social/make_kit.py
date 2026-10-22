@@ -2,7 +2,10 @@
 """Post-kit generator: one event in, a ready-to-post kit out.
 
   python3 scripts/social/make_kit.py article kawhi [--date 2026-10-07]
+  python3 scripts/social/make_kit.py article kawhi --frame tracking --angle 2   ("From the archive")
   python3 scripts/social/make_kit.py player jalen-duren [--date ...]
+  python3 scripts/social/make_kit.py team OKC [--date ...]          ("The 644 on your team")
+  python3 scripts/social/make_kit.py team all --date 2026-10-24     (all 30, one a day, TORQUE order)
   python3 scripts/social/make_kit.py edition
   (ledger kits come from scripts/social/ledger_tracker.py, which calls build_ledger_kit)
 
@@ -47,6 +50,10 @@ SUBREDDITS = {
     "PHX": "suns", "POR": "ripcity", "SAC": "kings", "SAS": "NBASpurs", "TOR": "torontoraptors",
     "UTA": "UtahJazz", "WAS": "washingtonwizards",
 }
+
+# The 644 uses NBA codes; TORQUE (the30/torque-2026-27.json) uses Basketball Reference's for three teams.
+TORQUE_CODE = {"CHA": "CHO", "PHX": "PHO", "BKN": "BRK"}
+FROM_TORQUE = {v: k for k, v in TORQUE_CODE.items()}
 
 
 class NumberGuardError(ValueError):
@@ -130,6 +137,27 @@ def check_limits(kit):
         raise ValueError("; ".join(errs))
 
 
+def fits(post):
+    return x_len(post) <= LIMITS["x"] and graphemes(post) <= LIMITS["bluesky"]
+
+
+def pack_posts(head, lines, tail=None):
+    """head, then one line per item, split into posts that fit both X and Bluesky; tail is the last post."""
+    posts, cur = [], head
+    for ln in lines:
+        nxt = (cur + ("\n\n" if cur == head else "\n") + ln) if cur else ln
+        if fits(nxt):
+            cur = nxt
+        else:
+            posts.append(cur)
+            cur = ln
+    if cur:
+        posts.append(cur)
+    if tail:
+        posts.append(tail)
+    return posts
+
+
 # ------------------------------------------------------------------ images
 
 def landscape(path, kicker, title, dek, band_label, band_text):
@@ -201,6 +229,49 @@ def ig_bars(path, title, items, n_of, note):
         y += 96
     d.text((72, min(y + 10, H - 170)), note, font=cl.mono(22, 500), fill=cl.MUTED)
     cl.band(img, d, H - 96, 96, "THE GRAVITY REPORT", n_of)
+    cl.save(img, path)
+
+
+def latin(s):
+    """Archivo has no Cyrillic: the data spells one name with a Cyrillic ё, which the card swaps for ë."""
+    return s.replace("ё", "ë").replace("Ё", "Ë")
+
+
+def team_card(path, name, rows):
+    """1200x675: a team's top eight in The 644, two columns of rank + name + score."""
+    W, H = 1200, 675
+    img, d = cl.canvas(W, H)
+    cl.brand(d, 64, 52, 30)
+    d.text((64, 130), "THE 644 ON YOUR TEAM", font=cl.mono(22, 600), fill=cl.ACCENT)
+    ft = cl.fit_archivo(d, name, W - 128, 84, minimum=48)
+    y = cl.draw_lines(d, (60, 160), [name], ft, cl.INK, int(ft.size * 1.0)) + 20
+    col_w = (W - 128 - 48) // 2
+    for i, (r, nm, s, rk) in enumerate(rows[:8]):
+        x = 64 + (i // 4) * (col_w + 48)
+        yy = y + (i % 4) * 68
+        d.text((x, yy + 6), f"#{r}", font=cl.mono(24, 600), fill=cl.MUTED)
+        fn = cl.fit_archivo(d, latin(nm), col_w - 190, 32, minimum=20, weight=700, width=100)
+        d.text((x + 86, yy), latin(nm), font=fn, fill=cl.INK)
+        d.text((x + col_w, yy + 2), f"{s:.1f}", font=cl.mono(30, 600), fill=cl.ACCENT, anchor="ra")
+    cl.band(img, d, H - 84, 84, "GRAVITY SCORE", "50 = LEAGUE AVERAGE · THEGRAVITYREPORT.COM/THE644")
+    cl.save(img, path)
+
+
+def ig_table(path, kicker, title, rows, band_label, band_text, note):
+    """1080x1350: a ranked list of up to eight (rank, name, score, rookie) rows."""
+    img, d, W, H = ig_frame()
+    d.text((72, 220), kicker, font=cl.mono(26, 600), fill=cl.ACCENT)
+    ft = cl.fit_archivo(d, title, W - 144, 96, minimum=56)
+    lines = cl.wrap(d, title, ft, W - 144)[:2]
+    y = cl.draw_lines(d, (66, 262), lines, ft, cl.INK, int(ft.size * 1.0)) + 36
+    for r, nm, s, rk in rows[:8]:
+        d.text((72, y + 10), f"#{r}", font=cl.mono(30, 600), fill=cl.MUTED)
+        fn = cl.fit_archivo(d, latin(nm), 640, 44, minimum=28, weight=700, width=100)
+        d.text((190, y), latin(nm), font=fn, fill=cl.INK)
+        d.text((1008, y + 4), f"{s:.1f}", font=cl.mono(40, 600), fill=cl.ACCENT, anchor="ra")
+        y += 86
+    d.text((72, y + 12), note, font=cl.mono(22, 500), fill=cl.MUTED)
+    cl.band(img, d, H - 96, 96, band_label, band_text)
     cl.save(img, path)
 
 
@@ -429,6 +500,80 @@ def build_player_kit(slug, date, outdir=None, images=True):
     return kit, outdir
 
 
+# ------------------------------------------------------------------ "The 644 on your team"
+#
+# One team a day: its top eight players in The 644 by rank, each with his GRAVITY score. Every
+# number comes from content/the644.json (the player's r and s, and the team's player count).
+
+def team_name(code):
+    tc = TORQUE_CODE.get(code, code)
+    return next(x["team"] for x in load("the30/torque-2026-27.json")["teams"] if x["code"] == tc)
+
+
+def team_players(code, t644=None):
+    t644 = t644 or load("content/the644.json")
+    return sorted((p for p in t644["players"] if p["t"] == code), key=lambda p: p["r"])
+
+
+def build_team_kit(code, date, outdir=None, images=True):
+    code = FROM_TORQUE.get(code.upper(), code.upper())
+    if code not in SUBREDDITS:
+        raise KeyError(f"unknown team {code}")
+    name = team_name(code)
+    ps = team_players(code)
+    top = ps[:8]
+    url = SITE_URL + "/the644/"
+    rows = [(p["r"], p["n"], p["s"], bool(p.get("rk"))) for p in top]
+    lines = [f"#{p['r']} {p['n']} {p['s']:.1f}" + (" (rookie)" if p.get("rk") else "") for p in top]
+    count = COUNT_WORDS[len(top)]
+    head = (f"The {name} in The 644, our ranking of every NBA player. The top {count} by rank, "
+            f"with each player's GRAVITY score (50 is a league-average minute):")
+    short_head = f"The {name} in The 644: the top {count} by rank, with each player's GRAVITY score (50 is a league-average minute)."
+    rookie_note = "Rookies start from a draft-slot prior." if any(p.get("rk") for p in top) else ""
+    tail = " ".join(x for x in [f"All {len(ps)} {name} players are in The 644, each with a free profile page.", rookie_note,
+                                 f"Filter by team: {url}"] if x)
+    posts = pack_posts(head, lines, tail)
+    threads = short_head + "\n\n" + "\n".join(lines) + f"\n\nEvery player, with a free page: {url}"
+    while len(threads) > LIMITS["threads"]:
+        lines_t = threads.split("\n")
+        threads = "\n".join(lines_t[:-3] + lines_t[-2:])  # drop the last player line
+    ig = "\n\n".join(x for x in [head, "\n".join(lines), rookie_note, "Every player's page is free. Link in bio.", "#NBA"] if x)
+    sub = SUBREDDITS[code]
+    reddit = (f"# r/{sub} (post by hand; read the sub's self-promotion rules first)\n\n"
+              f"**Title:** Where the {name} stand in The 644, our ranking of all 644 NBA players\n\n**Body:**\n\n"
+              f"{head}\n\n" + "\n".join(f"- {ln}" for ln in lines) + "\n\n" + (rookie_note + " " if rookie_note else "") +
+              "GRAVITY is our one-number player rating: how good, times how often. "
+              f"Every player has a free profile page, and the table filters by team: {url}\n\n"
+              "Happy to answer questions about the method in the comments.\n")
+    alt = f"The {name} in The 644, top {count} by rank with GRAVITY scores: " + "; ".join(lines) + ". 50 is a league-average minute."
+    kit = {"kind": "team", "slug": code.lower(), "team": code, "date": date, "url": url,
+           "title": f"The 644 on your team: {name}",
+           "x_thread": posts, "bluesky_thread": posts, "threads": threads, "instagram_caption": ig,
+           "reddit": {"subreddit": sub, "markdown": reddit},
+           "images": {"card": "card-1200x675.png", "carousel": ["ig-1080x1350-1.png"]},
+           "alt": {"card-1200x675.png": alt, "ig-1080x1350-1.png": alt}}
+    guard(posts + [threads, ig, reddit, alt], json.dumps(top, ensure_ascii=False) + f" {len(ps)} {name}")
+    check_limits(kit)
+    outdir = outdir or os.path.join(ROOT, "social", "kits", f"{date}-team-{code.lower()}")
+    write_kit(kit, outdir)
+    if images:
+        team_card(os.path.join(outdir, "card-1200x675.png"), name, rows)
+        ig_table(os.path.join(outdir, "ig-1080x1350-1.png"), "THE 644 ON YOUR TEAM", name, rows,
+                 "THE 644", "THEGRAVITYREPORT.COM/THE644", "GRAVITY score. 50 is a league-average minute.")
+    return kit, outdir
+
+
+def all_team_kits(start_date, images=True):
+    """One kit per team, dated one day apart from start_date, in The 30's TORQUE order."""
+    teams = sorted(load("the30/torque-2026-27.json")["teams"], key=lambda x: x["rank"])
+    d0 = datetime.date.fromisoformat(start_date)
+    outs = []
+    for i, x in enumerate(teams):
+        code = FROM_TORQUE.get(x["code"], x["code"])
+        outs.append(build_team_kit(code, (d0 + datetime.timedelta(days=i)).isoformat(), images=images)[1])
+    return outs
+
+
 def build_ledger_kit(rows, as_of, date, outdir=None, images=True, source_text=""):
     """rows: [{id, claim, p, status_line}] — status lines come from ledger_tracker.py with their own source."""
     url = SITE_URL + "/ledger/"
@@ -615,7 +760,7 @@ def write_kit(kit, outdir):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("kind", choices=["article", "player", "edition", "the30", "performance"])
+    ap.add_argument("kind", choices=["article", "player", "edition", "the30", "performance", "team"])
     ap.add_argument("--game", help="ESPN event id (performance kits)")
     ap.add_argument("slug", nargs="?")
     ap.add_argument("--date", default=datetime.date.today().isoformat())
@@ -631,6 +776,12 @@ def main(argv=None):
         kit, out = build_performance_kit(a.slug, a.game, a.date, images=not a.no_images)
     elif a.kind == "the30":
         kit, out = build_the30_kit(a.date, images=not a.no_images)
+    elif a.kind == "team":
+        if (a.slug or "").lower() == "all":
+            for out in all_team_kits(a.date, images=not a.no_images):
+                print(os.path.relpath(out, ROOT))
+            return
+        kit, out = build_team_kit(a.slug, a.date, images=not a.no_images)
     else:
         # a new 644 edition: the edition card + the top-10 post
         idx = load("players/index.json")

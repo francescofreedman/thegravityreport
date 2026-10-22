@@ -6,6 +6,10 @@
   var NAMES = { x: 'X', bluesky: 'Bluesky', threads: 'Threads', instagram: 'Instagram' };
   var HANDLES = { x: '@GravityReportHQ', bluesky: '@thegravityreport.bsky.social', threads: '@thegravityreport', instagram: 'thegravityreport' };
   var AVATAR = '/social/brand/avatar-400.png';
+  var KINDS = { player: 'Player of the day', article: 'Deep Dive', edition: 'Edition', team: 'The 644 on your team',
+    ledger: 'Is the model winning?', archive: 'From the archive', pace: 'Beating the projection', best: 'Best games of the week',
+    poll: 'Who\'s higher?' };
+  function kindLabel(kit){ return kit ? (KINDS[kit.series || kit.kind] || kit.kind || '') : ''; }
   var SCHED = null, KITS = {}, QUEUE = null, FILTER = 'upcoming';
 
   function msg(t){ $('msg').textContent = t; }
@@ -112,7 +116,7 @@
         var kit = KITS[r.kit];
         var g = el('div', { cls: 'post' }, [el('div', { cls: 'post-head' }, [
           el('span', { cls: 't', text: timeLabel(d) }), el('span', { cls: 'k', text: kit ? kit.title : r.kit }),
-          el('span', { cls: 'kind', text: kit ? (kit.kind === 'player' ? 'Player of the day' : kit.kind === 'article' ? 'Deep Dive' : kit.kind) : '' })]),
+          el('span', { cls: 'kind', text: kindLabel(kit) })]),
           el('div', { cls: 'grid' })]);
         groups[gk] = g; dayBox.appendChild(g);
       }
