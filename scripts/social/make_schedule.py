@@ -84,6 +84,24 @@ def tracker_rows():
     return rows
 
 
+# "From the archive": Sundays at noon ET, one Deep Dive a week in Deep Dive order, led by a different
+# line than the first time round (make_kit.py article all --date <first Sunday>: tracking frame, angle 2).
+# Set ARCHIVE_START = None to stop the series.
+ARCHIVE_START = "2026-11-01"
+ARCHIVE_TIME = "12:00"
+
+
+def archive_rows():
+    if not ARCHIVE_START:
+        return []
+    d0 = datetime.date.fromisoformat(ARCHIVE_START)
+    rows = []
+    for i, slug in enumerate(mk.archive_articles()):
+        day = (d0 + datetime.timedelta(days=7 * i)).isoformat()
+        rows.append((day, ARCHIVE_TIME, ALL, f"{day}-article-{slug}", "archive"))
+    return rows
+
+
 # Every recurring series, for the "Recurring series" section of SCHEDULE.md.
 # (name, when, source, how to turn it off)
 SERIES = [
@@ -105,11 +123,14 @@ SERIES = [
     ("Who's higher?", "Saturdays, 11 AM ET; the answer Sundays, 11 AM ET",
      "Worker, automatic (social/series.js: two adjacent ranks in the top 100 of The 644, rotating by week; an X poll, "
      "'reply with your pick' elsewhere; the answer post names both ranks and scores)", "`series_poll = 0` in social_settings"),
+    ("From the archive", "Sundays, 12 PM ET, one Deep Dive a week from Sun Nov 1, 2026 (Deep Dive order)",
+     "schedule.json (kits `<sunday>-article-<slug>`, make_kit.py article all --date 2026-11-01: tracking frame, angle 2)",
+     "`series_archive = 0` in social_settings, or ARCHIVE_START = None in make_schedule.py"),
 ]
 
 
 def plan_rows():
-    return list(PLAN) + team644_rows() + tracker_rows()
+    return list(PLAN) + team644_rows() + tracker_rows() + archive_rows()
 
 
 def main():

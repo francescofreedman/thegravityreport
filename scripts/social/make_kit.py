@@ -333,7 +333,25 @@ def short_article(slug):
     return a, body
 
 
-def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
+def archive_articles():
+    """Deep Dives with a social block, in Deep Dive order: the "From the archive" rotation."""
+    arts = [a for a in load("content/articles.json") if a.get("social") and a["slug"] in SUBJECTS]
+    return [a["slug"] for a in sorted(arts, key=lambda a: int(a.get("n") or 0))]
+
+
+def all_archive_kits(start_date, images=True):
+    """"From the archive": one tracking-frame, angle-2 kit per article, one Sunday apart from start_date."""
+    d0 = datetime.date.fromisoformat(start_date)
+    outs = []
+    for i, slug in enumerate(archive_articles()):
+        day = (d0 + datetime.timedelta(days=7 * i)).isoformat()
+        outs.append(build_article_kit(slug, day, images=images, frame="tracking", angle=2)[1])
+    return outs
+
+
+def build_article_kit(slug, date, outdir=None, images=True, frame="news", angle=1):
+    """angle 2 (tracking frame only, "From the archive"): the first point leads instead of the hook,
+    and the closer names the publish date."""
     arts = load("content/articles.json")
     a = next((x for x in arts if x["slug"] == slug), None)
     short_body = ""
@@ -346,6 +364,7 @@ def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
     url = SITE_URL + a["web"]
     calls = [ledger[i] for i in a.get("ledger", [])]
     tracking = frame == "tracking"
+    archive = tracking and angle == 2
     extra_source = ""
     if tracking:
         who, when = SUBJECTS[slug], pub_date(a["date"])
@@ -356,9 +375,14 @@ def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
         else:
             opener = f"The season is underway. On {when}, we took a hard look at {who}. Here's what we found."
         call_label, ig_call_label = "What we said:", "What we said:"
-        closer = (f"Every call is tracked on our public ledger. The full piece, from {when}:\n{url}" if calls
-                  else f"The full piece, from {when}:\n{url}")
-        x_posts = [opener, s["hook"]] + list(s["points"])
+        if archive:
+            closer = (f"From the archive: we published this on {when}. Every call is tracked on our public ledger. The full piece, free:\n{url}"
+                      if calls else f"From the archive: we published this on {when}. The full piece, free:\n{url}")
+            x_posts = [s["points"][0], opener, s["hook"]] + list(s["points"][1:])
+        else:
+            closer = (f"Every call is tracked on our public ledger. The full piece, from {when}:\n{url}" if calls
+                      else f"The full piece, from {when}:\n{url}")
+            x_posts = [opener, s["hook"]] + list(s["points"])
     else:
         call_label = "Our calls, registered before tip-off and graded in public:"
         ig_call_label = "Our calls, registered before tip-off:"
@@ -373,10 +397,16 @@ def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
             extra_source += f" {len(calls) - len(shown)}"
         x_posts.append(call_label + "\n" + lines)
     x_posts.append(closer)
-    lead = f"{opener}\n\n{s['hook']}" if tracking else s["hook"]
-    threads = f"{lead}\n\n{s['points'][0]}\n\nRead it: {url}"
-    if len(threads) > LIMITS["threads"]:
-        threads = f"{lead}\n\nRead it: {url}"
+    if archive:
+        lead = f"{s['points'][0]}\n\n{opener}"
+        threads = f"{lead}\n\n{s['hook']}\n\nFrom the archive, {when}: {url}"
+        if len(threads) > LIMITS["threads"]:
+            threads = f"{lead}\n\nFrom the archive, {when}: {url}"
+    else:
+        lead = f"{opener}\n\n{s['hook']}" if tracking else s["hook"]
+        threads = f"{lead}\n\n{s['points'][0]}\n\nRead it: {url}"
+        if len(threads) > LIMITS["threads"]:
+            threads = f"{lead}\n\nRead it: {url}"
     ig = "\n\n".join(x_posts[:len(x_posts) - (2 if calls else 1)])
     if calls:
         ig += f"\n\n{ig_call_label}\n" + "\n".join(f"{c['p']}% · {c.get('box', c['claim'])}" for c in shown)
@@ -397,7 +427,7 @@ def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
               f"\n\n{link_line}\n\nHappy to answer questions about the method in the comments.\n")
     kit = {
         "kind": "article", "slug": slug, "date": date, "url": url,
-        "title": a["title"], "frame": frame,
+        "title": a["title"], "frame": frame, "angle": angle, **({"series": "archive"} if archive else {}),
         "x_thread": x_posts, "bluesky_thread": x_posts, "threads": threads, "instagram_caption": ig,
         "reddit": {"subreddit": sub, "markdown": reddit},
         "images": {
@@ -778,9 +808,16 @@ def main(argv=None):
     ap.add_argument("--no-images", action="store_true")
     ap.add_argument("--frame", choices=["news", "tracking"], default="news",
                     help="tracking: for back-catalog pieces; says when it came out, never presents it as new")
+    ap.add_argument("--angle", type=int, choices=[1, 2], default=1,
+                    help="2 (with --frame tracking): From the archive; the first point leads, the closer names the publish date")
     a = ap.parse_args(argv)
     if a.kind == "article":
-        kit, out = build_article_kit(a.slug, a.date, images=not a.no_images, frame=a.frame)
+        if (a.slug or "").lower() == "all":
+            # From the archive: every Deep Dive, one Sunday apart from --date
+            for out in all_archive_kits(a.date, images=not a.no_images):
+                print(os.path.relpath(out, ROOT))
+            return
+        kit, out = build_article_kit(a.slug, a.date, images=not a.no_images, frame=a.frame, angle=a.angle)
     elif a.kind == "player":
         kit, out = build_player_kit(a.slug, a.date, images=not a.no_images)
     elif a.kind == "performance":

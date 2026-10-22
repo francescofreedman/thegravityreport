@@ -62,6 +62,39 @@ class KitTests(unittest.TestCase):
                 if not arts[slug].get("ledger"):
                     self.assertNotIn("Every call", allt)
 
+    def test_archive_angle_leads_with_the_first_point_and_dates_the_piece(self):
+        arts = {a["slug"]: a for a in json.load(open(os.path.join(ROOT, "content", "articles.json"), encoding="utf-8"))}
+        self.assertEqual(mk.archive_articles(), ["morant", "queta", "duren", "kawhi", "jokic"])
+        for slug in mk.archive_articles():
+            with tempfile.TemporaryDirectory() as d:
+                kit, _ = mk.build_article_kit(slug, "2026-11-01", outdir=d, images=False, frame="tracking", angle=2)
+                s, when = arts[slug]["social"], mk.pub_date(arts[slug]["date"])
+                self.assertEqual(kit["x_thread"][0], s["points"][0], "the first point leads")
+                self.assertIn(s["hook"], kit["x_thread"], "the hook still appears")
+                self.assertIn(f"From the archive: we published this on {when}", kit["x_thread"][-1])
+                self.assertTrue(kit["threads"].startswith(s["points"][0]))
+                self.assertIn(when, kit["threads"])
+                self.assertEqual(kit["series"], "archive")
+                self.assertEqual(kit["angle"], 2)
+                for banned in ["new article", "out now", "just published", "today"]:
+                    self.assertNotIn(banned, " ".join(kit["x_thread"]).lower())
+        with tempfile.TemporaryDirectory() as d:
+            kit, _ = mk.build_article_kit("kawhi", "2026-11-01", outdir=d, images=False, frame="tracking")
+            self.assertNotIn("series", kit, "angle 1 is the plain tracking frame")
+
+    def test_archive_sundays(self):
+        import datetime
+        import make_schedule as ms
+        rows = ms.archive_rows()
+        self.assertEqual(len(rows), 5)
+        self.assertEqual(rows[0][:2], ("2026-11-01", "12:00"))
+        self.assertEqual(rows[0][3], "2026-11-01-article-morant")
+        for day, hm, platforms, kit_id, series in rows:
+            self.assertEqual(datetime.date.fromisoformat(day).weekday(), 6, f"{kit_id} is not a Sunday")
+            self.assertEqual(series, "archive")
+            self.assertTrue(os.path.exists(os.path.join(ROOT, "social", "kits", kit_id, "kit.json")), kit_id)
+            self.assertEqual(json.load(open(os.path.join(ROOT, "social", "kits", kit_id, "kit.json"), encoding="utf-8"))["angle"], 2)
+
     def test_player_kits_build_for_top_and_rookie(self):
         for slug in ["nikola-jokic", "cameron-boozer", "jalen-duren"]:
             with tempfile.TemporaryDirectory() as d:

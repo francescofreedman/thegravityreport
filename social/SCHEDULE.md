@@ -73,6 +73,10 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Sat Oct 31, 6:00 PM | Bluesky | The 644 on your team: Philadelphia 76ers | The Philadelphia 76ers in The 644, our ranking of every NBA player. The top eight by rank,… |
 | Sat Oct 31, 6:00 PM | Threads | The 644 on your team: Philadelphia 76ers | The Philadelphia 76ers in The 644, our ranking of every NBA player. The top eight by rank,… |
 | Sat Oct 31, 6:00 PM | Instagram | The 644 on your team: Philadelphia 76ers | The Philadelphia 76ers in The 644, our ranking of every NBA player. The top eight by rank,… |
+| Sun Nov 1, 12:00 PM | X | The Rise and Fall of Ja Morant | Of his shooting collapse, 88% was shot-making, not shot selection.… |
+| Sun Nov 1, 12:00 PM | Bluesky | The Rise and Fall of Ja Morant | Of his shooting collapse, 88% was shot-making, not shot selection.… |
+| Sun Nov 1, 12:00 PM | Threads | The Rise and Fall of Ja Morant | Of his shooting collapse, 88% was shot-making, not shot selection.… |
+| Sun Nov 1, 12:00 PM | Instagram | The Rise and Fall of Ja Morant | Of his shooting collapse, 88% was shot-making, not shot selection.… |
 | Sun Nov 1, 6:00 PM | X | The 644 on your team: Portland Trail Blazers | The Portland Trail Blazers in The 644, our ranking of every NBA player. The top eight by r… |
 | Sun Nov 1, 6:00 PM | Bluesky | The 644 on your team: Portland Trail Blazers | The Portland Trail Blazers in The 644, our ranking of every NBA player. The top eight by r… |
 | Sun Nov 1, 6:00 PM | Threads | The 644 on your team: Portland Trail Blazers | The Portland Trail Blazers in The 644, our ranking of every NBA player. The top eight by r… |
@@ -101,6 +105,10 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Sat Nov 7, 6:00 PM | Bluesky | The 644 on your team: Minnesota Timberwolves | The Minnesota Timberwolves in The 644, our ranking of every NBA player. The top eight by r… |
 | Sat Nov 7, 6:00 PM | Threads | The 644 on your team: Minnesota Timberwolves | The Minnesota Timberwolves in The 644, our ranking of every NBA player. The top eight by r… |
 | Sat Nov 7, 6:00 PM | Instagram | The 644 on your team: Minnesota Timberwolves | The Minnesota Timberwolves in The 644, our ranking of every NBA player. The top eight by r… |
+| Sun Nov 8, 12:00 PM | X | The Queta Problem | His workload grew nearly 6× (333 → 1,926 minutes) and his efficiency went up anyway.… |
+| Sun Nov 8, 12:00 PM | Bluesky | The Queta Problem | His workload grew nearly 6× (333 → 1,926 minutes) and his efficiency went up anyway.… |
+| Sun Nov 8, 12:00 PM | Threads | The Queta Problem | His workload grew nearly 6× (333 → 1,926 minutes) and his efficiency went up anyway.… |
+| Sun Nov 8, 12:00 PM | Instagram | The Queta Problem | His workload grew nearly 6× (333 → 1,926 minutes) and his efficiency went up anyway.… |
 | Sun Nov 8, 6:00 PM | X | The 644 on your team: Charlotte Hornets | The Charlotte Hornets in The 644, our ranking of every NBA player. The top eight by rank, … |
 | Sun Nov 8, 6:00 PM | Bluesky | The 644 on your team: Charlotte Hornets | The Charlotte Hornets in The 644, our ranking of every NBA player. The top eight by rank, … |
 | Sun Nov 8, 6:00 PM | Threads | The 644 on your team: Charlotte Hornets | The Charlotte Hornets in The 644, our ranking of every NBA player. The top eight by rank, … |
@@ -129,6 +137,10 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Sat Nov 14, 6:00 PM | Bluesky | The 644 on your team: Chicago Bulls | The Chicago Bulls in The 644, our ranking of every NBA player. The top eight by rank, with… |
 | Sat Nov 14, 6:00 PM | Threads | The 644 on your team: Chicago Bulls | The Chicago Bulls in The 644, our ranking of every NBA player. The top eight by rank, with… |
 | Sat Nov 14, 6:00 PM | Instagram | The 644 on your team: Chicago Bulls | The Chicago Bulls in The 644, our ranking of every NBA player. The top eight by rank, with… |
+| Sun Nov 15, 12:00 PM | X | The Last of His Kind | In 2004–05 four of the top ten never shot threes, Kevin Garnett first among them. From 201… |
+| Sun Nov 15, 12:00 PM | Bluesky | The Last of His Kind | In 2004–05 four of the top ten never shot threes, Kevin Garnett first among them. From 201… |
+| Sun Nov 15, 12:00 PM | Threads | The Last of His Kind | In 2004–05 four of the top ten never shot threes, Kevin Garnett first among them. From 201… |
+| Sun Nov 15, 12:00 PM | Instagram | The Last of His Kind | In 2004–05 four of the top ten never shot threes, Kevin Garnett first among them. From 201… |
 | Sun Nov 15, 6:00 PM | X | The 644 on your team: Milwaukee Bucks | The Milwaukee Bucks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
 | Sun Nov 15, 6:00 PM | Bluesky | The 644 on your team: Milwaukee Bucks | The Milwaukee Bucks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
 | Sun Nov 15, 6:00 PM | Threads | The 644 on your team: Milwaukee Bucks | The Milwaukee Bucks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
@@ -157,10 +169,18 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Sat Nov 21, 6:00 PM | Bluesky | The 644 on your team: Brooklyn Nets | The Brooklyn Nets in The 644, our ranking of every NBA player. The top eight by rank, with… |
 | Sat Nov 21, 6:00 PM | Threads | The 644 on your team: Brooklyn Nets | The Brooklyn Nets in The 644, our ranking of every NBA player. The top eight by rank, with… |
 | Sat Nov 21, 6:00 PM | Instagram | The 644 on your team: Brooklyn Nets | The Brooklyn Nets in The 644, our ranking of every NBA player. The top eight by rank, with… |
+| Sun Nov 22, 12:00 PM | X | The Kawhi Anomaly | Late surges have an unkind history. Eight players surged to star level after 31. None kept… |
+| Sun Nov 22, 12:00 PM | Bluesky | The Kawhi Anomaly | Late surges have an unkind history. Eight players surged to star level after 31. None kept… |
+| Sun Nov 22, 12:00 PM | Threads | The Kawhi Anomaly | Late surges have an unkind history. Eight players surged to star level after 31. None kept… |
+| Sun Nov 22, 12:00 PM | Instagram | The Kawhi Anomaly | Late surges have an unkind history. Eight players surged to star level after 31. None kept… |
 | Sun Nov 22, 6:00 PM | X | The 644 on your team: Sacramento Kings | The Sacramento Kings in The 644, our ranking of every NBA player. The top eight by rank, w… |
 | Sun Nov 22, 6:00 PM | Bluesky | The 644 on your team: Sacramento Kings | The Sacramento Kings in The 644, our ranking of every NBA player. The top eight by rank, w… |
 | Sun Nov 22, 6:00 PM | Threads | The 644 on your team: Sacramento Kings | The Sacramento Kings in The 644, our ranking of every NBA player. The top eight by rank, w… |
 | Sun Nov 22, 6:00 PM | Instagram | The 644 on your team: Sacramento Kings | The Sacramento Kings in The 644, our ranking of every NBA player. The top eight by rank, w… |
+| Sun Nov 29, 12:00 PM | X | Chasing Seven | His six seasons average an impact of +3.36, above Jordan's +3.17 and LeBron's +3.19. Stati… |
+| Sun Nov 29, 12:00 PM | Bluesky | Chasing Seven | His six seasons average an impact of +3.36, above Jordan's +3.17 and LeBron's +3.19. Stati… |
+| Sun Nov 29, 12:00 PM | Threads | Chasing Seven | His six seasons average an impact of +3.36, above Jordan's +3.17 and LeBron's +3.19. Stati… |
+| Sun Nov 29, 12:00 PM | Instagram | Chasing Seven | His six seasons average an impact of +3.36, above Jordan's +3.17 and LeBron's +3.19. Stati… |
 
 ## Recurring series
 
@@ -175,3 +195,4 @@ Series that come from schedule.json are also removed by editing `scripts/social/
 | Beating the projection | Wednesdays, 1 PM ET (skipped, and marked, while teams average under 5 games) | Worker, automatic (social/series.js: ESPN standings vs TORQUE win projections; Instagram uses /cards/the30.png) | `series_pace = 0` in social_settings |
 | Best games of the week | Fridays, 1 PM ET (last Friday through Thursday) | Worker, automatic (social/series.js: top 5 Game Scores among players in The 644 from ESPN box scores, cached per day; Instagram uses /cards/the644.png) | `series_best = 0` in social_settings |
 | Who's higher? | Saturdays, 11 AM ET; the answer Sundays, 11 AM ET | Worker, automatic (social/series.js: two adjacent ranks in the top 100 of The 644, rotating by week; an X poll, 'reply with your pick' elsewhere; the answer post names both ranks and scores) | `series_poll = 0` in social_settings |
+| From the archive | Sundays, 12 PM ET, one Deep Dive a week from Sun Nov 1, 2026 (Deep Dive order) | schedule.json (kits `<sunday>-article-<slug>`, make_kit.py article all --date 2026-11-01: tracking frame, angle 2) | `series_archive = 0` in social_settings, or ARCHIVE_START = None in make_schedule.py |

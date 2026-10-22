@@ -1,9 +1,21 @@
 {
  "kits": [
   {
+   "id": "2026-11-29-article-jokic",
+   "kind": "article",
+   "title": "Chasing Seven",
+   "date": "2026-11-29"
+  },
+  {
    "id": "2026-11-22-team-sac",
    "kind": "team",
    "title": "The 644 on your team: Sacramento Kings",
+   "date": "2026-11-22"
+  },
+  {
+   "id": "2026-11-22-article-kawhi",
+   "kind": "article",
+   "title": "The Kawhi Anomaly",
    "date": "2026-11-22"
   },
   {
@@ -49,6 +61,12 @@
    "date": "2026-11-15"
   },
   {
+   "id": "2026-11-15-article-duren",
+   "kind": "article",
+   "title": "The Last of His Kind",
+   "date": "2026-11-15"
+  },
+  {
    "id": "2026-11-14-team-chi",
    "kind": "team",
    "title": "The 644 on your team: Chicago Bulls",
@@ -91,6 +109,12 @@
    "date": "2026-11-08"
   },
   {
+   "id": "2026-11-08-article-queta",
+   "kind": "article",
+   "title": "The Queta Problem",
+   "date": "2026-11-08"
+  },
+  {
    "id": "2026-11-07-team-min",
    "kind": "team",
    "title": "The 644 on your team: Minnesota Timberwolves",
@@ -130,6 +154,12 @@
    "id": "2026-11-01-team-por",
    "kind": "team",
    "title": "The 644 on your team: Portland Trail Blazers",
+   "date": "2026-11-01"
+  },
+  {
+   "id": "2026-11-01-article-morant",
+   "kind": "article",
+   "title": "The Rise and Fall of Ja Morant",
    "date": "2026-11-01"
   },
   {
