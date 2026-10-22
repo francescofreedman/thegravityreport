@@ -99,6 +99,9 @@ SERIES = [
     ("Beating the projection", "Wednesdays, 1 PM ET (skipped, and marked, while teams average under 5 games)",
      "Worker, automatic (social/series.js: ESPN standings vs TORQUE win projections; Instagram uses /cards/the30.png)",
      "`series_pace = 0` in social_settings"),
+    ("Best games of the week", "Fridays, 1 PM ET (last Friday through Thursday)",
+     "Worker, automatic (social/series.js: top 5 Game Scores among players in The 644 from ESPN box scores, cached per day; "
+     "Instagram uses /cards/the644.png)", "`series_best = 0` in social_settings"),
 ]
 
 

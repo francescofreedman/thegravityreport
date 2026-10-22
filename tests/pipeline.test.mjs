@@ -459,3 +459,69 @@ test("beating the projection: Wednesdays 1 PM ET, once a week, skipped and marke
   await P.setSetting(e3, "series_pace", "0");
   assert.equal(await P.maybeQueuePace(e3, wed2, { fetchImpl: standingsFetch(scaledStandings(10)) }), null);
 });
+
+// ESPN over a week: the fixture game happened on Oct 21 only; a second copy with a different id on Oct 24
+function weekFetch(calls = []) {
+  return async (url) => {
+    calls.push(url);
+    const m = String(url).match(/dates=(\d{8})/);
+    if (m) {
+      const d = m[1];
+      const events = d === "20261021" ? [{ id: "401909091", status: { type: { completed: true } } }]
+        : d === "20261024" ? [{ id: "401909200", status: { type: { completed: true } } }] : [];
+      return new Response(JSON.stringify({ events }));
+    }
+    if (String(url).includes("/summary")) return new Response(JSON.stringify(SUMMARY));
+    return new Response("nf", { status: 404 });
+  };
+}
+
+test("best games of the week: Fridays 1 PM ET, last Friday through Thursday, top 5 Game Scores among The 644, cached per day", async () => {
+  const e = env({ SOCIAL_SERIES: "1" });
+  await P.ensureSocialSchema(e);
+  const calls = [];
+  const thu = Date.parse("2026-10-29T15:00:00Z");
+  assert.equal(await P.maybeQueueBest(e, thu, { fetchImpl: weekFetch(calls) }), null, "not a Friday");
+  const fri = Date.parse("2026-10-30T15:00:00Z"); // 11 AM ET
+  assert.equal(await P.maybeQueueBest(e, fri, { fetchImpl: weekFetch(calls) }), "best-2026-10-30");
+  const days = calls.filter((u) => u.includes("/scoreboard")).map((u) => u.match(/dates=(\d+)/)[1]);
+  assert.deepEqual(days, ["20261023", "20261024", "20261025", "20261026", "20261027", "20261028", "20261029"], "Fri → Thu");
+  assert.equal(await P.maybeQueueBest(e, fri + 60e3, { fetchImpl: weekFetch(calls) }), null, "once a week");
+  const rows = (await e.DB.prepare("SELECT platform, status, scheduled_at, payload FROM social_queue").all()).results;
+  assert.equal(rows.length, 4);
+  assert.ok(rows.every((r) => r.status === "approved" && r.scheduled_at === "2026-10-30T17:00:00.000Z"), "1 PM EDT");
+  const x = JSON.parse(rows.find((r) => r.platform === "x").payload);
+  assert.equal(x.kind, "best");
+  assert.match(x.posts[0], /^The best games of the week \(Oct 23–29\), by Game Score/);
+  assert.match(x.posts.join("\n"), /1\. Anthony Edwards, MIN: 45\/10\/3 at MIA\. #22 in The 644\./);
+  assert.match(x.posts.join("\n"), /2\. /);
+  assert.ok(!x.posts.join("\n").includes("6. "), "five lines at most");
+  assert.match(x.posts.at(-1), /\/the644\/$/);
+  assert.equal(x.images.length, 0, "text-only on X");
+  assert.deepEqual(JSON.parse(rows.find((r) => r.platform === "instagram").payload).image_urls, ["https://thegravityreport.com/cards/the644.png"]);
+  // the per-day cache: the next Friday re-reads Oct 24's lines without fetching them again
+  const n = calls.length;
+  const fri2 = Date.parse("2026-11-06T15:00:00Z");
+  await P.maybeQueueBest(e, fri2, { fetchImpl: weekFetch(calls) });
+  const again = calls.slice(n).filter((u) => u.includes("dates=20261024") || u.includes("dates=20261029"));
+  assert.equal(again.length, 0, "days already fetched come from social_cache");
+  const cached = await e.DB.prepare("SELECT COUNT(*) AS n FROM social_cache").first();
+  assert.ok(cached.n >= 14);
+  const settings = await P.getSettings(e);
+  assert.ok(!Object.keys(settings).some((k) => k.startsWith("lines_")), "cached lines never show up as settings");
+});
+
+test("player of the day shares the day's cached lines with the Friday round-up", async () => {
+  const e = env({ SOCIAL_POTD: "1" });
+  await P.ensureSocialSchema(e);
+  const calls = [];
+  const nine = Date.parse("2026-10-22T13:05:00Z");
+  assert.equal(await P.maybeQueuePotd(e, nine, { fetchImpl: espnFetch(calls) }), "potd-2026-10-22");
+  const row = await e.DB.prepare("SELECT value FROM social_cache WHERE key = 'lines_2026-10-21'").first();
+  const day = JSON.parse(row.value);
+  assert.equal(day.games, 1);
+  assert.equal(day.lines[0].name, "Anthony Edwards");
+  assert.equal(day.lines[0].team, "MIN");
+  assert.equal(day.lines[0].home, false);
+  assert.ok(day.lines.every((l) => l.gs != null));
+});
