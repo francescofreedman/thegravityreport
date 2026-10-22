@@ -20,7 +20,7 @@
     if (body !== undefined){ init.method = 'POST'; init.headers['content-type'] = 'application/json'; init.body = JSON.stringify(body); }
     return fetch('/api/admin/' + path, init).then(function(r){ return r.json().then(function(j){ if (!r.ok) throw new Error(j.error || r.status); return j; }); });
   }
-  function abs(kit, p){ return p.charAt(0) === '/' ? p : '/social/kits/' + kit + '/' + p; }
+  function abs(kit, p){ return /^(\/|https?:)/.test(p) ? p : '/social/kits/' + kit + '/' + p; }
   var ET = { timeZone: 'America/New_York' };
   function dayLabel(d){ return d.toLocaleDateString('en-US', Object.assign({ weekday: 'long', month: 'long', day: 'numeric' }, ET)); }
   function timeLabel(d){ return d.toLocaleTimeString('en-US', Object.assign({ hour: 'numeric', minute: '2-digit' }, ET)) + ' ET'; }
@@ -120,10 +120,32 @@
     });
   }
 
+  // automatic posts (player of the day) live only in the queue: show them like scheduled rows
+  function addQueueOnly(q){
+    SCHED.posts = SCHED.posts.filter(function(r){ return !r.auto; });
+    var seen = {};
+    SCHED.posts.forEach(function(r){ seen[r.kit + '|' + r.platform] = 1; });
+    q.rows.forEach(function(r){
+      if (seen[r.kit_id + '|' + r.platform] || !r.scheduled_at) return;
+      var p = JSON.parse(r.payload), k = KITS[r.kit_id] || (KITS[r.kit_id] = { title: p.title || r.kit_id, kind: 'player', images: {}, alt: {} });
+      if (r.platform === 'x') k.x_thread = p.posts;
+      if (r.platform === 'bluesky') k.bluesky_thread = p.posts;
+      if (r.platform === 'threads') k.threads = p.posts[0];
+      if (r.platform === 'instagram'){ k.instagram_caption = p.caption; k.images.carousel = p.image_urls || []; }
+      if (p.images && p.images[0]) k.images.card = p.images[0].path;
+      if (p.title) k.title = p.title;
+      SCHED.posts.push({ at: r.scheduled_at, platform: r.platform, kit: r.kit_id, auto: true });
+    });
+    Object.keys(KITS).forEach(function(id){ var k = KITS[id];
+      k.x_thread = k.x_thread || k.bluesky_thread || [k.threads || ''];
+      k.bluesky_thread = k.bluesky_thread || k.x_thread; k.threads = k.threads || k.x_thread[0];
+      k.instagram_caption = k.instagram_caption || ''; k.images.carousel = k.images.carousel || []; });
+  }
+
   function loadQueue(){
     if (!KEY){ QUEUE = null; render(); return Promise.resolve(); }
     return api('queue').then(function(q){
-      QUEUE = q;
+      QUEUE = q; addQueueOnly(q);
       var live = Object.keys(q.platforms).filter(function(p){ return q.platforms[p].live; }).map(function(p){ return NAMES[p]; });
       var off = Object.keys(q.platforms).filter(function(p){ return !q.platforms[p].configured; }).map(function(p){ return NAMES[p]; });
       $('status').innerHTML = '';

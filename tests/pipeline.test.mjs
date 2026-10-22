@@ -44,7 +44,7 @@ function fakeAssets() {
 
 function env(extra = {}) {
   P.resetSchemaCache();
-  return { DB: fakeD1(), ASSETS: fakeAssets(), SOCIAL_DRY_RUN: "1", ...extra };
+  return { DB: fakeD1(), ASSETS: fakeAssets(), SOCIAL_DRY_RUN: "1", SOCIAL_POTD: "0", ...extra };
 }
 
 function okAdapter(name, calls) {
@@ -146,21 +146,53 @@ test("items scheduled in the future wait", async () => {
   assert.equal(r.processed.length, 0);
 });
 
-test("player of the day: off by default, queues once per day when on", async () => {
-  const e = env();
+// ESPN fixture: the real box score of MIN 131, MIA 106 (Oct 21 2026), trimmed to the fields we read.
+const SUMMARY = JSON.parse(readFileSync(join(ROOT, "tests/fixtures/espn-summary-401909091.json"), "utf8"));
+function espnFetch(calls = []) {
+  return async (url) => {
+    calls.push(url);
+    if (url.includes("/scoreboard")) return new Response(JSON.stringify({ events: [{ id: "401909091", status: { type: { completed: true } } }] }));
+    if (url.includes("/summary")) return new Response(JSON.stringify(SUMMARY));
+    return new Response("nf", { status: 404 });
+  };
+}
+
+test("player of the day: last night's best game, real numbers, queued for 10 AM ET on every platform, once", async () => {
+  const e = env({ SOCIAL_POTD: "1" });
   await P.ensureSocialSchema(e);
-  assert.equal(await P.maybeQueuePotd(e, T0), null);
-  await P.setSetting(e, "potd_on", "1");
-  const kid = await P.maybeQueuePotd(e, T0);
-  assert.equal(kid, "potd-2026-10-21");
-  assert.equal(await P.maybeQueuePotd(e, T0 + 3600e3), null);
-  const rows = await e.DB.prepare("SELECT platform, status, payload FROM social_queue").all();
-  assert.deepEqual(rows.results.map((r) => r.platform).sort(), ["bluesky", "threads", "x"]);
-  assert.ok(rows.results.every((r) => r.status === "draft"));
-  const text = JSON.parse(rows.results[0].payload).posts[0];
-  assert.match(text, /^#2 of 644 in The 644: Shai Gilgeous-Alexander/); // day 1 after tip-off = rank 2
-  assert.equal(P.potdIndex("2026-10-20", 644), 0);
-  assert.equal(P.potdIndex("2026-10-01", 644), 0);
+  const calls = [];
+  const morning = Date.parse("2026-10-22T12:00:00Z"); // 8 AM ET: too early
+  assert.equal(await P.maybeQueuePotd(e, morning, { fetchImpl: espnFetch(calls) }), null);
+  const nine = Date.parse("2026-10-22T13:05:00Z"); // 9:05 AM ET
+  assert.equal(await P.maybeQueuePotd(e, nine, { fetchImpl: espnFetch(calls) }), "potd-2026-10-22");
+  assert.ok(calls[0].includes("dates=20261021"), "looks at last night's games");
+  assert.equal(await P.maybeQueuePotd(e, nine + 3600e3, { fetchImpl: espnFetch(calls) }), null, "once a day");
+  const rows = (await e.DB.prepare("SELECT platform, status, scheduled_at, payload FROM social_queue").all()).results;
+  assert.deepEqual(rows.map((r) => r.platform).sort(), ["bluesky", "instagram", "threads", "x"]);
+  assert.ok(rows.every((r) => r.status === "approved" && r.scheduled_at === "2026-10-22T14:00:00.000Z"));
+  const x = JSON.parse(rows.find((r) => r.platform === "x").payload).posts;
+  assert.equal(x[0], "Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from three in a 131–106 win over the Heat.");
+  assert.match(x[1], /^In The 644 he's #22 of 644, GRAVITY score 63\.1/);
+});
+
+test("player of the day: a player picked by hand for that day wins; potd_on=0 turns it off", async () => {
+  const e = env({ SOCIAL_POTD: "1" });
+  await P.ensureSocialSchema(e);
+  const nine = Date.parse("2026-10-22T13:05:00Z");
+  const schedule = { posts: [{ at: "2026-10-22T14:00:00Z", platform: "x", kit: "2026-10-22-player-anthony-edwards" }] };
+  assert.equal(await P.maybeQueuePotd(e, nine, { fetchImpl: espnFetch(), schedule }), null);
+  const e2 = env({ SOCIAL_POTD: "1" });
+  await P.ensureSocialSchema(e2);
+  await P.setSetting(e2, "potd_on", "0");
+  assert.equal(await P.maybeQueuePotd(e2, nine, { fetchImpl: espnFetch() }), null);
+});
+
+test("game score and name matching", async () => {
+  const { gameScore, normName } = await import("../social/potd.js");
+  assert.equal(normName("Nikola Jokić"), "nikola jokic");
+  assert.equal(normName("Jaren Jackson Jr."), "jaren jackson");
+  const L = { PTS: "45", FG: "16-29", FT: "4-5", OREB: "0", DREB: "10", STL: "2", AST: "3", BLK: "1", PF: "1", TO: "4" };
+  assert.equal(gameScore(L).toFixed(1), "34.1");
 });
 
 test("bluesky link facets use UTF-8 byte offsets", () => {

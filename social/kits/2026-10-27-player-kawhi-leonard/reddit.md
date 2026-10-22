@@ -1,9 +1,0 @@
-# r/torontoraptors (post by hand; read the sub's rules first)
-
-**Title:** Where Kawhi Leonard ranks among all 644 NBA players
-
-**Body:**
-
-#6 of 644 in The 644: Kawhi Leonard (Toronto Raptors, SF). GRAVITY score 77.3. 50 is a league-average minute; 60+ a quality starter; 80+ a franchise engine. 2025–26: 33.5% usage, .629 true shooting, Box Plus/Minus +8.0.
-
-https://thegravityreport.com/players/kawhi-leonard/

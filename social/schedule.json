@@ -2,6 +2,26 @@
  "timezone_note": "times are UTC; SCHEDULE.md shows Eastern",
  "posts": [
   {
+   "at": "2026-10-22T14:00:00Z",
+   "platform": "x",
+   "kit": "2026-10-22-player-anthony-edwards"
+  },
+  {
+   "at": "2026-10-22T14:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-10-22-player-anthony-edwards"
+  },
+  {
+   "at": "2026-10-22T14:00:00Z",
+   "platform": "threads",
+   "kit": "2026-10-22-player-anthony-edwards"
+  },
+  {
+   "at": "2026-10-22T14:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-10-22-player-anthony-edwards"
+  },
+  {
    "at": "2026-10-22T16:00:00Z",
    "platform": "x",
    "kit": "2026-10-21-article-predictions"
@@ -140,306 +160,6 @@
    "at": "2026-10-28T16:00:00Z",
    "platform": "instagram",
    "kit": "2026-10-20-article-morant"
-  },
-  {
-   "at": "2026-10-22T22:00:00Z",
-   "platform": "x",
-   "kit": "2026-10-22-player-nikola-jokic"
-  },
-  {
-   "at": "2026-10-22T22:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-10-22-player-nikola-jokic"
-  },
-  {
-   "at": "2026-10-22T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-22-player-nikola-jokic"
-  },
-  {
-   "at": "2026-10-22T22:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-10-22-player-nikola-jokic"
-  },
-  {
-   "at": "2026-10-23T22:00:00Z",
-   "platform": "x",
-   "kit": "2026-10-23-player-shai-gilgeous-alexander"
-  },
-  {
-   "at": "2026-10-23T22:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-10-23-player-shai-gilgeous-alexander"
-  },
-  {
-   "at": "2026-10-23T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-23-player-shai-gilgeous-alexander"
-  },
-  {
-   "at": "2026-10-23T22:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-10-23-player-shai-gilgeous-alexander"
-  },
-  {
-   "at": "2026-10-24T22:00:00Z",
-   "platform": "x",
-   "kit": "2026-10-24-player-victor-wembanyama"
-  },
-  {
-   "at": "2026-10-24T22:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-10-24-player-victor-wembanyama"
-  },
-  {
-   "at": "2026-10-24T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-24-player-victor-wembanyama"
-  },
-  {
-   "at": "2026-10-24T22:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-10-24-player-victor-wembanyama"
-  },
-  {
-   "at": "2026-10-25T22:00:00Z",
-   "platform": "x",
-   "kit": "2026-10-25-player-giannis-antetokounmpo"
-  },
-  {
-   "at": "2026-10-25T22:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-10-25-player-giannis-antetokounmpo"
-  },
-  {
-   "at": "2026-10-25T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-25-player-giannis-antetokounmpo"
-  },
-  {
-   "at": "2026-10-25T22:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-10-25-player-giannis-antetokounmpo"
-  },
-  {
-   "at": "2026-10-26T22:00:00Z",
-   "platform": "x",
-   "kit": "2026-10-26-player-luka-doncic"
-  },
-  {
-   "at": "2026-10-26T22:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-10-26-player-luka-doncic"
-  },
-  {
-   "at": "2026-10-26T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-26-player-luka-doncic"
-  },
-  {
-   "at": "2026-10-26T22:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-10-26-player-luka-doncic"
-  },
-  {
-   "at": "2026-10-27T22:00:00Z",
-   "platform": "x",
-   "kit": "2026-10-27-player-kawhi-leonard"
-  },
-  {
-   "at": "2026-10-27T22:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-10-27-player-kawhi-leonard"
-  },
-  {
-   "at": "2026-10-27T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-27-player-kawhi-leonard"
-  },
-  {
-   "at": "2026-10-27T22:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-10-27-player-kawhi-leonard"
-  },
-  {
-   "at": "2026-10-28T22:00:00Z",
-   "platform": "x",
-   "kit": "2026-10-28-player-cade-cunningham"
-  },
-  {
-   "at": "2026-10-28T22:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-10-28-player-cade-cunningham"
-  },
-  {
-   "at": "2026-10-28T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-28-player-cade-cunningham"
-  },
-  {
-   "at": "2026-10-28T22:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-10-28-player-cade-cunningham"
-  },
-  {
-   "at": "2026-10-29T22:00:00Z",
-   "platform": "x",
-   "kit": "2026-10-29-player-karl-anthony-towns"
-  },
-  {
-   "at": "2026-10-29T22:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-10-29-player-karl-anthony-towns"
-  },
-  {
-   "at": "2026-10-29T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-29-player-karl-anthony-towns"
-  },
-  {
-   "at": "2026-10-29T22:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-10-29-player-karl-anthony-towns"
-  },
-  {
-   "at": "2026-10-30T22:00:00Z",
-   "platform": "x",
-   "kit": "2026-10-30-player-donovan-mitchell"
-  },
-  {
-   "at": "2026-10-30T22:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-10-30-player-donovan-mitchell"
-  },
-  {
-   "at": "2026-10-30T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-30-player-donovan-mitchell"
-  },
-  {
-   "at": "2026-10-30T22:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-10-30-player-donovan-mitchell"
-  },
-  {
-   "at": "2026-10-31T22:00:00Z",
-   "platform": "x",
-   "kit": "2026-10-31-player-tyrese-maxey"
-  },
-  {
-   "at": "2026-10-31T22:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-10-31-player-tyrese-maxey"
-  },
-  {
-   "at": "2026-10-31T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-31-player-tyrese-maxey"
-  },
-  {
-   "at": "2026-10-31T22:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-10-31-player-tyrese-maxey"
-  },
-  {
-   "at": "2026-11-01T23:00:00Z",
-   "platform": "x",
-   "kit": "2026-11-01-player-lamelo-ball"
-  },
-  {
-   "at": "2026-11-01T23:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-11-01-player-lamelo-ball"
-  },
-  {
-   "at": "2026-11-01T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-01-player-lamelo-ball"
-  },
-  {
-   "at": "2026-11-01T23:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-11-01-player-lamelo-ball"
-  },
-  {
-   "at": "2026-11-02T23:00:00Z",
-   "platform": "x",
-   "kit": "2026-11-02-player-chet-holmgren"
-  },
-  {
-   "at": "2026-11-02T23:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-11-02-player-chet-holmgren"
-  },
-  {
-   "at": "2026-11-02T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-02-player-chet-holmgren"
-  },
-  {
-   "at": "2026-11-02T23:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-11-02-player-chet-holmgren"
-  },
-  {
-   "at": "2026-11-03T23:00:00Z",
-   "platform": "x",
-   "kit": "2026-11-03-player-stephen-curry"
-  },
-  {
-   "at": "2026-11-03T23:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-11-03-player-stephen-curry"
-  },
-  {
-   "at": "2026-11-03T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-03-player-stephen-curry"
-  },
-  {
-   "at": "2026-11-03T23:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-11-03-player-stephen-curry"
-  },
-  {
-   "at": "2026-11-04T23:00:00Z",
-   "platform": "x",
-   "kit": "2026-11-04-player-jalen-duren"
-  },
-  {
-   "at": "2026-11-04T23:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-11-04-player-jalen-duren"
-  },
-  {
-   "at": "2026-11-04T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-04-player-jalen-duren"
-  },
-  {
-   "at": "2026-11-04T23:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-11-04-player-jalen-duren"
-  },
-  {
-   "at": "2026-11-05T23:00:00Z",
-   "platform": "x",
-   "kit": "2026-11-05-player-anthony-edwards"
-  },
-  {
-   "at": "2026-11-05T23:00:00Z",
-   "platform": "bluesky",
-   "kit": "2026-11-05-player-anthony-edwards"
-  },
-  {
-   "at": "2026-11-05T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-05-player-anthony-edwards"
-  },
-  {
-   "at": "2026-11-05T23:00:00Z",
-   "platform": "instagram",
-   "kit": "2026-11-05-player-anthony-edwards"
   }
  ]
 }

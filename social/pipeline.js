@@ -7,6 +7,7 @@
 import * as x from "./adapters/x.js";
 import * as bluesky from "./adapters/bluesky.js";
 import { threads, instagram } from "./adapters/meta.js";
+import { etParts, etToUtcMs, prevDate, normName, pickBest, potdKitFromPerformance, fetchLastNight, POTD_HOUR_ET } from "./potd.js";
 
 export const ADAPTERS = { x, bluesky, threads, instagram };
 export const PLATFORMS = ["x", "bluesky", "threads", "instagram"];
@@ -39,7 +40,7 @@ const iso = (ms) => new Date(ms).toISOString();
 
 export async function getSettings(env) {
   const { results } = await env.DB.prepare("SELECT key, value FROM social_settings").all();
-  const s = { potd_on: "0", potd_auto_approve: "0", potd_platforms: "x,bluesky,threads", potd_hour_utc: "16" };
+  const s = { potd_on: "1", potd_auto_approve: "1", potd_platforms: "x,bluesky,threads,instagram", potd_hour_utc: "14" };
   for (const r of results || []) s[r.key] = r.value;
   return s;
 }
@@ -123,42 +124,39 @@ export async function schedule(env, id, scheduledAt) {
 }
 
 // ------------------------------------------------------------------ player of the day
+// Last night's best game, automatically (social/potd.js). On by default; potd_on = "0" turns it off.
 
-export function potdIndex(dateStr, n) {
-  const days = Math.floor((Date.parse(dateStr + "T00:00:00Z") - Date.parse(SEASON_START + "T00:00:00Z")) / 86400000);
-  return ((Math.max(0, days) % n) + n) % n;
-}
-
-export function potdKit(p, count) {
-  const pos = p.p && p.p !== "—" ? p.p : "position TBD";
-  const url = `${SITE_URL}/players/${p.slug}/`;
-  const text = `#${p.r} of ${count} in The 644: ${p.n} (${p.team}, ${pos}).\n\nGRAVITY score ${Number(p.s).toFixed(1)} (50 is a league-average minute).\n\nFull profile: ${url}`;
-  return {
-    kind: "player", slug: p.slug, url, title: p.n,
-    x_thread: [text], bluesky_thread: [text], threads: text,
-    instagram_caption: `#${p.r} of ${count} in The 644: ${p.n} (${p.team}, ${pos}).\n\nGRAVITY score ${Number(p.s).toFixed(1)}. 50 is a league-average minute.\n\nEvery player's page is free. Link in bio.\n\n#NBA`,
-    images: { card: `/players/${p.slug}/card.png`, carousel: [] },
-    alt: { card: `${p.n}, #${p.r} of ${count} in The 644, GRAVITY score ${Number(p.s).toFixed(1)}. ${p.team}.` },
-  };
-}
-
-export async function maybeQueuePotd(env, nowMs) {
+export async function maybeQueuePotd(env, nowMs, { fetchImpl = fetch, schedule = null } = {}) {
   const s = await getSettings(env);
-  if (s.potd_on !== "1") return null;
-  const day = iso(nowMs).slice(0, 10);
-  const kitId = `potd-${day}`;
-  const exists = await env.DB.prepare("SELECT id FROM social_queue WHERE kit_id = ? LIMIT 1").bind(kitId).first();
-  if (exists) return null;
+  if (s.potd_on === "0" || env.SOCIAL_POTD === "0") return null;
+  const { date, hour } = etParts(nowMs);
+  if (hour < 9) return null;
+  const kitId = `potd-${date}`;
+  const done = await env.DB.prepare("SELECT value FROM social_settings WHERE key = ?").bind(`potd_checked_${date}`).first();
+  if (done) return null;
+  const mark = (v) => env.DB.prepare("INSERT OR REPLACE INTO social_settings (key, value) VALUES (?, ?)").bind(`potd_checked_${date}`, v).run();
+  // a player picked by hand for today wins
+  const manual = await env.DB.prepare("SELECT id FROM social_queue WHERE kit_id LIKE ? LIMIT 1").bind(`${date}-player-%`).first();
+  const inSchedule = schedule && (schedule.posts || []).some((r) => r.kit.startsWith(`${date}-player-`));
+  if (manual || inSchedule) { await mark("manual"); return null; }
+  const { games, lines } = await fetchLastNight(prevDate(date), fetchImpl);
+  if (!games) { await mark("no games"); return null; }
   const idx = await assetJson(env, "/players/index.json");
-  const p = idx.players[potdIndex(day, idx.players.length)];
-  const kit = potdKit(p, idx.count || idx.players.length);
-  const at = `${day}T${String(Number(s.potd_hour_utc) || 16).padStart(2, "0")}:00:00.000Z`;
-  const platforms = s.potd_platforms.split(",").map((v) => v.trim()).filter((v) => PLATFORMS.includes(v));
-  await importKit(env, kitId, { platforms, scheduledAt: at, nowMs, kit });
-  if (s.potd_auto_approve === "1") {
-    await env.DB.prepare("UPDATE social_queue SET status = 'approved', approved_at = ? WHERE kit_id = ? AND status = 'draft'")
-      .bind(iso(nowMs), kitId).run();
+  const t644 = await assetJson(env, "/content/the644.json");
+  const rec = new Map(t644.players.map((x) => [x.r, x]));
+  const byName = new Map(idx.players.map((x) => [normName(x.n), { ...rec.get(x.r), slug: x.slug, team: x.team }]));
+  const best = pickBest(lines, byName);
+  if (!best) { await mark("no big night"); return null; }
+  const kit = potdKitFromPerformance(best.p, best.p.team, best.g, SITE_URL, t644.players.length);
+  const at = Math.max(nowMs, etToUtcMs(date, POTD_HOUR_ET));
+  const p = payloadsFromKit(kitId, kit);
+  for (const pl of PLATFORMS) {
+    await env.DB.prepare(
+      "INSERT OR IGNORE INTO social_queue (kit_id, platform, payload, scheduled_at, status, created_at, approved_at) VALUES (?, ?, ?, ?, 'approved', ?, ?)"
+    ).bind(kitId, pl, JSON.stringify({ ...p[pl], title: kit.title }), iso(at), iso(nowMs), iso(nowMs)).run();
   }
+  await mark(best.p.slug);
+  await log(env, nowMs, null, null, "potd_picked", 0, `${best.p.n} (Game Score ${best.gs.toFixed(1)}): ${kit.x_thread[0]}`);
   return kitId;
 }
 
@@ -259,8 +257,13 @@ export async function restoreScheduled(env, kitId, platform) {
 export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTERS, fetchImpl = fetch } = {}) {
   await ensureSocialSchema(env);
   const report = { potd: null, schedule: 0, processed: [] };
-  try { report.schedule = await syncSchedule(env, nowMs, { adapters }); } catch (e) { await log(env, nowMs, null, null, "schedule_error", 0, e.message); }
-  try { report.potd = await maybeQueuePotd(env, nowMs); } catch (e) { await log(env, nowMs, null, null, "potd_error", 0, e.message); }
+  let sched = null;
+  try {
+    const res = await env.ASSETS.fetch(new Request(SITE_URL + "/social/schedule.json"));
+    if (res.ok) sched = await res.json();
+  } catch (e) { /* no schedule file */ }
+  try { report.schedule = sched ? await syncSchedule(env, nowMs, { adapters, schedule: sched }) : 0; } catch (e) { await log(env, nowMs, null, null, "schedule_error", 0, e.message); }
+  try { report.potd = await maybeQueuePotd(env, nowMs, { fetchImpl, schedule: sched }); } catch (e) { await log(env, nowMs, null, null, "potd_error", 0, e.message); }
   const { results } = await env.DB.prepare(
     "SELECT * FROM social_queue WHERE status = 'approved' AND scheduled_at IS NOT NULL AND scheduled_at <= ? ORDER BY scheduled_at, id LIMIT 10"
   ).bind(iso(nowMs)).all();

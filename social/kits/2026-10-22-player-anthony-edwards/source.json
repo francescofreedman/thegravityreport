@@ -1,0 +1,26 @@
+{
+ "espn_event": "401909091",
+ "boxscore_line": {
+  "line": {
+   "MIN": "33",
+   "PTS": "45",
+   "FG": "16-29",
+   "3PT": "9-17",
+   "FT": "4-5",
+   "REB": "10",
+   "AST": "3",
+   "TO": "4",
+   "STL": "2",
+   "BLK": "1",
+   "OREB": "0",
+   "DREB": "10",
+   "PF": "1",
+   "+/-": "+25"
+  },
+  "home": false,
+  "won": true,
+  "score": "131–106",
+  "opp": "Heat",
+  "opp_city": "Miami"
+ }
+}

@@ -25,9 +25,11 @@ PLATFORMS = ["x", "bluesky", "threads", "instagram"]
 NAMES = {"x": "X", "bluesky": "Bluesky", "threads": "Threads", "instagram": "Instagram"}
 
 # (date, time ET, platforms, kit id).
-# Articles: one a day at noon (Predictions, The 30, then the Deep Dives). Player of the day: The 644 from #1 down, every day at 6 PM.
+# Articles we wrote: one a day at noon (Predictions, The 30, then the Deep Dives).
 ALL = ["x", "bluesky", "threads", "instagram"]
 PLAN = [
+    # Player of the day is automatic (last night's best game, 10 AM ET). Rows here override a day by hand.
+    ("2026-10-22", "10:00", ALL, "2026-10-22-player-anthony-edwards"),
     ("2026-10-22", "12:00", ALL, "2026-10-21-article-predictions"),
     ("2026-10-23", "12:00", ALL, "2026-10-21-edition-the30"),
     ("2026-10-24", "12:00", ALL, "2026-10-20-article-kawhi"),
@@ -35,21 +37,6 @@ PLAN = [
     ("2026-10-26", "12:00", ALL, "2026-10-20-article-jokic"),
     ("2026-10-27", "12:00", ALL, "2026-10-20-article-queta"),
     ("2026-10-28", "12:00", ALL, "2026-10-20-article-morant"),
-    ("2026-10-22", "18:00", ALL, "2026-10-22-player-nikola-jokic"),
-    ("2026-10-23", "18:00", ALL, "2026-10-23-player-shai-gilgeous-alexander"),
-    ("2026-10-24", "18:00", ALL, "2026-10-24-player-victor-wembanyama"),
-    ("2026-10-25", "18:00", ALL, "2026-10-25-player-giannis-antetokounmpo"),
-    ("2026-10-26", "18:00", ALL, "2026-10-26-player-luka-doncic"),
-    ("2026-10-27", "18:00", ALL, "2026-10-27-player-kawhi-leonard"),
-    ("2026-10-28", "18:00", ALL, "2026-10-28-player-cade-cunningham"),
-    ("2026-10-29", "18:00", ALL, "2026-10-29-player-karl-anthony-towns"),
-    ("2026-10-30", "18:00", ALL, "2026-10-30-player-donovan-mitchell"),
-    ("2026-10-31", "18:00", ALL, "2026-10-31-player-tyrese-maxey"),
-    ("2026-11-01", "18:00", ALL, "2026-11-01-player-lamelo-ball"),
-    ("2026-11-02", "18:00", ALL, "2026-11-02-player-chet-holmgren"),
-    ("2026-11-03", "18:00", ALL, "2026-11-03-player-stephen-curry"),
-    ("2026-11-04", "18:00", ALL, "2026-11-04-player-jalen-duren"),
-    ("2026-11-05", "18:00", ALL, "2026-11-05-player-anthony-edwards"),
 ]
 
 

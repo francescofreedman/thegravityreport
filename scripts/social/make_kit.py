@@ -501,6 +501,100 @@ def build_the30_kit(date, outdir=None, images=True):
     return kit, outdir
 
 
+# ------------------------------------------------------------------ performance (player of the day)
+#
+# Player of the day = someone who just played a big game: last night's line first, then a few
+# GRAVITY numbers. Box scores come from ESPN's public JSON; the raw box score is saved with the kit
+# as source.json and the number guard checks every number against it + the player's 644 record.
+# The Worker (social/potd.js) does the same thing automatically every morning; this is for picking
+# a player by hand.
+
+ESPN_SUMMARY = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={}"
+
+
+def norm_name(n):
+    n = unicodedata.normalize("NFKD", n).encode("ascii", "ignore").decode().lower()
+    n = re.sub(r"[^a-z ]", "", n)
+    return re.sub(r"\s+(jr|sr|ii|iii|iv)$", "", n).strip()
+
+
+def box_line(summary, name):
+    """The player's box score line + game context from an ESPN summary, or None."""
+    comp = summary["header"]["competitions"][0]
+    for team in summary["boxscore"]["players"]:
+        st = team["statistics"][0]
+        for a in st["athletes"]:
+            if norm_name(a["athlete"]["displayName"]) != norm_name(name) or not a.get("stats"):
+                continue
+            line = dict(zip(st["names"], a["stats"]))
+            me = next(c for c in comp["competitors"] if c["team"]["id"] == team["team"]["id"])
+            opp = next(c for c in comp["competitors"] if c["team"]["id"] != team["team"]["id"])
+            return {"line": line, "home": me["homeAway"] == "home", "won": bool(me.get("winner")),
+                    "score": f"{me['score']}–{opp['score']}" if me.get("winner") else f"{opp['score']}–{me['score']}",
+                    "opp": opp["team"]["name"], "opp_city": opp["team"]["location"]}
+    return None
+
+
+def perf_sentence(name, g):
+    L = g["line"]
+    bits = [f"{L['PTS']} points"]
+    if int(L["REB"]) >= 8:
+        bits.append(f"{L['REB']} rebounds")
+    if int(L["AST"]) >= 6:
+        bits.append(f"{L['AST']} assists")
+    fg, fga = L["FG"].split("-")
+    bits.append(f"{fg}-of-{fga} shooting")
+    t3, t3a = L["3PT"].split("-")
+    if int(t3) >= 4:
+        bits.append(f"{t3}-of-{t3a} from three")
+    stats = ", ".join(bits[:-1]) + " and " + bits[-1] if len(bits) > 1 else bits[0]
+    where = f"over the {g['opp']}" if g["won"] else f"to the {g['opp']}"
+    res = f"in a {g['score']} win {where}" if g["won"] else f"in a {g['score']} loss {where}"
+    return f"{name} last night: {stats} {res}."
+
+
+def perf_texts(p, team, g, n=644):
+    url = f"{SITE_URL}/players/{p['slug']}/"
+    first = perf_sentence(p["n"], g)
+    grav = (f"In The 644 he's #{p['r']} of {n}, GRAVITY score {p['s']:.1f} (50 is a league-average minute)."
+            if not p.get("rk") else f"In The 644 he's #{p['r']} of {n} as a rookie, GRAVITY score {p['s']:.1f}.")
+    last = ""
+    if not p.get("rk") and p.get("pp") is not None and p.get("ts") is not None:
+        last = f"Last season: {p['pp']:.1f} points a game on {fmt_ts(p['ts'])} true shooting."
+    return first, grav, last, url
+
+
+def build_performance_kit(slug, event_id, date, outdir=None, images=True, summary=None):
+    import urllib.request
+    idx = {x["slug"]: x for x in load("players/index.json")["players"]}
+    t644 = load("content/the644.json")
+    ref = idx[slug]
+    p = dict(next(x for x in t644["players"] if x["r"] == ref["r"]))
+    p["slug"] = slug
+    if summary is None:
+        with urllib.request.urlopen(ESPN_SUMMARY.format(event_id)) as r:
+            summary = json.load(r)
+    g = box_line(summary, p["n"])
+    if not g:
+        raise ValueError(f"{p['n']} not in the box score of game {event_id}")
+    first, grav, last, url = perf_texts(p, ref["team"], g, len(t644["players"]))
+    x_posts = [first, "\n\n".join(x for x in [grav, last] if x) + f"\n\nFull profile: {url}"]
+    threads = "\n\n".join(x for x in [first, grav, last, url] if x)
+    ig = "\n\n".join(x for x in [first, grav, last, "Every player's page is free. Link in bio.", "#NBA"] if x)
+    kit = {"kind": "player", "slug": slug, "date": date, "url": url, "title": f"{p['n']}: player of the day",
+           "x_thread": x_posts, "bluesky_thread": x_posts, "threads": threads, "instagram_caption": ig, "reddit": None,
+           "images": {"card": f"/players/{slug}/card.png", "carousel": []},
+           "alt": {"card": f"{p['n']}, #{p['r']} of 644 in The 644, GRAVITY score {p['s']:.1f}. {ref['team']}."},
+           "source": {"espn_event": str(event_id), "url": ESPN_SUMMARY.format(event_id), "line": g["line"]}}
+    guard(x_posts + [threads, ig], json.dumps(p) + " " + json.dumps(g, ensure_ascii=False) + " 644")
+    check_limits(kit)
+    outdir = outdir or os.path.join(ROOT, "social", "kits", f"{date}-player-{slug}")
+    write_kit(kit, outdir)
+    with open(os.path.join(outdir, "source.json"), "w", encoding="utf-8") as f:
+        json.dump({"espn_event": str(event_id), "boxscore_line": g}, f, ensure_ascii=False, indent=1)
+    return kit, outdir
+
+
 def write_kit(kit, outdir):
     os.makedirs(outdir, exist_ok=True)
     with open(os.path.join(outdir, "kit.json"), "w", encoding="utf-8") as f:
@@ -521,7 +615,8 @@ def write_kit(kit, outdir):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("kind", choices=["article", "player", "edition", "the30"])
+    ap.add_argument("kind", choices=["article", "player", "edition", "the30", "performance"])
+    ap.add_argument("--game", help="ESPN event id (performance kits)")
     ap.add_argument("slug", nargs="?")
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--no-images", action="store_true")
@@ -532,6 +627,8 @@ def main(argv=None):
         kit, out = build_article_kit(a.slug, a.date, images=not a.no_images, frame=a.frame)
     elif a.kind == "player":
         kit, out = build_player_kit(a.slug, a.date, images=not a.no_images)
+    elif a.kind == "performance":
+        kit, out = build_performance_kit(a.slug, a.game, a.date, images=not a.no_images)
     elif a.kind == "the30":
         kit, out = build_the30_kit(a.date, images=not a.no_images)
     else:

@@ -1,9 +1,0 @@
-# r/Thunder (post by hand; read the sub's rules first)
-
-**Title:** Where Shai Gilgeous-Alexander ranks among all 644 NBA players
-
-**Body:**
-
-#2 of 644 in The 644: Shai Gilgeous-Alexander (Oklahoma City Thunder, PG). GRAVITY score 92.9. 50 is a league-average minute; 60+ a quality starter; 80+ a franchise engine. 2025–26: 33.4% usage, .665 true shooting, Box Plus/Minus +11.7.
-
-https://thegravityreport.com/players/shai-gilgeous-alexander/

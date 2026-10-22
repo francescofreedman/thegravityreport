@@ -1,9 +1,0 @@
-# r/sixers (post by hand; read the sub's rules first)
-
-**Title:** Where Tyrese Maxey ranks among all 644 NBA players
-
-**Body:**
-
-#10 of 644 in The 644: Tyrese Maxey (Philadelphia 76ers, PG). GRAVITY score 67.3. 50 is a league-average minute; 60+ a quality starter; 80+ a franchise engine. 2025–26: 29.4% usage, .588 true shooting, Box Plus/Minus +5.4.
-
-https://thegravityreport.com/players/tyrese-maxey/

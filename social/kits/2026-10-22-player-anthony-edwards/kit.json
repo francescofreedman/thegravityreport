@@ -1,0 +1,45 @@
+{
+ "kind": "player",
+ "slug": "anthony-edwards",
+ "date": "2026-10-22",
+ "url": "https://thegravityreport.com/players/anthony-edwards/",
+ "title": "Anthony Edwards: player of the day",
+ "x_thread": [
+  "Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from three in a 131–106 win over the Heat.",
+  "In The 644 he's #22 of 644, GRAVITY score 63.1 (50 is a league-average minute).\n\nLast season: 28.8 points a game on .617 true shooting.\n\nFull profile: https://thegravityreport.com/players/anthony-edwards/"
+ ],
+ "bluesky_thread": [
+  "Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from three in a 131–106 win over the Heat.",
+  "In The 644 he's #22 of 644, GRAVITY score 63.1 (50 is a league-average minute).\n\nLast season: 28.8 points a game on .617 true shooting.\n\nFull profile: https://thegravityreport.com/players/anthony-edwards/"
+ ],
+ "threads": "Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from three in a 131–106 win over the Heat.\n\nIn The 644 he's #22 of 644, GRAVITY score 63.1 (50 is a league-average minute).\n\nLast season: 28.8 points a game on .617 true shooting.\n\nhttps://thegravityreport.com/players/anthony-edwards/",
+ "instagram_caption": "Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from three in a 131–106 win over the Heat.\n\nIn The 644 he's #22 of 644, GRAVITY score 63.1 (50 is a league-average minute).\n\nLast season: 28.8 points a game on .617 true shooting.\n\nEvery player's page is free. Link in bio.\n\n#NBA",
+ "reddit": null,
+ "images": {
+  "card": "/players/anthony-edwards/card.png",
+  "carousel": []
+ },
+ "alt": {
+  "card": "Anthony Edwards, #22 of 644 in The 644, GRAVITY score 63.1. Minnesota Timberwolves."
+ },
+ "source": {
+  "espn_event": "401909091",
+  "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909091",
+  "line": {
+   "MIN": "33",
+   "PTS": "45",
+   "FG": "16-29",
+   "3PT": "9-17",
+   "FT": "4-5",
+   "REB": "10",
+   "AST": "3",
+   "TO": "4",
+   "STL": "2",
+   "BLK": "1",
+   "OREB": "0",
+   "DREB": "10",
+   "PF": "1",
+   "+/-": "+25"
+  }
+ }
+}
