@@ -1,6 +1,12 @@
 {
  "kits": [
   {
+   "id": "2026-11-05-player-anthony-edwards",
+   "kind": "player",
+   "title": "Anthony Edwards",
+   "date": "2026-11-05"
+  },
+  {
    "id": "2026-11-04-player-jalen-duren",
    "kind": "player",
    "title": "Jalen Duren",

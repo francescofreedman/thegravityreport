@@ -420,6 +420,26 @@
    "at": "2026-11-04T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-04-player-jalen-duren"
+  },
+  {
+   "at": "2026-11-05T23:00:00Z",
+   "platform": "x",
+   "kit": "2026-11-05-player-anthony-edwards"
+  },
+  {
+   "at": "2026-11-05T23:00:00Z",
+   "platform": "bluesky",
+   "kit": "2026-11-05-player-anthony-edwards"
+  },
+  {
+   "at": "2026-11-05T23:00:00Z",
+   "platform": "threads",
+   "kit": "2026-11-05-player-anthony-edwards"
+  },
+  {
+   "at": "2026-11-05T23:00:00Z",
+   "platform": "instagram",
+   "kit": "2026-11-05-player-anthony-edwards"
   }
  ]
 }

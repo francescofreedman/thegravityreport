@@ -209,3 +209,15 @@ GRAVITY score 65.9 (50 is a leag… |
 | Wed Nov 4, 6:00 PM | Instagram | Jalen Duren | #14 of 644 in The 644: Jalen Duren (Detroit Pistons, C).
 
 GRAVITY score 65.9 (50 is a leag… |
+| Thu Nov 5, 6:00 PM | X | Anthony Edwards | #22 of 644 in The 644: Anthony Edwards (Minnesota Timberwolves, SG).
+
+GRAVITY score 63.1 (… |
+| Thu Nov 5, 6:00 PM | Bluesky | Anthony Edwards | #22 of 644 in The 644: Anthony Edwards (Minnesota Timberwolves, SG).
+
+GRAVITY score 63.1 (… |
+| Thu Nov 5, 6:00 PM | Threads | Anthony Edwards | #22 of 644 in The 644: Anthony Edwards (Minnesota Timberwolves, SG).
+
+GRAVITY score 63.1 (… |
+| Thu Nov 5, 6:00 PM | Instagram | Anthony Edwards | #22 of 644 in The 644: Anthony Edwards (Minnesota Timberwolves, SG).
+
+GRAVITY score 63.1 (… |

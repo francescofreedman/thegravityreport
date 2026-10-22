@@ -49,6 +49,7 @@ PLAN = [
     ("2026-11-02", "18:00", ALL, "2026-11-02-player-chet-holmgren"),
     ("2026-11-03", "18:00", ALL, "2026-11-03-player-stephen-curry"),
     ("2026-11-04", "18:00", ALL, "2026-11-04-player-jalen-duren"),
+    ("2026-11-05", "18:00", ALL, "2026-11-05-player-anthony-edwards"),
 ]
 
 
