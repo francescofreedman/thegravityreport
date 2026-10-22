@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Post schedule — The Gravity Report</title>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/fonts.css">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:18px}
+.bar label{display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:12px;font-weight:600}
+.bar input[type=password]{height:44px;border:1px solid var(--ink);padding:0 12px;font-size:16px;min-width:240px}
+button{min-height:40px;padding:0 14px;border:1px solid var(--ink);background:#fff;font-family:var(--mono);font-size:13px;cursor:pointer}
+button.go{background:var(--accent);border-color:var(--accent);color:#fff}
+#msg{font-family:var(--mono);font-size:13px;margin-top:12px;min-height:1.4em}
+.banner{padding:12px 16px;border:2px solid var(--ink);margin-top:16px;font-size:15px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.filters button[aria-pressed=true]{background:var(--ink);color:#fff}
+.day{margin-top:36px}
+.day h2{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid var(--ink);padding-bottom:6px;margin:0}
+.post{border-bottom:1px solid var(--rule-lt);padding:18px 0}
+.post-head{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.post-head .t{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent)}
+.post-head .k{font-weight:700;font-size:18px}
+.post-head .kind{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:12px}
+.pv{border:1px solid var(--rule-lt);border-radius:12px;padding:12px;background:#fff;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pv-top{display:flex;align-items:center;gap:8px}
+.pv-top img{width:32px;height:32px;border-radius:50%}
+.pv-top .nm{font-weight:700;font-size:14px;line-height:1.1}
+.pv-top .hd{font-size:12px;color:var(--muted)}
+.pv-top .pl{margin-left:auto;font-family:var(--mono);font-size:11px;font-weight:600}
+.pv-body{font-size:14px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere}
+.pv-body .n{display:block;border-left:3px solid var(--rule-lt);padding-left:8px;margin:8px 0}
+.pv-img{width:100%;border-radius:8px;border:1px solid var(--rule-xlt)}
+.car{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory}
+.car img{flex:0 0 80%;scroll-snap-align:start;width:80%;border-radius:6px;border:1px solid var(--rule-xlt)}
+.pv-foot{display:flex;align-items:center;gap:8px;margin-top:auto;flex-wrap:wrap}
+.st{font-family:var(--mono);font-size:11px;font-weight:600;padding:2px 6px;border:1px solid currentColor}
+.st-scheduled{color:var(--accent)}.st-posted{color:#0A7A3A}.st-failed{color:#B00020}.st-stopped{color:#999}.st-notconnected{color:#7A5A00}.st-simulated{color:#7A5A00}
+.pv.stopped{opacity:.45}
+details.more summary{cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="site-head"><div class="wrap"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span><span class="brand-name">The Gravity Report</span></a><nav class="nav" aria-label="Admin"><a href="/admin/schedule/">Schedule</a><a href="/admin/">Queue</a></nav></div></header>
+<main id="main"><div class="wrap">
+<section class="page-head"><div class="kicker">Admin · not public</div><h1 class="h-l">Post schedule</h1>
+<p class="lede">Every post below goes out on its own at its time. Nothing to approve. To stop one, unlock and press <b>Stop</b>.</p>
+<form class="bar" id="keyform"><label>ADMIN KEY<input type="password" id="key" autocomplete="off" required></label><button type="submit" class="go">Unlock</button><button type="button" id="lock">Lock</button></form>
+<div id="msg" role="status" aria-live="polite"></div>
+<div id="status"></div>
+<div class="filters" id="filters">
+<button type="button" data-f="upcoming" aria-pressed="true">Upcoming</button>
+<button type="button" data-f="all" aria-pressed="false">All</button>
+<button type="button" data-f="x" aria-pressed="false">X</button>
+<button type="button" data-f="bluesky" aria-pressed="false">Bluesky</button>
+<button type="button" data-f="threads" aria-pressed="false">Threads</button>
+<button type="button" data-f="instagram" aria-pressed="false">Instagram</button>
+</div>
+</section>
+<div id="days"><p class="muted">Loading the schedule…</p></div>
+</div></main>
+<script src="/admin/schedule/schedule.js"></script>
+</body>
+</html>

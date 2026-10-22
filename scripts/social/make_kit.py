@@ -248,9 +248,28 @@ def pub_date(iso):
     return f"{d.strftime('%B')} {d.day}"
 
 
+def short_article(slug):
+    """A short Article's JSON front matter + body text, or None."""
+    path = os.path.join(ROOT, "content", "short", slug + ".md")
+    if not os.path.exists(path):
+        return None, ""
+    raw = open(path, encoding="utf-8").read()
+    _, head, body = raw.split("---\n", 2)
+    a = json.loads(head)
+    a.setdefault("web", f"/articles/{slug}/")
+    a.setdefault("format", "short")
+    a.setdefault("kicker", "Article")
+    return a, body
+
+
 def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
     arts = load("content/articles.json")
-    a = next(x for x in arts if x["slug"] == slug)
+    a = next((x for x in arts if x["slug"] == slug), None)
+    short_body = ""
+    if a is None:
+        a, short_body = short_article(slug)
+        if a is None:
+            raise KeyError(f"no article {slug}")
     s = a["social"]
     ledger = {e["id"]: e for e in load("content/ledger.json")["entries"]}
     url = SITE_URL + a["web"]
@@ -272,10 +291,15 @@ def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
     else:
         call_label = "Our calls, registered before tip-off and graded in public:"
         ig_call_label = "Our calls, registered before tip-off:"
-        closer = f"The full article, in plain language ({a['pages']} pages):\n{url}"
+        closer = (f"The full article, in plain language ({a['pages']} pages):\n{url}" if a.get("pages")
+                  else f"The full article, free:\n{url}")
         x_posts = [s["hook"]] + list(s["points"])
+    shown = calls[:4]
     if calls:
-        lines = "\n".join(f"{c['p']}%  {c.get('box', c['claim'])}" for c in calls)
+        lines = "\n".join(f"{c['p']}%  {c.get('box', c['claim'])}" for c in shown)
+        if len(calls) > len(shown):
+            lines += f"\n…and {len(calls) - len(shown)} more, all on the public ledger."
+            extra_source += f" {len(calls) - len(shown)}"
         x_posts.append(call_label + "\n" + lines)
     x_posts.append(closer)
     lead = f"{opener}\n\n{s['hook']}" if tracking else s["hook"]
@@ -284,7 +308,9 @@ def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
         threads = f"{lead}\n\nRead it: {url}"
     ig = "\n\n".join(x_posts[:len(x_posts) - (2 if calls else 1)])
     if calls:
-        ig += f"\n\n{ig_call_label}\n" + "\n".join(f"{c['p']}% · {c.get('box', c['claim'])}" for c in calls)
+        ig += f"\n\n{ig_call_label}\n" + "\n".join(f"{c['p']}% · {c.get('box', c['claim'])}" for c in shown)
+        if len(calls) > len(shown):
+            ig += f"\n…and {len(calls) - len(shown)} more on the ledger."
     ig += (f"\n\nThe full piece, from {pub_date(a['date'])}, is free. Link in bio.\n\n#NBA" if tracking
            else "\n\nThe full article is free. Link in bio.\n\n#NBA")
     sub = SUBREDDITS.get(s.get("team", ""), "nbadiscussion")
@@ -312,25 +338,27 @@ def build_article_kit(slug, date, outdir=None, images=True, frame="news"):
             "ig-1080x1350-1.png": f"{a['title']}: {a['dek']}",
             "ig-1080x1350-2.png": f"{s['big']['value']} — {s['big']['label']}.",
             "ig-1080x1350-3.png": ("Registered forecasts as probability bars: " + "; ".join(
-                f"{c.get('box', c['claim'])}, {c['p']}%" for c in calls) + ".") if calls else s["points"][-1],
+                f"{c.get('box', c['claim'])}, {c['p']}%" for c in shown) + ".") if calls else s["points"][-1],
             "ig-1080x1350-4.png": f"Read {a['title']} free at thegravityreport.com. Link in bio.",
         },
     }
     texts = x_posts + [threads, ig, reddit] + list(kit["alt"].values()) + [s["big"]["value"], s["big"]["label"]]
-    guard(texts, article_source(slug) + " " + extra_source)
+    src = article_source(slug) if not short_body else short_body + " " + json.dumps(a, ensure_ascii=False) + " " + " ".join(
+        json.dumps(e, ensure_ascii=False) for e in load("content/ledger.json")["entries"] if e["id"] in a.get("ledger", []))
+    guard(texts, src + " " + extra_source)
     check_limits(kit)
     if outdir is None:
         outdir = os.path.join(ROOT, "social", "kits", f"{date}-article-{slug}")
     write_kit(kit, outdir)
     if images:
-        label = "ARTICLE" if a.get("format") == "short" else f"DEEP DIVE №{a['n']}"
+        label = "ARTICLE" if a.get("format") == "short" or "n" not in a else f"DEEP DIVE №{a['n']}"
         landscape(os.path.join(outdir, "card-1200x675.png"), a["kicker"].upper(), a["title"], a["dek"], label,
                   "THEGRAVITYREPORT.COM" + a["web"].upper().rstrip("/"))
         ig_cover(os.path.join(outdir, "ig-1080x1350-1.png"), a["kicker"].upper(), a["title"], a["dek"], label, "1/4")
         ig_fact(os.path.join(outdir, "ig-1080x1350-2.png"), s["big"]["value"], s["big"]["label"], label, "2/4")
         if calls:
             ig_bars(os.path.join(outdir, "ig-1080x1350-3.png"), "What we think happens next",
-                    [(c.get("box", c["claim"]), c["p"]) for c in calls], "3/4",
+                    [(c.get("box", c["claim"]), c["p"]) for c in shown], "3/4",
                     "The black tick marks 50%, a coin flip.")
         else:
             ig_fact(os.path.join(outdir, "ig-1080x1350-3.png"), s["big"]["value"], s["points"][-1], label, "3/4")
@@ -438,6 +466,41 @@ def build_ledger_kit(rows, as_of, date, outdir=None, images=True, source_text=""
     return kit, outdir
 
 
+def build_the30_kit(date, outdir=None, images=True):
+    """The 30 (team rankings by TORQUE): the current edition's top 10 in two posts."""
+    d = load("the30/torque-2026-27.json")
+    t = d["teams"]
+    url = SITE_URL + "/the30/"
+    line = lambda x: f"{x['rank']}. {x['team']} {x['torque']:.1f}"
+    head = "The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update."
+    p1 = head + "\n\n" + "\n".join(line(x) for x in t[:5])
+    p2 = "\n".join(line(x) for x in t[5:10]) + f"\n\nAll 30, with each team's top three players:\n{url}"
+    ig = p1 + "\n" + "\n".join(line(x) for x in t[5:10]) + "\n\nAll 30 at the link in bio.\n\n#NBA"
+    kit = {"kind": "edition", "slug": "the30", "date": date, "url": url, "title": "The 30",
+           "x_thread": [p1, p2], "bluesky_thread": [p1, p2], "threads": p1 + f"\n\n{url}",
+           "instagram_caption": ig, "reddit": None,
+           "images": {"card": "/cards/the30.png", "carousel": []},
+           "alt": {"card": "The 30: every NBA team ranked by TORQUE."}}
+    guard([p1, p2, ig], json.dumps(d, ensure_ascii=False))
+    check_limits(kit)
+    outdir = outdir or os.path.join(ROOT, "social", "kits", f"{date}-edition-the30")
+    write_kit(kit, outdir)
+    if images:
+        img, dr, _, _ = ig_frame()
+        dr.text((72, 230), "THE 30 · OPENING NIGHT 2026–27", font=cl.mono(26, 600), fill=cl.ACCENT)
+        y = cl.draw_lines(dr, (66, 280), ["Every team,", "one number."], cl.archivo(96), cl.INK, 98) + 30
+        for x in t[:10]:
+            dr.text((72, y), f"{x['rank']:>2}", font=cl.mono(34, 600), fill=cl.MUTED)
+            dr.text((150, y - 4), x["team"], font=cl.archivo(40, 700, 100), fill=cl.INK)
+            dr.text((1008, y), f"{x['torque']:.1f}", font=cl.mono(34, 600), fill=cl.ACCENT, anchor="ra")
+            y += 64
+        cl.band(img, dr, 1350 - 96, 96, "THE GRAVITY REPORT", "THEGRAVITYREPORT.COM/THE30")
+        cl.save(img, os.path.join(outdir, "ig-1080x1350-1.png"))
+        kit["images"]["carousel"] = ["ig-1080x1350-1.png"]
+        write_kit(kit, outdir)
+    return kit, outdir
+
+
 def write_kit(kit, outdir):
     os.makedirs(outdir, exist_ok=True)
     with open(os.path.join(outdir, "kit.json"), "w", encoding="utf-8") as f:
@@ -458,7 +521,7 @@ def write_kit(kit, outdir):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("kind", choices=["article", "player", "edition"])
+    ap.add_argument("kind", choices=["article", "player", "edition", "the30"])
     ap.add_argument("slug", nargs="?")
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--no-images", action="store_true")
@@ -469,6 +532,8 @@ def main(argv=None):
         kit, out = build_article_kit(a.slug, a.date, images=not a.no_images, frame=a.frame)
     elif a.kind == "player":
         kit, out = build_player_kit(a.slug, a.date, images=not a.no_images)
+    elif a.kind == "the30":
+        kit, out = build_the30_kit(a.date, images=not a.no_images)
     else:
         # a new 644 edition: the edition card + the top-10 post
         idx = load("players/index.json")

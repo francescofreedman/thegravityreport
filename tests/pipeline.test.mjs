@@ -285,3 +285,20 @@ test("schedule file: every row names a real kit, a known platform and a valid ti
     assert.ok(!Number.isNaN(Date.parse(r.at)), r.at);
   }
 });
+
+test("dashboard: cancel stops a scheduled post for good; restore brings it back", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0" });
+  await P.ensureSocialSchema(e);
+  const calls = [];
+  const adapters = { ...P.ADAPTERS, bluesky: okAdapter("bluesky", calls) };
+  const schedule = { posts: [{ at: "2026-10-22T16:00:00Z", platform: "bluesky", kit: KIT }] };
+  // cancelled before the cron ever saw it
+  assert.equal(await P.cancelScheduled(e, KIT, "bluesky", T0), 1);
+  await P.syncSchedule(e, T0, { adapters, schedule });
+  await P.runScheduled(e, Date.parse("2026-10-22T16:00:00Z"), { adapters });
+  assert.equal(calls.length, 0, "cancelled post never goes out, even though it's still in the schedule");
+  assert.equal(await P.restoreScheduled(e, KIT, "bluesky"), 1);
+  await P.syncSchedule(e, Date.parse("2026-10-22T16:05:00Z"), { adapters, schedule });
+  await P.runScheduled(e, Date.parse("2026-10-22T16:05:00Z"), { adapters });
+  assert.equal(calls.length, 1);
+});

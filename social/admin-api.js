@@ -2,6 +2,7 @@
 // If ADMIN_KEY is not set, the whole admin API is off (503).
 import {
   ensureSocialSchema, importKit, approve, approveWeek, setStatus, schedule, setSetting, queueView, runScheduled,
+  cancelScheduled, restoreScheduled,
 } from "./pipeline.js";
 
 function json(data, status = 200) {
@@ -46,6 +47,8 @@ export async function handleAdmin(request, env, deps = {}) {
       case "retry": return json({ ok: true, changed: await setStatus(env, id, "approved", ["failed", "held"]) });
       case "schedule": return json({ ok: true, changed: await schedule(env, id, String(b.scheduled_at || "")) });
       case "settings": await setSetting(env, String(b.key), String(b.value)); return json({ ok: true });
+      case "cancel": return json({ ok: true, changed: await cancelScheduled(env, String(b.kit || ""), String(b.platform || "")) });
+      case "restore": return json({ ok: true, changed: await restoreScheduled(env, String(b.kit || ""), String(b.platform || "")) });
       case "run-now": return json({ ok: true, report: await runScheduled(env, Date.now(), deps) });
       default: return json({ ok: false, error: "not found" }, 404);
     }

@@ -235,6 +235,27 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
   return added;
 }
 
+// Dashboard: stop one scheduled post (it stays stopped even though it's still in schedule.json),
+// or bring it back. A row the cron hasn't copied in yet is created as cancelled.
+export async function cancelScheduled(env, kitId, platform, nowMs = Date.now()) {
+  if (!PLATFORMS.includes(platform) || !/^[a-z0-9-]+$/.test(kitId)) throw new Error("bad kit or platform");
+  const r = await env.DB.prepare("UPDATE social_queue SET status = 'cancelled' WHERE kit_id = ? AND platform = ? AND status IN ('draft', 'approved', 'simulated', 'skipped', 'held')")
+    .bind(kitId, platform).run();
+  if (r.meta && r.meta.changes) return r.meta.changes;
+  const exists = await env.DB.prepare("SELECT id FROM social_queue WHERE kit_id = ? AND platform = ?").bind(kitId, platform).first();
+  if (exists) return 0; // already posted, failed or cancelled
+  const kit = await assetJson(env, `/social/kits/${kitId}/kit.json`);
+  await env.DB.prepare("INSERT INTO social_queue (kit_id, platform, payload, scheduled_at, status, created_at) VALUES (?, ?, ?, NULL, 'cancelled', ?)")
+    .bind(kitId, platform, JSON.stringify(payloadsFromKit(kitId, kit)[platform]), iso(nowMs)).run();
+  return 1;
+}
+
+export async function restoreScheduled(env, kitId, platform) {
+  const r = await env.DB.prepare("UPDATE social_queue SET status = 'approved', error = NULL WHERE kit_id = ? AND platform = ? AND status = 'cancelled'")
+    .bind(kitId, platform).run();
+  return (r.meta && r.meta.changes) || 0;
+}
+
 export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTERS, fetchImpl = fetch } = {}) {
   await ensureSocialSchema(env);
   const report = { potd: null, schedule: 0, processed: [] };

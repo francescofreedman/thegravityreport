@@ -85,6 +85,18 @@
    "date": "2026-10-22"
   },
   {
+   "id": "2026-10-21-edition-the30",
+   "kind": "edition",
+   "title": "The 30",
+   "date": "2026-10-21"
+  },
+  {
+   "id": "2026-10-21-article-predictions",
+   "kind": "article",
+   "title": "The 2026–27 Gravity Report Predictions",
+   "date": "2026-10-21"
+  },
+  {
    "id": "2026-10-20-article-queta",
    "kind": "article",
    "title": "The Queta Problem",
