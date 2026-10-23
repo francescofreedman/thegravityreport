@@ -173,8 +173,12 @@ test("player of the day: last night's best game, real numbers, queued for 10 AM 
   assert.deepEqual(rows.map((r) => r.platform).sort(), ["bluesky", "instagram", "threads", "x"]);
   assert.ok(rows.every((r) => r.status === "approved" && r.scheduled_at === "2026-10-22T14:00:00.000Z"));
   const x = JSON.parse(rows.find((r) => r.platform === "x").payload).posts;
-  assert.equal(x[0], "Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from three in a 131–106 win over the Heat.");
-  assert.match(x[1], /^In The 644 he's #22 of 644, GRAVITY score 63\.1/);
+  assert.match(x[0], /Anthony Edwards/);
+  assert.match(x[0], /45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from three/);
+  assert.match(x[0], /131–106/);
+  assert.match(x[0], /Heat/);
+  assert.match(x[1], /#22/);
+  assert.match(x[1], /63\.1/);
 });
 
 test("player of the day: a player picked by hand for that day wins; potd_on=0 turns it off", async () => {
@@ -702,4 +706,22 @@ test("health view: public, no post text, shows last error per platform", async (
   assert.equal(h.platforms.bluesky.last_error, "bluesky 402: Payment Required");
   assert.deepEqual(h.platforms.bluesky.recent, ["failed@2026-10-22T23:45"]);
   assert.ok(!JSON.stringify(h).includes("Kawhi"), "no post text leaks");
+});
+
+test("player of the day: phrasing rotates by day, numbers never change", async () => {
+  const { potdKitFromPerformance, linesFromSummary } = await import("../social/potd.js");
+  const g = linesFromSummary(SUMMARY).find((l) => l.name === "Anthony Edwards");
+  const p = { n: "Anthony Edwards", slug: "anthony-edwards", r: 22, s: 63.1, pp: 28.8, ts: 0.617, tier: 3, rk: false };
+  const openers = new Set(), seconds = new Set();
+  for (let d = 22; d < 32; d++) {
+    const k = potdKitFromPerformance(p, "Minnesota Timberwolves", g, "https://thegravityreport.com", 644, { date: `2026-10-${d}`, tiers: { "3": "All-Star tier" } });
+    openers.add(k.x_thread[0].split(" ").slice(0, 3).join(" "));
+    seconds.add(k.x_thread[1].split("\n")[0]);
+    assert.match(k.x_thread[0], /45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from three/);
+    assert.match(k.x_thread[1], /#22/);
+    assert.match(k.x_thread[1], /63\.1/);
+    assert.ok(k.x_thread.every((t) => t.length <= 280), "within X's limit");
+  }
+  assert.ok(openers.size >= 3, "at least three different openers in ten days: " + [...openers].join(" | "));
+  assert.ok(seconds.size >= 3);
 });

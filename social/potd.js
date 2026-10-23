@@ -62,7 +62,15 @@ export function linesFromSummary(summary) {
 
 const fmtTs = (x) => { const s = Number(x).toFixed(3); return s.startsWith("0") ? s.slice(1) : s; };
 
-export function potdTexts(p, g, siteUrl, n = 644) {
+// Phrasings rotate by day (seeded by the date and the player) so consecutive posts don't read alike.
+function seedOf(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+  return h;
+}
+const pick = (arr, seed, salt) => arr[(seed + salt) % arr.length];
+
+export function potdTexts(p, g, siteUrl, n = 644, { seed = 0, tiers = null } = {}) {
   const L = g.line;
   const bits = [`${L.PTS} points`];
   if (num(L.REB) >= 8) bits.push(`${L.REB} rebounds`);
@@ -70,16 +78,44 @@ export function potdTexts(p, g, siteUrl, n = 644) {
   const [fg, fga] = split(L.FG); bits.push(`${fg}-of-${fga} shooting`);
   const [t3, t3a] = split(L["3PT"]); if (t3 >= 4) bits.push(`${t3}-of-${t3a} from three`);
   const stats = bits.length > 1 ? bits.slice(0, -1).join(", ") + " and " + bits[bits.length - 1] : bits[0];
-  const first = `${p.n} last night: ${stats} in a ${g.score} ${g.won ? "win over" : "loss to"} the ${g.opp}.`;
-  const grav = p.rk ? `In The 644 he's #${p.r} of ${n} as a rookie, GRAVITY score ${Number(p.s).toFixed(1)}.`
-    : `In The 644 he's #${p.r} of ${n}, GRAVITY score ${Number(p.s).toFixed(1)} (50 is a league-average minute).`;
-  const last = !p.rk && p.pp != null && p.ts != null ? `Last season: ${Number(p.pp).toFixed(1)} points a game on ${fmtTs(p.ts)} true shooting.` : "";
+  const res = g.won ? `${g.score} win over the ${g.opp}` : `${g.score} loss to the ${g.opp}`;
+  const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+  const first = pick([
+    `${p.n} last night: ${stats} in a ${res}.`,
+    `${cap(stats)} for ${p.n} in last night's ${res}.`,
+    `The best game of the night was ${p.n}'s: ${stats} in a ${res}.`,
+    `${p.n} put up ${stats} on the ${g.opp} last night, a ${g.score} ${g.won ? "win" : "loss"}.`,
+    `Nobody had a better night than ${p.n}: ${stats} in a ${res}.`,
+  ], seed, 0);
+  const score = Number(p.s).toFixed(1);
+  const tierName = tiers && p.tier != null ? tiers[String(p.tier)] : null;
+  const grav = p.rk
+    ? pick([
+      `In The 644 he's #${p.r} of ${n} as a rookie, GRAVITY score ${score}.`,
+      `We rank him #${p.r} of ${n} in The 644, as a rookie, with a GRAVITY score of ${score}.`,
+    ], seed, 1)
+    : pick([
+      `In The 644 he's #${p.r} of ${n}, GRAVITY score ${score} (50 is a league-average minute).`,
+      `We rank him #${p.r} of ${n} in The 644, with a GRAVITY score of ${score}; 50 is a league-average minute.`,
+      `His place in The 644, our ranking of every NBA player: #${p.r}, with a score of ${score} (50 is a league-average minute).`,
+      tierName ? `#${p.r} of ${n} in The 644, GRAVITY score ${score}, which puts him in our "${tierName}" tier (50 is a league-average minute).`
+        : `#${p.r} of ${n} in The 644, GRAVITY score ${score} (50 is a league-average minute).`,
+    ], seed, 2);
+  let last = "";
+  if (!p.rk && p.pp != null && p.ts != null) {
+    const pp = Number(p.pp).toFixed(1), ts = fmtTs(p.ts);
+    last = pick([
+      `Last season: ${pp} points a game on ${ts} true shooting.`,
+      `A ${L.PTS}-point night from a player who averaged ${pp} last season, on ${ts} true shooting.`,
+      `For scale, he averaged ${pp} points a game last season, with ${ts} true shooting.`,
+    ], seed, 3);
+  }
   const url = `${siteUrl}/players/${p.slug}/`;
   return { first, grav, last, url };
 }
 
-export function potdKitFromPerformance(p, team, g, siteUrl, n = 644) {
-  const t = potdTexts(p, g, siteUrl, n);
+export function potdKitFromPerformance(p, team, g, siteUrl, n = 644, { date = "", tiers = null } = {}) {
+  const t = potdTexts(p, g, siteUrl, n, { seed: seedOf(date + p.slug), tiers });
   const x = [t.first, [t.grav, t.last].filter(Boolean).join("\n\n") + `\n\nFull profile: ${t.url}`];
   return {
     kind: "player", slug: p.slug, title: `${p.n}: player of the day`,
