@@ -622,13 +622,16 @@ def build_team_kit(code, date, outdir=None, images=True):
     if images:
         team_card(os.path.join(outdir, "card-1200x675.png"), name, rows)
         # Instagram carousel: cover (the post's own angle), the table, one fact, the link
-        dek = re.split(r"(?<=[.!?])\s", kit["x_thread"][0].strip())[0]
+        # hand-written slide lines (social/copy/<kit>.md "## Slides") win over the generated ones
+        sl = kit.get("slides") or []
+        pick = lambda i, default: (sl[i] if i < len(sl) and sl[i] != "-" else default)
+        dek = pick(0, re.split(r"(?<=[.!?])\s", kit["x_thread"][0].strip())[0])
         ig_cover(os.path.join(outdir, "ig-1080x1350-1.png"), "THE 644 ON YOUR TEAM", name, dek, "THE 644", "1/5")
         ig_table(os.path.join(outdir, "ig-1080x1350-2.png"), "THE 644 ON YOUR TEAM", name, rows,
                  "THE 644", "2/5", "GRAVITY score. 50 is a league-average minute.")
-        ig_fact(os.path.join(outdir, "ig-1080x1350-3.png"), f"{torque['torque']:.1f}", torque_label, f"TORQUE · #{torque['rank']} OF 30", "3/5")
-        ig_fact(os.path.join(outdir, "ig-1080x1350-4.png"), f"{best['s']:.1f}", fact_label, "THE BEST ON THE ROSTER", "4/5")
-        ig_cta(os.path.join(outdir, "ig-1080x1350-5.png"), f"Every {name} player, one number.", "thegravityreport.com/the644", "5/5")
+        ig_fact(os.path.join(outdir, "ig-1080x1350-3.png"), f"{torque['torque']:.1f}", pick(1, torque_label), f"TORQUE · #{torque['rank']} OF 30", "3/5")
+        ig_fact(os.path.join(outdir, "ig-1080x1350-4.png"), f"{best['s']:.1f}", pick(2, fact_label), "THE BEST ON THE ROSTER", "4/5")
+        ig_cta(os.path.join(outdir, "ig-1080x1350-5.png"), pick(3, f"Every {name} player, one number."), "thegravityreport.com/the644", "5/5")
     return kit, outdir
 
 
@@ -855,8 +858,11 @@ def copy_override(kit, kit_id, source_text):
         kit["threads"] = block("threads")
     if block("instagram"):
         kit["instagram_caption"] = block("instagram")
+    if block("slides"):
+        # one line per slide, in order: cover dek, TORQUE line, best-player line, closing line (any may be blank with "-")
+        kit["slides"] = [ln.strip() for ln in block("slides").split("\n") if ln.strip()]
     kit["copy"] = os.path.relpath(path, ROOT)
-    guard(kit["x_thread"] + kit["bluesky_thread"] + [kit["threads"], kit["instagram_caption"]], source_text)
+    guard(kit["x_thread"] + kit["bluesky_thread"] + [kit["threads"], kit["instagram_caption"]] + kit.get("slides", []), source_text)
     check_limits(kit)
     return kit
 
