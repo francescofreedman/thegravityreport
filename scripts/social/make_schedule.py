@@ -134,6 +134,11 @@ SERIES = [
     ("From the archive", "Sundays, 12 PM ET, one Deep Dive a week from Sun Nov 1, 2026 (Deep Dive order)",
      "schedule.json (kits `<sunday>-article-<slug>`, make_kit.py article all --date 2026-11-01: tracking frame, angle 2)",
      "`series_archive = 0` in social_settings, or ARCHIVE_START = None in make_schedule.py"),
+    ("Tonight in The 644", "Daily, 5 PM ET (only on days with games)",
+     "Worker, automatic (social/gamenight.js): the evening's games ranked by the best player on each side, with TORQUE's view; X and Bluesky",
+     "`series_tonight = 0` in social_settings"),
+    ("Tip-off", "As it happens, up to 2 a night: a marquee game about to start (both best players top 10, or both teams TORQUE top 6)",
+     "Worker, automatic (social/gamenight.js); X and Bluesky", "`series_tips = 0` in social_settings"),
     ("Instagram + Threads hand-off (not a post)", "15–30 minutes before any Instagram or Threads row is due",
      "Worker, automatic (social/handoff.js): emails the caption, the images and a 3-line how-to to HANDOFF_TO; the row shows "
      "'Sent to your phone'. The Worker never posts to Instagram or Threads itself.",

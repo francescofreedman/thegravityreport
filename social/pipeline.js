@@ -11,13 +11,14 @@ import { etParts, etToUtcMs, prevDate, normName, gameScore, pickBest, potdKitFro
 import { STANDINGS_URL, weekday, addDays, isoWeek, parseStandings, paceTable, paceKit, bestKit, pollPair, pollKits } from "./series.js";
 import { followers } from "./metrics.js";
 import { manualPlatforms, runHandoffs } from "./handoff.js";
+import { SCOREBOARD, TIP_LEAD_MS, TIPS_PER_NIGHT, gamesFromScoreboard, bestByTeam, matchups, tonightKit, tipKit } from "./gamenight.js";
 
 export const ADAPTERS = { x, bluesky, threads, instagram };
 export const PLATFORMS = ["x", "bluesky", "threads", "instagram"];
 export const SITE_URL = "https://thegravityreport.com";
 export const SEASON_START = "2026-10-20";
 // Every recurring series has an off switch: series_<name> = "0" in social_settings (default on).
-export const SERIES = ["team644", "tracker", "pace", "best", "poll", "archive", "metrics"];
+export const SERIES = ["team644", "tracker", "pace", "best", "poll", "archive", "metrics", "tonight", "tips"];
 export const SETTINGS_KEYS = ["potd_on", "potd_auto_approve", "potd_platforms", "potd_hour_utc", ...SERIES.map((s) => `series_${s}`)];
 const DEFAULT_CAPS = { x: 60, bluesky: 300, threads: 200, instagram: 60 };
 
@@ -439,6 +440,80 @@ export async function restoreScheduled(env, kitId, platform) {
   return (r.meta && r.meta.changes) || 0;
 }
 
+// ------------------------------------------------------------------ game nights (social/gamenight.js)
+
+const GAME_PLATFORMS = ["x", "bluesky"]; // Threads is posted by hand, and a tip-off post can't wait for an email
+
+async function scoreboardFor(env, dateStr, fetchImpl, nowMs) {
+  const key = `sb_${dateStr}`;
+  const hit = await env.DB.prepare("SELECT value, ts FROM social_cache WHERE key = ?").bind(key).first();
+  if (hit && nowMs - Date.parse(hit.ts) < 45 * 60 * 1000) return JSON.parse(hit.value);
+  const res = await fetchImpl(SCOREBOARD(dateStr.replace(/-/g, "")));
+  if (!res.ok) throw new Error(`scoreboard ${res.status}`);
+  const games = gamesFromScoreboard(await res.json());
+  await env.DB.prepare("INSERT OR REPLACE INTO social_cache (key, value, ts) VALUES (?, ?, ?)").bind(key, JSON.stringify(games), iso(nowMs)).run();
+  return games;
+}
+
+async function gameContext(env) {
+  const { byName, n } = await players644(env);
+  const torque = await assetJson(env, "/the30/torque-2026-27.json");
+  return { best: bestByTeam(byName), torqueByName: new Map(torque.teams.map((t) => [t.team, t])), n };
+}
+
+// "Tonight": once a day from 5 PM ET, the evening's games ranked by the best player on each side
+export async function maybeQueueTonight(env, nowMs, { fetchImpl = fetch } = {}) {
+  if (env.SOCIAL_SERIES === "0") return null;
+  const s = await getSettings(env);
+  if (seriesOff(s, "tonight")) return null;
+  const { date, hour } = etParts(nowMs);
+  if (hour < 17 || hour > 21) return null;
+  const key = `tonight_${date}`;
+  if (await env.DB.prepare("SELECT value FROM social_settings WHERE key = ?").bind(key).first()) return null;
+  const mark = (v) => env.DB.prepare("INSERT OR REPLACE INTO social_settings (key, value) VALUES (?, ?)").bind(key, String(v)).run();
+  const games = (await scoreboardFor(env, date, fetchImpl, nowMs)).filter((g) => g.tipMs > nowMs - 30 * 60 * 1000);
+  if (!games.length) { await mark("no games"); return null; }
+  const { best, torqueByName, n } = await gameContext(env);
+  const kit = tonightKit(matchups(games, best, torqueByName), SITE_URL, date, n);
+  if (!kit) { await mark("no ranked players"); return null; }
+  const kitId = `tonight-${date}`;
+  await queueSeries(env, kitId, kit, nowMs, nowMs, GAME_PLATFORMS);
+  await mark(kitId);
+  await log(env, nowMs, null, null, "tonight_queued", 0, kit.x_thread[0]);
+  return kitId;
+}
+
+// "Tip-off": a marquee game about to start (both best players top 10, or both teams TORQUE top 6)
+export async function maybeQueueTips(env, nowMs, { fetchImpl = fetch } = {}) {
+  if (env.SOCIAL_SERIES === "0") return [];
+  const s = await getSettings(env);
+  if (seriesOff(s, "tips")) return [];
+  const { date, hour } = etParts(nowMs);
+  if (hour < 12) return [];
+  const countKey = `tips_${date}`;
+  const row = await env.DB.prepare("SELECT value FROM social_settings WHERE key = ?").bind(countKey).first();
+  let count = row ? Number(row.value) : 0;
+  if (count >= TIPS_PER_NIGHT) return [];
+  const games = (await scoreboardFor(env, date, fetchImpl, nowMs)).filter((g) => g.tipMs - nowMs <= TIP_LEAD_MS && g.tipMs - nowMs > -5 * 60 * 1000);
+  if (!games.length) return [];
+  const { best, torqueByName, n } = await gameContext(env);
+  const out = [];
+  for (const m of matchups(games, best, torqueByName)) {
+    if (!m.marquee || count >= TIPS_PER_NIGHT) continue;
+    const key = `tip_${m.id}`;
+    if (await env.DB.prepare("SELECT value FROM social_settings WHERE key = ?").bind(key).first()) continue;
+    const kit = tipKit(m, SITE_URL, n);
+    const kitId = `tip-${m.id}`;
+    await queueSeries(env, kitId, kit, nowMs, nowMs, GAME_PLATFORMS);
+    await env.DB.prepare("INSERT OR REPLACE INTO social_settings (key, value) VALUES (?, ?)").bind(key, kitId).run();
+    count += 1;
+    await env.DB.prepare("INSERT OR REPLACE INTO social_settings (key, value) VALUES (?, ?)").bind(countKey, String(count)).run();
+    await log(env, nowMs, null, null, "tip_queued", 0, kit.x_thread[0]);
+    out.push(kitId);
+  }
+  return out;
+}
+
 export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTERS, fetchImpl = fetch, sendEmail } = {}) {
   await ensureSocialSchema(env);
   const report = { potd: null, schedule: 0, processed: [] };
@@ -453,6 +528,8 @@ export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTER
   try { report.best = await maybeQueueBest(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "best_error", 0, e.message); }
   try { report.poll = await maybeQueuePoll(env, nowMs); } catch (e) { await log(env, nowMs, null, null, "poll_error", 0, e.message); }
   try { report.metrics = await maybeCollectMetrics(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "metrics_error", 0, e.message); }
+  try { report.tonight = await maybeQueueTonight(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "tonight_error", 0, e.message); }
+  try { report.tips = await maybeQueueTips(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "tips_error", 0, e.message); }
   // platforms you post by hand: emailed to you ahead of time, never sent by the Worker
   const manual = manualPlatforms(env);
   try {

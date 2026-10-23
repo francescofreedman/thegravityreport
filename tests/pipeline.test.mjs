@@ -725,3 +725,48 @@ test("player of the day: phrasing rotates by day, numbers never change", async (
   assert.ok(openers.size >= 3, "at least three different openers in ten days: " + [...openers].join(" | "));
   assert.ok(seconds.size >= 3);
 });
+
+// ------------------------------------------------------------------ game nights
+
+const SB = JSON.parse(readFileSync(join(ROOT, "tests/fixtures/espn-scoreboard-20261022.json"), "utf8"));
+function sbFetch(calls = []) {
+  return async (url) => { calls.push(url); return url.includes("/scoreboard") ? new Response(JSON.stringify(SB)) : new Response("nf", { status: 404 }); };
+}
+
+test("tonight: once a day from 5 PM ET, games ranked by the best player on each side, X + Bluesky only", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0" });
+  delete e.SOCIAL_SERIES;
+  await P.ensureSocialSchema(e);
+  const calls = [];
+  assert.equal(await P.maybeQueueTonight(e, Date.parse("2026-10-22T20:05:00Z"), { fetchImpl: sbFetch(calls) }), null, "4 PM ET is too early");
+  const id = await P.maybeQueueTonight(e, Date.parse("2026-10-22T21:05:00Z"), { fetchImpl: sbFetch(calls) });
+  assert.equal(id, "tonight-2026-10-22");
+  assert.equal(await P.maybeQueueTonight(e, Date.parse("2026-10-22T21:20:00Z"), { fetchImpl: sbFetch(calls) }), null, "once a day");
+  const rows = (await e.DB.prepare("SELECT platform, payload FROM social_queue ORDER BY platform").all()).results;
+  assert.deepEqual(rows.map((r) => r.platform), ["bluesky", "x"]);
+  const x = JSON.parse(rows[1].payload).posts;
+  assert.match(x.join("\n"), /Nuggets at Thunder, 9:30 PM ET: Jokić \(#1\) vs Shai \(#2\)/);
+  assert.match(x.join("\n"), /Cavaliers at 76ers, 7:00 PM ET/);
+  assert.ok(x.every((t) => t.length <= 280));
+  assert.ok(x.at(-1).includes("/the644/"));
+  assert.equal(calls.filter((u) => u.includes("/scoreboard")).length, 1, "scoreboard is cached");
+});
+
+test("tip-off: a marquee game within 20 minutes of tipping gets one post, never twice, at most two a night", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0" });
+  delete e.SOCIAL_SERIES;
+  await P.ensureSocialSchema(e);
+  const f = sbFetch();
+  assert.deepEqual(await P.maybeQueueTips(e, Date.parse("2026-10-23T00:30:00Z"), { fetchImpl: f }), [], "an hour early: nothing");
+  assert.deepEqual(await P.maybeQueueTips(e, Date.parse("2026-10-23T01:15:00Z"), { fetchImpl: f }), ["tip-401909094"]);
+  assert.deepEqual(await P.maybeQueueTips(e, Date.parse("2026-10-23T01:16:00Z"), { fetchImpl: f }), [], "not twice");
+  const rows = (await e.DB.prepare("SELECT platform, payload FROM social_queue WHERE kit_id = 'tip-401909094' ORDER BY platform").all()).results;
+  assert.deepEqual(rows.map((r) => r.platform), ["bluesky", "x"]);
+  const x = JSON.parse(rows[1].payload).posts;
+  assert.match(x[0], /Jokić/); assert.match(x[0], /Shai/); assert.match(x[0], /#1/); assert.match(x[0], /#2/);
+  assert.match(x[1], /TORQUE, our team model, has both in its top three/);
+  assert.ok(x.every((t) => t.length <= 280));
+  // the 7 PM game (Mitchell vs Maxey, both top 10) is marquee too
+  assert.deepEqual(await P.maybeQueueTips(e, Date.parse("2026-10-22T22:45:00Z"), { fetchImpl: f }), ["tip-401909093"]);
+  assert.deepEqual(await P.maybeQueueTips(e, Date.parse("2026-10-22T22:46:00Z"), { fetchImpl: f }), [], "two a night is the cap");
+});
