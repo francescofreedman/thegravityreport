@@ -499,7 +499,7 @@ test("best games of the week: Fridays 1 PM ET, last Friday through Thursday, top
   assert.ok(!x.posts.join("\n").includes("6. "), "five lines at most");
   assert.match(x.posts.at(-1), /\/the644\/$/);
   assert.equal(x.images.length, 0, "text-only on X");
-  assert.deepEqual(JSON.parse(rows.find((r) => r.platform === "instagram").payload).image_urls, ["https://thegravityreport.com/cards/the644.png"]);
+  assert.ok(!rows.find((r) => r.platform === "instagram"), "Instagram is posted by hand; this text-only series skips it");
   // the per-day cache: the next Friday re-reads Oct 24's lines without fetching them again
   const n = calls.length;
   const fri2 = Date.parse("2026-11-06T15:00:00Z");
