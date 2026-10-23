@@ -595,7 +595,12 @@ def build_team_kit(code, date, outdir=None, images=True):
     best = top[0]
     fact_label = (f"{best['n']}'s GRAVITY score, #{best['r']} of 644 and the best on the roster. TORQUE, our team model, "
                   f"ranks the {name} #{torque['rank']} of 30 at {torque['torque']:.1f}, projecting {torque['wins']:.1f} wins.")
-    carousel = ["ig-1080x1350-1.png", "ig-1080x1350-2.png", "ig-1080x1350-3.png", "ig-1080x1350-4.png"]
+    carousel = ["ig-1080x1350-1.png", "ig-1080x1350-2.png", "ig-1080x1350-3.png", "ig-1080x1350-4.png", "ig-1080x1350-5.png"]
+    moved = torque["rank_july"] - torque["rank"]
+    move_txt = (f"up from {torque['rank_july']}th in July" if moved > 0 else f"down from {torque['rank_july']}th in July" if moved < 0
+                else "the same as in July")
+    torque_label = (f"TORQUE score: #{torque['rank']} of 30, {move_txt}, projecting {torque['wins']:.1f} wins. "
+                    f"TORQUE is our team model, built from every player's GRAVITY impact and expected minutes.")
     kit = {"kind": "team", "slug": code.lower(), "team": code, "date": date, "url": url,
            "title": f"The 644 on your team: {name}",
            "x_thread": posts, "bluesky_thread": posts, "threads": threads, "instagram_caption": ig,
@@ -604,8 +609,9 @@ def build_team_kit(code, date, outdir=None, images=True):
            "alt": {"card-1200x675.png": alt,
                    "ig-1080x1350-1.png": f"The 644 on your team: {name}. Cover slide.",
                    "ig-1080x1350-2.png": alt,
-                   "ig-1080x1350-3.png": f"{best['s']:.1f}: {fact_label}",
-                   "ig-1080x1350-4.png": f"Every {name} player has a free page at thegravityreport.com/the644. Link in bio."}}
+                   "ig-1080x1350-3.png": f"{torque['torque']:.1f}: {torque_label}",
+                   "ig-1080x1350-4.png": f"{best['s']:.1f}: {fact_label}",
+                   "ig-1080x1350-5.png": f"Every {name} player has a free page at thegravityreport.com/the644. Link in bio."}}
     source = (json.dumps(top, ensure_ascii=False) + f" {len(ps)} {name} " + json.dumps(torque, ensure_ascii=False)
               + " " + json.dumps([p for p in ps[8:]], ensure_ascii=False))
     guard(posts + [threads, ig, reddit] + list(kit["alt"].values()), source)
@@ -617,11 +623,12 @@ def build_team_kit(code, date, outdir=None, images=True):
         team_card(os.path.join(outdir, "card-1200x675.png"), name, rows)
         # Instagram carousel: cover (the post's own angle), the table, one fact, the link
         dek = re.split(r"(?<=[.!?])\s", kit["x_thread"][0].strip())[0]
-        ig_cover(os.path.join(outdir, "ig-1080x1350-1.png"), "THE 644 ON YOUR TEAM", name, dek, "THE 644", "1/4")
+        ig_cover(os.path.join(outdir, "ig-1080x1350-1.png"), "THE 644 ON YOUR TEAM", name, dek, "THE 644", "1/5")
         ig_table(os.path.join(outdir, "ig-1080x1350-2.png"), "THE 644 ON YOUR TEAM", name, rows,
-                 "THE 644", "2/4", "GRAVITY score. 50 is a league-average minute.")
-        ig_fact(os.path.join(outdir, "ig-1080x1350-3.png"), f"{best['s']:.1f}", fact_label, "THE BEST ON THE ROSTER", "3/4")
-        ig_cta(os.path.join(outdir, "ig-1080x1350-4.png"), f"Every {name} player, one number.", "thegravityreport.com/the644", "4/4")
+                 "THE 644", "2/5", "GRAVITY score. 50 is a league-average minute.")
+        ig_fact(os.path.join(outdir, "ig-1080x1350-3.png"), f"{torque['torque']:.1f}", torque_label, f"TORQUE · #{torque['rank']} OF 30", "3/5")
+        ig_fact(os.path.join(outdir, "ig-1080x1350-4.png"), f"{best['s']:.1f}", fact_label, "THE BEST ON THE ROSTER", "4/5")
+        ig_cta(os.path.join(outdir, "ig-1080x1350-5.png"), f"Every {name} player, one number.", "thegravityreport.com/the644", "5/5")
     return kit, outdir
 
 

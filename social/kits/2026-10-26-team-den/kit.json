@@ -27,15 +27,17 @@
    "ig-1080x1350-1.png",
    "ig-1080x1350-2.png",
    "ig-1080x1350-3.png",
-   "ig-1080x1350-4.png"
+   "ig-1080x1350-4.png",
+   "ig-1080x1350-5.png"
   ]
  },
  "alt": {
   "card-1200x675.png": "The Denver Nuggets in The 644, top eight by rank with GRAVITY scores: #1 Nikola Jokić 97.8; #20 Jamal Murray 63.4; #81 Aaron Gordon 53.7; #87 Cameron Johnson 53.5; #112 Christian Braun 51.4; #171 DeMar DeRozan 45.9; #199 Marvin Bagley III 44.2; #265 Tyus Jones 40.4. 50 is a league-average minute.",
   "ig-1080x1350-1.png": "The 644 on your team: Denver Nuggets. Cover slide.",
   "ig-1080x1350-2.png": "The Denver Nuggets in The 644, top eight by rank with GRAVITY scores: #1 Nikola Jokić 97.8; #20 Jamal Murray 63.4; #81 Aaron Gordon 53.7; #87 Cameron Johnson 53.5; #112 Christian Braun 51.4; #171 DeMar DeRozan 45.9; #199 Marvin Bagley III 44.2; #265 Tyus Jones 40.4. 50 is a league-average minute.",
-  "ig-1080x1350-3.png": "97.8: Nikola Jokić's GRAVITY score, #1 of 644 and the best on the roster. TORQUE, our team model, ranks the Denver Nuggets #3 of 30 at 53.3, projecting 51.3 wins.",
-  "ig-1080x1350-4.png": "Every Denver Nuggets player has a free page at thegravityreport.com/the644. Link in bio."
+  "ig-1080x1350-3.png": "53.3: TORQUE score: #3 of 30, the same as in July, projecting 51.3 wins. TORQUE is our team model, built from every player's GRAVITY impact and expected minutes.",
+  "ig-1080x1350-4.png": "97.8: Nikola Jokić's GRAVITY score, #1 of 644 and the best on the roster. TORQUE, our team model, ranks the Denver Nuggets #3 of 30 at 53.3, projecting 51.3 wins.",
+  "ig-1080x1350-5.png": "Every Denver Nuggets player has a free page at thegravityreport.com/the644. Link in bio."
  },
  "copy": "social/copy/2026-10-26-team-den.md"
 }

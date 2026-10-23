@@ -27,15 +27,17 @@
    "ig-1080x1350-1.png",
    "ig-1080x1350-2.png",
    "ig-1080x1350-3.png",
-   "ig-1080x1350-4.png"
+   "ig-1080x1350-4.png",
+   "ig-1080x1350-5.png"
   ]
  },
  "alt": {
   "card-1200x675.png": "The Sacramento Kings in The 644, top eight by rank with GRAVITY scores: #40 Domantas Sabonis 58.9; #146 Zach LaVine 47.6; #173 Malik Monk 45.7; #212 Darius Acuff Jr. 43.1 (rookie); #214 Precious Achiuwa 43.0; #245 Maxime Raynaud 41.4; #275 De'Andre Hunter 40.0; #283 Keegan Murray 39.7. 50 is a league-average minute.",
   "ig-1080x1350-1.png": "The 644 on your team: Sacramento Kings. Cover slide.",
   "ig-1080x1350-2.png": "The Sacramento Kings in The 644, top eight by rank with GRAVITY scores: #40 Domantas Sabonis 58.9; #146 Zach LaVine 47.6; #173 Malik Monk 45.7; #212 Darius Acuff Jr. 43.1 (rookie); #214 Precious Achiuwa 43.0; #245 Maxime Raynaud 41.4; #275 De'Andre Hunter 40.0; #283 Keegan Murray 39.7. 50 is a league-average minute.",
-  "ig-1080x1350-3.png": "58.9: Domantas Sabonis's GRAVITY score, #40 of 644 and the best on the roster. TORQUE, our team model, ranks the Sacramento Kings #30 of 30 at 42.4, projecting 23.5 wins.",
-  "ig-1080x1350-4.png": "Every Sacramento Kings player has a free page at thegravityreport.com/the644. Link in bio."
+  "ig-1080x1350-3.png": "42.4: TORQUE score: #30 of 30, down from 27th in July, projecting 23.5 wins. TORQUE is our team model, built from every player's GRAVITY impact and expected minutes.",
+  "ig-1080x1350-4.png": "58.9: Domantas Sabonis's GRAVITY score, #40 of 644 and the best on the roster. TORQUE, our team model, ranks the Sacramento Kings #30 of 30 at 42.4, projecting 23.5 wins.",
+  "ig-1080x1350-5.png": "Every Sacramento Kings player has a free page at thegravityreport.com/the644. Link in bio."
  },
  "copy": "social/copy/2026-11-22-team-sac.md"
 }

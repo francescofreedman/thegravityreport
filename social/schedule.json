@@ -9,12 +9,6 @@
   },
   {
    "at": "2026-10-22T14:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-22-player-anthony-edwards",
-   "v": "a0a559a295"
-  },
-  {
-   "at": "2026-10-22T14:00:00Z",
    "platform": "instagram",
    "kit": "2026-10-22-player-anthony-edwards",
    "v": "a0a559a295"
@@ -22,12 +16,6 @@
   {
    "at": "2026-10-22T16:00:00Z",
    "platform": "bluesky",
-   "kit": "2026-10-21-article-predictions",
-   "v": "77603db4da"
-  },
-  {
-   "at": "2026-10-22T16:00:00Z",
-   "platform": "threads",
    "kit": "2026-10-21-article-predictions",
    "v": "77603db4da"
   },
@@ -53,21 +41,21 @@
    "at": "2026-10-23T01:00:00Z",
    "platform": "x",
    "kit": "2026-10-24-team-okc",
-   "v": "ace7043609",
+   "v": "8438ea6c54",
    "series": "team644"
   },
   {
    "at": "2026-10-23T01:00:00Z",
    "platform": "bluesky",
    "kit": "2026-10-24-team-okc",
-   "v": "ace7043609",
+   "v": "8438ea6c54",
    "series": "team644"
   },
   {
    "at": "2026-10-23T01:00:00Z",
    "platform": "threads",
    "kit": "2026-10-24-team-okc",
-   "v": "ace7043609",
+   "v": "8438ea6c54",
    "series": "team644"
   },
   {
@@ -79,12 +67,6 @@
   {
    "at": "2026-10-23T16:00:00Z",
    "platform": "bluesky",
-   "kit": "2026-10-21-edition-the30",
-   "v": "533eb036b3"
-  },
-  {
-   "at": "2026-10-23T16:00:00Z",
-   "platform": "threads",
    "kit": "2026-10-21-edition-the30",
    "v": "533eb036b3"
   },
@@ -98,21 +80,21 @@
    "at": "2026-10-23T22:00:00Z",
    "platform": "x",
    "kit": "2026-10-25-team-sas",
-   "v": "ab8ba6badb",
+   "v": "fa1bee6e68",
    "series": "team644"
   },
   {
    "at": "2026-10-23T22:00:00Z",
    "platform": "bluesky",
    "kit": "2026-10-25-team-sas",
-   "v": "ab8ba6badb",
+   "v": "fa1bee6e68",
    "series": "team644"
   },
   {
    "at": "2026-10-23T22:00:00Z",
    "platform": "threads",
    "kit": "2026-10-25-team-sas",
-   "v": "ab8ba6badb",
+   "v": "fa1bee6e68",
    "series": "team644"
   },
   {
@@ -124,12 +106,6 @@
   {
    "at": "2026-10-24T16:00:00Z",
    "platform": "bluesky",
-   "kit": "2026-10-20-article-kawhi",
-   "v": "49f488c778"
-  },
-  {
-   "at": "2026-10-24T16:00:00Z",
-   "platform": "threads",
    "kit": "2026-10-20-article-kawhi",
    "v": "49f488c778"
   },
@@ -143,21 +119,21 @@
    "at": "2026-10-24T22:00:00Z",
    "platform": "x",
    "kit": "2026-10-26-team-den",
-   "v": "e52f1c3a37",
+   "v": "d9f6517f51",
    "series": "team644"
   },
   {
    "at": "2026-10-24T22:00:00Z",
    "platform": "bluesky",
    "kit": "2026-10-26-team-den",
-   "v": "e52f1c3a37",
+   "v": "d9f6517f51",
    "series": "team644"
   },
   {
    "at": "2026-10-24T22:00:00Z",
    "platform": "threads",
    "kit": "2026-10-26-team-den",
-   "v": "e52f1c3a37",
+   "v": "d9f6517f51",
    "series": "team644"
   },
   {
@@ -169,12 +145,6 @@
   {
    "at": "2026-10-25T16:00:00Z",
    "platform": "bluesky",
-   "kit": "2026-10-20-article-duren",
-   "v": "d9322b118f"
-  },
-  {
-   "at": "2026-10-25T16:00:00Z",
-   "platform": "threads",
    "kit": "2026-10-20-article-duren",
    "v": "d9322b118f"
   },
@@ -188,21 +158,21 @@
    "at": "2026-10-25T22:00:00Z",
    "platform": "x",
    "kit": "2026-10-27-team-det",
-   "v": "35ca0bbf86",
+   "v": "f15421999d",
    "series": "team644"
   },
   {
    "at": "2026-10-25T22:00:00Z",
    "platform": "bluesky",
    "kit": "2026-10-27-team-det",
-   "v": "35ca0bbf86",
+   "v": "f15421999d",
    "series": "team644"
   },
   {
    "at": "2026-10-25T22:00:00Z",
    "platform": "threads",
    "kit": "2026-10-27-team-det",
-   "v": "35ca0bbf86",
+   "v": "f15421999d",
    "series": "team644"
   },
   {
@@ -240,12 +210,6 @@
   },
   {
    "at": "2026-10-26T16:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-20-article-jokic",
-   "v": "739af527c7"
-  },
-  {
-   "at": "2026-10-26T16:00:00Z",
    "platform": "instagram",
    "kit": "2026-10-20-article-jokic",
    "v": "739af527c7"
@@ -254,21 +218,21 @@
    "at": "2026-10-26T22:00:00Z",
    "platform": "x",
    "kit": "2026-10-28-team-lal",
-   "v": "5339a8fcf6",
+   "v": "160dc7a6e0",
    "series": "team644"
   },
   {
    "at": "2026-10-26T22:00:00Z",
    "platform": "bluesky",
    "kit": "2026-10-28-team-lal",
-   "v": "5339a8fcf6",
+   "v": "160dc7a6e0",
    "series": "team644"
   },
   {
    "at": "2026-10-26T22:00:00Z",
    "platform": "threads",
    "kit": "2026-10-28-team-lal",
-   "v": "5339a8fcf6",
+   "v": "160dc7a6e0",
    "series": "team644"
   },
   {
@@ -280,12 +244,6 @@
   {
    "at": "2026-10-27T16:00:00Z",
    "platform": "bluesky",
-   "kit": "2026-10-20-article-queta",
-   "v": "e55182c677"
-  },
-  {
-   "at": "2026-10-27T16:00:00Z",
-   "platform": "threads",
    "kit": "2026-10-20-article-queta",
    "v": "e55182c677"
   },
@@ -299,21 +257,21 @@
    "at": "2026-10-27T22:00:00Z",
    "platform": "x",
    "kit": "2026-10-29-team-tor",
-   "v": "36cb5d8337",
+   "v": "a23aacc8a6",
    "series": "team644"
   },
   {
    "at": "2026-10-27T22:00:00Z",
    "platform": "bluesky",
    "kit": "2026-10-29-team-tor",
-   "v": "36cb5d8337",
+   "v": "a23aacc8a6",
    "series": "team644"
   },
   {
    "at": "2026-10-27T22:00:00Z",
    "platform": "threads",
    "kit": "2026-10-29-team-tor",
-   "v": "36cb5d8337",
+   "v": "a23aacc8a6",
    "series": "team644"
   },
   {
@@ -325,12 +283,6 @@
   {
    "at": "2026-10-28T16:00:00Z",
    "platform": "bluesky",
-   "kit": "2026-10-20-article-morant",
-   "v": "7c0de4c71c"
-  },
-  {
-   "at": "2026-10-28T16:00:00Z",
-   "platform": "threads",
    "kit": "2026-10-20-article-morant",
    "v": "7c0de4c71c"
   },
@@ -344,105 +296,84 @@
    "at": "2026-10-28T22:00:00Z",
    "platform": "x",
    "kit": "2026-10-30-team-cle",
-   "v": "4b88a8562f",
+   "v": "393bf26dab",
    "series": "team644"
   },
   {
    "at": "2026-10-28T22:00:00Z",
    "platform": "bluesky",
    "kit": "2026-10-30-team-cle",
-   "v": "4b88a8562f",
+   "v": "393bf26dab",
    "series": "team644"
   },
   {
    "at": "2026-10-28T22:00:00Z",
    "platform": "threads",
    "kit": "2026-10-30-team-cle",
-   "v": "4b88a8562f",
+   "v": "393bf26dab",
    "series": "team644"
   },
   {
    "at": "2026-10-29T22:00:00Z",
    "platform": "x",
    "kit": "2026-10-31-team-phi",
-   "v": "d96406bbc7",
+   "v": "9fe7083bcd",
    "series": "team644"
   },
   {
    "at": "2026-10-29T22:00:00Z",
    "platform": "bluesky",
    "kit": "2026-10-31-team-phi",
-   "v": "d96406bbc7",
-   "series": "team644"
-  },
-  {
-   "at": "2026-10-29T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-10-31-team-phi",
-   "v": "d96406bbc7",
+   "v": "9fe7083bcd",
    "series": "team644"
   },
   {
    "at": "2026-10-29T22:00:00Z",
    "platform": "instagram",
    "kit": "2026-10-31-team-phi",
-   "v": "d96406bbc7",
+   "v": "9fe7083bcd",
    "series": "team644"
   },
   {
    "at": "2026-10-30T22:00:00Z",
    "platform": "x",
    "kit": "2026-11-01-team-por",
-   "v": "94442791d7",
+   "v": "e47126e958",
    "series": "team644"
   },
   {
    "at": "2026-10-30T22:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-01-team-por",
-   "v": "94442791d7",
-   "series": "team644"
-  },
-  {
-   "at": "2026-10-30T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-01-team-por",
-   "v": "94442791d7",
+   "v": "e47126e958",
    "series": "team644"
   },
   {
    "at": "2026-10-30T22:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-01-team-por",
-   "v": "94442791d7",
+   "v": "e47126e958",
    "series": "team644"
   },
   {
    "at": "2026-10-31T22:00:00Z",
    "platform": "x",
    "kit": "2026-11-02-team-hou",
-   "v": "9ffd6847df",
+   "v": "128835663d",
    "series": "team644"
   },
   {
    "at": "2026-10-31T22:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-02-team-hou",
-   "v": "9ffd6847df",
-   "series": "team644"
-  },
-  {
-   "at": "2026-10-31T22:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-02-team-hou",
-   "v": "9ffd6847df",
+   "v": "128835663d",
    "series": "team644"
   },
   {
    "at": "2026-10-31T22:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-02-team-hou",
-   "v": "9ffd6847df",
+   "v": "128835663d",
    "series": "team644"
   },
   {
@@ -455,13 +386,6 @@
   {
    "at": "2026-11-01T17:00:00Z",
    "platform": "bluesky",
-   "kit": "2026-11-01-article-morant",
-   "v": "db3581e4da",
-   "series": "archive"
-  },
-  {
-   "at": "2026-11-01T17:00:00Z",
-   "platform": "threads",
    "kit": "2026-11-01-article-morant",
    "v": "db3581e4da",
    "series": "archive"
@@ -477,189 +401,147 @@
    "at": "2026-11-01T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-03-team-bos",
-   "v": "9a631eac77",
+   "v": "e968ebd613",
    "series": "team644"
   },
   {
    "at": "2026-11-01T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-03-team-bos",
-   "v": "9a631eac77",
+   "v": "e968ebd613",
    "series": "team644"
   },
   {
    "at": "2026-11-01T23:00:00Z",
    "platform": "threads",
    "kit": "2026-11-03-team-bos",
-   "v": "9a631eac77",
+   "v": "e968ebd613",
    "series": "team644"
   },
   {
    "at": "2026-11-02T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-04-team-nyk",
-   "v": "d60795800c",
+   "v": "31696298d3",
    "series": "team644"
   },
   {
    "at": "2026-11-02T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-04-team-nyk",
-   "v": "d60795800c",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-02T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-04-team-nyk",
-   "v": "d60795800c",
+   "v": "31696298d3",
    "series": "team644"
   },
   {
    "at": "2026-11-02T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-04-team-nyk",
-   "v": "d60795800c",
+   "v": "31696298d3",
    "series": "team644"
   },
   {
    "at": "2026-11-03T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-05-team-orl",
-   "v": "857e27c31c",
+   "v": "ce0b4a0471",
    "series": "team644"
   },
   {
    "at": "2026-11-03T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-05-team-orl",
-   "v": "857e27c31c",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-03T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-05-team-orl",
-   "v": "857e27c31c",
+   "v": "ce0b4a0471",
    "series": "team644"
   },
   {
    "at": "2026-11-03T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-05-team-orl",
-   "v": "857e27c31c",
+   "v": "ce0b4a0471",
    "series": "team644"
   },
   {
    "at": "2026-11-04T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-06-team-mia",
-   "v": "9241268149",
+   "v": "358790587d",
    "series": "team644"
   },
   {
    "at": "2026-11-04T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-06-team-mia",
-   "v": "9241268149",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-04T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-06-team-mia",
-   "v": "9241268149",
+   "v": "358790587d",
    "series": "team644"
   },
   {
    "at": "2026-11-04T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-06-team-mia",
-   "v": "9241268149",
+   "v": "358790587d",
    "series": "team644"
   },
   {
    "at": "2026-11-05T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-07-team-min",
-   "v": "1965d15403",
+   "v": "6652d0379e",
    "series": "team644"
   },
   {
    "at": "2026-11-05T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-07-team-min",
-   "v": "1965d15403",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-05T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-07-team-min",
-   "v": "1965d15403",
+   "v": "6652d0379e",
    "series": "team644"
   },
   {
    "at": "2026-11-05T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-07-team-min",
-   "v": "1965d15403",
+   "v": "6652d0379e",
    "series": "team644"
   },
   {
    "at": "2026-11-06T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-08-team-cha",
-   "v": "e8da5364df",
+   "v": "7fce252e7a",
    "series": "team644"
   },
   {
    "at": "2026-11-06T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-08-team-cha",
-   "v": "e8da5364df",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-06T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-08-team-cha",
-   "v": "e8da5364df",
+   "v": "7fce252e7a",
    "series": "team644"
   },
   {
    "at": "2026-11-06T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-08-team-cha",
-   "v": "e8da5364df",
+   "v": "7fce252e7a",
    "series": "team644"
   },
   {
    "at": "2026-11-07T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-09-team-gsw",
-   "v": "a126977abd",
+   "v": "9719dcb6f4",
    "series": "team644"
   },
   {
    "at": "2026-11-07T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-09-team-gsw",
-   "v": "a126977abd",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-07T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-09-team-gsw",
-   "v": "a126977abd",
+   "v": "9719dcb6f4",
    "series": "team644"
   },
   {
    "at": "2026-11-07T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-09-team-gsw",
-   "v": "a126977abd",
+   "v": "9719dcb6f4",
    "series": "team644"
   },
   {
@@ -672,13 +554,6 @@
   {
    "at": "2026-11-08T17:00:00Z",
    "platform": "bluesky",
-   "kit": "2026-11-08-article-queta",
-   "v": "43095c123d",
-   "series": "archive"
-  },
-  {
-   "at": "2026-11-08T17:00:00Z",
-   "platform": "threads",
    "kit": "2026-11-08-article-queta",
    "v": "43095c123d",
    "series": "archive"
@@ -694,189 +569,147 @@
    "at": "2026-11-08T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-10-team-ind",
-   "v": "9ca45245aa",
+   "v": "c67b98eed9",
    "series": "team644"
   },
   {
    "at": "2026-11-08T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-10-team-ind",
-   "v": "9ca45245aa",
+   "v": "c67b98eed9",
    "series": "team644"
   },
   {
    "at": "2026-11-08T23:00:00Z",
    "platform": "threads",
    "kit": "2026-11-10-team-ind",
-   "v": "9ca45245aa",
+   "v": "c67b98eed9",
    "series": "team644"
   },
   {
    "at": "2026-11-09T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-11-team-phx",
-   "v": "d5e4202cb1",
+   "v": "537d817b93",
    "series": "team644"
   },
   {
    "at": "2026-11-09T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-11-team-phx",
-   "v": "d5e4202cb1",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-09T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-11-team-phx",
-   "v": "d5e4202cb1",
+   "v": "537d817b93",
    "series": "team644"
   },
   {
    "at": "2026-11-09T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-11-team-phx",
-   "v": "d5e4202cb1",
+   "v": "537d817b93",
    "series": "team644"
   },
   {
    "at": "2026-11-10T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-12-team-atl",
-   "v": "9dca4788ab",
+   "v": "ce7342a3e6",
    "series": "team644"
   },
   {
    "at": "2026-11-10T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-12-team-atl",
-   "v": "9dca4788ab",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-10T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-12-team-atl",
-   "v": "9dca4788ab",
+   "v": "ce7342a3e6",
    "series": "team644"
   },
   {
    "at": "2026-11-10T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-12-team-atl",
-   "v": "9dca4788ab",
+   "v": "ce7342a3e6",
    "series": "team644"
   },
   {
    "at": "2026-11-11T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-13-team-dal",
-   "v": "c11b08b7b1",
+   "v": "e51a73dff5",
    "series": "team644"
   },
   {
    "at": "2026-11-11T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-13-team-dal",
-   "v": "c11b08b7b1",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-11T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-13-team-dal",
-   "v": "c11b08b7b1",
+   "v": "e51a73dff5",
    "series": "team644"
   },
   {
    "at": "2026-11-11T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-13-team-dal",
-   "v": "c11b08b7b1",
+   "v": "e51a73dff5",
    "series": "team644"
   },
   {
    "at": "2026-11-12T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-14-team-chi",
-   "v": "02fbc52ca4",
+   "v": "55b70b9f10",
    "series": "team644"
   },
   {
    "at": "2026-11-12T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-14-team-chi",
-   "v": "02fbc52ca4",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-12T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-14-team-chi",
-   "v": "02fbc52ca4",
+   "v": "55b70b9f10",
    "series": "team644"
   },
   {
    "at": "2026-11-12T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-14-team-chi",
-   "v": "02fbc52ca4",
+   "v": "55b70b9f10",
    "series": "team644"
   },
   {
    "at": "2026-11-13T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-15-team-mil",
-   "v": "0542a08bdd",
+   "v": "032f4d8d59",
    "series": "team644"
   },
   {
    "at": "2026-11-13T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-15-team-mil",
-   "v": "0542a08bdd",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-13T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-15-team-mil",
-   "v": "0542a08bdd",
+   "v": "032f4d8d59",
    "series": "team644"
   },
   {
    "at": "2026-11-13T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-15-team-mil",
-   "v": "0542a08bdd",
+   "v": "032f4d8d59",
    "series": "team644"
   },
   {
    "at": "2026-11-14T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-16-team-nop",
-   "v": "66bf83e2c6",
+   "v": "ccb2368de9",
    "series": "team644"
   },
   {
    "at": "2026-11-14T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-16-team-nop",
-   "v": "66bf83e2c6",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-14T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-16-team-nop",
-   "v": "66bf83e2c6",
+   "v": "ccb2368de9",
    "series": "team644"
   },
   {
    "at": "2026-11-14T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-16-team-nop",
-   "v": "66bf83e2c6",
+   "v": "ccb2368de9",
    "series": "team644"
   },
   {
@@ -889,13 +722,6 @@
   {
    "at": "2026-11-15T17:00:00Z",
    "platform": "bluesky",
-   "kit": "2026-11-15-article-duren",
-   "v": "85db169c3e",
-   "series": "archive"
-  },
-  {
-   "at": "2026-11-15T17:00:00Z",
-   "platform": "threads",
    "kit": "2026-11-15-article-duren",
    "v": "85db169c3e",
    "series": "archive"
@@ -911,161 +737,126 @@
    "at": "2026-11-15T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-17-team-uta",
-   "v": "cb15490934",
+   "v": "212d2aded9",
    "series": "team644"
   },
   {
    "at": "2026-11-15T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-17-team-uta",
-   "v": "cb15490934",
+   "v": "212d2aded9",
    "series": "team644"
   },
   {
    "at": "2026-11-15T23:00:00Z",
    "platform": "threads",
    "kit": "2026-11-17-team-uta",
-   "v": "cb15490934",
+   "v": "212d2aded9",
    "series": "team644"
   },
   {
    "at": "2026-11-16T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-18-team-lac",
-   "v": "e0f1fae746",
+   "v": "b5fe580de6",
    "series": "team644"
   },
   {
    "at": "2026-11-16T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-18-team-lac",
-   "v": "e0f1fae746",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-16T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-18-team-lac",
-   "v": "e0f1fae746",
+   "v": "b5fe580de6",
    "series": "team644"
   },
   {
    "at": "2026-11-16T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-18-team-lac",
-   "v": "e0f1fae746",
+   "v": "b5fe580de6",
    "series": "team644"
   },
   {
    "at": "2026-11-17T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-19-team-was",
-   "v": "3f11286971",
+   "v": "c3efe6d346",
    "series": "team644"
   },
   {
    "at": "2026-11-17T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-19-team-was",
-   "v": "3f11286971",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-17T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-19-team-was",
-   "v": "3f11286971",
+   "v": "c3efe6d346",
    "series": "team644"
   },
   {
    "at": "2026-11-17T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-19-team-was",
-   "v": "3f11286971",
+   "v": "c3efe6d346",
    "series": "team644"
   },
   {
    "at": "2026-11-18T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-20-team-mem",
-   "v": "b1a09ec200",
+   "v": "910b4be388",
    "series": "team644"
   },
   {
    "at": "2026-11-18T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-20-team-mem",
-   "v": "b1a09ec200",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-18T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-20-team-mem",
-   "v": "b1a09ec200",
+   "v": "910b4be388",
    "series": "team644"
   },
   {
    "at": "2026-11-18T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-20-team-mem",
-   "v": "b1a09ec200",
+   "v": "910b4be388",
    "series": "team644"
   },
   {
    "at": "2026-11-19T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-21-team-bkn",
-   "v": "74e23ae307",
+   "v": "269fe818f1",
    "series": "team644"
   },
   {
    "at": "2026-11-19T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-21-team-bkn",
-   "v": "74e23ae307",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-19T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-21-team-bkn",
-   "v": "74e23ae307",
+   "v": "269fe818f1",
    "series": "team644"
   },
   {
    "at": "2026-11-19T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-21-team-bkn",
-   "v": "74e23ae307",
+   "v": "269fe818f1",
    "series": "team644"
   },
   {
    "at": "2026-11-20T23:00:00Z",
    "platform": "x",
    "kit": "2026-11-22-team-sac",
-   "v": "f7a51e5284",
+   "v": "b7ef174977",
    "series": "team644"
   },
   {
    "at": "2026-11-20T23:00:00Z",
    "platform": "bluesky",
    "kit": "2026-11-22-team-sac",
-   "v": "f7a51e5284",
-   "series": "team644"
-  },
-  {
-   "at": "2026-11-20T23:00:00Z",
-   "platform": "threads",
-   "kit": "2026-11-22-team-sac",
-   "v": "f7a51e5284",
+   "v": "b7ef174977",
    "series": "team644"
   },
   {
    "at": "2026-11-20T23:00:00Z",
    "platform": "instagram",
    "kit": "2026-11-22-team-sac",
-   "v": "f7a51e5284",
+   "v": "b7ef174977",
    "series": "team644"
   },
   {
@@ -1078,13 +869,6 @@
   {
    "at": "2026-11-22T17:00:00Z",
    "platform": "bluesky",
-   "kit": "2026-11-22-article-kawhi",
-   "v": "37ecd60f06",
-   "series": "archive"
-  },
-  {
-   "at": "2026-11-22T17:00:00Z",
-   "platform": "threads",
    "kit": "2026-11-22-article-kawhi",
    "v": "37ecd60f06",
    "series": "archive"
@@ -1106,13 +890,6 @@
   {
    "at": "2026-11-29T17:00:00Z",
    "platform": "bluesky",
-   "kit": "2026-11-29-article-jokic",
-   "v": "8a0fa2a7c4",
-   "series": "archive"
-  },
-  {
-   "at": "2026-11-29T17:00:00Z",
-   "platform": "threads",
    "kit": "2026-11-29-article-jokic",
    "v": "8a0fa2a7c4",
    "series": "archive"

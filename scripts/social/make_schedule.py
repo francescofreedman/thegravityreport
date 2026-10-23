@@ -172,6 +172,9 @@ def main():
         series = item[4] if len(item) > 4 else None
         if series == "team644" and day in ig_days:
             platforms = [p for p in platforms if p != "instagram"]
+        # Instagram auto-shares each post to Threads, so a post that goes to Instagram skips its own Threads row
+        if "instagram" in platforms and "threads" in platforms:
+            platforms = [p for p in platforms if p != "threads"]
         kit_path = os.path.join(ROOT, "social", "kits", kit_id, "kit.json")
         if not os.path.exists(kit_path):
             sys.exit(f"missing kit: {kit_id}")

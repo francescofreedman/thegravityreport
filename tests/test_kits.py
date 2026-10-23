@@ -177,7 +177,12 @@ class TeamKitTests(unittest.TestCase):
             self.assertTrue(os.path.exists(os.path.join(ROOT, "social", "kits", r[3], "kit.json")), r[3])
         sched = json.load(open(os.path.join(ROOT, "social", "schedule.json"), encoding="utf-8"))
         tagged = [p for p in sched["posts"] if p.get("series") == "team644"]
-        self.assertEqual(len([p for p in tagged if p["platform"] != "instagram"]), 90)
+        self.assertEqual(len([p for p in tagged if p["platform"] in ("x", "bluesky")]), 60)
+        # Instagram auto-shares to Threads: no kit has both an Instagram and a Threads row at the same time
+        live = [p for p in sched["posts"] if not p.get("skip")]
+        both = {(p["kit"], p["at"]) for p in live if p["platform"] == "instagram"} & \
+               {(p["kit"], p["at"]) for p in live if p["platform"] == "threads"}
+        self.assertEqual(both, set())
         # Instagram: at most one post a day across the whole schedule (it's posted by hand)
         import collections
         per_day = collections.Counter(p["at"][:10] for p in sched["posts"] if p["platform"] == "instagram" and not p.get("skip"))
