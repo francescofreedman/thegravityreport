@@ -33,10 +33,10 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Sun Oct 25, 6:00 PM | Bluesky | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
 | Sun Oct 25, 6:00 PM | Threads | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
 | Sun Oct 25, 6:00 PM | Instagram | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Mon Oct 26, 9:00 AM | X | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 21, 2026:  K3 · 30% · Kawhi… |
-| Mon Oct 26, 9:00 AM | Bluesky | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 21, 2026:  K3 · 30% · Kawhi… |
-| Mon Oct 26, 9:00 AM | Threads | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 21, 2026:  K3 · 30% · Kawhi… |
-| Mon Oct 26, 9:00 AM | Instagram | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 21, 2026:  K3 · 30% · Kawhi… |
+| Mon Oct 26, 9:00 AM | X | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 22, 2026:  K3 · 30% · Kawhi… |
+| Mon Oct 26, 9:00 AM | Bluesky | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 22, 2026:  K3 · 30% · Kawhi… |
+| Mon Oct 26, 9:00 AM | Threads | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 22, 2026:  K3 · 30% · Kawhi… |
+| Mon Oct 26, 9:00 AM | Instagram | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 22, 2026:  K3 · 30% · Kawhi… |
 | Mon Oct 26, 12:00 PM | X | Chasing Seven | The season is underway. On October 17, before tip-off, we put three calls on Nikola Jokić'… |
 | Mon Oct 26, 12:00 PM | Bluesky | Chasing Seven | The season is underway. On October 17, before tip-off, we put three calls on Nikola Jokić'… |
 | Mon Oct 26, 12:00 PM | Threads | Chasing Seven | The season is underway. On October 17, before tip-off, we put three calls on Nikola Jokić'… |
