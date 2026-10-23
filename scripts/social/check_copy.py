@@ -28,7 +28,11 @@ def numbers(text):
 
 def main(args):
     files, brief = args[:-1], args[-1]
-    allowed = numbers(open(brief, encoding="utf-8").read()) | {norm(x) for x in ALWAYS_OK}
+    b = json.load(open(brief, encoding="utf-8"))
+    # the same narrow sources the robot checks against: the pick (and the runners-up) for the player post,
+    # tonight's games for the tonight post; not the whole brief, where almost any number can be found
+    src_potd = json.dumps([b.get("pick"), b.get("candidates"), b.get("tiers")], ensure_ascii=False)
+    src_tonight = json.dumps(b.get("tonight"), ensure_ascii=False)
     bad = 0
     for f in files:
         try:
@@ -36,6 +40,7 @@ def main(args):
         except FileNotFoundError:
             print(f"{f}: not written (fine if there was nothing to post)")
             continue
+        allowed = numbers(src_tonight if "tonight" in f else src_potd) | {norm(x) for x in ALWAYS_OK}
         x = c.get("x") or []
         bs = c.get("bluesky") or x
         th = c.get("threads") or "\n\n".join(x)
