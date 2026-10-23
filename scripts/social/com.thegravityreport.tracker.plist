@@ -4,7 +4,7 @@
 <dict>
   <key>Label</key><string>com.thegravityreport.tracker</string>
   <key>ProgramArguments</key>
-  <array><string>/bin/sh</string><string>/Users/francesco2/gravity/scripts/social/weekly_tracker.sh</string></array>
+  <array><string>/bin/sh</string><string>-c</string><string>C="$HOME/.gravity-tracker"; [ -d "$C/.git" ] || git clone -q git@github.com:francescofreedman/thegravityreport.git "$C"; cd "$C" &amp;&amp; git fetch -q origin main &amp;&amp; git reset -q --hard origin/main &amp;&amp; sh scripts/social/weekly_tracker.sh</string></array>
   <key>StartCalendarInterval</key>
   <dict><key>Weekday</key><integer>0</integer><key>Hour</key><integer>21</integer><key>Minute</key><integer>0</integer></dict>
   <key>StandardOutPath</key><string>/Users/francesco2/Library/Logs/gravity-tracker.log</string>
