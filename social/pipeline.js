@@ -176,7 +176,16 @@ async function players644(env) {
   const idx = await assetJson(env, "/players/index.json");
   const t644 = await assetJson(env, "/content/the644.json");
   const rec = new Map(t644.players.map((x) => [x.r, x]));
-  const byName = new Map(idx.players.map((x) => [normName(x.n), { ...rec.get(x.r), slug: x.slug, team: x.team }]));
+  // team labels: current rosters when the dated roster file exists (The 644's own labels are July's)
+  let teamNow = null;
+  try {
+    const ro = await assetJson(env, "/content/rosters-2026-10.json");
+    const names = Object.fromEntries((await assetJson(env, "/the30/torque-2026-27.json")).teams.map((x) => [x.code, x.team]));
+    const alias = { BKN: "BRK", CHA: "CHO", PHX: "PHO" }; // roster file uses The 644 codes; TORQUE uses BRK/CHO/PHO
+    teamNow = new Map();
+    for (const [code, list] of Object.entries(ro.teams)) for (const n of list) teamNow.set(normName(n), names[alias[code] || code] || names[code] || code);
+  } catch (e) { teamNow = null; }
+  const byName = new Map(idx.players.map((x) => [normName(x.n), { ...rec.get(x.r), slug: x.slug, team: (teamNow && teamNow.get(normName(x.n))) || x.team }]));
   return { byName, players: t644.players, n: t644.players.length };
 }
 
