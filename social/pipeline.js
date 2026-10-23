@@ -10,6 +10,7 @@ import { threads, instagram } from "./adapters/meta.js";
 import { etParts, etToUtcMs, prevDate, normName, gameScore, pickBest, potdKitFromPerformance, fetchLastNight, POTD_HOUR_ET } from "./potd.js";
 import { STANDINGS_URL, weekday, addDays, isoWeek, parseStandings, paceTable, paceKit, bestKit, pollPair, pollKits } from "./series.js";
 import { followers } from "./metrics.js";
+import { manualPlatforms, runHandoffs } from "./handoff.js";
 
 export const ADAPTERS = { x, bluesky, threads, instagram };
 export const PLATFORMS = ["x", "bluesky", "threads", "instagram"];
@@ -377,7 +378,7 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
     const exists = await env.DB.prepare("SELECT id, status, payload, scheduled_at FROM social_queue WHERE kit_id = ? AND platform = ?").bind(row.kit, row.platform).first();
     if (!exists) {
       const kit = await assetJson(env, `/social/kits/${row.kit}/kit.json`);
-      const p = { ...payloadsFromKit(row.kit, kit)[row.platform], v: row.v || null };
+      const p = { ...payloadsFromKit(row.kit, kit)[row.platform], v: row.v || null, title: kit.title || row.kit };
       const r = await env.DB.prepare(
         "INSERT OR IGNORE INTO social_queue (kit_id, platform, payload, scheduled_at, status, created_at, approved_at) VALUES (?, ?, ?, ?, 'approved', ?, ?)"
       ).bind(row.kit, row.platform, JSON.stringify(p), at, iso(nowMs), iso(nowMs)).run();
@@ -387,7 +388,7 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
     await env.DB.prepare("UPDATE social_queue SET scheduled_at = ? WHERE id = ? AND status IN ('draft', 'approved')").bind(at, exists.id).run();
     if (row.v && ["draft", "approved"].includes(exists.status) && JSON.parse(exists.payload).v !== row.v) {
       const kit = await assetJson(env, `/social/kits/${row.kit}/kit.json`);
-      const p = { ...payloadsFromKit(row.kit, kit)[row.platform], v: row.v };
+      const p = { ...payloadsFromKit(row.kit, kit)[row.platform], v: row.v, title: kit.title || row.kit };
       await env.DB.prepare("UPDATE social_queue SET payload = ? WHERE id = ? AND status IN ('draft', 'approved')").bind(JSON.stringify(p), exists.id).run();
     }
     if (isLive(env, row.platform, adapters) && Date.parse(at) >= nowMs - REARM_WINDOW_MS) {
@@ -424,7 +425,7 @@ export async function restoreScheduled(env, kitId, platform) {
   return (r.meta && r.meta.changes) || 0;
 }
 
-export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTERS, fetchImpl = fetch } = {}) {
+export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTERS, fetchImpl = fetch, sendEmail } = {}) {
   await ensureSocialSchema(env);
   const report = { potd: null, schedule: 0, processed: [] };
   let sched = null;
@@ -438,9 +439,15 @@ export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTER
   try { report.best = await maybeQueueBest(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "best_error", 0, e.message); }
   try { report.poll = await maybeQueuePoll(env, nowMs); } catch (e) { await log(env, nowMs, null, null, "poll_error", 0, e.message); }
   try { report.metrics = await maybeCollectMetrics(env, nowMs, { fetchImpl }); } catch (e) { await log(env, nowMs, null, null, "metrics_error", 0, e.message); }
+  // platforms you post by hand: emailed to you ahead of time, never sent by the Worker
+  const manual = manualPlatforms(env);
+  try {
+    report.handoff = await runHandoffs(env, nowMs, { siteUrl: SITE_URL, manual, iso, log, ...(sendEmail ? { sendEmail } : {}) });
+  } catch (e) { await log(env, nowMs, null, null, "handoff_error", 0, e.message); }
+  const notManual = manual.length ? ` AND platform NOT IN (${manual.map(() => "?").join(",")})` : "";
   const { results } = await env.DB.prepare(
-    "SELECT * FROM social_queue WHERE status = 'approved' AND scheduled_at IS NOT NULL AND scheduled_at <= ? ORDER BY scheduled_at, id LIMIT 10"
-  ).bind(iso(nowMs)).all();
+    `SELECT * FROM social_queue WHERE status = 'approved' AND scheduled_at IS NOT NULL AND scheduled_at <= ?${notManual} ORDER BY scheduled_at, id LIMIT 10`
+  ).bind(iso(nowMs), ...manual).all();
   for (const row of results || []) {
     const claim = await env.DB.prepare("UPDATE social_queue SET status = 'posting' WHERE id = ? AND status = 'approved'").bind(row.id).run();
     if (!claim.meta || claim.meta.changes !== 1) continue; // another run took it

@@ -13,6 +13,7 @@ import * as bsky from "../social/adapters/bluesky.js";
 import * as xad from "../social/adapters/x.js";
 import { threads, instagram } from "../social/adapters/meta.js";
 import { handleAdmin } from "../social/admin-api.js";
+import { buildHandoffEmail } from "../social/handoff.js";
 import * as S from "../social/series.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -637,4 +638,56 @@ test("schedule: moving a failed post's time retries it once; leaving it alone do
   assert.equal(calls.length, 1, "moved time: retried");
   row = await e.DB.prepare("SELECT status FROM social_queue").first();
   assert.equal(row.status, "posted");
+});
+
+// ------------------------------------------------------------------ hand-off by email
+
+test("hand-off: Instagram + Threads rows are emailed 15-30 min early in one email, marked handoff, never posted", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0", SOCIAL_MANUAL_PLATFORMS: "instagram,threads", HANDOFF_TO: "me@example.com", EMAIL: {} });
+  await P.ensureSocialSchema(e);
+  const sent = [], calls = [];
+  const adapters = Object.fromEntries(P.PLATFORMS.map((p) => [p, okAdapter(p, calls)]));
+  const at = "2026-10-23T22:00:00Z"; // 6 PM ET
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: ["instagram", "threads", "bluesky"].map((platform) => ({ at, platform, kit: KIT })) } });
+  const sendEmail = async (_env, from, to, raw) => { sent.push({ from, to, raw }); };
+  await P.runScheduled(e, Date.parse(at) - 45 * 60e3, { adapters, sendEmail });
+  assert.equal(sent.length, 0, "45 minutes early is too early");
+  const r = await P.runScheduled(e, Date.parse(at) - 20 * 60e3, { adapters, sendEmail });
+  assert.equal(sent.length, 1, "one email for both platforms");
+  assert.equal(sent[0].to, "me@example.com");
+  assert.match(sent[0].raw, /^From: The Gravity Report <posts@thegravityreport.com>\r\nTo: me@example.com\r\nSubject: Post this on Instagram \+ Threads at 6:00 PM ET: The Kawhi Anomaly/);
+  assert.match(sent[0].raw, /Content-Disposition: attachment; filename="2026-10-20-article-kawhi-ig-1080x1350-1.png"/);
+  assert.match(sent[0].raw, /Content-Type: multipart\/mixed/);
+  assert.deepEqual(r.handoff.map((x) => x.result), ["handoff", "handoff"]);
+  const rows = (await e.DB.prepare("SELECT platform, status FROM social_queue ORDER BY platform").all()).results;
+  assert.deepEqual(rows.map((x) => [x.platform, x.status]), [["bluesky", "approved"], ["instagram", "handoff"], ["threads", "handoff"]]);
+  await P.runScheduled(e, Date.parse(at) + 60e3, { adapters, sendEmail });
+  assert.equal(sent.length, 1, "not emailed twice");
+  assert.deepEqual(calls.map((c) => c.name), ["bluesky"], "the Worker posts Bluesky itself, never Instagram or Threads");
+});
+
+test("hand-off: without HANDOFF_TO the rows wait as approved and are never consumed by the posting loop", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0", SOCIAL_MANUAL_PLATFORMS: "instagram" });
+  await P.ensureSocialSchema(e);
+  const adapters = { ...P.ADAPTERS, instagram: { ...okAdapter("instagram", []), configured: () => false } };
+  const at = "2026-10-23T22:00:00Z";
+  await P.syncSchedule(e, T0, { adapters, schedule: { posts: [{ at, platform: "instagram", kit: KIT }] } });
+  await P.runScheduled(e, Date.parse(at) + 3600e3, { adapters });
+  const row = await e.DB.prepare("SELECT status FROM social_queue").first();
+  assert.equal(row.status, "approved");
+  const logged = (await e.DB.prepare("SELECT action FROM social_log").all()).results.map((l) => l.action);
+  assert.ok(logged.includes("handoff_unconfigured"));
+});
+
+test("hand-off email: caption and how-to are in the body, images attached once", () => {
+  const png = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
+  const { subject, raw } = buildHandoffEmail({ from: "posts@thegravityreport.com", to: "me@example.com", title: "Test", atMs: Date.parse("2026-10-23T14:00:00Z"),
+    items: [{ platform: "instagram", payload: { caption: "Hello caption #NBA" }, images: [{ name: "a.png", type: "image/png", bytes: png }] },
+            { platform: "threads", payload: { posts: ["Hello threads"] }, images: [{ name: "a.png", type: "image/png", bytes: png }] }], nowMs: 0 });
+  assert.equal(subject, "Post this on Instagram + Threads at 10:00 AM ET: Test");
+  const body = Buffer.from(raw.split("Content-Transfer-Encoding: base64\r\n\r\n")[1].split("\r\n--")[0].replace(/\r\n/g, ""), "base64").toString("utf8");
+  assert.match(body, /Hello caption #NBA/);
+  assert.match(body, /Hello threads/);
+  assert.match(body, /Save the attached image/);
+  assert.equal((raw.match(/filename="a.png"/g) || []).length, 1);
 });

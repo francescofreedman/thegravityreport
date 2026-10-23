@@ -129,6 +129,10 @@ SERIES = [
     ("From the archive", "Sundays, 12 PM ET, one Deep Dive a week from Sun Nov 1, 2026 (Deep Dive order)",
      "schedule.json (kits `<sunday>-article-<slug>`, make_kit.py article all --date 2026-11-01: tracking frame, angle 2)",
      "`series_archive = 0` in social_settings, or ARCHIVE_START = None in make_schedule.py"),
+    ("Instagram + Threads hand-off (not a post)", "15–30 minutes before any Instagram or Threads row is due",
+     "Worker, automatic (social/handoff.js): emails the caption, the images and a 3-line how-to to HANDOFF_TO; the row shows "
+     "'Sent to your phone'. The Worker never posts to Instagram or Threads itself.",
+     "remove the platform from SOCIAL_MANUAL_PLATFORMS in wrangler.jsonc (then its posts need that platform's API keys)"),
     ("Metrics panel (not a post)", "Weekly, first cron tick of each ISO week",
      "Worker, automatic (social/metrics.js: Bluesky followers from the public API, Threads/Instagram only with tokens, X left blank; "
      "posts sent that week from social_log; shown at the top of /admin/schedule/ when unlocked)", "`series_metrics = 0` in social_settings"),

@@ -35,6 +35,7 @@
       var conn = QUEUE.platforms[platform] && QUEUE.platforms[platform].configured;
       if (row){
         if (row.status === 'posted') return { k: 'posted', t: 'Posted' };
+        if (row.status === 'handoff') return { k: 'handoff', t: 'Sent to your phone' };
         if (row.status === 'failed') return { k: 'failed', t: 'Failed: ' + (row.error || '') };
         if (row.status === 'cancelled') return { k: 'stopped', t: 'Stopped' };
         if (row.status === 'skipped') return { k: 'notconnected', t: 'Skipped: ' + NAMES[platform] + ' not connected' };

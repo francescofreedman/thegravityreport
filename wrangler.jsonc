@@ -9,7 +9,11 @@
   },
   // Social posting cron. Harmless until secrets are set: SOCIAL_DRY_RUN stays "1" (simulate only).
   "triggers": { "crons": ["*/15 * * * *"] },
-  "vars": { "SOCIAL_DRY_RUN": "0", "SOCIAL_X_MONTHLY_CAP": "150" },
+  "vars": { "SOCIAL_DRY_RUN": "0", "SOCIAL_X_MONTHLY_CAP": "150",
+    // Instagram and Threads are posted by hand: the Worker emails the caption + images to HANDOFF_TO
+    // 15-30 minutes before each one is due (social/handoff.js) instead of calling their APIs.
+    "SOCIAL_MANUAL_PLATFORMS": "instagram,threads", "HANDOFF_TO": "thegravityreport@gmail.com", "HANDOFF_FROM": "posts@thegravityreport.com" },
+  "send_email": [{ "name": "EMAIL" }],
   "d1_databases": [
     {
       "binding": "DB",
