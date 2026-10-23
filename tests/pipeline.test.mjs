@@ -170,7 +170,7 @@ test("player of the day: last night's best game, real numbers, queued for 10 AM 
   assert.ok(calls[0].includes("dates=20261021"), "looks at last night's games");
   assert.equal(await P.maybeQueuePotd(e, nine + 3600e3, { fetchImpl: espnFetch(calls) }), null, "once a day");
   const rows = (await e.DB.prepare("SELECT platform, status, scheduled_at, payload FROM social_queue").all()).results;
-  assert.deepEqual(rows.map((r) => r.platform).sort(), ["bluesky", "instagram", "threads", "x"]);
+  assert.deepEqual(rows.map((r) => r.platform).sort(), ["bluesky", "threads", "x"], "no Instagram until the Reel exists");
   assert.ok(rows.every((r) => r.status === "approved" && r.scheduled_at === "2026-10-22T14:00:00.000Z"));
   const x = JSON.parse(rows.find((r) => r.platform === "x").payload).posts;
   assert.match(x[0], /Anthony Edwards/);

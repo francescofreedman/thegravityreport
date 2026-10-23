@@ -163,9 +163,15 @@ def main():
     rows, md = [], ["# Posting schedule", "", "Times are US Eastern. Every row here posts on its own; nothing to approve.",
                     "To change it, ask Claude. Source: `scripts/social/make_schedule.py`.", "",
                     "| When (ET) | Platform | Post | First line |", "|---|---|---|---|"]
-    for item in sorted(plan_rows(), key=lambda r: (r[0], r[1])):
+    items = sorted(plan_rows(), key=lambda r: (r[0], r[1]))
+    # Instagram is posted by hand and rewards one good post over three: on a day with a noon article
+    # carousel, the 6 PM team post skips Instagram.
+    ig_days = {it[0] for it in items if "instagram" in it[2] and (len(it) < 5 or it[4] in (None, "archive"))}
+    for item in items:
         day, hm, platforms, kit_id = item[:4]
         series = item[4] if len(item) > 4 else None
+        if series == "team644" and day in ig_days:
+            platforms = [p for p in platforms if p != "instagram"]
         kit_path = os.path.join(ROOT, "social", "kits", kit_id, "kit.json")
         if not os.path.exists(kit_path):
             sys.exit(f"missing kit: {kit_id}")

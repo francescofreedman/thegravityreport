@@ -156,7 +156,11 @@ class TeamKitTests(unittest.TestCase):
             self.assertTrue(os.path.exists(os.path.join(ROOT, "social", "kits", r[3], "kit.json")), r[3])
         sched = json.load(open(os.path.join(ROOT, "social", "schedule.json"), encoding="utf-8"))
         tagged = [p for p in sched["posts"] if p.get("series") == "team644"]
-        self.assertEqual(len(tagged), 120)
+        self.assertEqual(len([p for p in tagged if p["platform"] != "instagram"]), 90)
+        # Instagram: at most one post a day across the whole schedule (it's posted by hand)
+        import collections
+        per_day = collections.Counter(p["at"][:10] for p in sched["posts"] if p["platform"] == "instagram" and not p.get("skip"))
+        self.assertLessEqual(max(n for d, n in per_day.items() if d >= "2026-10-23"), 1)
 
 
 class TrackerTests(unittest.TestCase):

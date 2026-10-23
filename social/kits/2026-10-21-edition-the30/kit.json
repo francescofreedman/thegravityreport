@@ -18,10 +18,15 @@
  "images": {
   "card": "/cards/the30.png",
   "carousel": [
-   "ig-1080x1350-1.png"
+   "ig-1080x1350-1.png",
+   "ig-1080x1350-2.png",
+   "ig-1080x1350-3.png"
   ]
  },
  "alt": {
-  "card": "The 30: every NBA team ranked by TORQUE."
+  "card": "The 30: every NBA team ranked by TORQUE.",
+  "ig-1080x1350-1.png": "The 30: every team, one number. Cover slide.",
+  "ig-1080x1350-2.png": "The top ten teams by TORQUE.",
+  "ig-1080x1350-3.png": "All 30 at thegravityreport.com/the30. Link in bio."
  }
 }

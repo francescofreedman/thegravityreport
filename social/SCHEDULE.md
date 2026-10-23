@@ -16,7 +16,6 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Thu Oct 22, 9:00 PM | X | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
 | Thu Oct 22, 9:00 PM | Bluesky | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
 | Thu Oct 22, 9:00 PM | Threads | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
-| Thu Oct 22, 9:00 PM | Instagram | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
 | Fri Oct 23, 12:00 PM | X | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
 | Fri Oct 23, 12:00 PM | Bluesky | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
 | Fri Oct 23, 12:00 PM | Threads | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
@@ -24,7 +23,6 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Fri Oct 23, 6:00 PM | X | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
 | Fri Oct 23, 6:00 PM | Bluesky | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
 | Fri Oct 23, 6:00 PM | Threads | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Fri Oct 23, 6:00 PM | Instagram | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
 | Sat Oct 24, 12:00 PM | X | The Kawhi Anomaly | The season is underway. On October 6, before tip-off, we put four calls on Kawhi Leonard's… |
 | Sat Oct 24, 12:00 PM | Bluesky | The Kawhi Anomaly | The season is underway. On October 6, before tip-off, we put four calls on Kawhi Leonard's… |
 | Sat Oct 24, 12:00 PM | Threads | The Kawhi Anomaly | The season is underway. On October 6, before tip-off, we put four calls on Kawhi Leonard's… |
@@ -32,7 +30,6 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Sat Oct 24, 6:00 PM | X | The 644 on your team: Denver Nuggets | The Denver Nuggets in The 644, our ranking of every NBA player. The top eight by rank, wit… |
 | Sat Oct 24, 6:00 PM | Bluesky | The 644 on your team: Denver Nuggets | The Denver Nuggets in The 644, our ranking of every NBA player. The top eight by rank, wit… |
 | Sat Oct 24, 6:00 PM | Threads | The 644 on your team: Denver Nuggets | The Denver Nuggets in The 644, our ranking of every NBA player. The top eight by rank, wit… |
-| Sat Oct 24, 6:00 PM | Instagram | The 644 on your team: Denver Nuggets | The Denver Nuggets in The 644, our ranking of every NBA player. The top eight by rank, wit… |
 | Sun Oct 25, 12:00 PM | X | The Last of His Kind | The season is underway. On October 17, before tip-off, we put two calls on Jalen Duren's y… |
 | Sun Oct 25, 12:00 PM | Bluesky | The Last of His Kind | The season is underway. On October 17, before tip-off, we put two calls on Jalen Duren's y… |
 | Sun Oct 25, 12:00 PM | Threads | The Last of His Kind | The season is underway. On October 17, before tip-off, we put two calls on Jalen Duren's y… |
@@ -40,7 +37,6 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Sun Oct 25, 6:00 PM | X | The 644 on your team: Detroit Pistons | The Detroit Pistons in The 644, our ranking of every NBA player. The top eight by rank, wi… |
 | Sun Oct 25, 6:00 PM | Bluesky | The 644 on your team: Detroit Pistons | The Detroit Pistons in The 644, our ranking of every NBA player. The top eight by rank, wi… |
 | Sun Oct 25, 6:00 PM | Threads | The 644 on your team: Detroit Pistons | The Detroit Pistons in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Sun Oct 25, 6:00 PM | Instagram | The 644 on your team: Detroit Pistons | The Detroit Pistons in The 644, our ranking of every NBA player. The top eight by rank, wi… |
 | Mon Oct 26, 9:00 AM | X | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 22, 2026:  K3 · 30% · Kawhi… |
 | Mon Oct 26, 9:00 AM | Bluesky | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 22, 2026:  K3 · 30% · Kawhi… |
 | Mon Oct 26, 9:00 AM | Threads | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 22, 2026:  K3 · 30% · Kawhi… |
@@ -51,7 +47,6 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Mon Oct 26, 6:00 PM | X | The 644 on your team: Los Angeles Lakers | The Los Angeles Lakers in The 644, our ranking of every NBA player. The top eight by rank,… |
 | Mon Oct 26, 6:00 PM | Bluesky | The 644 on your team: Los Angeles Lakers | The Los Angeles Lakers in The 644, our ranking of every NBA player. The top eight by rank,… |
 | Mon Oct 26, 6:00 PM | Threads | The 644 on your team: Los Angeles Lakers | The Los Angeles Lakers in The 644, our ranking of every NBA player. The top eight by rank,… |
-| Mon Oct 26, 6:00 PM | Instagram | The 644 on your team: Los Angeles Lakers | The Los Angeles Lakers in The 644, our ranking of every NBA player. The top eight by rank,… |
 | Tue Oct 27, 12:00 PM | X | The Queta Problem | The season is underway. On July 10, before tip-off, we put two calls on Neemias Queta's ye… |
 | Tue Oct 27, 12:00 PM | Bluesky | The Queta Problem | The season is underway. On July 10, before tip-off, we put two calls on Neemias Queta's ye… |
 | Tue Oct 27, 12:00 PM | Threads | The Queta Problem | The season is underway. On July 10, before tip-off, we put two calls on Neemias Queta's ye… |
@@ -59,7 +54,6 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Tue Oct 27, 6:00 PM | X | The 644 on your team: Toronto Raptors | The Toronto Raptors in The 644, our ranking of every NBA player. The top eight by rank, wi… |
 | Tue Oct 27, 6:00 PM | Bluesky | The 644 on your team: Toronto Raptors | The Toronto Raptors in The 644, our ranking of every NBA player. The top eight by rank, wi… |
 | Tue Oct 27, 6:00 PM | Threads | The 644 on your team: Toronto Raptors | The Toronto Raptors in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Tue Oct 27, 6:00 PM | Instagram | The 644 on your team: Toronto Raptors | The Toronto Raptors in The 644, our ranking of every NBA player. The top eight by rank, wi… |
 | Wed Oct 28, 12:00 PM | X | The Rise and Fall of Ja Morant | The season is underway. On July 10, we took a hard look at Ja Morant. Here's what we found… |
 | Wed Oct 28, 12:00 PM | Bluesky | The Rise and Fall of Ja Morant | The season is underway. On July 10, we took a hard look at Ja Morant. Here's what we found… |
 | Wed Oct 28, 12:00 PM | Threads | The Rise and Fall of Ja Morant | The season is underway. On July 10, we took a hard look at Ja Morant. Here's what we found… |
@@ -67,7 +61,6 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Wed Oct 28, 6:00 PM | X | The 644 on your team: Cleveland Cavaliers | The Cleveland Cavaliers in The 644, our ranking of every NBA player. The top eight by rank… |
 | Wed Oct 28, 6:00 PM | Bluesky | The 644 on your team: Cleveland Cavaliers | The Cleveland Cavaliers in The 644, our ranking of every NBA player. The top eight by rank… |
 | Wed Oct 28, 6:00 PM | Threads | The 644 on your team: Cleveland Cavaliers | The Cleveland Cavaliers in The 644, our ranking of every NBA player. The top eight by rank… |
-| Wed Oct 28, 6:00 PM | Instagram | The 644 on your team: Cleveland Cavaliers | The Cleveland Cavaliers in The 644, our ranking of every NBA player. The top eight by rank… |
 | Thu Oct 29, 6:00 PM | X | The 644 on your team: Philadelphia 76ers | The Philadelphia 76ers in The 644, our ranking of every NBA player. The top eight by rank,… |
 | Thu Oct 29, 6:00 PM | Bluesky | The 644 on your team: Philadelphia 76ers | The Philadelphia 76ers in The 644, our ranking of every NBA player. The top eight by rank,… |
 | Thu Oct 29, 6:00 PM | Threads | The 644 on your team: Philadelphia 76ers | The Philadelphia 76ers in The 644, our ranking of every NBA player. The top eight by rank,… |
@@ -87,7 +80,6 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Sun Nov 1, 6:00 PM | X | The 644 on your team: Boston Celtics | The Boston Celtics in The 644, our ranking of every NBA player. The top eight by rank, wit… |
 | Sun Nov 1, 6:00 PM | Bluesky | The 644 on your team: Boston Celtics | The Boston Celtics in The 644, our ranking of every NBA player. The top eight by rank, wit… |
 | Sun Nov 1, 6:00 PM | Threads | The 644 on your team: Boston Celtics | The Boston Celtics in The 644, our ranking of every NBA player. The top eight by rank, wit… |
-| Sun Nov 1, 6:00 PM | Instagram | The 644 on your team: Boston Celtics | The Boston Celtics in The 644, our ranking of every NBA player. The top eight by rank, wit… |
 | Mon Nov 2, 6:00 PM | X | The 644 on your team: New York Knicks | The New York Knicks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
 | Mon Nov 2, 6:00 PM | Bluesky | The 644 on your team: New York Knicks | The New York Knicks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
 | Mon Nov 2, 6:00 PM | Threads | The 644 on your team: New York Knicks | The New York Knicks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
@@ -119,7 +111,6 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Sun Nov 8, 6:00 PM | X | The 644 on your team: Indiana Pacers | The Indiana Pacers in The 644, our ranking of every NBA player. The top eight by rank, wit… |
 | Sun Nov 8, 6:00 PM | Bluesky | The 644 on your team: Indiana Pacers | The Indiana Pacers in The 644, our ranking of every NBA player. The top eight by rank, wit… |
 | Sun Nov 8, 6:00 PM | Threads | The 644 on your team: Indiana Pacers | The Indiana Pacers in The 644, our ranking of every NBA player. The top eight by rank, wit… |
-| Sun Nov 8, 6:00 PM | Instagram | The 644 on your team: Indiana Pacers | The Indiana Pacers in The 644, our ranking of every NBA player. The top eight by rank, wit… |
 | Mon Nov 9, 6:00 PM | X | The 644 on your team: Phoenix Suns | The Phoenix Suns in The 644, our ranking of every NBA player. The top eight by rank, with … |
 | Mon Nov 9, 6:00 PM | Bluesky | The 644 on your team: Phoenix Suns | The Phoenix Suns in The 644, our ranking of every NBA player. The top eight by rank, with … |
 | Mon Nov 9, 6:00 PM | Threads | The 644 on your team: Phoenix Suns | The Phoenix Suns in The 644, our ranking of every NBA player. The top eight by rank, with … |
@@ -151,7 +142,6 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Sun Nov 15, 6:00 PM | X | The 644 on your team: Utah Jazz | The Utah Jazz in The 644, our ranking of every NBA player. The top eight by rank, with eac… |
 | Sun Nov 15, 6:00 PM | Bluesky | The 644 on your team: Utah Jazz | The Utah Jazz in The 644, our ranking of every NBA player. The top eight by rank, with eac… |
 | Sun Nov 15, 6:00 PM | Threads | The 644 on your team: Utah Jazz | The Utah Jazz in The 644, our ranking of every NBA player. The top eight by rank, with eac… |
-| Sun Nov 15, 6:00 PM | Instagram | The 644 on your team: Utah Jazz | The Utah Jazz in The 644, our ranking of every NBA player. The top eight by rank, with eac… |
 | Mon Nov 16, 6:00 PM | X | The 644 on your team: LA Clippers | The LA Clippers in The 644, our ranking of every NBA player. The top eight by rank, with e… |
 | Mon Nov 16, 6:00 PM | Bluesky | The 644 on your team: LA Clippers | The LA Clippers in The 644, our ranking of every NBA player. The top eight by rank, with e… |
 | Mon Nov 16, 6:00 PM | Threads | The 644 on your team: LA Clippers | The LA Clippers in The 644, our ranking of every NBA player. The top eight by rank, with e… |

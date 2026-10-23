@@ -577,24 +577,37 @@ def build_team_kit(code, date, outdir=None, images=True):
               f"Every player has a free profile page, and the table filters by team: {url}\n\n"
               "Happy to answer questions about the method in the comments.\n")
     alt = f"The {name} in The 644, top {count} by rank with GRAVITY scores: " + "; ".join(lines) + ". 50 is a league-average minute."
+    torque = next(x for x in load("the30/torque-2026-27.json")["teams"] if x["code"] == TORQUE_CODE.get(code, code))
+    best = top[0]
+    fact_label = (f"{best['n']}'s GRAVITY score, #{best['r']} of 644 and the best on the roster. TORQUE, our team model, "
+                  f"ranks the {name} #{torque['rank']} of 30 at {torque['torque']:.1f}, projecting {torque['wins']:.1f} wins.")
+    carousel = ["ig-1080x1350-1.png", "ig-1080x1350-2.png", "ig-1080x1350-3.png", "ig-1080x1350-4.png"]
     kit = {"kind": "team", "slug": code.lower(), "team": code, "date": date, "url": url,
            "title": f"The 644 on your team: {name}",
            "x_thread": posts, "bluesky_thread": posts, "threads": threads, "instagram_caption": ig,
            "reddit": {"subreddit": sub, "markdown": reddit},
-           "images": {"card": "card-1200x675.png", "carousel": ["ig-1080x1350-1.png"]},
-           "alt": {"card-1200x675.png": alt, "ig-1080x1350-1.png": alt}}
-    torque = next(x for x in load("the30/torque-2026-27.json")["teams"] if x["code"] == TORQUE_CODE.get(code, code))
+           "images": {"card": "card-1200x675.png", "carousel": carousel},
+           "alt": {"card-1200x675.png": alt,
+                   "ig-1080x1350-1.png": f"The 644 on your team: {name}. Cover slide.",
+                   "ig-1080x1350-2.png": alt,
+                   "ig-1080x1350-3.png": f"{best['s']:.1f}: {fact_label}",
+                   "ig-1080x1350-4.png": f"Every {name} player has a free page at thegravityreport.com/the644. Link in bio."}}
     source = (json.dumps(top, ensure_ascii=False) + f" {len(ps)} {name} " + json.dumps(torque, ensure_ascii=False)
               + " " + json.dumps([p for p in ps[8:]], ensure_ascii=False))
-    guard(posts + [threads, ig, reddit, alt], source)
+    guard(posts + [threads, ig, reddit] + list(kit["alt"].values()), source)
     check_limits(kit)
     outdir = outdir or os.path.join(ROOT, "social", "kits", f"{date}-team-{code.lower()}")
     copy_override(kit, os.path.basename(outdir), source)
     write_kit(kit, outdir)
     if images:
         team_card(os.path.join(outdir, "card-1200x675.png"), name, rows)
-        ig_table(os.path.join(outdir, "ig-1080x1350-1.png"), "THE 644 ON YOUR TEAM", name, rows,
-                 "THE 644", "THEGRAVITYREPORT.COM/THE644", "GRAVITY score. 50 is a league-average minute.")
+        # Instagram carousel: cover (the post's own angle), the table, one fact, the link
+        dek = re.split(r"(?<=[.!?])\s", kit["x_thread"][0].strip())[0]
+        ig_cover(os.path.join(outdir, "ig-1080x1350-1.png"), "THE 644 ON YOUR TEAM", name, dek, "THE 644", "1/4")
+        ig_table(os.path.join(outdir, "ig-1080x1350-2.png"), "THE 644 ON YOUR TEAM", name, rows,
+                 "THE 644", "2/4", "GRAVITY score. 50 is a league-average minute.")
+        ig_fact(os.path.join(outdir, "ig-1080x1350-3.png"), f"{best['s']:.1f}", fact_label, "THE BEST ON THE ROSTER", "3/4")
+        ig_cta(os.path.join(outdir, "ig-1080x1350-4.png"), f"Every {name} player, one number.", "thegravityreport.com/the644", "4/4")
     return kit, outdir
 
 
@@ -686,8 +699,14 @@ def build_the30_kit(date, outdir=None, images=True):
             dr.text((1008, y), f"{x['torque']:.1f}", font=cl.mono(34, 600), fill=cl.ACCENT, anchor="ra")
             y += 64
         cl.band(img, dr, 1350 - 96, 96, "THE GRAVITY REPORT", "THEGRAVITYREPORT.COM/THE30")
-        cl.save(img, os.path.join(outdir, "ig-1080x1350-1.png"))
-        kit["images"]["carousel"] = ["ig-1080x1350-1.png"]
+        cl.save(img, os.path.join(outdir, "ig-1080x1350-2.png"))
+        ig_cover(os.path.join(outdir, "ig-1080x1350-1.png"), "THE 30 · OPENING NIGHT 2026–27", "Every team, one number.",
+                 f"{t[0]['team']} first at {t[0]['torque']:.1f}, {t[0]['torque'] - t[1]['torque']:.1f} clear of {t[1]['team']}. TORQUE is our team model.",
+                 "THE 30", "1/3")
+        ig_cta(os.path.join(outdir, "ig-1080x1350-3.png"), "All 30, with each team's top three players.", "thegravityreport.com/the30", "3/3")
+        kit["images"]["carousel"] = ["ig-1080x1350-1.png", "ig-1080x1350-2.png", "ig-1080x1350-3.png"]
+        kit["alt"].update({"ig-1080x1350-1.png": "The 30: every team, one number. Cover slide.",
+                           "ig-1080x1350-2.png": "The top ten teams by TORQUE.", "ig-1080x1350-3.png": "All 30 at thegravityreport.com/the30. Link in bio."})
         write_kit(kit, outdir)
     return kit, outdir
 

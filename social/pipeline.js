@@ -161,7 +161,9 @@ export async function maybeQueuePotd(env, nowMs, { fetchImpl = fetch, schedule =
   if (!best) { await mark("no big night"); return null; }
   const kit = potdKitFromPerformance(best.p, best.p.team, best.g, SITE_URL, n);
   const at = Math.max(nowMs, etToUtcMs(date, POTD_HOUR_ET));
-  await queueSeries(env, kitId, kit, at, nowMs);
+  // No Instagram for player of the day until it has a format of its own (a Reel): a single card
+  // image does nothing on Instagram, and it's posted by hand.
+  await queueSeries(env, kitId, kit, at, nowMs, TEXT_SERIES_PLATFORMS);
   await mark(best.p.slug);
   await log(env, nowMs, null, null, "potd_picked", 0, `${best.p.n} (Game Score ${best.gs.toFixed(1)}): ${kit.x_thread[0]}`);
   return kitId;
