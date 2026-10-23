@@ -29,9 +29,9 @@ def numbers(text):
 def main(args):
     files, brief = args[:-1], args[-1]
     b = json.load(open(brief, encoding="utf-8"))
-    # the same narrow sources the robot checks against: the pick (and the runners-up) for the player post,
+    # the same narrow sources the robot checks against: the pick for the player post,
     # tonight's games for the tonight post; not the whole brief, where almost any number can be found
-    src_potd = json.dumps([b.get("pick"), b.get("candidates"), b.get("tiers")], ensure_ascii=False)
+    src_potd = json.dumps([b.get("pick"), b.get("tiers")], ensure_ascii=False)  # exactly what the robot allows
     src_tonight = json.dumps(b.get("tonight"), ensure_ascii=False)
     bad = 0
     for f in files:
