@@ -1,12 +1,12 @@
-The Chicago Bulls in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+Josh Giddey, 23, is the best Bull in The 644 at #37 of all 644 NBA players, with a GRAVITY score of 59.5. Rookie Caleb Wilson, the fourth pick, is already #182. GRAVITY score next to each name (50 is a league-average minute):
 
 #37 Josh Giddey 59.5
 #64 Tre Jones 55.8
-#124 Collin Sexton 49.8
+#91 Norman Powell 53.3
 #126 Nic Claxton 49.5
-#154 Anfernee Simons 47.1
 #156 Jalen Smith 47.1
 #165 Matas Buzelis 46.3
-#182 Caleb Wilson 45.3 (rookie)
+#182 Caleb Wilson 45.3
+#289 Buddy Hield 39.0
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

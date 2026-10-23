@@ -1,4 +1,4 @@
-The Orlando Magic in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+Franz or Paolo as the best player in Orlando: The 644 can't settle it. Franz Wagner is #29 of all 644 NBA players with a GRAVITY score of 60.3, Paolo is #33 at 60.0. GRAVITY score next to each name (50 is a league-average minute):
 
 #29 Franz Wagner 60.3
 #33 Paolo Banchero 60.0
@@ -6,7 +6,7 @@ The Orlando Magic in The 644: the top eight by rank, with each player's GRAVITY 
 #92 Goga Bitadze 53.3
 #101 Jalen Suggs 52.2
 #116 Wendell Carter Jr. 51.0
+#130 Nikola Vučević 48.7
 #152 Anthony Black 47.4
-#233 Tristan Da Silva 41.9
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

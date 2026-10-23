@@ -1,14 +1,6 @@
-Of his shooting collapse, 88% was shot-making, not shot selection.
+Is #140 the right price for Ja Morant? We tested our own number seven ways: overrides off, equal season weights, different anchors, the reliability stack deleted. Every variation landed him between #112 and #147, so #140 isn't an artifact of any single judgment call.
 ---
-The season is underway. On July 10, we took a hard look at Ja Morant. Here's what we found.
+The absence ledger explains #140 better than any shooting chart: 79 of a possible 246 games across three seasons, which is 32.1%. The 2023–24 season alone had a 25-game suspension, a nine-game return, and then 48 games lost to the shoulder.
 ---
-Ja Morant went from the 97th percentile of the league in 2021-22 to playing 79 of 246 games since 2023.
----
-His three-point slump covers 20-of-85 attempts: too few to tell decline from variance.
----
-The one split that moved beyond doubt went up: his free throws, to .897.
----
-Our verdict: #140 is a defensible price for the delivery risk. It is probably the wrong forecast of the talent.
----
-From the archive: we published this on July 10. The full piece, free:
+Our verdict: #140 is a defensible price for the delivery risk, and it is probably the wrong forecast of the talent. Both statements are the same mathematics, read in two directions. From the archive: we published this on July 10. The full piece is free:
 https://thegravityreport.com/notes/morant/

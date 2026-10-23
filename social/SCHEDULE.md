@@ -8,11 +8,11 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Thu Oct 22, 10:00 AM | Bluesky | Anthony Edwards: player of the day | Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from thr… |
 | Thu Oct 22, 10:00 AM | Threads | Anthony Edwards: player of the day | Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from thr… |
 | Thu Oct 22, 10:00 AM | Instagram | Anthony Edwards: player of the day | Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from thr… |
-| Thu Oct 22, 12:00 PM | Bluesky | The 2026–27 Gravity Report Predictions | Twenty calls for the 2026–27 season, each with a probability, every one of them scored in … |
-| Thu Oct 22, 12:00 PM | Threads | The 2026–27 Gravity Report Predictions | Twenty calls for the 2026–27 season, each with a probability, every one of them scored in … |
-| Thu Oct 22, 12:00 PM | Instagram | The 2026–27 Gravity Report Predictions | Twenty calls for the 2026–27 season, each with a probability, every one of them scored in … |
+| Thu Oct 22, 12:00 PM | Bluesky | The 2026–27 Gravity Report Predictions | We put twenty calls on the 2026–27 season, each with a probability, and every one gets sco… |
+| Thu Oct 22, 12:00 PM | Threads | The 2026–27 Gravity Report Predictions | We put twenty calls on the 2026–27 season, each with a probability, and every one gets sco… |
+| Thu Oct 22, 12:00 PM | Instagram | The 2026–27 Gravity Report Predictions | We put twenty calls on the 2026–27 season, each with a probability, and every one gets sco… |
 | Thu Oct 22, 8:10 PM | X | Anthony Edwards: player of the day | Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from thr… |
-| Thu Oct 22, 8:12 PM | X | The 2026–27 Gravity Report Predictions | Twenty calls for the 2026–27 season, each with a probability, every one of them scored in … |
+| Thu Oct 22, 8:12 PM | X | The 2026–27 Gravity Report Predictions | We put twenty calls on the 2026–27 season, each with a probability, and every one gets sco… |
 | Thu Oct 22, 9:00 PM | X | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
 | Thu Oct 22, 9:00 PM | Bluesky | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
 | Thu Oct 22, 9:00 PM | Threads | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
@@ -20,156 +20,156 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Fri Oct 23, 12:00 PM | Bluesky | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
 | Fri Oct 23, 12:00 PM | Threads | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
 | Fri Oct 23, 12:00 PM | Instagram | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
-| Fri Oct 23, 6:00 PM | X | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Fri Oct 23, 6:00 PM | Bluesky | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Fri Oct 23, 6:00 PM | Threads | The 644 on your team: San Antonio Spurs | The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Sat Oct 24, 12:00 PM | X | The Kawhi Anomaly | The season is underway. On October 6, before tip-off, we put four calls on Kawhi Leonard's… |
-| Sat Oct 24, 12:00 PM | Bluesky | The Kawhi Anomaly | The season is underway. On October 6, before tip-off, we put four calls on Kawhi Leonard's… |
-| Sat Oct 24, 12:00 PM | Threads | The Kawhi Anomaly | The season is underway. On October 6, before tip-off, we put four calls on Kawhi Leonard's… |
-| Sat Oct 24, 12:00 PM | Instagram | The Kawhi Anomaly | The season is underway. On October 6, before tip-off, we put four calls on Kawhi Leonard's… |
-| Sat Oct 24, 6:00 PM | X | The 644 on your team: Denver Nuggets | The Denver Nuggets in The 644, our ranking of every NBA player. The top eight by rank, wit… |
-| Sat Oct 24, 6:00 PM | Bluesky | The 644 on your team: Denver Nuggets | The Denver Nuggets in The 644, our ranking of every NBA player. The top eight by rank, wit… |
-| Sat Oct 24, 6:00 PM | Threads | The 644 on your team: Denver Nuggets | The Denver Nuggets in The 644, our ranking of every NBA player. The top eight by rank, wit… |
-| Sun Oct 25, 12:00 PM | X | The Last of His Kind | The season is underway. On October 17, before tip-off, we put two calls on Jalen Duren's y… |
-| Sun Oct 25, 12:00 PM | Bluesky | The Last of His Kind | The season is underway. On October 17, before tip-off, we put two calls on Jalen Duren's y… |
-| Sun Oct 25, 12:00 PM | Threads | The Last of His Kind | The season is underway. On October 17, before tip-off, we put two calls on Jalen Duren's y… |
-| Sun Oct 25, 12:00 PM | Instagram | The Last of His Kind | The season is underway. On October 17, before tip-off, we put two calls on Jalen Duren's y… |
-| Sun Oct 25, 6:00 PM | X | The 644 on your team: Detroit Pistons | The Detroit Pistons in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Sun Oct 25, 6:00 PM | Bluesky | The 644 on your team: Detroit Pistons | The Detroit Pistons in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Sun Oct 25, 6:00 PM | Threads | The 644 on your team: Detroit Pistons | The Detroit Pistons in The 644, our ranking of every NBA player. The top eight by rank, wi… |
+| Fri Oct 23, 6:00 PM | X | The 644 on your team: San Antonio Spurs | Wemby is 22 years old, and we already rank him #3 of all 644 NBA players in The 644, with … |
+| Fri Oct 23, 6:00 PM | Bluesky | The 644 on your team: San Antonio Spurs | Wemby is 22 years old, and we already rank him #3 of all 644 NBA players in The 644, with … |
+| Fri Oct 23, 6:00 PM | Threads | The 644 on your team: San Antonio Spurs | Wemby is 22 years old, and we already rank him #3 of all 644 NBA players in The 644, with … |
+| Sat Oct 24, 12:00 PM | X | The Kawhi Anomaly | Kawhi Leonard, at 34 years old, went from a good starter to the fifth-best player in the l… |
+| Sat Oct 24, 12:00 PM | Bluesky | The Kawhi Anomaly | Kawhi Leonard, at 34 years old, went from a good starter to the fifth-best player in the l… |
+| Sat Oct 24, 12:00 PM | Threads | The Kawhi Anomaly | Kawhi Leonard, at 34 years old, went from a good starter to the fifth-best player in the l… |
+| Sat Oct 24, 12:00 PM | Instagram | The Kawhi Anomaly | Kawhi Leonard, at 34 years old, went from a good starter to the fifth-best player in the l… |
+| Sat Oct 24, 6:00 PM | X | The 644 on your team: Denver Nuggets | Jokić is our number one of all 644 NBA players in The 644, with a GRAVITY score of 97.8. T… |
+| Sat Oct 24, 6:00 PM | Bluesky | The 644 on your team: Denver Nuggets | Jokić is our number one of all 644 NBA players in The 644, with a GRAVITY score of 97.8. T… |
+| Sat Oct 24, 6:00 PM | Threads | The 644 on your team: Denver Nuggets | Jokić is our number one of all 644 NBA players in The 644, with a GRAVITY score of 97.8. T… |
+| Sun Oct 25, 12:00 PM | X | The Last of His Kind | Every other player in our top ten last season took at least 22% of his shots from three. J… |
+| Sun Oct 25, 12:00 PM | Bluesky | The Last of His Kind | Every other player in our top ten last season took at least 22% of his shots from three. J… |
+| Sun Oct 25, 12:00 PM | Threads | The Last of His Kind | Every other player in our top ten last season took at least 22% of his shots from three. J… |
+| Sun Oct 25, 12:00 PM | Instagram | The Last of His Kind | Every other player in our top ten last season took at least 22% of his shots from three. J… |
+| Sun Oct 25, 6:00 PM | X | The 644 on your team: Detroit Pistons | TORQUE, our team model, had Detroit 14th in July. Now it has the Pistons 4th with a score … |
+| Sun Oct 25, 6:00 PM | Bluesky | The 644 on your team: Detroit Pistons | TORQUE, our team model, had Detroit 14th in July. Now it has the Pistons 4th with a score … |
+| Sun Oct 25, 6:00 PM | Threads | The 644 on your team: Detroit Pistons | TORQUE, our team model, had Detroit 14th in July. Now it has the Pistons 4th with a score … |
 | Mon Oct 26, 9:00 AM | X | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 22, 2026:  K3 · 30% · Kawhi… |
 | Mon Oct 26, 9:00 AM | Bluesky | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 22, 2026:  K3 · 30% · Kawhi… |
 | Mon Oct 26, 9:00 AM | Threads | Is the model winning? | Is the model winning? Where our 32 open calls stand, as of Oct 22, 2026:  K3 · 30% · Kawhi… |
-| Mon Oct 26, 12:00 PM | X | Chasing Seven | The season is underway. On October 17, before tip-off, we put three calls on Nikola Jokić'… |
-| Mon Oct 26, 12:00 PM | Bluesky | Chasing Seven | The season is underway. On October 17, before tip-off, we put three calls on Nikola Jokić'… |
-| Mon Oct 26, 12:00 PM | Threads | Chasing Seven | The season is underway. On October 17, before tip-off, we put three calls on Nikola Jokić'… |
-| Mon Oct 26, 12:00 PM | Instagram | Chasing Seven | The season is underway. On October 17, before tip-off, we put three calls on Nikola Jokić'… |
-| Mon Oct 26, 6:00 PM | X | The 644 on your team: Los Angeles Lakers | The Los Angeles Lakers in The 644, our ranking of every NBA player. The top eight by rank,… |
-| Mon Oct 26, 6:00 PM | Bluesky | The 644 on your team: Los Angeles Lakers | The Los Angeles Lakers in The 644, our ranking of every NBA player. The top eight by rank,… |
-| Mon Oct 26, 6:00 PM | Threads | The 644 on your team: Los Angeles Lakers | The Los Angeles Lakers in The 644, our ranking of every NBA player. The top eight by rank,… |
-| Tue Oct 27, 12:00 PM | X | The Queta Problem | The season is underway. On July 10, before tip-off, we put two calls on Neemias Queta's ye… |
-| Tue Oct 27, 12:00 PM | Bluesky | The Queta Problem | The season is underway. On July 10, before tip-off, we put two calls on Neemias Queta's ye… |
-| Tue Oct 27, 12:00 PM | Threads | The Queta Problem | The season is underway. On July 10, before tip-off, we put two calls on Neemias Queta's ye… |
-| Tue Oct 27, 12:00 PM | Instagram | The Queta Problem | The season is underway. On July 10, before tip-off, we put two calls on Neemias Queta's ye… |
-| Tue Oct 27, 6:00 PM | X | The 644 on your team: Toronto Raptors | The Toronto Raptors in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Tue Oct 27, 6:00 PM | Bluesky | The 644 on your team: Toronto Raptors | The Toronto Raptors in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Tue Oct 27, 6:00 PM | Threads | The 644 on your team: Toronto Raptors | The Toronto Raptors in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Wed Oct 28, 12:00 PM | X | The Rise and Fall of Ja Morant | The season is underway. On July 10, we took a hard look at Ja Morant. Here's what we found… |
-| Wed Oct 28, 12:00 PM | Bluesky | The Rise and Fall of Ja Morant | The season is underway. On July 10, we took a hard look at Ja Morant. Here's what we found… |
-| Wed Oct 28, 12:00 PM | Threads | The Rise and Fall of Ja Morant | The season is underway. On July 10, we took a hard look at Ja Morant. Here's what we found… |
-| Wed Oct 28, 12:00 PM | Instagram | The Rise and Fall of Ja Morant | The season is underway. On July 10, we took a hard look at Ja Morant. Here's what we found… |
-| Wed Oct 28, 6:00 PM | X | The 644 on your team: Cleveland Cavaliers | The Cleveland Cavaliers in The 644, our ranking of every NBA player. The top eight by rank… |
-| Wed Oct 28, 6:00 PM | Bluesky | The 644 on your team: Cleveland Cavaliers | The Cleveland Cavaliers in The 644, our ranking of every NBA player. The top eight by rank… |
-| Wed Oct 28, 6:00 PM | Threads | The 644 on your team: Cleveland Cavaliers | The Cleveland Cavaliers in The 644, our ranking of every NBA player. The top eight by rank… |
-| Thu Oct 29, 6:00 PM | X | The 644 on your team: Philadelphia 76ers | The Philadelphia 76ers in The 644, our ranking of every NBA player. The top eight by rank,… |
-| Thu Oct 29, 6:00 PM | Bluesky | The 644 on your team: Philadelphia 76ers | The Philadelphia 76ers in The 644, our ranking of every NBA player. The top eight by rank,… |
-| Thu Oct 29, 6:00 PM | Threads | The 644 on your team: Philadelphia 76ers | The Philadelphia 76ers in The 644, our ranking of every NBA player. The top eight by rank,… |
-| Thu Oct 29, 6:00 PM | Instagram | The 644 on your team: Philadelphia 76ers | The Philadelphia 76ers in The 644, our ranking of every NBA player. The top eight by rank,… |
-| Fri Oct 30, 6:00 PM | X | The 644 on your team: Portland Trail Blazers | The Portland Trail Blazers in The 644, our ranking of every NBA player. The top eight by r… |
-| Fri Oct 30, 6:00 PM | Bluesky | The 644 on your team: Portland Trail Blazers | The Portland Trail Blazers in The 644, our ranking of every NBA player. The top eight by r… |
-| Fri Oct 30, 6:00 PM | Threads | The 644 on your team: Portland Trail Blazers | The Portland Trail Blazers in The 644, our ranking of every NBA player. The top eight by r… |
-| Fri Oct 30, 6:00 PM | Instagram | The 644 on your team: Portland Trail Blazers | The Portland Trail Blazers in The 644, our ranking of every NBA player. The top eight by r… |
-| Sat Oct 31, 6:00 PM | X | The 644 on your team: Houston Rockets | The Houston Rockets in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Sat Oct 31, 6:00 PM | Bluesky | The 644 on your team: Houston Rockets | The Houston Rockets in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Sat Oct 31, 6:00 PM | Threads | The 644 on your team: Houston Rockets | The Houston Rockets in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Sat Oct 31, 6:00 PM | Instagram | The 644 on your team: Houston Rockets | The Houston Rockets in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Sun Nov 1, 12:00 PM | X | The Rise and Fall of Ja Morant | Of his shooting collapse, 88% was shot-making, not shot selection.… |
-| Sun Nov 1, 12:00 PM | Bluesky | The Rise and Fall of Ja Morant | Of his shooting collapse, 88% was shot-making, not shot selection.… |
-| Sun Nov 1, 12:00 PM | Threads | The Rise and Fall of Ja Morant | Of his shooting collapse, 88% was shot-making, not shot selection.… |
-| Sun Nov 1, 12:00 PM | Instagram | The Rise and Fall of Ja Morant | Of his shooting collapse, 88% was shot-making, not shot selection.… |
-| Sun Nov 1, 6:00 PM | X | The 644 on your team: Boston Celtics | The Boston Celtics in The 644, our ranking of every NBA player. The top eight by rank, wit… |
-| Sun Nov 1, 6:00 PM | Bluesky | The 644 on your team: Boston Celtics | The Boston Celtics in The 644, our ranking of every NBA player. The top eight by rank, wit… |
-| Sun Nov 1, 6:00 PM | Threads | The 644 on your team: Boston Celtics | The Boston Celtics in The 644, our ranking of every NBA player. The top eight by rank, wit… |
-| Mon Nov 2, 6:00 PM | X | The 644 on your team: New York Knicks | The New York Knicks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Mon Nov 2, 6:00 PM | Bluesky | The 644 on your team: New York Knicks | The New York Knicks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Mon Nov 2, 6:00 PM | Threads | The 644 on your team: New York Knicks | The New York Knicks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Mon Nov 2, 6:00 PM | Instagram | The 644 on your team: New York Knicks | The New York Knicks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Tue Nov 3, 6:00 PM | X | The 644 on your team: Orlando Magic | The Orlando Magic in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Tue Nov 3, 6:00 PM | Bluesky | The 644 on your team: Orlando Magic | The Orlando Magic in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Tue Nov 3, 6:00 PM | Threads | The 644 on your team: Orlando Magic | The Orlando Magic in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Tue Nov 3, 6:00 PM | Instagram | The 644 on your team: Orlando Magic | The Orlando Magic in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Wed Nov 4, 6:00 PM | X | The 644 on your team: Miami Heat | The Miami Heat in The 644, our ranking of every NBA player. The top eight by rank, with ea… |
-| Wed Nov 4, 6:00 PM | Bluesky | The 644 on your team: Miami Heat | The Miami Heat in The 644, our ranking of every NBA player. The top eight by rank, with ea… |
-| Wed Nov 4, 6:00 PM | Threads | The 644 on your team: Miami Heat | The Miami Heat in The 644, our ranking of every NBA player. The top eight by rank, with ea… |
-| Wed Nov 4, 6:00 PM | Instagram | The 644 on your team: Miami Heat | The Miami Heat in The 644, our ranking of every NBA player. The top eight by rank, with ea… |
-| Thu Nov 5, 6:00 PM | X | The 644 on your team: Minnesota Timberwolves | The Minnesota Timberwolves in The 644, our ranking of every NBA player. The top eight by r… |
-| Thu Nov 5, 6:00 PM | Bluesky | The 644 on your team: Minnesota Timberwolves | The Minnesota Timberwolves in The 644, our ranking of every NBA player. The top eight by r… |
-| Thu Nov 5, 6:00 PM | Threads | The 644 on your team: Minnesota Timberwolves | The Minnesota Timberwolves in The 644, our ranking of every NBA player. The top eight by r… |
-| Thu Nov 5, 6:00 PM | Instagram | The 644 on your team: Minnesota Timberwolves | The Minnesota Timberwolves in The 644, our ranking of every NBA player. The top eight by r… |
-| Fri Nov 6, 6:00 PM | X | The 644 on your team: Charlotte Hornets | The Charlotte Hornets in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Fri Nov 6, 6:00 PM | Bluesky | The 644 on your team: Charlotte Hornets | The Charlotte Hornets in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Fri Nov 6, 6:00 PM | Threads | The 644 on your team: Charlotte Hornets | The Charlotte Hornets in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Fri Nov 6, 6:00 PM | Instagram | The 644 on your team: Charlotte Hornets | The Charlotte Hornets in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Sat Nov 7, 6:00 PM | X | The 644 on your team: Golden State Warriors | The Golden State Warriors in The 644, our ranking of every NBA player. The top eight by ra… |
-| Sat Nov 7, 6:00 PM | Bluesky | The 644 on your team: Golden State Warriors | The Golden State Warriors in The 644, our ranking of every NBA player. The top eight by ra… |
-| Sat Nov 7, 6:00 PM | Threads | The 644 on your team: Golden State Warriors | The Golden State Warriors in The 644, our ranking of every NBA player. The top eight by ra… |
-| Sat Nov 7, 6:00 PM | Instagram | The 644 on your team: Golden State Warriors | The Golden State Warriors in The 644, our ranking of every NBA player. The top eight by ra… |
-| Sun Nov 8, 12:00 PM | X | The Queta Problem | His workload grew nearly 6× (333 → 1,926 minutes) and his efficiency went up anyway.… |
-| Sun Nov 8, 12:00 PM | Bluesky | The Queta Problem | His workload grew nearly 6× (333 → 1,926 minutes) and his efficiency went up anyway.… |
-| Sun Nov 8, 12:00 PM | Threads | The Queta Problem | His workload grew nearly 6× (333 → 1,926 minutes) and his efficiency went up anyway.… |
-| Sun Nov 8, 12:00 PM | Instagram | The Queta Problem | His workload grew nearly 6× (333 → 1,926 minutes) and his efficiency went up anyway.… |
-| Sun Nov 8, 6:00 PM | X | The 644 on your team: Indiana Pacers | The Indiana Pacers in The 644, our ranking of every NBA player. The top eight by rank, wit… |
-| Sun Nov 8, 6:00 PM | Bluesky | The 644 on your team: Indiana Pacers | The Indiana Pacers in The 644, our ranking of every NBA player. The top eight by rank, wit… |
-| Sun Nov 8, 6:00 PM | Threads | The 644 on your team: Indiana Pacers | The Indiana Pacers in The 644, our ranking of every NBA player. The top eight by rank, wit… |
-| Mon Nov 9, 6:00 PM | X | The 644 on your team: Phoenix Suns | The Phoenix Suns in The 644, our ranking of every NBA player. The top eight by rank, with … |
-| Mon Nov 9, 6:00 PM | Bluesky | The 644 on your team: Phoenix Suns | The Phoenix Suns in The 644, our ranking of every NBA player. The top eight by rank, with … |
-| Mon Nov 9, 6:00 PM | Threads | The 644 on your team: Phoenix Suns | The Phoenix Suns in The 644, our ranking of every NBA player. The top eight by rank, with … |
-| Mon Nov 9, 6:00 PM | Instagram | The 644 on your team: Phoenix Suns | The Phoenix Suns in The 644, our ranking of every NBA player. The top eight by rank, with … |
-| Tue Nov 10, 6:00 PM | X | The 644 on your team: Atlanta Hawks | The Atlanta Hawks in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Tue Nov 10, 6:00 PM | Bluesky | The 644 on your team: Atlanta Hawks | The Atlanta Hawks in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Tue Nov 10, 6:00 PM | Threads | The 644 on your team: Atlanta Hawks | The Atlanta Hawks in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Tue Nov 10, 6:00 PM | Instagram | The 644 on your team: Atlanta Hawks | The Atlanta Hawks in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Wed Nov 11, 6:00 PM | X | The 644 on your team: Dallas Mavericks | The Dallas Mavericks in The 644, our ranking of every NBA player. The top eight by rank, w… |
-| Wed Nov 11, 6:00 PM | Bluesky | The 644 on your team: Dallas Mavericks | The Dallas Mavericks in The 644, our ranking of every NBA player. The top eight by rank, w… |
-| Wed Nov 11, 6:00 PM | Threads | The 644 on your team: Dallas Mavericks | The Dallas Mavericks in The 644, our ranking of every NBA player. The top eight by rank, w… |
-| Wed Nov 11, 6:00 PM | Instagram | The 644 on your team: Dallas Mavericks | The Dallas Mavericks in The 644, our ranking of every NBA player. The top eight by rank, w… |
-| Thu Nov 12, 6:00 PM | X | The 644 on your team: Chicago Bulls | The Chicago Bulls in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Thu Nov 12, 6:00 PM | Bluesky | The 644 on your team: Chicago Bulls | The Chicago Bulls in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Thu Nov 12, 6:00 PM | Threads | The 644 on your team: Chicago Bulls | The Chicago Bulls in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Thu Nov 12, 6:00 PM | Instagram | The 644 on your team: Chicago Bulls | The Chicago Bulls in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Fri Nov 13, 6:00 PM | X | The 644 on your team: Milwaukee Bucks | The Milwaukee Bucks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Fri Nov 13, 6:00 PM | Bluesky | The 644 on your team: Milwaukee Bucks | The Milwaukee Bucks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Fri Nov 13, 6:00 PM | Threads | The 644 on your team: Milwaukee Bucks | The Milwaukee Bucks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Fri Nov 13, 6:00 PM | Instagram | The 644 on your team: Milwaukee Bucks | The Milwaukee Bucks in The 644, our ranking of every NBA player. The top eight by rank, wi… |
-| Sat Nov 14, 6:00 PM | X | The 644 on your team: New Orleans Pelicans | The New Orleans Pelicans in The 644, our ranking of every NBA player. The top eight by ran… |
-| Sat Nov 14, 6:00 PM | Bluesky | The 644 on your team: New Orleans Pelicans | The New Orleans Pelicans in The 644, our ranking of every NBA player. The top eight by ran… |
-| Sat Nov 14, 6:00 PM | Threads | The 644 on your team: New Orleans Pelicans | The New Orleans Pelicans in The 644, our ranking of every NBA player. The top eight by ran… |
-| Sat Nov 14, 6:00 PM | Instagram | The 644 on your team: New Orleans Pelicans | The New Orleans Pelicans in The 644, our ranking of every NBA player. The top eight by ran… |
-| Sun Nov 15, 12:00 PM | X | The Last of His Kind | In 2004–05 four of the top ten never shot threes, Kevin Garnett first among them. From 201… |
-| Sun Nov 15, 12:00 PM | Bluesky | The Last of His Kind | In 2004–05 four of the top ten never shot threes, Kevin Garnett first among them. From 201… |
-| Sun Nov 15, 12:00 PM | Threads | The Last of His Kind | In 2004–05 four of the top ten never shot threes, Kevin Garnett first among them. From 201… |
-| Sun Nov 15, 12:00 PM | Instagram | The Last of His Kind | In 2004–05 four of the top ten never shot threes, Kevin Garnett first among them. From 201… |
-| Sun Nov 15, 6:00 PM | X | The 644 on your team: Utah Jazz | The Utah Jazz in The 644, our ranking of every NBA player. The top eight by rank, with eac… |
-| Sun Nov 15, 6:00 PM | Bluesky | The 644 on your team: Utah Jazz | The Utah Jazz in The 644, our ranking of every NBA player. The top eight by rank, with eac… |
-| Sun Nov 15, 6:00 PM | Threads | The 644 on your team: Utah Jazz | The Utah Jazz in The 644, our ranking of every NBA player. The top eight by rank, with eac… |
-| Mon Nov 16, 6:00 PM | X | The 644 on your team: LA Clippers | The LA Clippers in The 644, our ranking of every NBA player. The top eight by rank, with e… |
-| Mon Nov 16, 6:00 PM | Bluesky | The 644 on your team: LA Clippers | The LA Clippers in The 644, our ranking of every NBA player. The top eight by rank, with e… |
-| Mon Nov 16, 6:00 PM | Threads | The 644 on your team: LA Clippers | The LA Clippers in The 644, our ranking of every NBA player. The top eight by rank, with e… |
-| Mon Nov 16, 6:00 PM | Instagram | The 644 on your team: LA Clippers | The LA Clippers in The 644, our ranking of every NBA player. The top eight by rank, with e… |
-| Tue Nov 17, 6:00 PM | X | The 644 on your team: Washington Wizards | The Washington Wizards in The 644, our ranking of every NBA player. The top eight by rank,… |
-| Tue Nov 17, 6:00 PM | Bluesky | The 644 on your team: Washington Wizards | The Washington Wizards in The 644, our ranking of every NBA player. The top eight by rank,… |
-| Tue Nov 17, 6:00 PM | Threads | The 644 on your team: Washington Wizards | The Washington Wizards in The 644, our ranking of every NBA player. The top eight by rank,… |
-| Tue Nov 17, 6:00 PM | Instagram | The 644 on your team: Washington Wizards | The Washington Wizards in The 644, our ranking of every NBA player. The top eight by rank,… |
-| Wed Nov 18, 6:00 PM | X | The 644 on your team: Memphis Grizzlies | The Memphis Grizzlies in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Wed Nov 18, 6:00 PM | Bluesky | The 644 on your team: Memphis Grizzlies | The Memphis Grizzlies in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Wed Nov 18, 6:00 PM | Threads | The 644 on your team: Memphis Grizzlies | The Memphis Grizzlies in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Wed Nov 18, 6:00 PM | Instagram | The 644 on your team: Memphis Grizzlies | The Memphis Grizzlies in The 644, our ranking of every NBA player. The top eight by rank, … |
-| Thu Nov 19, 6:00 PM | X | The 644 on your team: Brooklyn Nets | The Brooklyn Nets in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Thu Nov 19, 6:00 PM | Bluesky | The 644 on your team: Brooklyn Nets | The Brooklyn Nets in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Thu Nov 19, 6:00 PM | Threads | The 644 on your team: Brooklyn Nets | The Brooklyn Nets in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Thu Nov 19, 6:00 PM | Instagram | The 644 on your team: Brooklyn Nets | The Brooklyn Nets in The 644, our ranking of every NBA player. The top eight by rank, with… |
-| Fri Nov 20, 6:00 PM | X | The 644 on your team: Sacramento Kings | The Sacramento Kings in The 644, our ranking of every NBA player. The top eight by rank, w… |
-| Fri Nov 20, 6:00 PM | Bluesky | The 644 on your team: Sacramento Kings | The Sacramento Kings in The 644, our ranking of every NBA player. The top eight by rank, w… |
-| Fri Nov 20, 6:00 PM | Threads | The 644 on your team: Sacramento Kings | The Sacramento Kings in The 644, our ranking of every NBA player. The top eight by rank, w… |
-| Fri Nov 20, 6:00 PM | Instagram | The 644 on your team: Sacramento Kings | The Sacramento Kings in The 644, our ranking of every NBA player. The top eight by rank, w… |
-| Sun Nov 22, 12:00 PM | X | The Kawhi Anomaly | Late surges have an unkind history. Eight players surged to star level after 31. None kept… |
-| Sun Nov 22, 12:00 PM | Bluesky | The Kawhi Anomaly | Late surges have an unkind history. Eight players surged to star level after 31. None kept… |
-| Sun Nov 22, 12:00 PM | Threads | The Kawhi Anomaly | Late surges have an unkind history. Eight players surged to star level after 31. None kept… |
-| Sun Nov 22, 12:00 PM | Instagram | The Kawhi Anomaly | Late surges have an unkind history. Eight players surged to star level after 31. None kept… |
-| Sun Nov 29, 12:00 PM | X | Chasing Seven | His six seasons average an impact of +3.36, above Jordan's +3.17 and LeBron's +3.19. Stati… |
-| Sun Nov 29, 12:00 PM | Bluesky | Chasing Seven | His six seasons average an impact of +3.36, above Jordan's +3.17 and LeBron's +3.19. Stati… |
-| Sun Nov 29, 12:00 PM | Threads | Chasing Seven | His six seasons average an impact of +3.36, above Jordan's +3.17 and LeBron's +3.19. Stati… |
-| Sun Nov 29, 12:00 PM | Instagram | Chasing Seven | His six seasons average an impact of +3.36, above Jordan's +3.17 and LeBron's +3.19. Stati… |
+| Mon Oct 26, 12:00 PM | X | Chasing Seven | By our model, Jokić has been the best player in the league for six straight seasons. We ra… |
+| Mon Oct 26, 12:00 PM | Bluesky | Chasing Seven | By our model, Jokić has been the best player in the league for six straight seasons. We ra… |
+| Mon Oct 26, 12:00 PM | Threads | Chasing Seven | By our model, Jokić has been the best player in the league for six straight seasons. We ra… |
+| Mon Oct 26, 12:00 PM | Instagram | Chasing Seven | By our model, Jokić has been the best player in the league for six straight seasons. We ra… |
+| Mon Oct 26, 6:00 PM | X | The 644 on your team: Los Angeles Lakers | Luka is one of only five players in our top tier, the Franchise engines. The 644, our rank… |
+| Mon Oct 26, 6:00 PM | Bluesky | The 644 on your team: Los Angeles Lakers | Luka is one of only five players in our top tier, the Franchise engines. The 644, our rank… |
+| Mon Oct 26, 6:00 PM | Threads | The 644 on your team: Los Angeles Lakers | Luka is one of only five players in our top tier, the Franchise engines. The 644, our rank… |
+| Tue Oct 27, 12:00 PM | X | The Queta Problem | Neemias Queta was waived twice and picked 39th. Our July ranking of all 644 NBA players pu… |
+| Tue Oct 27, 12:00 PM | Bluesky | The Queta Problem | Neemias Queta was waived twice and picked 39th. Our July ranking of all 644 NBA players pu… |
+| Tue Oct 27, 12:00 PM | Threads | The Queta Problem | Neemias Queta was waived twice and picked 39th. Our July ranking of all 644 NBA players pu… |
+| Tue Oct 27, 12:00 PM | Instagram | The Queta Problem | Neemias Queta was waived twice and picked 39th. Our July ranking of all 644 NBA players pu… |
+| Tue Oct 27, 6:00 PM | X | The 644 on your team: Toronto Raptors | Kawhi is 34 years old and ranks #6 in The 644, our ranking of all 644 NBA players, with a … |
+| Tue Oct 27, 6:00 PM | Bluesky | The 644 on your team: Toronto Raptors | Kawhi is 34 years old and ranks #6 in The 644, our ranking of all 644 NBA players, with a … |
+| Tue Oct 27, 6:00 PM | Threads | The 644 on your team: Toronto Raptors | Kawhi is 34 years old and ranks #6 in The 644, our ranking of all 644 NBA players, with a … |
+| Wed Oct 28, 12:00 PM | X | The Rise and Fall of Ja Morant | Ja Morant went from the 97th percentile in 2021–22 to playing 79 of a possible 246 games i… |
+| Wed Oct 28, 12:00 PM | Bluesky | The Rise and Fall of Ja Morant | Ja Morant went from the 97th percentile in 2021–22 to playing 79 of a possible 246 games i… |
+| Wed Oct 28, 12:00 PM | Threads | The Rise and Fall of Ja Morant | Ja Morant went from the 97th percentile in 2021–22 to playing 79 of a possible 246 games i… |
+| Wed Oct 28, 12:00 PM | Instagram | The Rise and Fall of Ja Morant | Ja Morant went from the 97th percentile in 2021–22 to playing 79 of a possible 246 games i… |
+| Wed Oct 28, 6:00 PM | X | The 644 on your team: Cleveland Cavaliers | Cleveland has four players in the top 35 of The 644, our ranking of all 644 NBA players: D… |
+| Wed Oct 28, 6:00 PM | Bluesky | The 644 on your team: Cleveland Cavaliers | Cleveland has four players in the top 35 of The 644, our ranking of all 644 NBA players: D… |
+| Wed Oct 28, 6:00 PM | Threads | The 644 on your team: Cleveland Cavaliers | Cleveland has four players in the top 35 of The 644, our ranking of all 644 NBA players: D… |
+| Thu Oct 29, 6:00 PM | X | The 644 on your team: Philadelphia 76ers | LeBron, at 41 years old, is #31 in The 644, our ranking of all 644 NBA players, with a GRA… |
+| Thu Oct 29, 6:00 PM | Bluesky | The 644 on your team: Philadelphia 76ers | LeBron, at 41 years old, is #31 in The 644, our ranking of all 644 NBA players, with a GRA… |
+| Thu Oct 29, 6:00 PM | Threads | The 644 on your team: Philadelphia 76ers | LeBron, at 41 years old, is #31 in The 644, our ranking of all 644 NBA players, with a GRA… |
+| Thu Oct 29, 6:00 PM | Instagram | The 644 on your team: Philadelphia 76ers | LeBron, at 41 years old, is #31 in The 644, our ranking of all 644 NBA players, with a GRA… |
+| Fri Oct 30, 6:00 PM | X | The 644 on your team: Portland Trail Blazers | The best Blazer in The 644, our ranking of all 644 NBA players, isn't Dame or Ja. It's Den… |
+| Fri Oct 30, 6:00 PM | Bluesky | The 644 on your team: Portland Trail Blazers | The best Blazer in The 644, our ranking of all 644 NBA players, isn't Dame or Ja. It's Den… |
+| Fri Oct 30, 6:00 PM | Threads | The 644 on your team: Portland Trail Blazers | The best Blazer in The 644, our ranking of all 644 NBA players, isn't Dame or Ja. It's Den… |
+| Fri Oct 30, 6:00 PM | Instagram | The 644 on your team: Portland Trail Blazers | The best Blazer in The 644, our ranking of all 644 NBA players, isn't Dame or Ja. It's Den… |
+| Sat Oct 31, 6:00 PM | X | The 644 on your team: Houston Rockets | Houston has three players in the top 32 of The 644, our ranking of all 644 NBA players, an… |
+| Sat Oct 31, 6:00 PM | Bluesky | The 644 on your team: Houston Rockets | Houston has three players in the top 32 of The 644, our ranking of all 644 NBA players, an… |
+| Sat Oct 31, 6:00 PM | Threads | The 644 on your team: Houston Rockets | Houston has three players in the top 32 of The 644, our ranking of all 644 NBA players, an… |
+| Sat Oct 31, 6:00 PM | Instagram | The 644 on your team: Houston Rockets | Houston has three players in the top 32 of The 644, our ranking of all 644 NBA players, an… |
+| Sun Nov 1, 12:00 PM | X | The Rise and Fall of Ja Morant | Is #140 the right price for Ja Morant? We tested our own number seven ways: overrides off,… |
+| Sun Nov 1, 12:00 PM | Bluesky | The Rise and Fall of Ja Morant | Is #140 the right price for Ja Morant? We tested our own number seven ways: overrides off,… |
+| Sun Nov 1, 12:00 PM | Threads | The Rise and Fall of Ja Morant | Is #140 the right price for Ja Morant? We tested our own number seven ways: overrides off,… |
+| Sun Nov 1, 12:00 PM | Instagram | The Rise and Fall of Ja Morant | Is #140 the right price for Ja Morant? We tested our own number seven ways: overrides off,… |
+| Sun Nov 1, 6:00 PM | X | The 644 on your team: Boston Celtics | Tatum, Boston's best player in The 644, our ranking of all 644 NBA players, ranks only #24… |
+| Sun Nov 1, 6:00 PM | Bluesky | The 644 on your team: Boston Celtics | Tatum, Boston's best player in The 644, our ranking of all 644 NBA players, ranks only #24… |
+| Sun Nov 1, 6:00 PM | Threads | The 644 on your team: Boston Celtics | Tatum, Boston's best player in The 644, our ranking of all 644 NBA players, ranks only #24… |
+| Mon Nov 2, 6:00 PM | X | The 644 on your team: New York Knicks | New York has three players in the top 27 of The 644, our ranking of all 644 NBA players: K… |
+| Mon Nov 2, 6:00 PM | Bluesky | The 644 on your team: New York Knicks | New York has three players in the top 27 of The 644, our ranking of all 644 NBA players: K… |
+| Mon Nov 2, 6:00 PM | Threads | The 644 on your team: New York Knicks | New York has three players in the top 27 of The 644, our ranking of all 644 NBA players: K… |
+| Mon Nov 2, 6:00 PM | Instagram | The 644 on your team: New York Knicks | New York has three players in the top 27 of The 644, our ranking of all 644 NBA players: K… |
+| Tue Nov 3, 6:00 PM | X | The 644 on your team: Orlando Magic | Magic fans argue over Franz or Paolo, and The 644, our ranking of all 644 NBA players, can… |
+| Tue Nov 3, 6:00 PM | Bluesky | The 644 on your team: Orlando Magic | Magic fans argue over Franz or Paolo, and The 644, our ranking of all 644 NBA players, can… |
+| Tue Nov 3, 6:00 PM | Threads | The 644 on your team: Orlando Magic | Magic fans argue over Franz or Paolo, and The 644, our ranking of all 644 NBA players, can… |
+| Tue Nov 3, 6:00 PM | Instagram | The 644 on your team: Orlando Magic | Magic fans argue over Franz or Paolo, and The 644, our ranking of all 644 NBA players, can… |
+| Wed Nov 4, 6:00 PM | X | The 644 on your team: Miami Heat | Giannis is #4 of all 644 NBA players in The 644, with a GRAVITY score of 83.9. And yet TOR… |
+| Wed Nov 4, 6:00 PM | Bluesky | The 644 on your team: Miami Heat | Giannis is #4 of all 644 NBA players in The 644, with a GRAVITY score of 83.9. And yet TOR… |
+| Wed Nov 4, 6:00 PM | Threads | The 644 on your team: Miami Heat | Giannis is #4 of all 644 NBA players in The 644, with a GRAVITY score of 83.9. And yet TOR… |
+| Wed Nov 4, 6:00 PM | Instagram | The 644 on your team: Miami Heat | Giannis is #4 of all 644 NBA players in The 644, with a GRAVITY score of 83.9. And yet TOR… |
+| Thu Nov 5, 6:00 PM | X | The 644 on your team: Minnesota Timberwolves | By our model, the best Timberwolf isn't Ant. LaMelo Ball is #11 in The 644, our ranking of… |
+| Thu Nov 5, 6:00 PM | Bluesky | The 644 on your team: Minnesota Timberwolves | By our model, the best Timberwolf isn't Ant. LaMelo Ball is #11 in The 644, our ranking of… |
+| Thu Nov 5, 6:00 PM | Threads | The 644 on your team: Minnesota Timberwolves | By our model, the best Timberwolf isn't Ant. LaMelo Ball is #11 in The 644, our ranking of… |
+| Thu Nov 5, 6:00 PM | Instagram | The 644 on your team: Minnesota Timberwolves | By our model, the best Timberwolf isn't Ant. LaMelo Ball is #11 in The 644, our ranking of… |
+| Fri Nov 6, 6:00 PM | X | The 644 on your team: Charlotte Hornets | The best Hornet in The 644, our ranking of all 644 NBA players, is 20 years old. Kon Knuep… |
+| Fri Nov 6, 6:00 PM | Bluesky | The 644 on your team: Charlotte Hornets | The best Hornet in The 644, our ranking of all 644 NBA players, is 20 years old. Kon Knuep… |
+| Fri Nov 6, 6:00 PM | Threads | The 644 on your team: Charlotte Hornets | The best Hornet in The 644, our ranking of all 644 NBA players, is 20 years old. Kon Knuep… |
+| Fri Nov 6, 6:00 PM | Instagram | The 644 on your team: Charlotte Hornets | The best Hornet in The 644, our ranking of all 644 NBA players, is 20 years old. Kon Knuep… |
+| Sat Nov 7, 6:00 PM | X | The 644 on your team: Golden State Warriors | Steph is 37 years old and still #13 in The 644, our ranking of all 644 NBA players, with a… |
+| Sat Nov 7, 6:00 PM | Bluesky | The 644 on your team: Golden State Warriors | Steph is 37 years old and still #13 in The 644, our ranking of all 644 NBA players, with a… |
+| Sat Nov 7, 6:00 PM | Threads | The 644 on your team: Golden State Warriors | Steph is 37 years old and still #13 in The 644, our ranking of all 644 NBA players, with a… |
+| Sat Nov 7, 6:00 PM | Instagram | The 644 on your team: Golden State Warriors | Steph is 37 years old and still #13 in The 644, our ranking of all 644 NBA players, with a… |
+| Sun Nov 8, 12:00 PM | X | The Queta Problem | Queta's #41 leaned on his +8.6 on/off, so we attacked it. About a third of an on/off numbe… |
+| Sun Nov 8, 12:00 PM | Bluesky | The Queta Problem | Queta's #41 leaned on his +8.6 on/off, so we attacked it. About a third of an on/off numbe… |
+| Sun Nov 8, 12:00 PM | Threads | The Queta Problem | Queta's #41 leaned on his +8.6 on/off, so we attacked it. About a third of an on/off numbe… |
+| Sun Nov 8, 12:00 PM | Instagram | The Queta Problem | Queta's #41 leaned on his +8.6 on/off, so we attacked it. About a third of an on/off numbe… |
+| Sun Nov 8, 6:00 PM | X | The 644 on your team: Indiana Pacers | Indiana has nobody in the top 50 of The 644, our ranking of all 644 NBA players. However, … |
+| Sun Nov 8, 6:00 PM | Bluesky | The 644 on your team: Indiana Pacers | Indiana has nobody in the top 50 of The 644, our ranking of all 644 NBA players. However, … |
+| Sun Nov 8, 6:00 PM | Threads | The 644 on your team: Indiana Pacers | Indiana has nobody in the top 50 of The 644, our ranking of all 644 NBA players. However, … |
+| Mon Nov 9, 6:00 PM | X | The 644 on your team: Phoenix Suns | Collin Gillespie is the second-best Sun in The 644, our ranking of all 644 NBA players: #5… |
+| Mon Nov 9, 6:00 PM | Bluesky | The 644 on your team: Phoenix Suns | Collin Gillespie is the second-best Sun in The 644, our ranking of all 644 NBA players: #5… |
+| Mon Nov 9, 6:00 PM | Threads | The 644 on your team: Phoenix Suns | Collin Gillespie is the second-best Sun in The 644, our ranking of all 644 NBA players: #5… |
+| Mon Nov 9, 6:00 PM | Instagram | The 644 on your team: Phoenix Suns | Collin Gillespie is the second-best Sun in The 644, our ranking of all 644 NBA players: #5… |
+| Tue Nov 10, 6:00 PM | X | The 644 on your team: Atlanta Hawks | Jalen Johnson is #21 in The 644, our ranking of all 644 NBA players, with a GRAVITY score … |
+| Tue Nov 10, 6:00 PM | Bluesky | The 644 on your team: Atlanta Hawks | Jalen Johnson is #21 in The 644, our ranking of all 644 NBA players, with a GRAVITY score … |
+| Tue Nov 10, 6:00 PM | Threads | The 644 on your team: Atlanta Hawks | Jalen Johnson is #21 in The 644, our ranking of all 644 NBA players, with a GRAVITY score … |
+| Tue Nov 10, 6:00 PM | Instagram | The 644 on your team: Atlanta Hawks | Jalen Johnson is #21 in The 644, our ranking of all 644 NBA players, with a GRAVITY score … |
+| Wed Nov 11, 6:00 PM | X | The 644 on your team: Dallas Mavericks | The best Maverick in The 644, our ranking of all 644 NBA players, is 19 years old. Cooper … |
+| Wed Nov 11, 6:00 PM | Bluesky | The 644 on your team: Dallas Mavericks | The best Maverick in The 644, our ranking of all 644 NBA players, is 19 years old. Cooper … |
+| Wed Nov 11, 6:00 PM | Threads | The 644 on your team: Dallas Mavericks | The best Maverick in The 644, our ranking of all 644 NBA players, is 19 years old. Cooper … |
+| Wed Nov 11, 6:00 PM | Instagram | The 644 on your team: Dallas Mavericks | The best Maverick in The 644, our ranking of all 644 NBA players, is 19 years old. Cooper … |
+| Thu Nov 12, 6:00 PM | X | The 644 on your team: Chicago Bulls | Josh Giddey, 23 years old, is the best Bull in The 644, our ranking of all 644 NBA players… |
+| Thu Nov 12, 6:00 PM | Bluesky | The 644 on your team: Chicago Bulls | Josh Giddey, 23 years old, is the best Bull in The 644, our ranking of all 644 NBA players… |
+| Thu Nov 12, 6:00 PM | Threads | The 644 on your team: Chicago Bulls | Josh Giddey, 23 years old, is the best Bull in The 644, our ranking of all 644 NBA players… |
+| Thu Nov 12, 6:00 PM | Instagram | The 644 on your team: Chicago Bulls | Josh Giddey, 23 years old, is the best Bull in The 644, our ranking of all 644 NBA players… |
+| Fri Nov 13, 6:00 PM | X | The 644 on your team: Milwaukee Bucks | The second-best Buck in The 644, our ranking of all 644 NBA players, is Ryan Rollins, #65 … |
+| Fri Nov 13, 6:00 PM | Bluesky | The 644 on your team: Milwaukee Bucks | The second-best Buck in The 644, our ranking of all 644 NBA players, is Ryan Rollins, #65 … |
+| Fri Nov 13, 6:00 PM | Threads | The 644 on your team: Milwaukee Bucks | The second-best Buck in The 644, our ranking of all 644 NBA players, is Ryan Rollins, #65 … |
+| Fri Nov 13, 6:00 PM | Instagram | The 644 on your team: Milwaukee Bucks | The second-best Buck in The 644, our ranking of all 644 NBA players, is Ryan Rollins, #65 … |
+| Sat Nov 14, 6:00 PM | X | The 644 on your team: New Orleans Pelicans | New Orleans has the youngest top eight in The 644, our ranking of all 644 NBA players: nob… |
+| Sat Nov 14, 6:00 PM | Bluesky | The 644 on your team: New Orleans Pelicans | New Orleans has the youngest top eight in The 644, our ranking of all 644 NBA players: nob… |
+| Sat Nov 14, 6:00 PM | Threads | The 644 on your team: New Orleans Pelicans | New Orleans has the youngest top eight in The 644, our ranking of all 644 NBA players: nob… |
+| Sat Nov 14, 6:00 PM | Instagram | The 644 on your team: New Orleans Pelicans | New Orleans has the youngest top eight in The 644, our ranking of all 644 NBA players: nob… |
+| Sun Nov 15, 12:00 PM | X | The Last of His Kind | We rank Jalen Duren 14th in The 644, and the reason he isn't higher is the playoffs. His p… |
+| Sun Nov 15, 12:00 PM | Bluesky | The Last of His Kind | We rank Jalen Duren 14th in The 644, and the reason he isn't higher is the playoffs. His p… |
+| Sun Nov 15, 12:00 PM | Threads | The Last of His Kind | We rank Jalen Duren 14th in The 644, and the reason he isn't higher is the playoffs. His p… |
+| Sun Nov 15, 12:00 PM | Instagram | The Last of His Kind | We rank Jalen Duren 14th in The 644, and the reason he isn't higher is the playoffs. His p… |
+| Sun Nov 15, 6:00 PM | X | The 644 on your team: Utah Jazz | Darryn Peterson, the second pick, enters The 644, our ranking of all 644 NBA players, as t… |
+| Sun Nov 15, 6:00 PM | Bluesky | The 644 on your team: Utah Jazz | Darryn Peterson, the second pick, enters The 644, our ranking of all 644 NBA players, as t… |
+| Sun Nov 15, 6:00 PM | Threads | The 644 on your team: Utah Jazz | Darryn Peterson, the second pick, enters The 644, our ranking of all 644 NBA players, as t… |
+| Mon Nov 16, 6:00 PM | X | The 644 on your team: LA Clippers | The Clippers took the biggest fall in TORQUE, our team model, since July: 18th then, 26th … |
+| Mon Nov 16, 6:00 PM | Bluesky | The 644 on your team: LA Clippers | The Clippers took the biggest fall in TORQUE, our team model, since July: 18th then, 26th … |
+| Mon Nov 16, 6:00 PM | Threads | The 644 on your team: LA Clippers | The Clippers took the biggest fall in TORQUE, our team model, since July: 18th then, 26th … |
+| Mon Nov 16, 6:00 PM | Instagram | The 644 on your team: LA Clippers | The Clippers took the biggest fall in TORQUE, our team model, since July: 18th then, 26th … |
+| Tue Nov 17, 6:00 PM | X | The 644 on your team: Washington Wizards | AJ Dybantsa, the first pick, enters The 644, our ranking of all 644 NBA players, at #88 wi… |
+| Tue Nov 17, 6:00 PM | Bluesky | The 644 on your team: Washington Wizards | AJ Dybantsa, the first pick, enters The 644, our ranking of all 644 NBA players, at #88 wi… |
+| Tue Nov 17, 6:00 PM | Threads | The 644 on your team: Washington Wizards | AJ Dybantsa, the first pick, enters The 644, our ranking of all 644 NBA players, at #88 wi… |
+| Tue Nov 17, 6:00 PM | Instagram | The 644 on your team: Washington Wizards | AJ Dybantsa, the first pick, enters The 644, our ranking of all 644 NBA players, at #88 wi… |
+| Wed Nov 18, 6:00 PM | X | The 644 on your team: Memphis Grizzlies | Cameron Boozer, the third pick, is our top-ranked rookie: #84 in The 644, our ranking of a… |
+| Wed Nov 18, 6:00 PM | Bluesky | The 644 on your team: Memphis Grizzlies | Cameron Boozer, the third pick, is our top-ranked rookie: #84 in The 644, our ranking of a… |
+| Wed Nov 18, 6:00 PM | Threads | The 644 on your team: Memphis Grizzlies | Cameron Boozer, the third pick, is our top-ranked rookie: #84 in The 644, our ranking of a… |
+| Wed Nov 18, 6:00 PM | Instagram | The 644 on your team: Memphis Grizzlies | Cameron Boozer, the third pick, is our top-ranked rookie: #84 in The 644, our ranking of a… |
+| Thu Nov 19, 6:00 PM | X | The 644 on your team: Brooklyn Nets | MPJ is the only Net in the top 50 of The 644, our ranking of all 644 NBA players: #46 with… |
+| Thu Nov 19, 6:00 PM | Bluesky | The 644 on your team: Brooklyn Nets | MPJ is the only Net in the top 50 of The 644, our ranking of all 644 NBA players: #46 with… |
+| Thu Nov 19, 6:00 PM | Threads | The 644 on your team: Brooklyn Nets | MPJ is the only Net in the top 50 of The 644, our ranking of all 644 NBA players: #46 with… |
+| Thu Nov 19, 6:00 PM | Instagram | The 644 on your team: Brooklyn Nets | MPJ is the only Net in the top 50 of The 644, our ranking of all 644 NBA players: #46 with… |
+| Fri Nov 20, 6:00 PM | X | The 644 on your team: Sacramento Kings | Domantas Sabonis is #40 in The 644, our ranking of all 644 NBA players, with a GRAVITY sco… |
+| Fri Nov 20, 6:00 PM | Bluesky | The 644 on your team: Sacramento Kings | Domantas Sabonis is #40 in The 644, our ranking of all 644 NBA players, with a GRAVITY sco… |
+| Fri Nov 20, 6:00 PM | Threads | The 644 on your team: Sacramento Kings | Domantas Sabonis is #40 in The 644, our ranking of all 644 NBA players, with a GRAVITY sco… |
+| Fri Nov 20, 6:00 PM | Instagram | The 644 on your team: Sacramento Kings | Domantas Sabonis is #40 in The 644, our ranking of all 644 NBA players, with a GRAVITY sco… |
+| Sun Nov 22, 12:00 PM | X | The Kawhi Anomaly | Kawhi's surge last season came in two parts, and historically they age differently. The he… |
+| Sun Nov 22, 12:00 PM | Bluesky | The Kawhi Anomaly | Kawhi's surge last season came in two parts, and historically they age differently. The he… |
+| Sun Nov 22, 12:00 PM | Threads | The Kawhi Anomaly | Kawhi's surge last season came in two parts, and historically they age differently. The he… |
+| Sun Nov 22, 12:00 PM | Instagram | The Kawhi Anomaly | Kawhi's surge last season came in two parts, and historically they age differently. The he… |
+| Sun Nov 29, 12:00 PM | X | Chasing Seven | The MVP voters have agreed with our number one in only 24 of 49 seasons. Jordan lost five … |
+| Sun Nov 29, 12:00 PM | Bluesky | Chasing Seven | The MVP voters have agreed with our number one in only 24 of 49 seasons. Jordan lost five … |
+| Sun Nov 29, 12:00 PM | Threads | Chasing Seven | The MVP voters have agreed with our number one in only 24 of 49 seasons. Jordan lost five … |
+| Sun Nov 29, 12:00 PM | Instagram | Chasing Seven | The MVP voters have agreed with our number one in only 24 of 49 seasons. Jordan lost five … |
 
 ## Recurring series
 

@@ -1,0 +1,31 @@
+## X
+By our model, Jokić has been the best player in the league for six straight seasons. We ran every season since 1977–78 through GRAVITY Historical, and only Michael Jordan has a longer run as number one: seven straight, from 1986–87 to 1992–93. One more year from Jokić ties it.
+---
+Before tip-off, we put three calls on his season, and each one gets graded in public:
+55% he stays #1 in The 644, July 2027 edition (#2 counts as a miss)
+60% he leads the NBA in Box Plus/Minus
+25% he wins the 2026–27 MVP
+---
+His six seasons at the top average an impact of +3.36, above Jordan's +3.17 and LeBron's +3.19, meaning that statistically it is the highest run ever measured. We published this on October 17, before tip-off. The full piece is free:
+https://thegravityreport.com/notes/jokic/
+## Threads
+By our model, Jokić has been the best player in the league for six straight seasons. Since 1977–78, only Michael Jordan has a longer run as the number one by GRAVITY Historical: seven straight. Jokić's six average an impact of +3.36, above Jordan's +3.17 and LeBron's +3.19.
+
+Our calls: 55% he stays #1 in The 644; 60% he leads the NBA in Box Plus/Minus; 25% he wins MVP.
+
+We published this on October 17, before tip-off. The full piece is free: https://thegravityreport.com/notes/jokic/
+## Instagram
+By our model, Jokić has been the best player in the league for six straight seasons. We ran every season since 1977–78 through GRAVITY Historical, and only Michael Jordan has a longer run as the number one: seven straight, from 1986–87 to 1992–93. One more year from Jokić ties that record.
+
+His six seasons at the top average an impact of +3.36, above Jordan's +3.17 and LeBron's +3.19, meaning that statistically it is the highest run ever measured.
+
+The MVP voters have agreed with our number one in only 24 of 49 seasons, and Jokić has lost three of his six, partly to voter fatigue. That is normal, not a robbery.
+
+Our three calls, graded in public:
+55% · he stays #1 in The 644, July 2027 edition (#2 counts as a miss)
+60% · he leads the NBA in Box Plus/Minus
+25% · he wins the 2026–27 MVP
+
+We published this on October 17, before tip-off. The full piece is free. Link in bio.
+
+#NBA #Nuggets

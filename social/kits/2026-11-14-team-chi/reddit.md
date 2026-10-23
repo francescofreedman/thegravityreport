@@ -8,12 +8,12 @@ The Chicago Bulls in The 644, our ranking of every NBA player. The top eight by 
 
 - #37 Josh Giddey 59.5
 - #64 Tre Jones 55.8
-- #124 Collin Sexton 49.8
+- #91 Norman Powell 53.3
 - #126 Nic Claxton 49.5
-- #154 Anfernee Simons 47.1
 - #156 Jalen Smith 47.1
 - #165 Matas Buzelis 46.3
 - #182 Caleb Wilson 45.3 (rookie)
+- #289 Buddy Hield 39.0
 
 Rookies start from a draft-slot prior. GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 

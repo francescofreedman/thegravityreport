@@ -13,7 +13,7 @@ The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight
 - #85 Julian Champagnie 53.6
 - #114 Devin Vassell 51.3
 - #120 Dylan Harper 50.3
-- #180 Keldon Johnson 45.3
+- #122 Tobias Harris 50.1
 
 GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 

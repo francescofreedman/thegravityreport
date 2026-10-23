@@ -13,8 +13,8 @@ The Atlanta Hawks in The 644, our ranking of every NBA player. The top eight by 
 - #138 CJ McCollum 47.8
 - #204 Jock Landale 43.6
 - #234 Aaron Wiggins 41.9
-- #254 Jonathan Kuminga 41.1
+- #270 Kingston Flemings 40.1 (rookie)
 
-GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
+Rookies start from a draft-slot prior. GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 
 Happy to answer questions about the method in the comments.

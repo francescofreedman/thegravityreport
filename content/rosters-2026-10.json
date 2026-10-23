@@ -1,6 +1,6 @@
 {
  "as_of": "2026-10-22",
- "source": "ESPN public team rosters",
+ "source": "ESPN public team rosters (site.api.espn.com), matched to The 644 by name",
  "teams": {
   "ATL": [
    "Nickeil Alexander-Walker",
@@ -45,6 +45,7 @@
    "Tyler Bilodeau",
    "Mikel Brown Jr.",
    "Noah Clowney",
+   "Egor Dёmin",
    "Keon Ellis",
    "Joshua Jefferson",
    "Chaney Johnson",

@@ -1,0 +1,29 @@
+## X
+Kawhi's surge last season came in two parts, and historically they age differently. The heavier role, a career-high usage after 33, is the kind of change that usually lasts. The hot shooting, a career-high 52% from mid-range per Cleaning the Glass, is the kind that usually fades.
+---
+What we said before tip-off, each call graded in public:
+65% his true shooting falls below .610 (he shot .629 last season)
+60% his usage stays at 30% or more
+50% he stays top 8 in The 644, July 2027 edition
+30% he finishes top 8 in Box Plus/Minus
+---
+So we rebuilt his season piece by piece and predicted an impact of +1.31 for this season, roughly a top-ten level, meaning that he keeps about a third of the surge. From the archive: we published this on October 6, before tip-off. The full piece is free:
+https://thegravityreport.com/notes/kawhi/
+## Threads
+Kawhi's surge last season came in two parts, and historically they age differently. The heavier role, a career-high usage after 33, usually lasts. The hot shooting, a career-high 52% from mid-range per Cleaning the Glass, usually fades. So we predicted an impact of +1.31 for this season, roughly a top-ten level: he keeps about a third of the surge.
+
+From the archive: we published this on October 6, before tip-off. The full piece is free: https://thegravityreport.com/notes/kawhi/
+## Instagram
+Kawhi's surge last season came in two parts, and historically those two parts age differently. The heavier role, a career-high usage after 33, is the kind of change that usually lasts. The hot shooting, a career-high 52% from mid-range per Cleaning the Glass, is the kind that usually fades.
+
+So we rebuilt his season piece by piece and predicted an impact of +1.31 for this season, roughly a top-ten level, meaning that he keeps about a third of the surge. A very good player, but not quite the one from last season.
+
+What we said before tip-off, each call graded in public:
+65% · his true shooting falls below .610 (he shot .629 last season)
+60% · his usage stays at 30% or more
+50% · he stays top 8 in The 644, July 2027 edition
+30% · he finishes top 8 in Box Plus/Minus
+
+From the archive: we published this on October 6, before tip-off. The full piece is free. Link in bio.
+
+#NBA #Raptors

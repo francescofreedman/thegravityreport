@@ -1,4 +1,4 @@
-The San Antonio Spurs in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+Wemby is 22 and already #3 of all 644 NBA players in The 644, our ranking, with a GRAVITY score of 85.7. The next Spur is Fox at #66. GRAVITY score next to each name (50 is a league-average minute):
 
 #3 Victor Wembanyama 85.7
 #66 De'Aaron Fox 55.6
@@ -7,6 +7,6 @@ The San Antonio Spurs in The 644: the top eight by rank, with each player's GRAV
 #85 Julian Champagnie 53.6
 #114 Devin Vassell 51.3
 #120 Dylan Harper 50.3
-#180 Keldon Johnson 45.3
+#122 Tobias Harris 50.1
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

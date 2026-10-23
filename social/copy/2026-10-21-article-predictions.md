@@ -1,0 +1,66 @@
+## X
+We put twenty calls on the 2026–27 season, each with a probability, and every one gets scored in our Forecast Ledger. The headline: Oklahoma City wins the title, 34%. TORQUE, our team model, has the Thunder first with a score of 59.4, 5.8 points clear of the next team.
+---
+The title and the awards:
+34% OKC wins the title
+6% Finals: OKC vs Detroit
+25% Jokić wins MVP
+70% Wemby wins DPOY
+28% Boozer wins Rookie of the Year
+30% Harper breakout (BPM 3.0+)
+14% Miller wins Most Improved
+12% Mitchell wins Sixth Man
+13% Rajaković wins Coach of the Year
+---
+The team calls, where TORQUE and the betting line disagree the most:
+56% Toronto wins 47 or more
+48% Atlanta wins 40 or fewer
+62% Milwaukee over 25.5 wins
+60% Golden State over 36.5
+60% Portland over 41.5
+62% San Antonio under 59.5
+62% Washington under 34.5
+61% Utah under 37.5
+---
+The wildcards:
+20% Kyrie is traded by the February 11 deadline
+45% Jokić averages a triple-double again
+50% LeBron plays 60 or more games
+We published this on October 20, before tip-off, and every call gets a Brier score next summer:
+https://thegravityreport.com/articles/predictions/
+## Threads
+We put twenty calls on the 2026–27 season, each with a probability, and every one gets scored in our Forecast Ledger. The headline: Oklahoma City wins the title, 34%. TORQUE, our team model, has the Thunder first with a score of 59.4, 5.8 points clear of the next team, which projects to 67 wins. Surprise team: Toronto, 47+ wins, 56%. Disappointment: Atlanta, 40 or fewer, 48%.
+
+We published this on October 20, before tip-off. All twenty, free: https://thegravityreport.com/articles/predictions/
+## Instagram
+We put twenty calls on the 2026–27 season, each with a probability, and every one of them gets scored in our Forecast Ledger. The headline: Oklahoma City wins the title, 34%. TORQUE, our team model, has the Thunder first with a score of 59.4, 5.8 points clear of the next team, which projects to 67 wins.
+
+The title and the awards:
+34% · OKC wins the title
+6% · the Finals is OKC against Detroit
+25% · Jokić wins MVP
+70% · Wemby wins Defensive Player of the Year
+28% · Boozer wins Rookie of the Year
+30% · Harper breaks out (a BPM of 3.0 or higher)
+14% · Miller wins Most Improved
+12% · Mitchell wins Sixth Man
+13% · Rajaković wins Coach of the Year
+
+The team calls, where TORQUE and the betting line disagree the most:
+56% · Toronto wins 47 or more
+48% · Atlanta wins 40 or fewer
+62% · Milwaukee over 25.5 wins
+60% · Golden State over 36.5
+60% · Portland over 41.5
+62% · San Antonio under 59.5
+62% · Washington under 34.5
+61% · Utah under 37.5
+
+The wildcards:
+20% · Kyrie is traded by the February 11 deadline
+45% · Jokić averages a triple-double again
+50% · LeBron plays 60 or more games
+
+We published this on October 20, before tip-off, and every call gets a Brier score next summer. The full article is free. Link in bio.
+
+#NBA

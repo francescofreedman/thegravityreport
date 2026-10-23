@@ -12,7 +12,7 @@ The Detroit Pistons in The 644, our ranking of every NBA player. The top eight b
 - #100 Isaiah Joe 52.2
 - #103 Duncan Robinson 52.0
 - #117 Paul Reed 50.3
-- #122 Tobias Harris 50.1
+- #145 John Collins 47.6
 - #198 Javonte Green 44.3
 
 GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/

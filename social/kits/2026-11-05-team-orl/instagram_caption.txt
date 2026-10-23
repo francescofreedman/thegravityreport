@@ -1,4 +1,4 @@
-The Orlando Magic in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
+Magic fans argue over Franz or Paolo, and The 644, our ranking of all 644 NBA players, can't settle it. Franz Wagner is #29 with a GRAVITY score of 60.3 and Paolo Banchero is #33 at 60.0, the closest top two on any team. Orlando's top eight (50 is a league-average minute):
 
 #29 Franz Wagner 60.3
 #33 Paolo Banchero 60.0
@@ -6,9 +6,9 @@ The Orlando Magic in The 644, our ranking of every NBA player. The top eight by 
 #92 Goga Bitadze 53.3
 #101 Jalen Suggs 52.2
 #116 Wendell Carter Jr. 51.0
+#130 Nikola Vučević 48.7
 #152 Anthony Black 47.4
-#233 Tristan Da Silva 41.9
 
-Every player's page is free. Link in bio.
+Both of them are All-Star tier by our model, and Desmond Bane, #36 with a score of 59.7, is right behind them. TORQUE, our team model, has the Magic 13th with a score of 51.0, which projects to 45.3 wins. Every player's page is free. Link in bio.
 
-#NBA
+#NBA #Magic

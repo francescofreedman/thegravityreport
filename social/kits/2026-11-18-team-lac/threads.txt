@@ -1,12 +1,12 @@
-The LA Clippers in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+The Clippers took the biggest fall in TORQUE, our team model, since July: 18th then, 26th now, projecting 29.2 wins, a drop of 3.6 points. GRAVITY score next to each name (50 is a league-average minute):
 
 #70 Darius Garland 54.9
-#145 John Collins 47.6
 #157 Derrick Jones Jr. 47.1
+#167 Rui Hachimura 46.2
 #179 Brandon Ingram 45.3
-#202 Keaton Wagler 44.1 (rookie)
+#202 Keaton Wagler 44.1
 #207 Kris Dunn 43.4
 #208 Jordan Miller 43.3
-#227 Bennedict Mathurin 42.2
+#239 Max Strus 41.6
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

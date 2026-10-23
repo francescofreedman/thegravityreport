@@ -11,9 +11,9 @@ The Denver Nuggets in The 644, our ranking of every NBA player. The top eight by
 - #81 Aaron Gordon 53.7
 - #87 Cameron Johnson 53.5
 - #112 Christian Braun 51.4
-- #184 Peyton Watson 45.2
-- #188 Jonas Valančiūnas 44.9
-- #247 Tim Hardaway Jr. 41.3
+- #171 DeMar DeRozan 45.9
+- #199 Marvin Bagley III 44.2
+- #265 Tyus Jones 40.4
 
 GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 

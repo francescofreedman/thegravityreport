@@ -1,16 +1,14 @@
-The LA Clippers in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
+The Clippers took the biggest fall in TORQUE, our team model, since July: 18th then, 26th now, with a score of 44.7, a drop of 3.6 points. LA's top eight in The 644, our ranking of all 644 NBA players, with GRAVITY scores (50 is a league-average minute):
 
 #70 Darius Garland 54.9
-#145 John Collins 47.6
 #157 Derrick Jones Jr. 47.1
+#167 Rui Hachimura 46.2
 #179 Brandon Ingram 45.3
-#202 Keaton Wagler 44.1 (rookie)
+#202 Keaton Wagler 44.1
 #207 Kris Dunn 43.4
 #208 Jordan Miller 43.3
-#227 Bennedict Mathurin 42.2
+#239 Max Strus 41.6
 
-Rookies start from a draft-slot prior.
+Darius Garland, #70 with a score of 54.9, is the only Clipper in the top 100, and the rookie Keaton Wagler, the fifth pick, is #202. TORQUE projects the Clippers to 29.2 wins. Every player's page is free. Link in bio.
 
-Every player's page is free. Link in bio.
-
-#NBA
+#NBA #Clippers

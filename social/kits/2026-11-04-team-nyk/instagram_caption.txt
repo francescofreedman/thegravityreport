@@ -1,4 +1,4 @@
-The New York Knicks in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
+New York has three players in the top 27 of The 644, our ranking of all 644 NBA players: KAT at #8, Brunson at #17 and OG at #27. However, TORQUE, our team model, dropped the Knicks from 4th in July to 12th. Their top eight, with GRAVITY scores (50 is a league-average minute):
 
 #8 Karl-Anthony Towns 69.3
 #17 Jalen Brunson 64.1
@@ -7,8 +7,8 @@ The New York Knicks in The 644, our ranking of every NBA player. The top eight b
 #82 Mikal Bridges 53.7
 #163 Miles McBride 46.4
 #206 Jose Alvarado 43.4
-#225 Jeremy Sochan 42.3
+#232 Landry Shamet 42.0
 
-Every player's page is free. Link in bio.
+TORQUE now gives the Knicks a score of 51.3, which projects to 46.1 wins; in July it was 53.0 and 50.6 wins. Josh Hart is #62 and Mikal Bridges is #82, so five Knicks rank in the top 82. Every player's page is free. Link in bio.
 
-#NBA
+#NBA #Knicks

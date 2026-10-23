@@ -1,14 +1,14 @@
-The Philadelphia 76ers in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
+LeBron, at 41 years old, is #31 in The 644, our ranking of all 644 NBA players, with a GRAVITY score of 60.2, All-Star tier by our model. He isn't even the best Sixer: Tyrese Maxey is #10 with a score of 67.3. Philadelphia's top eight (50 is a league-average minute):
 
 #10 Tyrese Maxey 67.3
+#31 LeBron James 60.2
 #43 Joel Embiid 58.8
 #48 Jaylen Brown 57.8
 #106 VJ Edgecombe 51.8
-#177 Quentin Grimes 45.6
+#154 Anfernee Simons 47.1
 #185 Dominick Barlow 45.2
-#218 Kelly Oubre Jr. 42.6
-#278 Andre Drummond 39.8
+#187 Dean Wade 45.1
 
-Every player's page is free. Link in bio.
+Philadelphia has four players in the top 50 (Maxey, LeBron, Embiid at #43 and Jaylen Brown at #48); only Cleveland can match that. TORQUE, our team model, has the 76ers 8th with a score of 51.9, or 47.6 projected wins. Every player's page is free. Link in bio.
 
-#NBA
+#NBA #Sixers

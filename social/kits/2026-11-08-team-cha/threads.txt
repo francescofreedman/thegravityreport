@@ -1,4 +1,4 @@
-The Charlotte Hornets in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+The best Hornet in The 644 is 20 years old: Kon Knueppel, #19 of all 644 NBA players with a GRAVITY score of 63.4. Brandon Miller is next at #53. GRAVITY score next to each name (50 is a league-average minute):
 
 #19 Kon Knueppel 63.4
 #53 Brandon Miller 57.2
@@ -9,4 +9,4 @@ The Charlotte Hornets in The 644: the top eight by rank, with each player's GRAV
 #190 Ryan Kalkbrenner 44.8
 #224 Royce O'Neale 42.5
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

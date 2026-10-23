@@ -1,13 +1,12 @@
-The Cleveland Cavaliers in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
-
+Cleveland has four players in the top 35 of The 644, our ranking of all 644 NBA players: Donovan Mitchell, Evan Mobley, Jarrett Allen and James Harden. No other team has four that high. The Cavaliers' top eight, with GRAVITY scores (50 is a league-average minute):
+---
 #9 Donovan Mitchell 68.1
 #16 Evan Mobley 65.5
 #26 Jarrett Allen 62.1
 #35 James Harden 59.8
 #128 Sam Merrill 48.9
----
 #159 Jaylon Tyson 46.8
-#187 Dean Wade 45.1
-#196 Keon Ellis 44.4
+#184 Peyton Watson 45.2
+#211 Craig Porter Jr. 43.1
 ---
-All 23 Cleveland Cavaliers players are in The 644, each with a free profile page. Filter by team: https://thegravityreport.com/the644/
+Harden is 36 years old and still #35 with a score of 59.8. TORQUE, our team model, has the Cavaliers 7th with a score of 52.4, which projects to 48.8 wins, up from 10th in July. Every Cavalier has a free page: https://thegravityreport.com/the644/

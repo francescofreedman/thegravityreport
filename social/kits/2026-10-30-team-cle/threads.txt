@@ -1,4 +1,4 @@
-The Cleveland Cavaliers in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+Cleveland has four players in the top 35 of The 644, our ranking of all 644 NBA players. No other team has four that high. GRAVITY score next to each name (50 is a league-average minute):
 
 #9 Donovan Mitchell 68.1
 #16 Evan Mobley 65.5
@@ -6,7 +6,7 @@ The Cleveland Cavaliers in The 644: the top eight by rank, with each player's GR
 #35 James Harden 59.8
 #128 Sam Merrill 48.9
 #159 Jaylon Tyson 46.8
-#187 Dean Wade 45.1
-#196 Keon Ellis 44.4
+#184 Peyton Watson 45.2
+#211 Craig Porter Jr. 43.1
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

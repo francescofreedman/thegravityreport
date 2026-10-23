@@ -120,7 +120,8 @@ class TeamKitTests(unittest.TestCase):
     """"The 644 on your team": every team builds, passes the number guard and fits every platform."""
 
     def test_every_team_kit_builds(self):
-        t644 = json.load(open(os.path.join(ROOT, "content", "the644.json"), encoding="utf-8"))
+        now = mk.current_rosters() or {}
+        listed = {}  # player -> the team whose kit lists him
         for code in mk.SUBREDDITS:
             with tempfile.TemporaryDirectory() as d:
                 kit, _ = mk.build_team_kit(code, "2026-10-24", outdir=d, images=False)
@@ -130,10 +131,30 @@ class TeamKitTests(unittest.TestCase):
                 self.assertIn("50 is a league-average minute", kit["x_thread"][0])
                 self.assertIn("/the644/", kit["x_thread"][-1])
                 self.assertTrue(os.path.exists(os.path.join(d, "reddit.md")))
-                top = sorted((p for p in t644["players"] if p["t"] == code), key=lambda p: p["r"])[:8]
-                for p in top:  # the top eight by rank, each with his real rank and score
+                # the top eight by rank on the CURRENT roster (content/rosters-2026-10.json), not The 644's July label
+                top = mk.team_players(code)[:8]
+                for p in top:  # each with his real rank and score
                     self.assertIn(f"#{p['r']} {p['n']} {p['s']:.1f}", kit["threads"])
                     self.assertIn(f"#{p['r']} {p['n']} {p['s']:.1f}", kit["instagram_caption"])
+                    self.assertNotIn(p["n"], listed, f"{p['n']} is listed by both {listed.get(p['n'])} and {code}")
+                    listed[p["n"]] = code
+                    self.assertEqual(now.get(p["n"], code), code, f"{p['n']} is on {now.get(p['n'])} now, not {code}")
+
+    def test_team_kits_never_name_a_player_who_moved(self):
+        """The rendered kits in social/kits (templated or hand-written copy) name no player whose current team differs."""
+        now = mk.current_rosters()
+        if not now:
+            self.skipTest("no content/rosters-2026-10.json")
+        names = [p["n"] for p in mk.load("content/the644.json")["players"]]
+        kits_dir = os.path.join(ROOT, "social", "kits")
+        for kit_id in sorted(os.listdir(kits_dir)):
+            if "-team-" not in kit_id:
+                continue
+            kit = json.load(open(os.path.join(kits_dir, kit_id, "kit.json"), encoding="utf-8"))
+            text = " ".join(kit["x_thread"] + [kit["threads"], kit["instagram_caption"]])
+            for n in names:
+                if n in text and now.get(n) not in (None, kit["team"]):
+                    self.fail(f"{kit_id} names {n}, who is on {now[n]} now")
 
     def test_torque_codes_map_to_644_codes(self):
         for code in ("CHO", "PHO", "BRK"):

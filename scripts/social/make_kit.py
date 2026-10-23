@@ -555,7 +555,8 @@ def team_players(code, t644=None):
     t644 = t644 or load("content/the644.json")
     now = current_rosters()
     def team_of(p):
-        return now.get(p["n"], p["t"]) if now else p["t"]
+        # with a current roster file, a player on no roster (waived, unsigned) is on no team
+        return now.get(p["n"]) if now else p["t"]
     return sorted((p for p in t644["players"] if team_of(p) == code), key=lambda p: p["r"])
 
 

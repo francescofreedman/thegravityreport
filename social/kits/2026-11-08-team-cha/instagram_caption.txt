@@ -1,4 +1,4 @@
-The Charlotte Hornets in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
+The best Hornet in The 644, our ranking of all 644 NBA players, is 20 years old. Kon Knueppel is #19 with a GRAVITY score of 63.4, All-Star tier by our model, and Brandon Miller is next at #53. Charlotte's top eight, with GRAVITY scores (50 is a league-average minute):
 
 #19 Kon Knueppel 63.4
 #53 Brandon Miller 57.2
@@ -9,6 +9,6 @@ The Charlotte Hornets in The 644, our ranking of every NBA player. The top eight
 #190 Ryan Kalkbrenner 44.8
 #224 Royce O'Neale 42.5
 
-Every player's page is free. Link in bio.
+TORQUE, our team model, moved the Hornets up from 19th in July to 16th, with a score of 49.9 that projects to 42.6 wins. Only three teams gained more points since July. Every player's page is free. Link in bio.
 
-#NBA
+#NBA #Hornets

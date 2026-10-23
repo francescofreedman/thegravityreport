@@ -1,4 +1,4 @@
-The Detroit Pistons in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+TORQUE, our team model, had Detroit 14th in July. Now it has the Pistons 4th, with a score of 53.3 and 51.2 projected wins. No team climbed more places. GRAVITY score next to each name (50 is a league-average minute):
 
 #7 Cade Cunningham 70.3
 #14 Jalen Duren 65.9
@@ -6,7 +6,7 @@ The Detroit Pistons in The 644: the top eight by rank, with each player's GRAVIT
 #100 Isaiah Joe 52.2
 #103 Duncan Robinson 52.0
 #117 Paul Reed 50.3
-#122 Tobias Harris 50.1
+#145 John Collins 47.6
 #198 Javonte Green 44.3
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

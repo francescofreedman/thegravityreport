@@ -13,7 +13,7 @@ The Minnesota Timberwolves in The 644, our ranking of every NBA player. The top 
 - #136 Donte DiVincenzo 48.1
 - #150 Jaden McDaniels 47.4
 - #220 Bones Hyland 42.6
-- #228 Kyle Anderson 42.2
+- #254 Jonathan Kuminga 41.1
 
 GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 

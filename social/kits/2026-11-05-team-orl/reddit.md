@@ -12,8 +12,8 @@ The Orlando Magic in The 644, our ranking of every NBA player. The top eight by 
 - #92 Goga Bitadze 53.3
 - #101 Jalen Suggs 52.2
 - #116 Wendell Carter Jr. 51.0
+- #130 Nikola Vučević 48.7
 - #152 Anthony Black 47.4
-- #233 Tristan Da Silva 41.9
 
 GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 

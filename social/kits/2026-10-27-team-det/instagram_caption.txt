@@ -1,4 +1,4 @@
-The Detroit Pistons in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
+TORQUE, our team model, had Detroit 14th in July. Now it has the Pistons 4th with a score of 53.3, which projects to 51.2 wins; no team moved up more places. Detroit's top eight in The 644, our ranking of all 644 NBA players, with GRAVITY scores (50 is a league-average minute):
 
 #7 Cade Cunningham 70.3
 #14 Jalen Duren 65.9
@@ -6,9 +6,9 @@ The Detroit Pistons in The 644, our ranking of every NBA player. The top eight b
 #100 Isaiah Joe 52.2
 #103 Duncan Robinson 52.0
 #117 Paul Reed 50.3
-#122 Tobias Harris 50.1
+#145 John Collins 47.6
 #198 Javonte Green 44.3
 
-Every player's page is free. Link in bio.
+Cade is #7 at 24 years old and Duren is #14 at 22. Two players in the top 14 who are both 24 or younger: only Detroit can say that. We wrote a whole Deep Dive on Duren. Every player's page is free. Link in bio.
 
-#NBA
+#NBA #Pistons

@@ -12,8 +12,8 @@ The New Orleans Pelicans in The 644, our ranking of every NBA player. The top ei
 - #201 Derik Queen 44.1
 - #205 Yves Missi 43.4
 - #217 Karlo Matković 42.8
+- #227 Bennedict Mathurin 42.2
 - #243 Jordan Poole 41.4
-- #256 Jeremiah Fears 41.0
 
 GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 

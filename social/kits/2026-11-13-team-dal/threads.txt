@@ -1,12 +1,12 @@
-The Dallas Mavericks in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+The best Maverick in The 644 is 19 years old: Cooper Flagg, #55 of all 644 NBA players with a GRAVITY score of 57.1. Gafford at #89 and Aldama at #90 are next. GRAVITY score next to each name (50 is a league-average minute):
 
 #55 Cooper Flagg 57.1
 #89 Daniel Gafford 53.4
 #90 Santi Aldama 53.4
 #137 Kyrie Irving 47.9
-#143 Brandon Williams 47.6
 #147 Naji Marshall 47.5
-#199 Marvin Bagley III 44.2
 #219 Max Christie 42.6
+#222 P.J. Washington 42.5
+#241 Dereck Lively II 41.5
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

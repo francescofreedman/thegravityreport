@@ -12,8 +12,8 @@ The Houston Rockets in The 644, our ranking of every NBA player. The top eight b
 - #93 Reed Sheppard 53.0
 - #139 Tari Eason 47.8
 - #153 Jabari Smith Jr. 47.4
+- #186 Marcus Smart 45.1
 - #195 Clint Capela 44.4
-- #215 Fred VanVleet 42.9
 
 GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 

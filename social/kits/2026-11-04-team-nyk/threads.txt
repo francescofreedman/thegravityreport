@@ -1,4 +1,4 @@
-The New York Knicks in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+New York has three players in the top 27 of The 644: KAT #8, Brunson #17, OG #27. However, TORQUE, our team model, dropped the Knicks from 4th in July to 12th. GRAVITY score next to each name (50 is a league-average minute):
 
 #8 Karl-Anthony Towns 69.3
 #17 Jalen Brunson 64.1
@@ -7,6 +7,6 @@ The New York Knicks in The 644: the top eight by rank, with each player's GRAVIT
 #82 Mikal Bridges 53.7
 #163 Miles McBride 46.4
 #206 Jose Alvarado 43.4
-#225 Jeremy Sochan 42.3
+#232 Landry Shamet 42.0
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

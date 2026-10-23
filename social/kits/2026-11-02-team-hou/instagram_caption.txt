@@ -1,4 +1,4 @@
-The Houston Rockets in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
+Houston has three players in the top 32 of The 644, our ranking of all 644 NBA players, and two of them are 23 years old: Alperen Şengün at #25 and Amen Thompson at #30. KD, at 37, is #32. Here's the Rockets' top eight, each with his GRAVITY score (50 is a league-average minute):
 
 #25 Alperen Şengün 62.2
 #30 Amen Thompson 60.3
@@ -6,9 +6,9 @@ The Houston Rockets in The 644, our ranking of every NBA player. The top eight b
 #93 Reed Sheppard 53.0
 #139 Tari Eason 47.8
 #153 Jabari Smith Jr. 47.4
+#186 Marcus Smart 45.1
 #195 Clint Capela 44.4
-#215 Fred VanVleet 42.9
 
-Every player's page is free. Link in bio.
+All three of them are All-Star tier by our model, with scores of 62.2, 60.3 and 60.2. TORQUE, our team model, has the Rockets 10th with a score of 51.6, which projects to 46.8 wins. Every player's page is free. Link in bio.
 
-#NBA
+#NBA #Rockets

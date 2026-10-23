@@ -9,15 +9,14 @@ post can cite it; the number guard still checks each number against the kit's ow
 Comparative lines ("no other team", "second-youngest") carry the league rank next to the value.
 """
 import json
-import sys
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import make_kit as mk
 import os
 import sys
 from collections import Counter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
+sys.path.insert(0, HERE)
+import make_kit as mk  # noqa: E402  (current rosters: content/rosters-2026-10.json)
 TORQUE_CODE = {"CHA": "CHO", "PHX": "PHO", "BKN": "BRK"}
 
 

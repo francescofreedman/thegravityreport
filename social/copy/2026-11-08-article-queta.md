@@ -1,0 +1,27 @@
+## X
+Queta's #41 leaned on his +8.6 on/off, so we attacked it. About a third of an on/off number survives a year (r = 0.317, 184 player-pairs). Discount everyone the same way and #41 doesn't move; discount only his, the harshest reading, and he lands #53–55, just outside the top 50.
+---
+What we said before the season, each call graded in public:
+75% he finishes top 50 in The 644, July 2027 edition
+40% he finishes top 25
+---
+The market's opinion matched ours: Boston signed Mitchell Robinson on July 6 and then extended Queta for $56 million anyway. From the archive: we published this on July 10. The full piece is free:
+https://thegravityreport.com/notes/queta/
+## Threads
+Queta's #41 leaned on his +8.6 on/off, so we attacked that number. Only about a third of a season's on/off survives to the next year (r = 0.317, 184 player-pairs). Discount everyone the same way and #41 doesn't move; discount only his, the harshest reading, and he lands #53–55, just outside the top 50.
+
+Our calls: 75% he finishes top 50 in The 644 next July; 40% he finishes top 25.
+
+From the archive: we published this on July 10. The full piece is free: https://thegravityreport.com/notes/queta/
+## Instagram
+The shiniest number behind Queta's #41 was his +8.6 on/off, so we attacked it. Only about a third of a season's on/off survives into the next year (r = 0.317 across 184 player-pairs). Discount everyone's on/off the same way and #41 doesn't move. Discount only his, the harshest reading, and he lands #53–55, just outside the top 50. The bet never rested on that number.
+
+The market's opinion matched ours: Boston signed Mitchell Robinson on July 6 and then extended Queta for $56 million anyway.
+
+What we said before the season, each call graded in public:
+75% · he finishes top 50 in The 644, July 2027 edition
+40% · he finishes top 25
+
+From the archive: we published this on July 10. The full piece is free. Link in bio.
+
+#NBA #Celtics

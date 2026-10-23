@@ -12,8 +12,8 @@ The Phoenix Suns in The 644, our ranking of every NBA player. The top eight by r
 - #108 Miles Bridges 51.5
 - #132 Jordan Goodwin 48.6
 - #149 Oso Ighodaro 47.4
+- #174 Luke Kennard 45.7
 - #181 Jalen Green 45.3
-- #223 Dillon Brooks 42.5
 
 GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 

@@ -1,4 +1,4 @@
-The New Orleans Pelicans in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+New Orleans has the youngest top eight in The 644: nobody in it is older than 26. Zion leads at #18 of all 644 NBA players with a GRAVITY score of 63.7. GRAVITY score next to each name (50 is a league-average minute):
 
 #18 Zion Williamson 63.7
 #49 Trey Murphy III 57.7
@@ -6,7 +6,7 @@ The New Orleans Pelicans in The 644: the top eight by rank, with each player's G
 #201 Derik Queen 44.1
 #205 Yves Missi 43.4
 #217 Karlo Matković 42.8
+#227 Bennedict Mathurin 42.2
 #243 Jordan Poole 41.4
-#256 Jeremiah Fears 41.0
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

@@ -1,7 +1,5 @@
-Of his shooting collapse, 88% was shot-making, not shot selection.
+We tested our own #140 for Ja Morant seven ways: overrides off, equal season weights, different anchors, the reliability stack deleted. Every variation landed him between #112 and #147, so #140 isn't an artifact of any single judgment call.
 
-The season is underway. On July 10, we took a hard look at Ja Morant. Here's what we found.
+Our verdict: #140 is a defensible price for the delivery risk, and probably the wrong forecast of the talent.
 
-Ja Morant went from the 97th percentile of the league in 2021-22 to playing 79 of 246 games since 2023.
-
-From the archive, July 10: https://thegravityreport.com/notes/morant/
+From the archive: we published this on July 10. The full piece is free: https://thegravityreport.com/notes/morant/

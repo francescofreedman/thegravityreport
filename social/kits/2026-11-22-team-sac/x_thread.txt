@@ -1,13 +1,12 @@
-The Sacramento Kings in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
-
+Domantas Sabonis is #40 in The 644, our ranking of all 644 NBA players, with a GRAVITY score of 58.9. The next King is Zach LaVine at #146, and no team has a longer drop from its best player to its second-best. Sacramento's top eight (50 is a league-average minute):
+---
 #40 Domantas Sabonis 58.9
 #146 Zach LaVine 47.6
-#171 DeMar DeRozan 45.9
 #173 Malik Monk 45.7
----
-#212 Darius Acuff Jr. 43.1 (rookie)
+#212 Darius Acuff Jr. 43.1
 #214 Precious Achiuwa 43.0
 #245 Maxime Raynaud 41.4
 #275 De'Andre Hunter 40.0
+#283 Keegan Murray 39.7
 ---
-All 22 Sacramento Kings players are in The 644, each with a free profile page. Rookies start from a draft-slot prior. Filter by team: https://thegravityreport.com/the644/
+TORQUE, our team model, has the Kings 30th, last in the league, with a score of 42.4 that projects to 23.5 wins, down from 27th in July. Sabonis is the only King in the top 100; the eighth-best King, Keegan Murray, ranks #283. Every King has a free page: https://thegravityreport.com/the644/

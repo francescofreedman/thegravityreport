@@ -1,13 +1,12 @@
-The Phoenix Suns in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
-
+Collin Gillespie is the second-best Sun in The 644, our ranking of all 644 NBA players: #59 with a GRAVITY score of 56.6, ahead of Mark Williams at #67 and Jalen Green at #181. Only Devin Booker, #38, ranks higher in Phoenix. The Suns' top eight (50 is a league-average minute):
+---
 #38 Devin Booker 59.3
 #59 Collin Gillespie 56.6
 #67 Mark Williams 55.4
 #108 Miles Bridges 51.5
 #132 Jordan Goodwin 48.6
----
 #149 Oso Ighodaro 47.4
+#174 Luke Kennard 45.7
 #181 Jalen Green 45.3
-#223 Dillon Brooks 42.5
 ---
-All 19 Phoenix Suns players are in The 644, each with a free profile page. Filter by team: https://thegravityreport.com/the644/
+Booker's score of 59.3 makes him a Plus starter by our tiers, one tier below All-Star. TORQUE, our team model, has the Suns 19th with a score of 48.2, which projects to 38.1 wins, down from 17th in July. Every Sun has a free page: https://thegravityreport.com/the644/

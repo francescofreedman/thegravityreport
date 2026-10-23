@@ -1,7 +1,7 @@
-The Memphis Grizzlies in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
+Cameron Boozer, the third pick, is our top-ranked rookie: #84 in The 644, our ranking of all 644 NBA players, with a GRAVITY score of 53.6. That already makes him the second-best Grizzly, behind Ty Jerome at #75. Memphis's top eight (50 is a league-average minute):
 
 #75 Ty Jerome 54.4
-#84 Cameron Boozer 53.6 (rookie)
+#84 Cameron Boozer 53.6
 #86 Cam Spencer 53.6
 #160 Cedric Coward 46.5
 #162 Jerami Grant 46.5
@@ -9,8 +9,6 @@ The Memphis Grizzlies in The 644, our ranking of every NBA player. The top eight
 #194 Zach Edey 44.5
 #197 Scotty Pippen Jr. 44.3
 
-Rookies start from a draft-slot prior.
+Memphis has 27 players in The 644, more than any other team. TORQUE, our team model, has the Grizzlies 28th with a score of 42.7, which projects to 24.3 wins, up from 30th in July. Every player's page is free. Link in bio.
 
-Every player's page is free. Link in bio.
-
-#NBA
+#NBA #Grizzlies

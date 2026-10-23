@@ -1,4 +1,4 @@
-The Minnesota Timberwolves in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
+By our model, the best Timberwolf isn't Ant. LaMelo Ball is #11 in The 644, our ranking of all 644 NBA players, with a GRAVITY score of 66.8; Anthony Edwards is #22 at 63.1. Both are 24 years old. Minnesota's top eight, with GRAVITY scores (50 is a league-average minute):
 
 #11 LaMelo Ball 66.8
 #22 Anthony Edwards 63.1
@@ -7,8 +7,8 @@ The Minnesota Timberwolves in The 644, our ranking of every NBA player. The top 
 #136 Donte DiVincenzo 48.1
 #150 Jaden McDaniels 47.4
 #220 Bones Hyland 42.6
-#228 Kyle Anderson 42.2
+#254 Jonathan Kuminga 41.1
 
-Every player's page is free. Link in bio.
+LaMelo is All-NBA core by our tiers and Ant is All-Star tier. TORQUE, our team model, has the Wolves 15th with a score of 50.0, which projects to 42.9 wins, down from 9th in July. Every player's page is free. Link in bio.
 
-#NBA
+#NBA #Timberwolves

@@ -1,12 +1,12 @@
-The Brooklyn Nets in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+MPJ is the only Net in the top 50 of The 644, #46 of all 644 NBA players with a GRAVITY score of 57.9. The next Net is Randle at #96. GRAVITY score next to each name (50 is a league-average minute):
 
 #46 Michael Porter Jr. 57.9
 #96 Julius Randle 52.5
 #111 Day'Ron Sharpe 51.4
-#235 Mikel Brown Jr. 41.9 (rookie)
+#196 Keon Ellis 44.4
+#235 Mikel Brown Jr. 41.9
 #237 Josh Minott 41.7
-#268 Ziaire Williams 40.3
 #269 Noah Clowney 40.2
 #281 Egor Dёmin 39.7
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

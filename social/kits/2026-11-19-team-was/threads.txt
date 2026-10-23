@@ -1,12 +1,12 @@
-The Washington Wizards in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+AJ Dybantsa, the first pick, enters The 644 at #88 of all 644 NBA players with a GRAVITY score of 53.4, already the third-best Wizard behind AD at #47 and Trae at #76. GRAVITY score next to each name (50 is a league-average minute):
 
 #47 Anthony Davis 57.9
 #76 Trae Young 54.4
-#88 AJ Dybantsa 53.4 (rookie)
+#88 AJ Dybantsa 53.4
 #133 Alex Sarr 48.5
 #178 Justin Champagnie 45.4
 #191 Deandre Ayton 44.8
 #209 Kyshawn George 43.2
 #240 Bilal Coulibaly 41.6
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

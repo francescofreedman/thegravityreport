@@ -1,4 +1,4 @@
-The Atlanta Hawks in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+Jalen Johnson is #21 of all 644 NBA players in The 644, All-Star tier at 24. However, TORQUE, our team model, ranks the Hawks only 20th and projects 36.9 wins. GRAVITY score next to each name (50 is a league-average minute):
 
 #21 Jalen Johnson 63.2
 #39 Dyson Daniels 58.9
@@ -7,6 +7,6 @@ The Atlanta Hawks in The 644: the top eight by rank, with each player's GRAVITY 
 #138 CJ McCollum 47.8
 #204 Jock Landale 43.6
 #234 Aaron Wiggins 41.9
-#254 Jonathan Kuminga 41.1
+#270 Kingston Flemings 40.1
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

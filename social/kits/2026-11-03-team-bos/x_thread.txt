@@ -1,13 +1,12 @@
-The Boston Celtics in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
-
+Tatum, Boston's best player in The 644, our ranking of all 644 NBA players, ranks only #24. However, four Celtics sit in the top 51: Tatum, Neemias Queta at #41, Derrick White at #44 and Payton Pritchard at #51. The eight, with GRAVITY scores (50 is a league-average minute):
+---
 #24 Jayson Tatum 62.4
 #41 Neemias Queta 58.8
 #44 Derrick White 58.3
 #51 Payton Pritchard 57.4
-#130 Nikola Vučević 48.7
----
 #135 Paul George 48.2
 #142 Mitchell Robinson 47.6
 #144 Sam Hauser 47.6
+#192 Luka Garza 44.6
 ---
-All 20 Boston Celtics players are in The 644, each with a free profile page. Filter by team: https://thegravityreport.com/the644/
+Neemias Queta is the second-best Celtic at #41 with a score of 58.8, a full tier above his reputation; we wrote a Deep Dive on him. TORQUE, our team model, has Boston 11th with a score of 51.4, which projects to 46.4 wins. Every Celtic has a free page: https://thegravityreport.com/the644/

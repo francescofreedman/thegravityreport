@@ -13,7 +13,7 @@ The New York Knicks in The 644, our ranking of every NBA player. The top eight b
 - #82 Mikal Bridges 53.7
 - #163 Miles McBride 46.4
 - #206 Jose Alvarado 43.4
-- #225 Jeremy Sochan 42.3
+- #232 Landry Shamet 42.0
 
 GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 

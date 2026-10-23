@@ -1,14 +1,14 @@
-The Miami Heat in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
+Giannis is #4 of all 644 NBA players in The 644, with a GRAVITY score of 83.9. And yet TORQUE, our team model, dropped Miami from 6th in July to 14th; its score fell 2.2 points, the second-biggest drop in the league. The Heat's top eight (50 is a league-average minute):
 
 #4 Giannis Antetokounmpo 83.9
 #28 Bam Adebayo 60.5
-#91 Norman Powell 53.3
 #125 Andrew Wiggins 49.7
 #168 Bobby Portis 46.0
 #169 Davion Mitchell 46.0
 #189 Pelle Larsson 44.8
 #221 Simone Fontecchio 42.6
+#246 Dru Smith 41.4
 
-Every player's page is free. Link in bio.
+Bam is #28 with a score of 60.5, All-Star tier by our model, and the gap from Giannis down to him is the fourth-widest between a team's two best players. TORQUE has the Heat at 50.4, which projects to 43.9 wins. Every player's page is free. Link in bio.
 
-#NBA
+#NBA #Heat

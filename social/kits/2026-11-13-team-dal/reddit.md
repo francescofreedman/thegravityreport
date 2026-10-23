@@ -10,10 +10,10 @@ The Dallas Mavericks in The 644, our ranking of every NBA player. The top eight 
 - #89 Daniel Gafford 53.4
 - #90 Santi Aldama 53.4
 - #137 Kyrie Irving 47.9
-- #143 Brandon Williams 47.6
 - #147 Naji Marshall 47.5
-- #199 Marvin Bagley III 44.2
 - #219 Max Christie 42.6
+- #222 P.J. Washington 42.5
+- #241 Dereck Lively II 41.5
 
 GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 

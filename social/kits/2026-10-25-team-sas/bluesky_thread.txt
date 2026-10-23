@@ -1,13 +1,12 @@
-The San Antonio Spurs in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
-
+Wemby is 22 years old, and we already rank him #3 of all 644 NBA players in The 644, with a GRAVITY score of 85.7. The next Spur on the list is De'Aaron Fox, way down at #66. Here's San Antonio's top eight, each with his GRAVITY score (50 is a league-average minute):
+---
 #3 Victor Wembanyama 85.7
 #66 De'Aaron Fox 55.6
 #68 Stephon Castle 55.0
 #73 Luke Kornet 54.6
 #85 Julian Champagnie 53.6
----
 #114 Devin Vassell 51.3
 #120 Dylan Harper 50.3
-#180 Keldon Johnson 45.3
+#122 Tobias Harris 50.1
 ---
-All 22 San Antonio Spurs players are in The 644, each with a free profile page. Filter by team: https://thegravityreport.com/the644/
+Dylan Harper, at 19, is the youngest of those eight, at #120. TORQUE, our team model, has the Spurs second in the league with a score of 53.6, which projects to 51.9 wins. Every Spur has a free page: https://thegravityreport.com/the644/

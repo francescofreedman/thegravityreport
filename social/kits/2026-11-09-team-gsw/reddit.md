@@ -11,9 +11,9 @@ The Golden State Warriors in The 644, our ranking of every NBA player. The top e
 - #83 Kristaps Porziņģis 53.6
 - #99 Brandin Podziemski 52.3
 - #134 Moses Moody 48.2
+- #143 Brandon Williams 47.6
 - #164 Gary Payton II 46.4
 - #183 Gui Santos 45.2
-- #193 Al Horford 44.6
 
 GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 

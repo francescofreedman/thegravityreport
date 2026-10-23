@@ -1,4 +1,4 @@
-The Portland Trail Blazers in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
+The best Blazer in The 644, our ranking of all 644 NBA players, isn't Dame or Ja. It's Deni Avdija, #23 with a GRAVITY score of 62.6, All-Star tier by our model. Ja Morant is #140 and Dame is #151. Here's Portland's top eight, each with his score (50 is a league-average minute):
 
 #23 Deni Avdija 62.6
 #52 Donovan Clingan 57.4
@@ -9,6 +9,6 @@ The Portland Trail Blazers in The 644, our ranking of every NBA player. The top 
 #161 Shaedon Sharpe 46.5
 #175 Toumani Camara 45.7
 
-Every player's page is free. Link in bio.
+Donovan Clingan, 21 years old, is the second-best Blazer at #52. Portland is also the only team with no rookie in The 644. TORQUE, our team model, has the Blazers 9th with a score of 51.6, which projects to 47.0 wins. Every player's page is free. Link in bio.
 
-#NBA
+#NBA #Blazers

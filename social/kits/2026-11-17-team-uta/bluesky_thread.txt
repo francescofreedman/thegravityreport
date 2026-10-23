@@ -1,13 +1,12 @@
-The Utah Jazz in The 644, our ranking of every NBA player. The top eight by rank, with each player's GRAVITY score (50 is a league-average minute):
-
+Darryn Peterson, the second pick, enters The 644, our ranking of all 644 NBA players, as the fourth-best Jazz player. He is #118 with a GRAVITY score of 50.3, which is what we expect from a typical second pick. Utah's top eight (50 is a league-average minute):
+---
 #57 Lauri Markkanen 56.8
 #102 Keyonte George 52.1
 #115 Jaren Jackson Jr. 51.0
-#118 Darryn Peterson 50.3 (rookie)
----
+#118 Darryn Peterson 50.3
+#123 Jaxson Hayes 50.0
 #166 Jusuf Nurkić 46.2
 #170 Kyle Filipowski 45.9
-#226 John Konchar 42.3
 #252 Brice Sensabaugh 41.2
 ---
-All 22 Utah Jazz players are in The 644, each with a free profile page. Rookies start from a draft-slot prior. Filter by team: https://thegravityreport.com/the644/
+Lauri Markkanen, #57 with a score of 56.8, is the only Jazz player in the top 100. TORQUE, our team model, has Utah 25th at 45.5, or 31.3 projected wins; its 2.2-point gain since July is tied for the biggest of any team. Every Jazz player has a free page: https://thegravityreport.com/the644/

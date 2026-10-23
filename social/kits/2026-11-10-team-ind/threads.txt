@@ -1,4 +1,4 @@
-The Indiana Pacers in The 644: the top eight by rank, with each player's GRAVITY score (50 is a league-average minute).
+No Pacer is in the top 50 of The 644, but three sit within five places of each other: Haliburton at #56, Siakam at #60 and Zubac at #61. GRAVITY score next to each name (50 is a league-average minute):
 
 #56 Tyrese Haliburton 56.9
 #60 Pascal Siakam 56.5
@@ -7,6 +7,6 @@ The Indiana Pacers in The 644: the top eight by rank, with each player's GRAVITY
 #129 Jay Huff 48.8
 #155 Andrew Nembhard 47.1
 #158 Obi Toppin 46.9
-#255 Micah Potter 41.0
+#218 Kelly Oubre Jr. 42.6
 
-Every player, with a free page: https://thegravityreport.com/the644/
+Every player has a free page: https://thegravityreport.com/the644/

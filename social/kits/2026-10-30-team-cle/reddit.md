@@ -12,8 +12,8 @@ The Cleveland Cavaliers in The 644, our ranking of every NBA player. The top eig
 - #35 James Harden 59.8
 - #128 Sam Merrill 48.9
 - #159 Jaylon Tyson 46.8
-- #187 Dean Wade 45.1
-- #196 Keon Ellis 44.4
+- #184 Peyton Watson 45.2
+- #211 Craig Porter Jr. 43.1
 
 GRAVITY is our one-number player rating: how good, times how often. Every player has a free profile page, and the table filters by team: https://thegravityreport.com/the644/
 
