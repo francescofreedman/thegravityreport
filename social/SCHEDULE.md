@@ -13,10 +13,10 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Thu Oct 22, 12:00 PM | Instagram | The 2026–27 Gravity Report Predictions | Twenty calls for the 2026–27 season, each with a probability, every one of them scored in … |
 | Thu Oct 22, 8:10 PM | X | Anthony Edwards: player of the day | Anthony Edwards last night: 45 points, 10 rebounds, 16-of-29 shooting and 9-of-17 from thr… |
 | Thu Oct 22, 8:12 PM | X | The 2026–27 Gravity Report Predictions | Twenty calls for the 2026–27 season, each with a probability, every one of them scored in … |
-| Thu Oct 22, 9:00 PM | X | The 644 on your team: Oklahoma City Thunder | The Oklahoma City Thunder in The 644, our ranking of every NBA player. The top eight by ra… |
-| Thu Oct 22, 9:00 PM | Bluesky | The 644 on your team: Oklahoma City Thunder | The Oklahoma City Thunder in The 644, our ranking of every NBA player. The top eight by ra… |
-| Thu Oct 22, 9:00 PM | Threads | The 644 on your team: Oklahoma City Thunder | The Oklahoma City Thunder in The 644, our ranking of every NBA player. The top eight by ra… |
-| Thu Oct 22, 9:00 PM | Instagram | The 644 on your team: Oklahoma City Thunder | The Oklahoma City Thunder in The 644, our ranking of every NBA player. The top eight by ra… |
+| Thu Oct 22, 9:00 PM | X | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
+| Thu Oct 22, 9:00 PM | Bluesky | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
+| Thu Oct 22, 9:00 PM | Threads | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
+| Thu Oct 22, 9:00 PM | Instagram | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
 | Fri Oct 23, 12:00 PM | X | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
 | Fri Oct 23, 12:00 PM | Bluesky | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
 | Fri Oct 23, 12:00 PM | Threads | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |

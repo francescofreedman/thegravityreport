@@ -450,6 +450,7 @@ def build_article_kit(slug, date, outdir=None, images=True, frame="news", angle=
     check_limits(kit)
     if outdir is None:
         outdir = os.path.join(ROOT, "social", "kits", f"{date}-article-{slug}")
+    copy_override(kit, os.path.basename(outdir), src + " " + extra_source)
     write_kit(kit, outdir)
     if images:
         label = "ARTICLE" if a.get("format") == "short" or "n" not in a else f"DEEP DIVE №{a['n']}"
@@ -582,9 +583,13 @@ def build_team_kit(code, date, outdir=None, images=True):
            "reddit": {"subreddit": sub, "markdown": reddit},
            "images": {"card": "card-1200x675.png", "carousel": ["ig-1080x1350-1.png"]},
            "alt": {"card-1200x675.png": alt, "ig-1080x1350-1.png": alt}}
-    guard(posts + [threads, ig, reddit, alt], json.dumps(top, ensure_ascii=False) + f" {len(ps)} {name}")
+    torque = next(x for x in load("the30/torque-2026-27.json")["teams"] if x["code"] == TORQUE_CODE.get(code, code))
+    source = (json.dumps(top, ensure_ascii=False) + f" {len(ps)} {name} " + json.dumps(torque, ensure_ascii=False)
+              + " " + json.dumps([p for p in ps[8:]], ensure_ascii=False))
+    guard(posts + [threads, ig, reddit, alt], source)
     check_limits(kit)
     outdir = outdir or os.path.join(ROOT, "social", "kits", f"{date}-team-{code.lower()}")
+    copy_override(kit, os.path.basename(outdir), source)
     write_kit(kit, outdir)
     if images:
         team_card(os.path.join(outdir, "card-1200x675.png"), name, rows)
@@ -779,6 +784,41 @@ def build_performance_kit(slug, event_id, date, outdir=None, images=True, summar
     with open(os.path.join(outdir, "source.json"), "w", encoding="utf-8") as f:
         json.dump({"espn_event": str(event_id), "boxscore_line": g}, f, ensure_ascii=False, indent=1)
     return kit, outdir
+
+
+# ------------------------------------------------------------------ hand-written copy
+#
+# social/copy/<kit id>.md overrides the generated text of a kit, so each post can have its own
+# angle instead of a template. Sections: "## X" (posts separated by a line "---"), "## Bluesky"
+# (optional; defaults to X), "## Threads", "## Instagram". The number guard and the platform limits
+# still apply to every line.
+
+def copy_override(kit, kit_id, source_text):
+    path = os.path.join(ROOT, "social", "copy", kit_id + ".md")
+    if not os.path.exists(path):
+        return kit
+    secs, cur = {}, None
+    for line in open(path, encoding="utf-8").read().split("\n"):
+        if line.startswith("## "):
+            cur = line[3:].strip().lower()
+            secs[cur] = []
+        elif cur is not None:
+            secs[cur].append(line)
+    def block(name):
+        return "\n".join(secs.get(name, [])).strip()
+    def thread(name):
+        return [p.strip() for p in block(name).split("\n---\n") if p.strip()]
+    if block("x"):
+        kit["x_thread"] = thread("x")
+        kit["bluesky_thread"] = thread("bluesky") if block("bluesky") else list(kit["x_thread"])
+    if block("threads"):
+        kit["threads"] = block("threads")
+    if block("instagram"):
+        kit["instagram_caption"] = block("instagram")
+    kit["copy"] = os.path.relpath(path, ROOT)
+    guard(kit["x_thread"] + kit["bluesky_thread"] + [kit["threads"], kit["instagram_caption"]], source_text)
+    check_limits(kit)
+    return kit
 
 
 def write_kit(kit, outdir):
