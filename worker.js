@@ -1,5 +1,5 @@
 import { handleAdmin } from "./social/admin-api.js";
-import { runScheduled } from "./social/pipeline.js";
+import { runScheduled, healthView } from "./social/pipeline.js";
 
 /**
  * The Gravity Report — API worker.
@@ -163,6 +163,7 @@ export default {
       if (path === "/api/e" && request.method === "POST")
         return await handleEvent(request, env, request.cf);
       if (path === "/api/stats" && request.method === "GET") return await handleStats(request, env);
+      if (path === "/api/social/health" && request.method === "GET") return json(await healthView(env));
       if (path.startsWith("/api/admin/")) return await handleAdmin(request, env);
     } catch (e) {
       return json({ error: "server" }, 500);

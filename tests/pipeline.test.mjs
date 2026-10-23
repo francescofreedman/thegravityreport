@@ -691,3 +691,16 @@ test("hand-off email: caption and how-to are in the body, images attached once",
   assert.match(body, /Save the attached image/);
   assert.equal((raw.match(/filename="a.png"/g) || []).length, 1);
 });
+
+test("health view: public, no post text, shows last error per platform", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0", ...BSKY_LIVE });
+  await P.ensureSocialSchema(e);
+  const adapters = { ...P.ADAPTERS, bluesky: { name: "bluesky", configured: () => true, async post() { throw new Error("bluesky 402: Payment Required"); } } };
+  const at = "2026-10-22T23:45:00Z";
+  await P.syncSchedule(e, Date.parse(at), { adapters, schedule: { posts: [{ at, platform: "bluesky", kit: KIT }] } });
+  await P.runScheduled(e, Date.parse(at), { adapters });
+  const h = await P.healthView(e, Date.parse(at), adapters);
+  assert.equal(h.platforms.bluesky.last_error, "bluesky 402: Payment Required");
+  assert.deepEqual(h.platforms.bluesky.recent, ["failed@2026-10-22T23:45"]);
+  assert.ok(!JSON.stringify(h).includes("Kawhi"), "no post text leaks");
+});

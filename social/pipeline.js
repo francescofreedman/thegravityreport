@@ -487,6 +487,29 @@ export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTER
   return report;
 }
 
+// Public, key-less health view: no post text, no secrets. Per platform: connected?, live?, how the
+// last few rows ended, the last error message (platform's own words, truncated), last posted time.
+export async function healthView(env, nowMs = Date.now(), adapters = ADAPTERS) {
+  await ensureSocialSchema(env);
+  const out = { now: iso(nowMs), dry_run: env.SOCIAL_DRY_RUN !== "0", manual: manualPlatforms(env), platforms: {} };
+  for (const p of PLATFORMS) {
+    const recent = (await env.DB.prepare(
+      "SELECT status, scheduled_at, posted_at, error FROM social_queue WHERE platform = ? AND status NOT IN ('draft', 'cancelled') ORDER BY COALESCE(posted_at, scheduled_at) DESC, id DESC LIMIT 6"
+    ).bind(p).all()).results || [];
+    const lastErr = recent.find((r) => r.error);
+    const lastPosted = recent.find((r) => r.status === "posted" || r.status === "handoff");
+    out.platforms[p] = {
+      connected: adapters[p].configured(env), live: isLive(env, p, adapters),
+      recent: recent.map((r) => `${r.status}@${(r.posted_at || r.scheduled_at || "").slice(0, 16)}`),
+      last_error: lastErr ? String(lastErr.error).slice(0, 160) : null,
+      last_posted_at: lastPosted ? lastPosted.posted_at : null,
+    };
+  }
+  const last = await env.DB.prepare("SELECT ts, action, detail FROM social_log ORDER BY id DESC LIMIT 5").all();
+  out.last_log = (last.results || []).map((l) => `${l.ts.slice(0, 16)} ${l.action}${l.detail ? ": " + String(l.detail).slice(0, 80) : ""}`);
+  return out;
+}
+
 export async function queueView(env, adapters = ADAPTERS) {
   const { results } = await env.DB.prepare(
     "SELECT id, kit_id, platform, payload, scheduled_at, status, approved_at, posted_at, remote_id, error FROM social_queue ORDER BY COALESCE(scheduled_at, created_at) DESC, id DESC LIMIT 200"

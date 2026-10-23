@@ -12,7 +12,7 @@ git reset -q --hard origin/main
 python3 scripts/social/ledger_tracker.py --schedule
 if [ -n "$(git status --porcelain)" ]; then
   git add -A social/kits social/schedule.json social/SCHEDULE.md
-  git -c user.name="Gravity tracker" -c user.email="posts@thegravityreport.com" commit -qm "Tracker: Is the model winning? kit for $(date -v+1d +%Y-%m-%d 2>/dev/null || date +%Y-%m-%d)"
+  git -c user.name="Gravity tracker" -c user.email="posts@thegravityreport.com" commit -qm "Tracker: Is the model winning? kit $(ls social/kits | grep ledger-tracker | tail -1)"
   git push -q origin HEAD:main
   echo "$(date): pushed"
 else
