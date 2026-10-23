@@ -11,7 +11,7 @@ import { etParts, etToUtcMs, prevDate, normName, gameScore, pickBest, potdKitFro
 import { STANDINGS_URL, weekday, addDays, isoWeek, parseStandings, paceTable, paceKit, bestKit, pollPair, pollKits } from "./series.js";
 import { followers } from "./metrics.js";
 import { manualPlatforms, runHandoffs } from "./handoff.js";
-import { SCOREBOARD, TIP_LEAD_MS, TIPS_PER_NIGHT, gamesFromScoreboard, bestByTeam, matchups, tonightKit, tipKit } from "./gamenight.js";
+import { SCOREBOARD, TIP_LEAD_MS, TIPS_PER_NIGHT, gamesFromScoreboard, bestByTeam, matchups, tonightKit, tipKit, etTime as etTimeOf } from "./gamenight.js";
 
 export const ADAPTERS = { x, bluesky, threads, instagram };
 export const PLATFORMS = ["x", "bluesky", "threads", "instagram"];
@@ -160,7 +160,10 @@ export async function maybeQueuePotd(env, nowMs, { fetchImpl = fetch, schedule =
   if (!games) { await mark("no games"); return null; }
   const best = pickBest(lines, byName);
   if (!best) { await mark("no big night"); return null; }
-  const kit = potdKitFromPerformance(best.p, best.p.team, best.g, SITE_URL, n);
+  const t644tiers = (await assetJson(env, "/content/the644.json")).TIERS || null;
+  const kit = potdKitFromPerformance(best.p, best.p.team, best.g, SITE_URL, n, { date, tiers: t644tiers });
+  const written = await writtenCopy(env, kitId, best.p.slug, JSON.stringify(best.p) + " " + JSON.stringify(best.g) + " " + JSON.stringify(t644tiers));
+  if (written) { Object.assign(kit, written); await log(env, nowMs, null, null, "potd_written_copy", 0, kitId); }
   const at = Math.max(nowMs, etToUtcMs(date, POTD_HOUR_ET));
   // No Instagram for player of the day until it has a format of its own (a Reel): a single card
   // image does nothing on Instagram, and it's posted by hand.
@@ -440,6 +443,44 @@ export async function restoreScheduled(env, kitId, platform) {
   return (r.meta && r.meta.changes) || 0;
 }
 
+// ------------------------------------------------------------------ hand-written copy for Worker-written posts
+//
+// A writer (the morning routine, or a person) can leave /social/copy/<kit id>.json with
+// { "slug": "<who it's about>", "x": [...posts], "bluesky": [...], "threads": "..." }. If it exists and is
+// about the same subject the Worker picked, its text replaces the generated text. Every number in it
+// must appear in the data the Worker used (the same rule the Python kits live under), or it's ignored.
+export function numbersIn(text) {
+  const out = new Set();
+  for (const m of String(text).replace(/https?:\/\S+/g, " ").matchAll(/(?<![\w.])[-−+]?(?:\d[\d,]*(?:\.\d+)?|\.\d+)/g)) {
+    const v = Number(m[0].replace(/,/g, "").replace("−", "-"));
+    if (!Number.isNaN(v)) out.add(Math.abs(v).toFixed(4));
+  }
+  return out;
+}
+
+export function copyGuardOk(texts, sourceText) {
+  const allowed = numbersIn(sourceText);
+  for (const x of ["644", "30", "50", "100", "0", "2026", "2027", "2025", "1", "2", "3", "4"]) allowed.add(Number(x).toFixed(4));
+  for (const t of texts) for (const n of numbersIn(t)) if (!allowed.has(n)) return false;
+  return true;
+}
+
+export async function writtenCopy(env, kitId, slug, sourceText) {
+  try {
+    const res = await env.ASSETS.fetch(new Request(SITE_URL + `/social/copy/${kitId}.json`));
+    if (!res.ok) return null;
+    const c = await res.json();
+    if (slug && c.slug && c.slug !== slug) return null;
+    const x = Array.isArray(c.x) && c.x.length ? c.x : null;
+    if (!x) return null;
+    const bluesky = Array.isArray(c.bluesky) && c.bluesky.length ? c.bluesky : x;
+    const threads = typeof c.threads === "string" && c.threads ? c.threads : x.join("\n\n");
+    if (!copyGuardOk([...x, ...bluesky, threads], sourceText)) return null;
+    if (x.some((t) => t.replace(/https?:\/\/\S+/g, "x".repeat(23)).length > 280) || bluesky.some((t) => t.length > 300) || threads.length > 500) return null;
+    return { x_thread: x, bluesky_thread: bluesky, threads };
+  } catch (e) { return null; }
+}
+
 // ------------------------------------------------------------------ game nights (social/gamenight.js)
 
 const GAME_PLATFORMS = ["x", "bluesky"]; // Threads is posted by hand, and a tip-off post can't wait for an email
@@ -474,9 +515,13 @@ export async function maybeQueueTonight(env, nowMs, { fetchImpl = fetch } = {}) 
   const games = (await scoreboardFor(env, date, fetchImpl, nowMs)).filter((g) => g.tipMs > nowMs - 30 * 60 * 1000);
   if (!games.length) { await mark("no games"); return null; }
   const { best, torqueByName, n } = await gameContext(env);
-  const kit = tonightKit(matchups(games, best, torqueByName), SITE_URL, date, n);
+  const ms = matchups(games, best, torqueByName);
+  const kit = tonightKit(ms, SITE_URL, date, n);
   if (!kit) { await mark("no ranked players"); return null; }
   const kitId = `tonight-${date}`;
+  const source = JSON.stringify(ms.map((m) => ({ a: m.a, h: m.h, ta: m.ta, th: m.th, tip: etTimeOf(m.tipMs) })));
+  const written = await writtenCopy(env, kitId, null, source);
+  if (written) { Object.assign(kit, written); await log(env, nowMs, null, null, "tonight_written_copy", 0, kitId); }
   await queueSeries(env, kitId, kit, nowMs, nowMs, GAME_PLATFORMS);
   await mark(kitId);
   await log(env, nowMs, null, null, "tonight_queued", 0, kit.x_thread[0]);

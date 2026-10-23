@@ -37,6 +37,10 @@ function fakeAssets() {
     async fetch(req) {
       const path = decodeURIComponent(new URL(req.url).pathname);
       if (path === "/social/schedule.json") return new Response("nf", { status: 404 }); // schedule tests pass their own
+      if (path.startsWith("/social/copy/") && path.endsWith(".json")) {
+        const w = globalThis.__writtenCopy && globalThis.__writtenCopy[path.slice("/social/copy/".length, -5)];
+        return w ? new Response(JSON.stringify(w)) : new Response("nf", { status: 404 });
+      }
       const file = join(ROOT, path);
       if (!existsSync(file)) return new Response("nf", { status: 404 });
       return new Response(readFileSync(file));
@@ -769,4 +773,53 @@ test("tip-off: a marquee game within 20 minutes of tipping gets one post, never 
   // the 7 PM game (Mitchell vs Maxey, both top 10) is marquee too
   assert.deepEqual(await P.maybeQueueTips(e, Date.parse("2026-10-22T22:45:00Z"), { fetchImpl: f }), ["tip-401909093"]);
   assert.deepEqual(await P.maybeQueueTips(e, Date.parse("2026-10-22T22:46:00Z"), { fetchImpl: f }), [], "two a night is the cap");
+});
+
+// ------------------------------------------------------------------ written copy overrides
+
+test("written copy: the morning routine's text replaces the generated player-of-the-day post, only when it's about the same player and its numbers check out", async () => {
+  const e = env({ SOCIAL_POTD: "1" });
+  await P.ensureSocialSchema(e);
+  const nine = Date.parse("2026-10-22T13:05:00Z");
+  globalThis.__writtenCopy = { "potd-2026-10-22": { slug: "anthony-edwards",
+    x: ["Ant went for 45 on the Heat last night, 9 threes and 10 boards in a 131–106 win. Minnesota needed every one of them.",
+        "We rank him #22 of 644 in The 644 with a GRAVITY score of 63.1 (50 is a league-average minute). Last season he averaged 28.8 a game. https://thegravityreport.com/players/anthony-edwards/"],
+    threads: "Ant went for 45 on the Heat last night." } };
+  try {
+    assert.equal(await P.maybeQueuePotd(e, nine, { fetchImpl: espnFetch() }), "potd-2026-10-22");
+    const x = JSON.parse((await e.DB.prepare("SELECT payload FROM social_queue WHERE platform = 'x'").first()).payload).posts;
+    assert.match(x[0], /^Ant went for 45 on the Heat/);
+    const logged = (await e.DB.prepare("SELECT action FROM social_log").all()).results.map((l) => l.action);
+    assert.ok(logged.includes("potd_written_copy"));
+  } finally { delete globalThis.__writtenCopy; }
+  // a wrong number is refused: the generated text is used instead
+  const e2 = env({ SOCIAL_POTD: "1" });
+  await P.ensureSocialSchema(e2);
+  globalThis.__writtenCopy = { "potd-2026-10-22": { slug: "anthony-edwards", x: ["Ant went for 47 last night."] } };
+  try {
+    await P.maybeQueuePotd(e2, nine, { fetchImpl: espnFetch() });
+    const x = JSON.parse((await e2.DB.prepare("SELECT payload FROM social_queue WHERE platform = 'x'").first()).payload).posts;
+    assert.ok(!x[0].includes("47"), "invented number refused");
+  } finally { delete globalThis.__writtenCopy; }
+  // about a different player: ignored
+  const e3 = env({ SOCIAL_POTD: "1" });
+  await P.ensureSocialSchema(e3);
+  globalThis.__writtenCopy = { "potd-2026-10-22": { slug: "ty-jerome", x: ["Ty Jerome had 45."] } };
+  try {
+    await P.maybeQueuePotd(e3, nine, { fetchImpl: espnFetch() });
+    const x = JSON.parse((await e3.DB.prepare("SELECT payload FROM social_queue WHERE platform = 'x'").first()).payload).posts;
+    assert.ok(!x[0].startsWith("Ty Jerome"));
+  } finally { delete globalThis.__writtenCopy; }
+});
+
+test("written copy: tonight's post can be hand-written too", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0" });
+  delete e.SOCIAL_SERIES;
+  await P.ensureSocialSchema(e);
+  globalThis.__writtenCopy = { "tonight-2026-10-22": { x: ["Jokić (#1) and Shai (#2) share a floor at 9:30 PM ET. Nuggets at Thunder. The 76ers host the Cavaliers at 7:00 PM ET first.", "https://thegravityreport.com/the644/"] } };
+  try {
+    await P.maybeQueueTonight(e, Date.parse("2026-10-22T21:05:00Z"), { fetchImpl: sbFetch() });
+    const x = JSON.parse((await e.DB.prepare("SELECT payload FROM social_queue WHERE platform = 'x'").first()).payload).posts;
+    assert.match(x[0], /^Jokić \(#1\) and Shai \(#2\) share a floor/);
+  } finally { delete globalThis.__writtenCopy; }
 });
