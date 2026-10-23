@@ -541,9 +541,22 @@ def team_name(code):
     return next(x["team"] for x in load("the30/torque-2026-27.json")["teams"] if x["code"] == tc)
 
 
+def current_rosters():
+    """Who is on which team now. The 644's `t` is the July edition; content/rosters-2026-10.json
+    (ESPN rosters, dated) overrides it when present so team posts never list a traded player."""
+    path = os.path.join(ROOT, "content", "rosters-2026-10.json")
+    if not os.path.exists(path):
+        return None
+    r = load("content/rosters-2026-10.json")
+    return {n: code for code, names in r["teams"].items() for n in names}
+
+
 def team_players(code, t644=None):
     t644 = t644 or load("content/the644.json")
-    return sorted((p for p in t644["players"] if p["t"] == code), key=lambda p: p["r"])
+    now = current_rosters()
+    def team_of(p):
+        return now.get(p["n"], p["t"]) if now else p["t"]
+    return sorted((p for p in t644["players"] if team_of(p) == code), key=lambda p: p["r"])
 
 
 def build_team_kit(code, date, outdir=None, images=True):
