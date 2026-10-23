@@ -449,11 +449,10 @@ test("beating the projection: Wednesdays 1 PM ET, once a week, skipped and marke
   assert.equal(await P.maybeQueuePace(e2, wed2, { fetchImpl: standingsFetch(scaledStandings(10)) }), "pace-2026-11-04");
   assert.equal(await P.maybeQueuePace(e2, wed2 + 60e3, { fetchImpl: standingsFetch(scaledStandings(10)) }), null, "once a week");
   const rows = (await e2.DB.prepare("SELECT platform, status, scheduled_at, payload FROM social_queue").all()).results;
-  assert.deepEqual(rows.map((r) => r.platform).sort(), ["bluesky", "instagram", "threads", "x"]);
+  assert.deepEqual(rows.map((r) => r.platform).sort(), ["bluesky", "threads", "x"], "text-only weekly series skip Instagram");
   assert.ok(rows.every((r) => r.status === "approved" && r.scheduled_at === "2026-11-04T18:00:00.000Z"), "1 PM ET = 18:00 UTC in November");
-  const ig = JSON.parse(rows.find((r) => r.platform === "instagram").payload);
-  assert.deepEqual(ig.image_urls, ["https://thegravityreport.com/cards/the30.png"]);
-  assert.equal(ig.kind, "pace");
+  const th = JSON.parse(rows.find((r) => r.platform === "threads").payload);
+  assert.equal(th.kind, "pace");
   assert.equal(JSON.parse(rows.find((r) => r.platform === "x").payload).images.length, 0, "text-only on X");
   // off switch
   const e3 = env({ SOCIAL_SERIES: "1" });
@@ -490,7 +489,7 @@ test("best games of the week: Fridays 1 PM ET, last Friday through Thursday, top
   assert.deepEqual(days, ["20261023", "20261024", "20261025", "20261026", "20261027", "20261028", "20261029"], "Fri → Thu");
   assert.equal(await P.maybeQueueBest(e, fri + 60e3, { fetchImpl: weekFetch(calls) }), null, "once a week");
   const rows = (await e.DB.prepare("SELECT platform, status, scheduled_at, payload FROM social_queue").all()).results;
-  assert.equal(rows.length, 4);
+  assert.equal(rows.length, 3, "X, Bluesky, Threads; Instagram is by hand and text-only series skip it");
   assert.ok(rows.every((r) => r.status === "approved" && r.scheduled_at === "2026-10-30T17:00:00.000Z"), "1 PM EDT");
   const x = JSON.parse(rows.find((r) => r.platform === "x").payload);
   assert.equal(x.kind, "best");
@@ -532,7 +531,7 @@ test("who's higher: Saturdays 11 AM ET with an X poll, answer queued for Sunday 
   assert.equal(await P.maybeQueuePoll(e, sat), "poll-2026-10-31");
   assert.equal(await P.maybeQueuePoll(e, sat + 60e3), null, "once a week");
   const rows = (await e.DB.prepare("SELECT kit_id, platform, status, scheduled_at, payload FROM social_queue ORDER BY kit_id, platform").all()).results;
-  assert.equal(rows.length, 8);
+  assert.equal(rows.length, 6);
   const q = rows.filter((r) => r.kit_id === "poll-2026-10-31"), a = rows.filter((r) => r.kit_id === "poll-2026-10-31-answer");
   assert.ok(q.every((r) => r.status === "approved" && r.scheduled_at === "2026-10-31T15:00:00.000Z"), "11 AM EDT");
   assert.ok(a.every((r) => r.status === "approved" && r.scheduled_at === "2026-11-01T16:00:00.000Z"), "Sunday 11 AM EST (clocks went back)");

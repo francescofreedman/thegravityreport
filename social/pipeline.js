@@ -194,6 +194,9 @@ export async function linesFor(env, dateStr, fetchImpl, byName) {
 }
 
 // Approved rows for a Worker-written kit on every platform; the payload carries title/kind for the dashboard.
+// Weekly text-only series skip Instagram: you post Instagram by hand, and these have no image of their own.
+export const TEXT_SERIES_PLATFORMS = PLATFORMS.filter((p) => p !== "instagram");
+
 export async function queueSeries(env, kitId, kit, atMs, nowMs, platforms = PLATFORMS) {
   const p = payloadsFromKit(kitId, kit);
   let added = 0;
@@ -238,7 +241,7 @@ export async function maybeQueuePace(env, nowMs, { fetchImpl = fetch } = {}) {
   if (table.reason) { await slot.mark(table.reason); await log(env, nowMs, null, null, "pace_skipped", 0, table.reason); return null; }
   const kitId = `pace-${slot.date}`;
   const kit = paceKit(table, SITE_URL, slot.date);
-  await queueSeries(env, kitId, kit, slot.at, nowMs);
+  await queueSeries(env, kitId, kit, slot.at, nowMs, TEXT_SERIES_PLATFORMS);
   await slot.mark(kitId);
   await log(env, nowMs, null, null, "pace_queued", 0, kit.x_thread[0]);
   return kitId;
@@ -256,7 +259,7 @@ export async function maybeQueueBest(env, nowMs, { fetchImpl = fetch } = {}) {
   const kit = bestKit(lines, byName, normName, from, to, SITE_URL, slot.date, n);
   if (!kit) { await slot.mark("no games"); await log(env, nowMs, null, null, "best_skipped", 0, "no games"); return null; }
   const kitId = `best-${slot.date}`;
-  await queueSeries(env, kitId, kit, slot.at, nowMs);
+  await queueSeries(env, kitId, kit, slot.at, nowMs, TEXT_SERIES_PLATFORMS);
   await slot.mark(kitId);
   await log(env, nowMs, null, null, "best_queued", 0, kit.x_thread[0]);
   return kitId;
@@ -273,8 +276,8 @@ export async function maybeQueuePoll(env, nowMs) {
   const [a, b] = pair.map((p) => byName.get(normName(p.n)) || p);
   const { poll, answer } = pollKits(a, b, SITE_URL, slot.date, n);
   const kitId = `poll-${slot.date}`;
-  await queueSeries(env, kitId, poll, slot.at, nowMs);
-  await queueSeries(env, `${kitId}-answer`, answer, etToUtcMs(addDays(slot.date, 1), 11), nowMs);
+  await queueSeries(env, kitId, poll, slot.at, nowMs, TEXT_SERIES_PLATFORMS);
+  await queueSeries(env, `${kitId}-answer`, answer, etToUtcMs(addDays(slot.date, 1), 11), nowMs, TEXT_SERIES_PLATFORMS);
   await slot.mark(kitId);
   await log(env, nowMs, null, null, "poll_queued", 0, poll.x_thread[0]);
   return kitId;

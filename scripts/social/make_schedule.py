@@ -83,7 +83,7 @@ def tracker_rows():
     rows = []
     for d in sorted(os.listdir(kits)):
         if d.endswith("-ledger-tracker") and os.path.exists(os.path.join(kits, d, "kit.json")):
-            rows.append((d[:10], TRACKER_TIME, ALL, d, "tracker"))
+            rows.append((d[:10], TRACKER_TIME, [p for p in ALL if p != "instagram"], d, "tracker"))
     return rows
 
 
@@ -118,11 +118,11 @@ SERIES = [
      "then commit + push; Basketball Reference can't be fetched from the Worker)",
      "`series_tracker = 0` in social_settings, or TRACKER_ON = False in make_schedule.py"),
     ("Beating the projection", "Wednesdays, 1 PM ET (skipped, and marked, while teams average under 5 games)",
-     "Worker, automatic (social/series.js: ESPN standings vs TORQUE win projections; Instagram uses /cards/the30.png)",
+     "Worker, automatic (social/series.js: ESPN standings vs TORQUE win projections); X, Bluesky, Threads only",
      "`series_pace = 0` in social_settings"),
     ("Best games of the week", "Fridays, 1 PM ET (last Friday through Thursday)",
      "Worker, automatic (social/series.js: top 5 Game Scores among players in The 644 from ESPN box scores, cached per day; "
-     "Instagram uses /cards/the644.png)", "`series_best = 0` in social_settings"),
+     "X, Bluesky, Threads only)", "`series_best = 0` in social_settings"),
     ("Who's higher?", "Saturdays, 11 AM ET; the answer Sundays, 11 AM ET",
      "Worker, automatic (social/series.js: two adjacent ranks in the top 100 of The 644, rotating by week; an X poll, "
      "'reply with your pick' elsewhere; the answer post names both ranks and scores)", "`series_poll = 0` in social_settings"),
