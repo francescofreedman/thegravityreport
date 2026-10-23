@@ -146,10 +146,11 @@ class TeamKitTests(unittest.TestCase):
         import make_schedule as ms
         rows = ms.team644_rows()
         self.assertEqual(len(rows), 30)
-        self.assertEqual(rows[0][0], "2026-10-24")
-        self.assertEqual(rows[0][3], "2026-10-24-team-okc")
-        self.assertEqual(rows[-1][0], "2026-11-22")
-        self.assertEqual({r[1] for r in rows}, {"18:00"})
+        self.assertEqual(rows[0][0], "2026-10-22")
+        self.assertEqual(rows[0][3], "2026-10-24-team-okc", "kit names keep their render date; the posting date is the row's")
+        self.assertEqual(rows[-1][0], "2026-11-20")
+        self.assertEqual(rows[0][1], "21:00", "the first post was a late one the night it was added")
+        self.assertEqual({r[1] for r in rows[1:]}, {"18:00"})
         self.assertEqual(len({r[3].rsplit("-", 1)[1] for r in rows}), 30, "every team exactly once")
         for r in rows:
             self.assertTrue(os.path.exists(os.path.join(ROOT, "social", "kits", r[3], "kit.json")), r[3])

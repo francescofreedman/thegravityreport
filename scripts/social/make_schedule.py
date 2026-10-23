@@ -53,20 +53,25 @@ PLAN = [
 # "The 644 on your team": one team a day at 6 PM ET for 30 days, in The 30's TORQUE order.
 # Kits: python3 scripts/social/make_kit.py team all --date 2026-10-24
 # To turn the series off: set TEAM644_START = None (or set social_settings series_team644 = 0 on the site).
-TEAM644_START = "2026-10-24"
+TEAM644_START = "2026-10-22"   # Oct 22: a late first post (9 PM ET) the night the Thunder opened at home
 TEAM644_TIME = "18:00"
+TEAM644_FIRST_TIME = "21:00"
 
 
 def team644_rows():
+    """One team a day in TORQUE order. Kits are named by the date they were rendered (`<date>-team-<code>`);
+    the posting date comes from here, so moving the start never needs new kits."""
     if not TEAM644_START:
         return []
     teams = sorted(mk.load("the30/torque-2026-27.json")["teams"], key=lambda x: x["rank"])
     d0 = datetime.date.fromisoformat(TEAM644_START)
+    kits = os.listdir(os.path.join(ROOT, "social", "kits"))
     rows = []
     for i, x in enumerate(teams):
         code = mk.FROM_TORQUE.get(x["code"], x["code"]).lower()
+        kit_id = sorted(k for k in kits if k.endswith(f"-team-{code}"))[-1]
         day = (d0 + datetime.timedelta(days=i)).isoformat()
-        rows.append((day, TEAM644_TIME, ALL, f"{day}-team-{code}", "team644"))
+        rows.append((day, TEAM644_FIRST_TIME if i == 0 else TEAM644_TIME, ALL, kit_id, "team644"))
     return rows
 
 
