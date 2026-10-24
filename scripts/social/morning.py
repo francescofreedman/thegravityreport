@@ -70,10 +70,28 @@ def et_time(iso):
     return t.strftime("%-I:%M %p ET")
 
 
+SITE_BRIEF = "https://thegravityreport.com/api/social/brief"
+
+
+def from_site():
+    """The same brief, built by the site itself (for a machine that can't reach ESPN)."""
+    b = fetch(SITE_BRIEF)
+    json.dump(b, sys.stdout, ensure_ascii=False, indent=1)
+    print()
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=datetime.datetime.now(ET).date().isoformat())
+    ap.add_argument("--from-site", action="store_true", help="read the brief from thegravityreport.com instead of ESPN")
     a = ap.parse_args()
+    if a.from_site:
+        return from_site()
+    try:
+        fetch(f"{ESPN}/scoreboard?dates={datetime.date.fromisoformat(a.date).strftime('%Y%m%d')}")
+    except Exception as e:  # noqa: BLE001 - any network failure: fall back to the site's copy of the brief
+        print(f"ESPN unreachable ({e}); using {SITE_BRIEF}", file=sys.stderr)
+        return from_site()
     today = datetime.date.fromisoformat(a.date)
     yday = today - datetime.timedelta(days=1)
 

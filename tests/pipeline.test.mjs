@@ -861,3 +861,19 @@ test("schedule sync stops after its fetch budget and finishes on the next tick",
   const second = await P.syncSchedule(e, T0 + 1, { schedule: { posts } });
   assert.equal(first + second, posts.length);
 });
+
+test("brief: the site serves the morning brief (last night's pick with his 644 record, tonight's games) from its own cached ESPN data", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0" });
+  await P.ensureSocialSchema(e);
+  const f = async (url) => url.includes("/scoreboard") ? new Response(JSON.stringify(url.includes("20261021") ? { events: [{ id: "401909091", status: { type: { completed: true } } }] } : SB))
+    : url.includes("/summary") ? new Response(JSON.stringify(SUMMARY)) : new Response("nf", { status: 404 });
+  const b = await P.briefView(e, Date.parse("2026-10-22T13:00:00Z"), f);
+  assert.equal(b.date, "2026-10-22");
+  assert.equal(b.pick.player, "Anthony Edwards");
+  assert.equal(b.pick.record.rank, 22);
+  assert.equal(b.pick.line.PTS, "45");
+  assert.equal(b.tonight[0].name, "Denver Nuggets at Oklahoma City Thunder");
+  assert.equal(b.tonight[0].tip_et, "9:30 PM ET");
+  assert.equal(b.tonight[0].home.best.rank, 2);
+  assert.ok(b.tonight[0].marquee);
+});

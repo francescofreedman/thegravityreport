@@ -488,6 +488,36 @@ export async function writtenCopy(env, kitId, slug, sourceText) {
   } catch (e) { return null; }
 }
 
+// ------------------------------------------------------------------ the morning brief, served by the site
+//
+// /api/social/brief: the same data scripts/social/morning.py builds, but from the Worker's own (cached)
+// ESPN visits, so a writer that can't reach ESPN can read it from thegravityreport.com instead.
+export async function briefView(env, nowMs = Date.now(), fetchImpl = fetch) {
+  const { date } = etParts(nowMs);
+  const y = prevDate(date);
+  const { byName, n } = await players644(env);
+  const tiers = (await assetJson(env, "/content/the644.json")).TIERS || {};
+  const rec = (name) => {
+    const p = byName.get(normName(name));
+    if (!p) return null;
+    return { name: p.n, slug: p.slug, rank: p.r, score: p.s, tier: p.tier, tier_name: tiers[String(p.tier)] || null, age: p.a, position: p.p,
+      rookie: !!p.rk, team: p.team, bpm: p.b, true_shooting: p.ts, usage: p.us, games: p.g, mpg: p.mpg, pts_per_game: p.pp,
+      reb_per_game: p.rp, ast_per_game: p.ap, fg3_pct: p.f3, ft_pct: p.ft };
+  };
+  const { games, lines } = await linesFor(env, y, fetchImpl, byName);
+  const rows = lines.map((l) => ({ player: l.name, in_644: true, game_score: l.gs, line: l.line, team: l.team, opponent: l.opp, won: l.won,
+    final: l.score, event: l.event, record: rec(l.name) }));
+  const pick = rows.length && rows[0].game_score >= 20 ? rows[0] : null;
+  const gms = await scoreboardFor(env, date, fetchImpl, nowMs);
+  const { best, torqueByName } = await gameContext(env);
+  const side = (t, p, tq) => ({ team: t.name, short: t.short, best: p ? rec(p.n) : null,
+    torque: tq ? { rank: tq.rank, score: tq.torque, projected_wins: tq.wins } : null });
+  const tonight = matchups(gms, best, torqueByName).map((m) => ({ id: m.id, name: `${m.away.name} at ${m.home.name}`, tip_et: etTimeOf(m.tipMs),
+    home: side(m.home, m.h, m.th), away: side(m.away, m.a, m.ta), marquee: m.marquee, state: m.state }));
+  return { date, source: "thegravityreport.com/api/social/brief", n, last_night: { games, top_lines: rows.slice(0, 10) }, pick,
+    candidates: rows.slice(1, 5), tonight, tiers };
+}
+
 // ------------------------------------------------------------------ game nights (social/gamenight.js)
 
 const GAME_PLATFORMS = ["x", "bluesky"]; // Threads is posted by hand, and a tip-off post can't wait for an email
