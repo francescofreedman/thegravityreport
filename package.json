@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/pipeline.test.mjs && python3 -m unittest discover -s tests",
+    "test": "node --test tests/pipeline.test.mjs tests/dive.test.mjs && python3 -m unittest discover -s tests",
     "build": "sh scripts/build_all.sh"
   }
 }
