@@ -3,7 +3,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { DatabaseSync } from "node:sqlite";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -822,4 +822,42 @@ test("written copy: tonight's post can be hand-written too", async () => {
     const x = JSON.parse((await e.DB.prepare("SELECT payload FROM social_queue WHERE platform = 'x'").first()).payload).posts;
     assert.match(x[0], /^Jokić \(#1\) and Shai \(#2\) share a floor/);
   } finally { delete globalThis.__writtenCopy; }
+});
+
+test("player of the day: cancelled rank-order rows and skip rows do not count as a hand-picked player", async () => {
+  const e = env({ SOCIAL_POTD: "1" });
+  await P.ensureSocialSchema(e);
+  await e.DB.prepare("INSERT INTO social_queue (kit_id, platform, payload, scheduled_at, status, created_at) VALUES ('2026-10-22-player-someone', 'x', '{}', '2026-10-22T22:00:00.000Z', 'cancelled', '2026-10-21T00:00:00.000Z')").run();
+  const schedule = { posts: [{ at: "2026-10-22T22:00:00Z", platform: "x", kit: "2026-10-22-player-someone", skip: true }] };
+  assert.equal(await P.maybeQueuePotd(e, Date.parse("2026-10-22T13:05:00Z"), { fetchImpl: espnFetch(), schedule }), "potd-2026-10-22");
+});
+
+test("a 5xx from the platform is retried once, 15 minutes later; a second failure sticks", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0", ...BSKY_LIVE });
+  await P.ensureSocialSchema(e);
+  let n = 0;
+  const adapters = { ...P.ADAPTERS, bluesky: { name: "bluesky", configured: () => true, async post() { n += 1; throw new Error("bluesky com.atproto.repo.createRecord 522: {}"); } } };
+  const t1 = Date.parse("2026-10-23T16:00:00Z");
+  await P.syncSchedule(e, t1, { adapters, schedule: { posts: [{ at: "2026-10-23T16:00:00Z", platform: "bluesky", kit: KIT }] } });
+  let r = await P.runScheduled(e, t1, { adapters });
+  assert.deepEqual(r.processed.map((x) => x.result), ["retry"]);
+  let row = await e.DB.prepare("SELECT status, scheduled_at FROM social_queue").first();
+  assert.equal(row.status, "approved"); assert.equal(row.scheduled_at, "2026-10-23T16:15:00.000Z");
+  await P.runScheduled(e, t1 + 10 * 60e3, { adapters });
+  assert.equal(n, 1, "not before the retry time");
+  r = await P.runScheduled(e, t1 + 15 * 60e3, { adapters });
+  assert.deepEqual(r.processed.map((x) => x.result), ["failed"]);
+  assert.equal(n, 2);
+});
+
+test("schedule sync stops after its fetch budget and finishes on the next tick", async () => {
+  const e = env({ SOCIAL_DRY_RUN: "0" });
+  await P.ensureSocialSchema(e);
+  const kits = readdirSync(join(ROOT, "social/kits")).filter((k) => existsSync(join(ROOT, "social/kits", k, "kit.json")));
+  const posts = kits.map((k) => ({ at: "2026-11-30T23:00:00Z", platform: "x", kit: k }));
+  assert.ok(posts.length > P.SYNC_FETCH_BUDGET);
+  const first = await P.syncSchedule(e, T0, { schedule: { posts } });
+  assert.equal(first, P.SYNC_FETCH_BUDGET);
+  const second = await P.syncSchedule(e, T0 + 1, { schedule: { posts } });
+  assert.equal(first + second, posts.length);
 });

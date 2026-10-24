@@ -152,8 +152,8 @@ export async function maybeQueuePotd(env, nowMs, { fetchImpl = fetch, schedule =
   if (done) return null;
   const mark = (v) => env.DB.prepare("INSERT OR REPLACE INTO social_settings (key, value) VALUES (?, ?)").bind(`potd_checked_${date}`, v).run();
   // a player picked by hand for today wins
-  const manual = await env.DB.prepare("SELECT id FROM social_queue WHERE kit_id LIKE ? LIMIT 1").bind(`${date}-player-%`).first();
-  const inSchedule = schedule && (schedule.posts || []).some((r) => r.kit.startsWith(`${date}-player-`));
+  const manual = await env.DB.prepare("SELECT id FROM social_queue WHERE kit_id LIKE ? AND status != 'cancelled' LIMIT 1").bind(`${date}-player-%`).first();
+  const inSchedule = schedule && (schedule.posts || []).some((r) => r.kit.startsWith(`${date}-player-`) && !r.skip);
   if (manual || inSchedule) { await mark("manual"); return null; }
   const { byName, n } = await players644(env);
   const { games, lines } = await linesFor(env, prevDate(date), fetchImpl, byName);
@@ -375,6 +375,7 @@ async function loadImages(env, images) {
 // A row carries "v", a hash of its kit: when the kit is re-rendered (the weekly tracker gets fresh
 // numbers), the queued post that hasn't gone out yet is refreshed from the new kit.
 export const REARM_WINDOW_MS = 2 * 3600 * 1000;
+export const SYNC_FETCH_BUDGET = 30;
 
 export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTERS, schedule = null } = {}) {
   if (!schedule) {
@@ -384,9 +385,15 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
     schedule = await res.json();
   }
   const settings = await getSettings(env);
-  let added = 0;
+  let added = 0, fetches = 0;
+  const kitCache = new Map();
+  const kitJson = async (id) => {
+    if (!kitCache.has(id)) { fetches += 1; kitCache.set(id, await assetJson(env, `/social/kits/${id}/kit.json`)); }
+    return kitCache.get(id);
+  };
   for (const row of schedule.posts || []) {
     if (!PLATFORMS.includes(row.platform) || !/^[a-z0-9-]+$/.test(row.kit || "")) continue;
+    if (fetches >= SYNC_FETCH_BUDGET) break; // Cloudflare caps subrequests per invocation; the rest sync next tick
     const at = new Date(row.at).toISOString();
     if (row.skip || seriesOff(settings, row.series)) {
       await env.DB.prepare("UPDATE social_queue SET status = 'cancelled' WHERE kit_id = ? AND platform = ? AND status IN ('draft', 'approved')")
@@ -395,7 +402,7 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
     }
     const exists = await env.DB.prepare("SELECT id, status, payload, scheduled_at FROM social_queue WHERE kit_id = ? AND platform = ?").bind(row.kit, row.platform).first();
     if (!exists) {
-      const kit = await assetJson(env, `/social/kits/${row.kit}/kit.json`);
+      const kit = await kitJson(row.kit);
       const p = { ...payloadsFromKit(row.kit, kit)[row.platform], v: row.v || null, title: kit.title || row.kit };
       const r = await env.DB.prepare(
         "INSERT OR IGNORE INTO social_queue (kit_id, platform, payload, scheduled_at, status, created_at, approved_at) VALUES (?, ?, ?, ?, 'approved', ?, ?)"
@@ -405,7 +412,7 @@ export async function syncSchedule(env, nowMs = Date.now(), { adapters = ADAPTER
     }
     await env.DB.prepare("UPDATE social_queue SET scheduled_at = ? WHERE id = ? AND status IN ('draft', 'approved')").bind(at, exists.id).run();
     if (row.v && ["draft", "approved"].includes(exists.status) && JSON.parse(exists.payload).v !== row.v) {
-      const kit = await assetJson(env, `/social/kits/${row.kit}/kit.json`);
+      const kit = await kitJson(row.kit);
       const p = { ...payloadsFromKit(row.kit, kit)[row.platform], v: row.v, title: kit.title || row.kit };
       await env.DB.prepare("UPDATE social_queue SET payload = ? WHERE id = ? AND status IN ('draft', 'approved')").bind(JSON.stringify(p), exists.id).run();
     }
@@ -615,8 +622,18 @@ export async function runScheduled(env, nowMs = Date.now(), { adapters = ADAPTER
       await log(env, nowMs, row.platform, row.id, "posted", r.count || n, r.remote_id);
       report.processed.push({ id: row.id, platform: row.platform, result: "posted" });
     } catch (e) {
-      await env.DB.prepare("UPDATE social_queue SET status = 'failed', error = ? WHERE id = ?").bind(String(e.message).slice(0, 500), row.id).run();
-      await log(env, nowMs, row.platform, row.id, "failed", 0, e.message);
+      const msg = String(e.message || e);
+      // a server-side error (5xx) on the platform gets one automatic retry, 15 minutes later
+      if (/\b5\d\d\b/.test(msg) && !payload.retried) {
+        const again = { ...JSON.parse(row.payload), retried: true };
+        await env.DB.prepare("UPDATE social_queue SET status = 'approved', scheduled_at = ?, payload = ?, error = ? WHERE id = ?")
+          .bind(iso(nowMs + 15 * 60 * 1000), JSON.stringify(again), "retrying once: " + msg.slice(0, 480), row.id).run();
+        await log(env, nowMs, row.platform, row.id, "retry_scheduled", 0, msg);
+        report.processed.push({ id: row.id, platform: row.platform, result: "retry" });
+        continue;
+      }
+      await env.DB.prepare("UPDATE social_queue SET status = 'failed', error = ? WHERE id = ?").bind(msg.slice(0, 500), row.id).run();
+      await log(env, nowMs, row.platform, row.id, "failed", 0, msg);
       report.processed.push({ id: row.id, platform: row.platform, result: "failed" });
     }
   }

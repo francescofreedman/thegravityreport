@@ -14,15 +14,13 @@ To change it, ask Claude. Source: `scripts/social/make_schedule.py`.
 | Thu Oct 22, 9:00 PM | X | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
 | Thu Oct 22, 9:00 PM | Bluesky | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
 | Thu Oct 22, 9:00 PM | Threads | The 644 on your team: Oklahoma City Thunder | Thunder fans, your team has eight players in the top 113 of The 644, our ranking of all 64… |
-| Fri Oct 23, 12:00 PM | X | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
-| Fri Oct 23, 12:00 PM | Bluesky | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
-| Fri Oct 23, 12:00 PM | Instagram | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
 | Fri Oct 23, 6:00 PM | X | The 644 on your team: San Antonio Spurs | Wemby is 22 years old, and we already rank him #3 of all 644 NBA players in The 644, with … |
 | Fri Oct 23, 6:00 PM | Bluesky | The 644 on your team: San Antonio Spurs | Wemby is 22 years old, and we already rank him #3 of all 644 NBA players in The 644, with … |
-| Fri Oct 23, 6:00 PM | Threads | The 644 on your team: San Antonio Spurs | Wemby is 22 years old, and we already rank him #3 of all 644 NBA players in The 644, with … |
+| Fri Oct 23, 6:00 PM | Instagram | The 644 on your team: San Antonio Spurs | Wemby is 22 years old, and we already rank him #3 of all 644 NBA players in The 644, with … |
 | Sat Oct 24, 12:00 PM | X | The Kawhi Anomaly | Kawhi Leonard, at 34 years old, went from a good starter to the fifth-best player in the l… |
 | Sat Oct 24, 12:00 PM | Bluesky | The Kawhi Anomaly | Kawhi Leonard, at 34 years old, went from a good starter to the fifth-best player in the l… |
 | Sat Oct 24, 12:00 PM | Instagram | The Kawhi Anomaly | Kawhi Leonard, at 34 years old, went from a good starter to the fifth-best player in the l… |
+| Sat Oct 24, 12:05 PM | Bluesky | The 30 | The 30: every NBA team ranked by TORQUE, our team model. Opening Night 2026–27 update.  1.… |
 | Sat Oct 24, 6:00 PM | X | The 644 on your team: Denver Nuggets | Jokić is our number one of all 644 NBA players in The 644, with a GRAVITY score of 97.8. T… |
 | Sat Oct 24, 6:00 PM | Bluesky | The 644 on your team: Denver Nuggets | Jokić is our number one of all 644 NBA players in The 644, with a GRAVITY score of 97.8. T… |
 | Sat Oct 24, 6:00 PM | Threads | The 644 on your team: Denver Nuggets | Jokić is our number one of all 644 NBA players in The 644, with a GRAVITY score of 97.8. T… |
