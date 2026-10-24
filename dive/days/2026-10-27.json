@@ -218,7 +218,7 @@
     {"name":"Keith Langford","match":"keith langford","points":85,"tier":"Two-Way"},
     {"name":"Marcus Williams","match":"marcus williams","points":85,"tier":"Two-Way"}
   ]},
-  {"slot": 3, "id": "award:roy", "text": "Name a Rookie of the Year since 1980", "rule": "Any season, 1979–80 to 2024–25", "source": "engine", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}],
+  {"slot": 3, "id": "award:roy", "text": "Name a Rookie of the Year since 1980", "rule": "Any season, 1979–80 to 2025–26", "source": "engine", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}],
    "answers": [
     {"name":"Michael Jordan","match":"michael jordan","points":15,"tier":"Too Cute"},
     {"name":"LeBron James","match":"lebron james","points":15,"tier":"Too Cute"},
@@ -267,7 +267,8 @@
     {"name":"Victor Wembanyama","match":"victor wembanyama","points":85,"tier":"Two-Way"},
     {"name":"Scottie Barnes","match":"scottie barnes","points":85,"tier":"Two-Way"},
     {"name":"Stephon Castle","match":"stephon castle","points":85,"tier":"Two-Way"},
-    {"name":"Larry Johnson","match":"larry johnson","points":85,"tier":"Two-Way"}
+    {"name":"Larry Johnson","match":"larry johnson","points":85,"tier":"Two-Way"},
+    {"name":"Cooper Flagg","match":"cooper flagg","points":30,"tier":"Rotation"}
   ]},
   {"slot": 4, "id": "letter:q", "text": "Name an NBA player whose last name starts with Q", "rule": "Any NBA player, any era", "source": "engine", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}],
    "answers": [

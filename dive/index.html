@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050A14">
 <title>Daily Dive · The Gravity Report</title>
-<meta name="description" content="A daily basketball trivia dive: seven prompts, 25 seconds each, and the deeper your answer, the further you sink.">
+<meta name="description" content="A daily basketball trivia game: seven prompts, 25 seconds each, and the deeper your answer, the further from the rim you shoot.">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="https://thegravityreport.com/dive/">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -15,11 +15,11 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Gravity Report">
 <meta property="og:title" content="Daily Dive">
-<meta property="og:description" content="Seven basketball prompts, 25 seconds each. Obvious answers keep you in the shallows. Deep cuts sink you to the trench.">
+<meta property="og:description" content="Seven basketball prompts, 25 seconds each. Obvious answers are layups. Deep cuts are heaves from the parking lot.">
 <meta property="og:url" content="https://thegravityreport.com/dive/">
 <style>
-/* Daily Dive: a pixel-art dive through a basketball ocean. A full-screen scene (sky, a hoop buoy at the surface,
-   a sea that darkens as you sink) sits behind a HUD, one prompt card and an answer dock. One dark world by design.
+/* Daily Dive, "Deep Range": a full-screen top-down pixel court (the rim, the floor, then out the tunnel and across
+   town) sits behind a HUD, one prompt card and an answer dock. One dark world by design.
    Layout follows the measured Krillion flow; the art, palette accents, copy and sounds are our own. */
 :root{
   color-scheme:dark;
@@ -145,14 +145,14 @@ body.shake .stagewrap{animation:shake .5s linear}
 .reveal.land .banner{animation:banner .8s cubic-bezier(.2,1.7,.4,1) forwards,zap .28s steps(3) .05s}
 @keyframes banner{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
 @keyframes zap{33%{text-shadow:-4px 0 0 rgba(255,138,61,.9),4px 0 0 rgba(77,227,255,.9)}66%{text-shadow:3px 0 0 rgba(255,138,61,.9),-3px 0 0 rgba(77,227,255,.9)}}
-.quote{margin-top:14px;font-size:24px;color:#F1F6FF;opacity:0}
-.ptsline{margin-top:14px;font-size:28px;color:#9FB2CF;opacity:0}
+.quote{margin-top:14px;font-size:24px;color:#F1F6FF;opacity:0;text-shadow:0 2px 0 #050A14,0 0 12px #050A14}
+.ptsline{margin-top:14px;font-size:28px;color:#C9D6EA;opacity:0;text-shadow:0 2px 0 #050A14,0 0 12px #050A14}
 .ptsline b{font-weight:400;color:var(--ink)}
-.note{margin:14px auto 0;max-width:40ch;font-size:17px;letter-spacing:.06em;color:#7F98BA;opacity:0}
+.note{margin:14px auto 0;max-width:40ch;font-size:17px;letter-spacing:.06em;color:#B5C4DA;opacity:0;text-shadow:0 1px 0 #050A14,0 0 10px #050A14}
 .reveal.land .quote,.reveal.land .ptsline,.reveal.land .note{animation:rise .5s ease-out forwards}
 .reveal.land .ptsline{animation-delay:.1s}.reveal.land .note{animation-delay:.2s}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.descend{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(16px + 9vh + env(safe-area-inset-bottom,0px));width:178px;height:55px;border:0;background:#0F1C33;box-shadow:inset 0 0 0 3px var(--cyan),0 0 18px rgba(77,227,255,.3);font-size:22px;letter-spacing:.14em;padding:12px 30px 10px;opacity:0;pointer-events:none}
+.descend{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(16px + 9vh + env(safe-area-inset-bottom,0px));min-width:178px;white-space:nowrap;height:55px;border:0;background:#0F1C33;box-shadow:inset 0 0 0 3px var(--cyan),0 0 18px rgba(77,227,255,.3);font-size:22px;letter-spacing:.14em;padding:12px 30px 10px;opacity:0;pointer-events:none}
 .descend.up{animation:rise-in .5s cubic-bezier(.34,1.56,.64,1) forwards;pointer-events:auto}
 @keyframes rise-in{from{opacity:0;transform:translateX(-50%) translateY(30px)}to{opacity:1;transform:translateX(-50%)}}
 
@@ -260,7 +260,7 @@ body.shake .stagewrap{animation:shake .5s linear}
   <div class="load" id="loadView">loading today's dive…</div>
 
   <header class="hud off" id="hud">
-    <div class="pod px" id="podDepth"><span>DEPTH</span><b id="mTop">0m</b></div>
+    <div class="pod px" id="podDepth"><span>RANGE</span><b id="mTop">0 ft</b></div>
     <div class="prog"><div class="pips" id="pips" aria-label="Rounds"></div><small id="progTxt">PROMPT 1 OF 7</small></div>
     <div class="pod px" id="podScore"><span>SCORE</span><b id="ptsTop">0</b></div>
   </header>
@@ -271,19 +271,19 @@ body.shake .stagewrap{animation:shake .5s linear}
     <div>
       <div class="title" aria-label="Daily Dive">DAILY DIVE</div>
       <div class="sub">BASKETBALL EDITION</div>
-      <div class="tagline">7 prompts · 25 seconds each · deeper cuts sink further</div>
+      <div class="tagline">7 prompts · 25 seconds each · deeper cuts shoot from further out</div>
     </div>
     <div></div>
     <div class="launch">
       <button class="howto" id="howBtn" type="button" aria-expanded="false">▶ HOW TO PLAY</button>
       <div class="howto-body px" id="howBody" hidden>
-        <div>Type one player who fits the prompt before the air runs out.</div>
-        <div>Obvious answers keep you shallow. <b>Rarer answers sink you deeper.</b></div>
+        <div>Type one player who fits the prompt before the shot clock runs out.</div>
+        <div>Obvious answers are layups. <b>Rarer answers are shots from further out.</b> Every point is a foot from the rim.</div>
         <div>Every answer's points are set before the day goes out. One or two in each prompt are Buzzer Beaters, worth 100.</div>
         <div>A wrong name isn't on the board. Keep guessing; the clock keeps running.</div>
       </div>
       <div class="warn" id="startWarn" hidden></div>
-      <button class="begin" id="begin" type="button"><i>▼</i> START THE DIVE <i>▼</i></button>
+      <button class="begin" id="begin" type="button"><i>▼</i> TIP OFF <i>▼</i></button>
       <div class="launch-row"><span id="startSub">DIVE #1</span><div class="picker" id="picker" hidden aria-label="Preview a day"></div></div>
     </div>
   </section>
@@ -294,7 +294,7 @@ body.shake .stagewrap{animation:shake .5s linear}
     <div class="rule" id="qrule"></div>
   </section>
 
-  <div class="pillbox px" id="descBox" hidden>descending · the clock starts in <b id="descN">3</b></div>
+  <div class="pillbox px" id="descBox" hidden>get set · the clock starts in <b id="descN">3</b></div>
   <div class="confirm px" id="confirm" hidden></div>
   <div class="reject" id="reject" hidden></div>
 
@@ -305,7 +305,7 @@ body.shake .stagewrap{animation:shake .5s linear}
       <input id="guess" type="text" placeholder="type one player…" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" enterkeyhint="send" maxlength="256">
       <div class="fuse" id="fuse"></div>
     </div>
-    <button class="dive" id="go" type="submit" disabled>DIVE</button>
+    <button class="dive" id="go" type="submit" disabled>SHOOT</button>
   </form>
 
   <section class="reveal" id="revealView" hidden aria-live="polite">
@@ -314,14 +314,14 @@ body.shake .stagewrap{animation:shake .5s linear}
     <div class="ptsline" id="rvPts"></div>
     <div class="note" id="rvNote"></div>
   </section>
-  <button class="descend" id="descendNext" type="button" hidden>DESCEND ▼</button>
+  <button class="descend" id="descendNext" type="button" hidden>NEXT SHOT ▼</button>
 </div>
 
 <section class="end" id="doneView" hidden>
   <div class="endcol">
     <div class="endhead"><b>DAILY DIVE</b><span id="rLabel">DIVE #1 COMPLETE</span></div>
-    <div class="big"><b id="rPts">0</b><div><span id="rM">-0m</span><small id="rBand">SHALLOWS</small></div></div>
-    <div class="sec"><h2>DIVE LOG <em>deeper = rarer</em></h2><svg class="chart" id="log" viewBox="0 0 448 220" role="img" aria-label="Your depth after each round"></svg></div>
+    <div class="big"><b id="rPts">0</b><div><span id="rM">0 ft</span><small id="rBand">IN THE PAINT</small></div></div>
+    <div class="sec"><h2>RANGE LOG <em>further = rarer</em></h2><svg class="chart" id="log" viewBox="0 0 448 220" role="img" aria-label="Your range after each round"></svg></div>
     <div class="sec"><h2>WHERE YOU LANDED</h2><div class="bands" id="bands"></div></div>
     <div class="sec"><h2>YOUR HAUL <em>tap a round for every answer</em></h2><div class="haul" id="haul"></div></div>
     <div class="sec"><h2>SHARE</h2><div class="share" id="shareTxt"></div><div class="acts" style="margin-top:10px"><button id="copy" type="button">COPY RESULT</button><button class="alt" id="shareBtn" type="button">SHARE</button></div></div>
@@ -342,9 +342,9 @@ body.shake .stagewrap{animation:shake .5s linear}
   </nav>
   <h3>HOW IT WORKS</h3>
   <ol>
-    <li>Seven prompts a day. Each clock starts after a three-second descent and runs 25 seconds.</li>
+    <li>Seven prompts a day. Each clock starts after a three-second count and runs 25 seconds.</li>
     <li>A wrong name isn't on the board. Keep guessing.</li>
-    <li>Points are fixed before the day goes out. Each point sinks you 10 m.</li>
+    <li>Points are fixed before the day goes out. Each point is a foot further from the rim.</li>
     <li>A new dive every midnight Eastern.</li>
   </ol>
   <h3>TIERS</h3>

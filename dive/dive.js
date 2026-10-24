@@ -1,29 +1,30 @@
 // Daily Dive: loads the day's file from /dive/days/ (written by the question engine) and runs the game in a
-// pixel-art scene. Points come only from the day's answer key, fixed when the day is pushed. Player counts,
+// top-down pixel-art court ("Deep Range"): every point is a foot further from the rim. Points come only from the day's answer key, fixed when the day is pushed. Player counts,
 // when a day file has them, are display-only.
 (function () {
   "use strict";
 
-  const M_PER_PT = 10, SLOTS = 7, DESCEND = 3;
-  const PXM = 2;   // scene: CSS px per meter of depth
+  const M_PER_PT = 1, SLOTS = 7, DESCEND = 3;   // 1 point = 1 foot of range
+  let PXM = 13;    // scene: CSS px per foot (8 on phones, set in resize)
   const REVEAL_Y = 0.64; // where the landing depth sits on screen during a reveal, below the banner text
   const LOW = 2;   // scene: CSS px per art pixel
-  const EMOJI = ["🫧", "🐡", "🐟", "🦑", "🐋", "🏀"];
+  const EMOJI = ["⚪", "🟡", "🟢", "🔵", "🟣", "🏀"];
   const NOTES = [
     ["Everyone's first thought. Still counts.", "The answer half the country typed."],
     ["You thought this was the sneaky one. So did everyone else."],
     ["A real fan's answer.", "Good pull. Most fans would know it."],
-    ["Now the light is fading.", "That takes real basketball memory."],
+    ["Now you're pulling up from the logo.", "That takes real basketball memory."],
     ["Deep cut. The scouts would be proud.", "A name most fans have forgotten."],
-    ["Nothing but net, from the bottom of the ocean."],
+    ["Nothing but net, from the parking lot."],
   ];
-  const BANDS = [[0, "Shallows"], [150, "Reef"], [250, "Twilight"], [350, "Midnight"], [450, "Trench"]];
+  const BANDS = [[0, "In the paint"], [150, "Mid-range"], [250, "Downtown"], [350, "Logo range"], [450, "Full-court heave"]];
   const bandOf = (p) => BANDS.filter((b) => p >= b[0]).pop()[1];
-  // Depth markers along the way down, in meters.
+  // Landmarks on the way out, in feet from the rim.
   const MARKS = [
-    [29, "a full court, end to end · 28.65 m"], [95, "the light begins to thin"], [224, "100 Wembys, head to toe"],
-    [430, "15 courts laid end to end"], [1000, "the midnight zone. no sunlight past here"], [2000, "sperm whales hunt down here"],
-    [3050, "1,000 rims stacked up"], [4000, "the abyss"], [6000, "the hadal zone"], [7000, "a perfect dive"],
+    [13.75, "the free-throw line"], [23.75, "the three-point line · 23 ft 9 in"], [32, "Steph range"], [41.75, "half court · the logo"],
+    [64.75, "their three-point line"], [88.75, "the far baseline"], [118, "the upper deck"], [160, "the players' tunnel"],
+    [225, "the concourse · $14 nachos"], [265, "the arena doors"], [300, "the statue out front"], [380, "the parking lot"],
+    [450, "across the street"], [560, "the blacktop where it started"], [665, "the river"], [700, "a perfect game"],
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -81,35 +82,52 @@
       s.connect(f); f.connect(g); g.connect(this.master); s.start(t); s.stop(t + dur + 0.02);
     },
     ambient() {
-      // a low sea hum that darkens with depth
+      // the arena: a crowd murmur that fades as you leave the building
       const n = this.ctx.sampleRate * 4, buf = this.ctx.createBuffer(1, n, this.ctx.sampleRate), d = buf.getChannelData(0);
-      let last = 0; for (let i = 0; i < n; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * 3.5; }
+      let last = 0; for (let i = 0; i < n; i++) { last = (last + 0.06 * (Math.random() * 2 - 1)) / 1.06; d[i] = last * 3 * (0.75 + 0.25 * Math.sin(i / this.ctx.sampleRate * 1.7)); }
       const s = this.ctx.createBufferSource(), f = this.ctx.createBiquadFilter(), g = this.ctx.createGain();
-      s.buffer = buf; s.loop = true; f.type = "lowpass"; f.frequency.value = 420; g.gain.value = 0.05;
+      s.buffer = buf; s.loop = true; f.type = "bandpass"; f.Q.value = 0.6; f.frequency.value = 900; g.gain.value = 0.06;
       s.connect(f); f.connect(g); g.connect(this.master); s.start();
-      this.amb = f;
+      this.amb = f; this.ambG = g;
     },
-    depth(m) { if (this.amb) this.amb.frequency.setTargetAtTime(420 - 300 * Math.min(1, m / 3000), this.ctx.currentTime, 0.5); },
+    depth(ft) { if (this.amb) { this.amb.frequency.setTargetAtTime(900 - 600 * Math.min(1, ft / 260), this.ctx.currentTime, 0.5); this.ambG.gain.setTargetAtTime(0.06 - 0.035 * Math.min(1, ft / 260), this.ctx.currentTime, 0.5); } },
     click() { this.tone(660, 0.05, { vol: 0.06 }); },
     key() { this.tone(1500 + Math.random() * 400, 0.018, { vol: 0.025 }); },
-    start() { this.noise(1.1, { vol: 0.16, from: 300, to: 1800, type: "bandpass", q: 0.8 }); this.tone(196, 0.9, { type: "sine", vol: 0.12, to: 98 }); },
+    start() {
+      // the ref's whistle, then the crowd comes up
+      for (const [f, at, d] of [[2950, 0, 0.18], [2950, 0.24, 0.42]]) { this.tone(f, d, { type: "sine", vol: 0.12, at }); this.tone(f * 1.012, d, { type: "sine", vol: 0.08, at }); this.noise(d, { vol: 0.03, from: 4000, to: 3000, type: "bandpass", q: 4, at }); }
+      this.noise(1.6, { vol: 0.12, from: 700, to: 1100, type: "bandpass", q: 0.6, at: 0.3 });
+    },
     countdown(n) { this.tone(n > 1 ? 520 : 780, 0.08, { type: "triangle", vol: 0.12 }); },
     go() { this.tone(880, 0.07, { vol: 0.08 }); this.tone(1320, 0.1, { vol: 0.08, at: 0.07 }); },
     tick() { this.tone(1046, 0.05, { vol: 0.07 }); },
-    wrong() { this.tone(170, 0.2, { type: "sawtooth", vol: 0.1, to: 110 }); this.tone(120, 0.22, { vol: 0.05 }); },
+    wrong() { [620, 931, 1377].forEach((f, i) => this.tone(f, 0.22 - i * 0.04, { type: "triangle", vol: 0.07 })); this.tone(150, 0.12, { type: "sine", vol: 0.1, to: 80 }); }, // a brick off the rim
     near() { this.tone(660, 0.07, { type: "triangle", vol: 0.1 }); this.tone(880, 0.1, { type: "triangle", vol: 0.1, at: 0.08 }); },
     hit() {
-      this.tone(1046, 0.9, { type: "sine", vol: 0.16, attack: 0.002 }); this.tone(1046, 0.6, { type: "sine", vol: 0.05, at: 0.28 });
-      this.noise(3.2, { vol: 0.12, from: 1400, to: 160, at: 0.5 });
-      for (let i = 0; i < 14; i++) this.tone(300 + Math.random() * 700, 0.06, { type: "sine", vol: 0.05, at: 0.6 + Math.random() * 2.8, to: 900 + Math.random() * 600 });
+      // swish, then the ball takes off down the floor
+      this.noise(0.35, { vol: 0.18, from: 6000, to: 1800, type: "highpass" }); this.noise(0.5, { vol: 0.08, from: 2500, to: 900, type: "bandpass", q: 1.5, at: 0.08 });
+      this.noise(3.0, { vol: 0.08, from: 500, to: 1600, type: "bandpass", q: 0.7, at: 0.6 });
+      for (let i = 0; i < 5; i++) this.tone(140 - i * 6, 0.1, { type: "sine", vol: 0.1 - i * 0.015, at: 0.7 + i * 0.55 * Math.pow(0.85, i), to: 60 });
     },
     banner(tier) {
       const base = [523.25, 659.25, 783.99, 1046.5, 1318.5, 1568];
       for (let i = 0; i <= tier + 1 && i < base.length; i++) this.tone(base[i] * (tier >= 4 ? 1.12 : 1), 0.35, { type: "triangle", vol: 0.1, at: i * 0.07 });
       if (tier === 5) { this.tone(233, 0.55, { type: "sawtooth", vol: 0.09, at: 0.45 }); this.tone(236, 0.55, { type: "square", vol: 0.05, at: 0.45 }); this.noise(1.2, { vol: 0.08, from: 2000, to: 700, at: 0.5, type: "bandpass" }); }
     },
-    miss() { this.tone(440, 0.7, { type: "sine", vol: 0.12, to: 110 }); for (let i = 0; i < 4; i++) this.tone(180 + i * 40, 0.08, { type: "sine", vol: 0.06, at: 0.1 + i * 0.12, to: 400 }); },
-    surface() { [392, 523.25, 659.25, 783.99, 1046.5].forEach((f, i) => this.tone(f, 0.3, { type: "triangle", vol: 0.1, at: i * 0.09 })); },
+    cross(i) { this.tone(392 * Math.pow(2, (i * 3) / 12), 0.12, { type: "square", vol: 0.06 }); this.tone(784 * Math.pow(2, (i * 3) / 12), 0.18, { type: "triangle", vol: 0.05, at: 0.03 }); },
+    land(t) {
+      this.tone(150, 0.14, { type: "sine", vol: 0.16, to: 60 }); this.tone(150, 0.1, { type: "sine", vol: 0.08, to: 60, at: 0.22 }); // the ball lands
+      if (t >= 2) this.noise(0.8 + t * 0.4, { vol: 0.05 + t * 0.03, from: 700, to: 1300, type: "bandpass", q: 0.5, at: 0.05 }); // the crowd reacts
+      if (t >= 3) for (let i = 0; i < 6 + t * 2; i++) this.tone(1200 + Math.random() * 1800, 0.05, { type: "triangle", vol: 0.035, at: 0.05 + i * 0.045 });
+    },
+    pop() { this.noise(0.25, { vol: 0.09, from: 3000, to: 400, type: "bandpass", q: 0.7 }); this.tone(1400 + Math.random() * 600, 0.08, { type: "triangle", vol: 0.05 }); },
+    miss() {
+      this.tone(220, 0.7, { type: "sawtooth", vol: 0.08 }); this.tone(224, 0.7, { type: "square", vol: 0.05 }); // shot clock horn
+      this.noise(1.4, { vol: 0.08, from: 900, to: 300, type: "bandpass", q: 0.8, at: 0.4 }); // and the groan
+    },
+    surface() {
+      this.tone(233, 0.9, { type: "sawtooth", vol: 0.08 }); this.tone(236, 0.9, { type: "square", vol: 0.05 }); this.noise(2.4, { vol: 0.16, from: 600, to: 1400, type: "bandpass", q: 0.5, at: 0.3 }); // final horn and the cheer
+      [392, 523.25, 659.25, 783.99, 1046.5].forEach((f, i) => this.tone(f, 0.3, { type: "triangle", vol: 0.1, at: i * 0.09 })); },
   };
   document.addEventListener("pointerdown", () => SFX.init(), { capture: true });
   document.addEventListener("keydown", () => SFX.init(), { capture: true });
@@ -117,10 +135,11 @@
   // ======================================================================== scene
   const sea = $("sea"), ink = $("ink"), sx = sea.getContext("2d"), ix = ink.getContext("2d");
   const V = { W: 0, H: 0, dpr: 1, phone: false, cam: 0, camTarget: 0, level: 0, t: 0, last: 0,
-    shownM: 0, diver: { x: 0, y: 0 }, tag: null, tiers: null, bubbles: [], clouds: [], mode: "start" };
+    shownM: 0, diver: { x: 0, y: 0 }, tag: null, tiers: null, bubbles: [], clouds: [], mode: "start",
+    fx: [], rings: [], tint: null, kick: 0, dt: 0.016 };
 
   function resize() {
-    V.W = innerWidth; V.H = innerHeight; V.dpr = Math.min(2, devicePixelRatio || 1); V.phone = V.W < 700;
+    V.W = innerWidth; V.H = innerHeight; V.dpr = Math.min(2, devicePixelRatio || 1); V.phone = V.W < 700; PXM = V.phone ? 8 : 13;
     sea.width = Math.ceil(V.W / LOW); sea.height = Math.ceil(V.H / LOW);
     ink.width = Math.round(V.W * V.dpr); ink.height = Math.round(V.H * V.dpr);
     V.level = Math.round(V.H * (V.phone ? 0.21 : 0.27));
@@ -130,8 +149,8 @@
   }
   addEventListener("resize", resize);
 
-  const surfaceScreen = () => -V.cam;                       // screen y of the waterline
-  const yOf = (m) => m * PXM - V.cam;                       // screen y of a depth
+  const surfaceScreen = () => -V.cam;                       // screen y of the rim
+  const yOf = (m) => m * PXM - V.cam;                       // screen y of a distance (ft)
   const rulerX = () => (V.phone ? V.W - 14 : Math.min(V.W - 40, V.W / 2 + 446));
 
   function camAim(snap) {
@@ -142,132 +161,269 @@
     if (snap) V.cam = V.camTarget;
   }
 
-  const WATER = [[0, [46, 108, 156]], [40, [30, 84, 128]], [160, [21, 64, 104]], [600, [13, 44, 78]], [1500, [9, 31, 58]], [3500, [6, 20, 40]], [7200, [3, 8, 18]]];
-  function waterAt(m) {
-    if (m <= 0) return WATER[0][1];
-    for (let i = 1; i < WATER.length; i++) if (m <= WATER[i][0]) {
-      const [m0, a] = WATER[i - 1], [m1, b] = WATER[i], t = (m - m0) / (m1 - m0);
-      return [0, 1, 2].map((k) => Math.round(a[k] + (b[k] - a[k]) * t));
-    }
-    return WATER[WATER.length - 1][1];
-  }
-  const rgb = (c, f = 1) => `rgb(${Math.round(c[0] * f)},${Math.round(c[1] * f)},${Math.round(c[2] * f)})`;
+  // The world, top down, in feet from the near rim: the court, then out the far end of the arena and across town.
+  // NBA court geometry: baseline 5.25 ft behind the rim, free-throw line 13.75 ft in front, arc 23.75 ft,
+  // corners 22 ft, half court 41.75 ft, far baseline 88.75 ft.
+  const CT = { base: -5.25, ft: 13.75, arc: 23.75, corner: 22, half: 41.75, farRim: 83.5, far: 88.75, side: 25 };
+  const Z = { stands: 100, tunnel: 135, concourse: 195, doors: 262, plaza: 268, lot: 330, street: 430, walk: 470, city: 478, river: 630, bank: 700 };
+  const WOOD = ["#8E5F36", "#94643A", "#895A32", "#90613A"], LINE = "#E9DCC6", PAINT = "#1D3961", APRON = "#172B4A";
+  const FANS = ["#F2C14E", "#E9DCC6", "#FF8A3D", "#4DE3FF", "#C9D6EA", "#D96C4E", "#8C9BFF", "#5E6E86"];
+  const CARS = ["#B8423A", "#3E6FB0", "#D9D2C3", "#2B2F36", "#7A8794", "#C99A3B", "#3F8A6B"];
 
   function drawSea(dt) {
-    const lw = sea.width, lh = sea.height, t = V.t, sY = surfaceScreen() / LOW;
-    // sky and water, row by row
-    for (let y = 0; y < lh; y++) {
-      const wy = V.cam + y * LOW;
-      if (wy < 0) {
-        const f = clamp(1 + wy / (V.H * 0.62), 0, 1);
-        sx.fillStyle = `rgb(${Math.round(132 + 104 * f)},${Math.round(196 + 50 * f)},${Math.round(232 + 18 * f)})`;
-      } else sx.fillStyle = rgb(waterAt(wy / PXM));
-      sx.fillRect(0, y, lw, 1);
-    }
-    if (sY > -40) {
-      // sun and clouds
-      const sunX = Math.round(lw * 0.82), sunY = Math.round(sY - V.H * 0.47 / LOW), r = 22;
-      sx.fillStyle = "rgba(255,226,140,.18)"; for (const k of [40, 32]) { sx.beginPath(); sx.arc(sunX, sunY, k, 0, 7); sx.fill(); }
-      sx.fillStyle = "#FFD978";
-      for (let dy = -r; dy <= r; dy += 2) { const w = Math.floor(Math.sqrt(r * r - dy * dy) / 2) * 2; sx.fillRect(sunX - w, sunY + dy, w * 2, 2); }
-      for (const c of V.clouds) {
-        c.x += c.v * dt; if (c.x > 1.25) c.x = -0.3;
-        const cx = Math.round(c.x * lw), cy = Math.round(sY - c.y * V.H * 0.6 / LOW), w = Math.round(c.w);
-        sx.fillStyle = "#DCE9F3"; sx.fillRect(cx + 4, cy + 4, w, 6);
-        sx.fillStyle = "#FFFFFF"; sx.fillRect(cx, cy, w, 6); sx.fillRect(cx + w * 0.15, cy - 4, w * 0.5, 4); sx.fillRect(cx + w * 0.3, cy - 8, w * 0.28, 4);
+    const lw = sea.width, lh = sea.height, t = V.t, F = PXM / LOW, cx = lw / 2;
+    const X = (ft) => Math.round(cx + ft * F), Y = (ft) => Math.round((ft * PXM - V.cam) / LOW);
+    const f0 = V.cam / PXM - 2, f1 = (V.cam + V.H) / PXM + 2, hw = cx / F + 2;
+    const vis = (a, b) => b > f0 && a < f1;
+    const rect = (x0, y0, x1, y1, c) => {
+      if (!vis(y0, y1)) return;
+      const ax = X(x0), ay = Y(y0); sx.fillStyle = c; sx.fillRect(ax, ay, Math.max(1, X(x1) - ax), Math.max(1, Y(y1) - ay));
+    };
+    const dot = (x, y, c, s = 1) => { sx.fillStyle = c; sx.fillRect(X(x), Y(y), s, s); };
+    const circle = (x, y, r, c, from = 0, to = Math.PI * 2) => {
+      if (!vis(y - r, y + r)) return;
+      sx.fillStyle = c; const n = Math.ceil(r * F * 7);
+      for (let i = 0; i <= n; i++) { const a = from + (to - from) * i / n; sx.fillRect(X(x + Math.cos(a) * r), Y(y + Math.sin(a) * r), 1, 1); }
+    };
+    const disc = (x, y, r, c) => { if (!vis(y - r, y + r)) return; sx.fillStyle = c; for (let dy = -r; dy <= r; dy += 1 / F) { const w = Math.sqrt(Math.max(0, r * r - dy * dy)); sx.fillRect(X(x - w), Y(y + dy), Math.max(1, X(x + w) - X(x - w)), 1); } };
+
+    // arena floor everywhere, then the zones on top
+    sx.fillStyle = "#0B111D"; sx.fillRect(0, 0, lw, lh);
+
+    // crowd: rows of seats with fans who bob, and the odd camera flash
+    const crowd = (x0, x1, y0, y1, seed, rowGap = 2.6) => {
+      if (!vis(y0, y1)) return;
+      const cheer = V.mode === "reveal" ? 1 : 0.25;
+      for (let ry = Math.max(y0, Math.floor((f0 - y0) / rowGap) * rowGap + y0); ry < Math.min(y1, f1); ry += rowGap) {
+        const row = Math.round((ry - y0) / rowGap), shade = 0.5 + 0.5 * Math.sin(row * 0.9);
+        rect(x0, ry, x1, ry + rowGap * 0.55, shade > 0.5 ? "#141C2B" : "#111827");
+        for (let sxf = x0 + 1; sxf < x1 - 0.5; sxf += 2) {
+          if (Math.abs(sxf) > hw) continue;
+          const h = rnd(row * 131 + Math.round(sxf * 3), seed);
+          if (h < 0.16) continue;                       // empty seat
+          const bob = Math.sin(t * (4 + h * 3) + h * 40) > 1 - cheer * 0.6 ? 1 : 0;
+          const flash = rnd(row * 977 + Math.round(sxf), seed + Math.floor(t * 3)) < 0.0025;
+          sx.fillStyle = flash ? "#FFFFFF" : FANS[Math.floor(h * 97) % FANS.length];
+          sx.fillRect(X(sxf), Y(ry + 0.2) - bob, 2, 2);
+        }
       }
-      // waterline: waves, foam, and the hoop buoy
-      for (let x = 0; x < lw; x++) {
-        const off = Math.round(Math.sin(x * 0.045 + t * 1.3) * 1.6 + Math.sin(x * 0.011 - t * 0.7) * 2.2);
-        sx.fillStyle = rgb(WATER[0][1]); sx.fillRect(x, Math.round(sY) + off, 1, 4 - off);
-        sx.fillStyle = "rgba(234,246,255,.55)"; sx.fillRect(x, Math.round(sY) + off, 1, 1);
-      }
-      drawBuoy(Math.round(lw * (V.phone ? 0.3 : 0.29)), Math.round(sY + Math.sin(t * 1.6) * 1.2));
+    };
+
+    // ---- behind the near baseline: the stanchion end of the arena
+    if (vis(-60, CT.base)) {
+      rect(-hw, -60, hw, CT.base - 3, "#0D1422");
+      crowd(-hw, hw, -60, CT.base - 7, "nb");
+      rect(-hw, CT.base - 7, hw, CT.base - 3, "#101828");
+      for (let x = -20; x <= 20; x += 5) if (Math.abs(x) > 4) rect(x - 1, CT.base - 6, x + 1, CT.base - 4.5, "#2A3346"); // photographers
     }
-    // light rays from the surface
-    const rayTop = Math.max(0, sY), fadeEnd = sY + 600 * PXM / LOW;
-    if (fadeEnd > 0) {
-      const g = sx.createLinearGradient(0, rayTop, 0, fadeEnd);
-      g.addColorStop(0, "rgba(220,240,255,.07)"); g.addColorStop(1, "rgba(220,240,255,0)");
-      sx.fillStyle = g;
+    // ---- the court
+    if (vis(CT.base - 3, CT.far + 3)) {
+      // courtside: dark floor, then crowd up the sides
+      rect(-hw, CT.base - 3, hw, CT.far + 3, "#0E1626");
+      crowd(-hw, -CT.side - 9, CT.base - 3, CT.far + 3, "ls");
+      crowd(CT.side + 9, hw, CT.base - 3, CT.far + 3, "rs");
+      for (const s of [-1, 1]) for (let y = 2; y < CT.far - 2; y += 2.2) if (y < 30 || y > 53) rect(s > 0 ? CT.side + 4 : -CT.side - 6, y, s > 0 ? CT.side + 6 : -CT.side - 4, y + 1.6, y % 6.6 < 2.2 ? "#2B3A55" : "#24324A"); // courtside chairs
+      rect(-CT.side - 7, 34, -CT.side - 3.5, 49.5, "#1F2B40"); rect(-CT.side - 7, 34, -CT.side - 6.4, 49.5, "#FF8A3D"); // scorer's table
+      // apron and hardwood planks
+      rect(-CT.side - 3, CT.base - 3, CT.side + 3, CT.far + 3, APRON);
+      const px0 = X(-CT.side), px1 = X(CT.side), py0 = Math.max(0, Y(CT.base)), py1 = Math.min(lh, Y(CT.far));
+      for (let x = px0; x < px1; x += 3) {
+        sx.fillStyle = WOOD[(x / 3 | 0) % WOOD.length]; sx.fillRect(x, py0, Math.min(3, px1 - x), py1 - py0);
+        sx.fillStyle = "rgba(0,0,0,.18)";
+        const step = 34 + ((x * 7) % 23), off = (x * 13) % step;
+        for (let y = py0 - ((py0 + V.cam / LOW + off) % step); y < py1; y += step) if (y >= py0) sx.fillRect(x, y, 3, 1); // board joints
+      }
+      // painted areas: both lanes and the center logo
+      for (const [rim, dir] of [[0, 1], [CT.farRim, -1]]) {
+        const bl = rim - dir * 5.25, fl = rim + dir * 13.75;
+        rect(-8, Math.min(bl, fl), 8, Math.max(bl, fl), PAINT);
+      }
+      disc(0, CT.half, 6, PAINT);
+      // lines
+      const L = (x0, y0, x1, y1) => rect(x0, y0, x1 === x0 ? x0 + 0.17 : x1, y1 === y0 ? y0 + 0.17 : y1, LINE);
+      L(-CT.side, CT.base, -CT.side, CT.far); L(CT.side, CT.base, CT.side, CT.far);
+      L(-CT.side, CT.base, CT.side, CT.base); L(-CT.side, CT.far, CT.side, CT.far); L(-CT.side, CT.half, CT.side, CT.half);
+      circle(0, CT.half, 6, LINE); circle(0, CT.half, 2, LINE);
+      for (const [rim, dir] of [[0, 1], [CT.farRim, -1]]) {
+        const bl = rim - dir * 5.25, fl = rim + dir * 13.75, cy = Math.sqrt(CT.arc * CT.arc - CT.corner * CT.corner);
+        L(-8, Math.min(bl, fl), -8, Math.max(bl, fl)); L(8, Math.min(bl, fl), 8, Math.max(bl, fl)); L(-8, fl, 8, fl);
+        circle(0, fl, 6, LINE);
+        circle(0, rim, 4, LINE, dir > 0 ? 0 : Math.PI, dir > 0 ? Math.PI : Math.PI * 2);
+        for (const s of [-1, 1]) L(s * CT.corner, Math.min(bl, rim + dir * cy), s * CT.corner, Math.max(bl, rim + dir * cy));
+        const a = Math.acos(CT.corner / CT.arc);
+        circle(0, rim, CT.arc, LINE, dir > 0 ? a : Math.PI + a, dir > 0 ? Math.PI - a : Math.PI * 2 - a);
+        // the hoop: stanchion, backboard, rim and net
+        rect(-0.5, Math.min(bl - dir * 4, rim - dir * 1.25), 0.5, Math.max(bl - dir * 4, rim - dir * 1.25), "#3A4458");
+        rect(-3, bl - dir * 5.5 - 1.2, 3, bl - dir * 5.5 + 1.2, "#1D2A44");
+        rect(-3, rim - dir * 1.25 - 0.15, 3, rim - dir * 1.25 + 0.15, "#F2F6FA");
+        disc(0, rim, 0.75, "rgba(242,246,250,.55)"); circle(0, rim, 0.75, "#FF8A3D");
+      }
+      // center logo: a pixel basketball
+      disc(0, CT.half, 3.2, "#D9732F"); circle(0, CT.half, 3.2, "#5A2108");
+      rect(-3.2, CT.half - 0.12, 3.2, CT.half + 0.12, "#5A2108"); rect(-0.12, CT.half - 3.2, 0.12, CT.half + 3.2, "#5A2108");
+      circle(-4.6, CT.half, 2.6, "#5A2108", -0.9, 0.9); circle(4.6, CT.half, 2.6, "#5A2108", Math.PI - 0.9, Math.PI + 0.9);
+    }
+    // ---- far end: baseline seats and the stands
+    if (vis(CT.far + 3, Z.tunnel)) {
+      rect(-hw, CT.far + 3, hw, Z.tunnel, "#0D1422");
+      crowd(-hw, hw, CT.far + 5, Z.stands, "fb", 2.4);
+      rect(-hw, Z.stands, hw, Z.stands + 1, "#1E2A40");
+      crowd(-hw, -9, Z.stands + 1, Z.tunnel, "ud", 2.8); crowd(9, hw, Z.stands + 1, Z.tunnel, "ue", 2.8);
+      rect(-8, CT.far + 3, 8, Z.tunnel, "#161E2E");                 // the aisle down to the tunnel
+    }
+    // ---- the players' tunnel
+    if (vis(Z.tunnel, Z.concourse)) {
+      rect(-hw, Z.tunnel, hw, Z.concourse, "#0A0F18");
+      rect(-8, Z.tunnel, 8, Z.concourse, "#262D3B");
+      rect(-8, Z.tunnel, -7.6, Z.concourse, "#F2C14E"); rect(7.6, Z.tunnel, 8, Z.concourse, "#F2C14E");
+      for (let y = Z.tunnel + 6; y < Z.concourse; y += 12) for (const s of [-1, 1]) {
+        const flick = Math.sin(t * 9 + y) > 0.97 ? 0.3 : 1;
+        glow(s * 7, y, 6, flick);
+        rect(s * 8 - 0.6, y - 0.6, s * 8 + 0.6, y + 0.6, "#FFE2A0");
+      }
+      for (let y = Z.tunnel + 20; y < Z.concourse; y += 20) rect(-2, y, 2, y + 0.4, "#3A4458");
+    }
+    // ---- the concourse
+    if (vis(Z.concourse, Z.doors)) {
+      for (let y = Z.concourse; y < Z.doors; y += 2) for (let x = -Math.ceil(hw / 2) * 2; x < hw; x += 2)
+        if (vis(y, y + 2)) rect(x, y, x + 2, y + 2, ((x + y) / 2) % 2 ? "#343A48" : "#2E3441");
+      const stands = [["#B8423A", "#F2F6FA"], ["#F2C14E", "#B8423A"], ["#3E6FB0", "#F2F6FA"], ["#3F8A6B", "#F2C14E"]];
+      for (let i = 0; i < 4; i++) for (const s of [-1, 1]) {
+        const y = Z.concourse + 8 + i * 15, x0 = s > 0 ? 14 : -26, [a, b] = stands[(i + (s > 0 ? 1 : 0)) % 4];
+        rect(x0, y, x0 + 12, y + 3, "#1A1F2B");
+        for (let k = 0; k < 6; k++) rect(x0 + k * 2, y + 3, x0 + k * 2 + 2, y + 4.5, k % 2 ? a : b); // awning
+        rect(x0, y + 4.5, x0 + 12, y + 6, "#4A5160");                                              // counter
+      }
+      for (let i = 0; i < 26; i++) {                                                               // people walking
+        const y = Z.concourse + 4 + rnd(i, "py") * (Z.doors - Z.concourse - 8), dir = rnd(i, "pd") > 0.5 ? 1 : -1;
+        const span = 70, x = ((rnd(i, "px") * span + dir * t * (2 + rnd(i, "ps") * 3)) % span + span) % span - span / 2;
+        if (vis(y, y + 1)) dot(x, y, FANS[i % FANS.length], 2);
+      }
+    }
+    // ---- the doors, the plaza and the statue
+    if (vis(Z.doors, Z.lot)) {
+      rect(-hw, Z.doors, hw, Z.plaza, "#141A26");
+      for (let x = -20; x < 20; x += 4) rect(x + 0.4, Z.doors + 1.5, x + 3.6, Z.plaza - 1.5, "rgba(140,200,240,.45)");
+      rect(-hw, Z.plaza, hw, Z.lot, "#3D424C");
+      for (let y = Z.plaza; y < Z.lot; y += 6) rect(-hw, y, hw, y + 0.18, "#353941");
+      for (let x = -60; x < 60; x += 6) rect(x, Z.plaza, x + 0.18, Z.lot, "#353941");
+      disc(0, 300, 7, "#2B3038"); disc(0, 300, 4, "#4A505C");                                     // statue on its plinth
+      disc(0, 299, 1.1, "#7A8794"); rect(-0.8, 299.5, 0.8, 302, "#7A8794"); rect(0.6, 297, 1, 299.5, "#7A8794"); disc(1.2, 296.6, 0.7, "#C99A3B");
+      for (let y = Z.plaza + 10; y < Z.lot; y += 22) for (const s of [-1, 1]) lamp(s * 20, y);
+    }
+    // ---- the parking lot
+    if (vis(Z.lot, Z.street)) {
+      rect(-hw, Z.lot, hw, Z.street, "#22252C");
+      for (const r0 of [Z.lot + 8, Z.lot + 40, Z.lot + 72]) {
+        for (let x = -Math.floor(hw / 9) * 9; x < hw; x += 9) {
+          rect(x, r0, x + 0.18, r0 + 18, "#C9C2B0");
+          const h = rnd(Math.round(x * 3) + r0, "car");
+          if (h < 0.62) {
+            const c = CARS[Math.floor(h * 71) % CARS.length], x0 = x + 1.6, y0 = r0 + 2 + h * 2;
+            rect(x0, y0, x0 + 6, y0 + 14, c); rect(x0 + 0.8, y0 + 3, x0 + 5.2, y0 + 5, "#10141A"); rect(x0 + 0.8, y0 + 10.5, x0 + 5.2, y0 + 12, "#10141A");
+            rect(x0 + 0.5, y0 + 5, x0 + 5.5, y0 + 10.5, "rgba(255,255,255,.08)");
+          }
+        }
+        rect(-hw, r0 + 18, hw, r0 + 18.18, "#C9C2B0");
+      }
+      for (let y = Z.lot + 30; y < Z.street; y += 32) for (const s of [-1, 1]) lamp(s * 28, y);
+    }
+    // ---- the street, with traffic
+    if (vis(Z.street, Z.city)) {
+      rect(-hw, Z.street, hw, Z.walk, "#1A1D23");
+      rect(-hw, Z.street, hw, Z.street + 0.3, "#8A8F99");
+      for (let x = -Math.ceil(hw / 10) * 10; x < hw; x += 10) { rect(x, 449.4, x + 5, 449.7, "#F2C14E"); rect(x, 450.3, x + 5, 450.6, "#F2C14E"); }
+      for (let x = -7; x < 7; x += 2.5) rect(x, Z.street + 2, x + 1.4, Z.walk - 2, "#C9C2B0"); // crosswalk
       for (let i = 0; i < 6; i++) {
-        const x0 = lw * (0.12 + i * 0.16) + Math.sin(t * 0.3 + i) * 10, w = 14 + (i % 3) * 8;
-        sx.beginPath(); sx.moveTo(x0, rayTop); sx.lineTo(x0 + w, rayTop); sx.lineTo(x0 + w - 90, fadeEnd); sx.lineTo(x0 - 110, fadeEnd); sx.fill();
+        const lane = i % 2, dir = lane ? -1 : 1, span = hw * 2 + 40, y = lane ? 455 : 439;
+        const x = ((rnd(i, "tx") * span + dir * t * (16 + i * 3)) % span + span) % span - span / 2;
+        rect(x, y, x + 14, y + 6, CARS[i % CARS.length]); rect(dir > 0 ? x + 9 : x + 2, y + 0.8, dir > 0 ? x + 11 : x + 4, y + 5.2, "#10141A");
+        if (V.mode !== "start") rect(dir > 0 ? x + 14 : x - 0.6, y + 0.6, dir > 0 ? x + 14.6 : x, y + 5.4, "#FFE9A8");
       }
+      rect(-hw, Z.walk, hw, Z.city, "#5A5F69");
+      for (let x = -Math.ceil(hw / 8) * 8; x < hw; x += 8) rect(x, Z.walk, x + 0.18, Z.city, "#4D525B");
     }
-    // fish: a field of schools, every 70 m
-    const m0 = Math.max(0, V.cam / PXM), m1 = (V.cam + V.H) / PXM;
-    for (let k = Math.floor(m0 / 70); k * 70 < m1 + 70; k++) {
-      if (k < 0) continue;
-      const n = 2 + Math.floor(rnd(k, "n") * 4), dir = rnd(k, "d") > 0.5 ? 1 : -1, sp = 6 + rnd(k, "s") * 10;
-      for (let j = 0; j < n; j++) {
-        const fm = k * 70 + rnd(k, "m" + j) * 60, fy = (fm * PXM - V.cam) / LOW;
-        if (fy < sY + 6 || fy > lh + 4) continue;
-        const span = lw + 40, fx = (((rnd(k, "x" + j) * span + dir * sp * t + j * 9) % span) + span) % span - 20;
-        const big = rnd(k, "b" + j) > 0.85 ? 2 : 1, col = rgb(waterAt(fm), 0.45);
-        drawFish(Math.round(fx), Math.round(fy), dir, big, col);
+    // ---- the city: blocks of rooftops, a park, and the blacktop
+    if (vis(Z.city, Z.river)) {
+      rect(-hw, Z.city, hw, Z.river, "#191C22");
+      for (let by = Z.city + 4; by < Z.river - 10; by += 76) for (let bx = -Math.ceil(hw / 84) * 84 - 32; bx < hw; bx += 84) {
+        const k = Math.round(bx * 7 + by), h = rnd(k, "blk"), w = 64, d = 58;
+        if (!vis(by, by + d)) continue;
+        if (Math.abs(bx + 32) < 1 && by > 540 && by < 580) {
+          // the blacktop where it started: a pickup court with chain-link around it
+          rect(bx, by, bx + w, by + d, "#2B4A2E"); rect(bx + 10, by + 6, bx + w - 10, by + d - 6, "#2A2D33");
+          const m = by + d / 2; rect(bx + 10, m, bx + w - 10, m + 0.18, "#E9DCC6");
+          circle(bx + w / 2, m, 4, "#E9DCC6"); circle(bx + w / 2, by + 9, 0.6, "#FF8A3D"); circle(bx + w / 2, by + d - 9, 0.6, "#FF8A3D");
+          circle(bx + w / 2, by + 9, 15, "#E9DCC6", 0.1, Math.PI - 0.1); circle(bx + w / 2, by + d - 9, 15, "#E9DCC6", Math.PI + 0.1, Math.PI * 2 - 0.1);
+          rect(bx + 9, by + 5, bx + w - 9, by + 5.2, "#6E7682"); rect(bx + 9, by + d - 5.2, bx + w - 9, by + d - 5, "#6E7682");
+          continue;
+        }
+        if (h < 0.18) {                                               // a park
+          rect(bx, by, bx + w, by + d, "#22422A");
+          for (let i = 0; i < 9; i++) disc(bx + 6 + rnd(k + i, "tx") * (w - 12), by + 6 + rnd(k + i, "ty") * (d - 12), 3, i % 2 ? "#2F5F38" : "#2A5532");
+          continue;
+        }
+        const roof = ["#3A3F4A", "#454B57", "#33373F", "#4B4540"][Math.floor(h * 41) % 4];
+        rect(bx, by, bx + w, by + d, roof); rect(bx, by, bx + w, by + 0.6, "#5A616E"); rect(bx, by + d - 1.2, bx + w, by + d, "rgba(0,0,0,.35)");
+        for (let i = 0; i < 3; i++) rect(bx + 8 + i * 18, by + 10 + (h * 30 | 0), bx + 14 + i * 18, by + 15 + (h * 30 | 0), "#5E6570"); // AC units
+        if (h > 0.6) { disc(bx + w - 12, by + 14, 4, "#6B4F35"); circle(bx + w - 12, by + 14, 4, "#3E2D1F"); }             // water tower
+        for (let i = 0; i < 10; i++) if (Math.sin(t * 0.7 + i + h * 30) > 0.2) dot(bx + 4 + rnd(k + i, "wx") * (w - 8), by + 4 + rnd(k + i, "wy") * (d - 8), "rgba(255,226,160,.55)");
       }
+      for (let y = Z.city + 66; y < Z.river; y += 76) for (let x = -Math.ceil(hw / 30) * 30; x < hw; x += 30) lamp(x, y);
     }
-    // marine snow
-    sx.fillStyle = "rgba(220,235,255,.25)";
-    for (let i = 0; i < 70; i++) {
-      const px = rnd(i, "px") * lw, py = ((rnd(i, "py") * lh - V.cam / LOW * 0.35 - t * 3) % lh + lh) % lh;
-      if (py > sY) sx.fillRect(Math.round(px), Math.round(py), 1, 1);
+    // ---- the river, and the far bank
+    if (vis(Z.river - 2, Z.bank + 80)) {
+      rect(-hw, Z.river, hw, Z.bank, "#0F2E4F");
+      for (let i = 0; i < 40; i++) {
+        const y = Z.river + 3 + rnd(i, "ry") * (Z.bank - Z.river - 6), x = ((rnd(i, "rx") * hw * 2 + t * 4) % (hw * 2)) - hw;
+        rect(x, y, x + 3 + rnd(i, "rw") * 6, y + 0.25, "rgba(160,210,255,.35)");
+      }
+      rect(-hw, Z.river - 1, hw, Z.river, "#5A5F69"); rect(-hw, Z.bank, hw, Z.bank + 1, "#3A4A3A");
+      rect(-hw, Z.bank + 1, hw, Z.bank + 200, "#12251A");
+      for (let i = 0; i < 30; i++) disc(-hw + rnd(i, "bx") * hw * 2, Z.bank + 6 + rnd(i, "by") * 60, 2.5, "#1B3A26");
     }
-    // bubbles
+
+    // a stepped, pixel-style pool of warm light
+    function glow(x, y, r, k) {
+      for (const [f, a] of [[1, 0.04], [0.7, 0.05], [0.42, 0.06]]) disc(x, y, r * f, `rgba(255,214,140,${a * k})`);
+    }
+    function lamp(x, y) {
+      if (!vis(y - 8, y + 8)) return;
+      glow(x, y, 9, 1);
+      rect(x - 0.5, y - 0.5, x + 0.5, y + 0.5, "#FFE2A0");
+    }
+
+    // arena lights: the court is lit, everything else falls off into the dark
+    const g = sx.createRadialGradient(cx, lh * 0.5, Math.min(lw, lh) * 0.2, cx, lh * 0.5, Math.max(lw, lh) * 0.75);
+    g.addColorStop(0, "rgba(5,10,20,0)"); g.addColorStop(1, "rgba(5,10,20,.55)");
+    sx.fillStyle = g; sx.fillRect(0, 0, lw, lh);
+    sx.fillStyle = `rgba(5,10,20,${V.mode === "reveal" ? 0.42 : V.mode === "play" ? 0.18 : 0.1})`; sx.fillRect(0, 0, lw, lh);
+
+    // sneaker dust (the old bubbles): little specks that drift and fade
     V.bubbles = V.bubbles.filter((b) => (b.life -= dt) > 0);
-    sx.strokeStyle = "rgba(220,240,255,.55)"; sx.lineWidth = 1;
     for (const b of V.bubbles) {
-      b.y -= b.vy * dt; b.x += Math.sin(V.t * 3 + b.p) * 0.2;
-      const by = (b.y - V.cam) / LOW; if (by < sY + 2) { b.life = 0; continue; }
-      sx.beginPath(); sx.arc(Math.round(b.x / LOW) + 0.5, Math.round(by) + 0.5, b.r, 0, 7); sx.stroke();
-    }
-    // seaweed in the bottom corners
-    if (sY < lh * 0.7) for (const side of [0, 1]) for (let i = 0; i < 5; i++) {
-      const h = (0.22 + rnd(i, "h" + side) * 0.28) * lh, bx = side ? lw - 8 - i * 9 - rnd(i, "o") * 6 : 6 + i * 9 + rnd(i, "o") * 6;
-      if (V.phone && i > 2) continue;
-      sx.fillStyle = rgb(waterAt((V.cam + V.H) / PXM), 0.45);
-      for (let y = 0; y < h; y += 2) {
-        const sw = Math.sin(t * 0.8 + y * 0.05 + i * 1.7) * 4 * (y / h), x = Math.round(bx + sw);
-        sx.fillRect(x, lh - y, 2, 2);
-        if (y % 8 === 0 && y > 6) sx.fillRect(x + (y % 16 ? 2 : -3), lh - y, 3, 1);
-      }
+      b.y -= b.vy * dt * 0.3; b.x += Math.sin(V.t * 3 + b.p) * 0.3;
+      sx.fillStyle = `rgba(233,220,198,${Math.min(0.6, b.life / 3)})`; sx.fillRect(Math.round(b.x / LOW), Math.round((b.y - V.cam) / LOW), 1, 1);
     }
     drawDiver();
   }
 
-  function drawBuoy(x, y) {
-    const c = "#0B1626";
-    sx.fillStyle = c; sx.fillRect(x - 15, y - 2, 30, 4); sx.fillRect(x - 13, y + 2, 26, 2);
-    sx.fillRect(x - 9, y - 34, 2, 32);                               // pole
-    sx.fillStyle = "#2A3FF0"; sx.fillRect(x - 7, y - 34, 6, 4);       // flag
-    sx.fillStyle = c; sx.fillRect(x - 8, y - 26, 6, 2);               // arm
-    sx.fillStyle = "#F2F6FA"; sx.fillRect(x - 3, y - 31, 15, 10);     // backboard
-    sx.fillStyle = c; sx.fillRect(x + 2, y - 28, 5, 1); sx.fillRect(x + 2, y - 24, 5, 1); sx.fillRect(x + 2, y - 28, 1, 4); sx.fillRect(x + 6, y - 28, 1, 4);
-    sx.fillStyle = "#FF8A3D"; sx.fillRect(x + 2, y - 21, 9, 1);       // rim
-    sx.fillStyle = "rgba(242,246,250,.85)";                            // net
-    for (let r = 0; r < 4; r++) for (let k = 0; k < 5 - r; k++) sx.fillRect(x + 3 + r * 0.5 + k * 2 - (r % 2), y - 20 + r, 1, 1);
-  }
-
-  function drawFish(x, y, dir, s, col) {
-    sx.fillStyle = col;
-    sx.fillRect(x - 3 * s, y - s, 6 * s, 2 * s); sx.fillRect(x - 2 * s, y - 2 * s, 4 * s, s); sx.fillRect(x - 2 * s, y + s, 4 * s, s);
-    const tx = dir > 0 ? x - 4 * s : x + 3 * s; sx.fillRect(tx, y - 2 * s, s, 4 * s);
-  }
-
-  // the diver: a basketball pufferfish
+  // "you": a basketball, seen from above, dribbling in place and spinning as it travels
   function drawDiver() {
-    const d = V.diver, lx = Math.round(d.x / LOW), ly = Math.round(d.y / LOW), r = 6;
+    const d = V.diver, bounce = Math.abs(Math.sin(V.t * (V.tag ? 9 : 5))), r = 5 + bounce * 1.2;
+    const lx = Math.round(d.x / LOW), ly = Math.round(d.y / LOW);
     if (ly < -20 || ly > sea.height + 20) return;
-    sx.fillStyle = "#F2C14E";
-    for (let k = 0; k < 8; k++) { const a = k / 8 * Math.PI * 2 + 0.2; sx.fillRect(Math.round(lx + Math.cos(a) * (r + 1.5)), Math.round(ly + Math.sin(a) * (r + 1.5)), 1, 1); }
-    sx.fillStyle = "#FF8A3D";
-    for (let dy = -r; dy <= r; dy++) { const w = Math.round(Math.sqrt(r * r - dy * dy)); sx.fillRect(lx - w, ly + dy, w * 2 + 1, 1); }
-    sx.fillStyle = "#5A2108";
-    sx.fillRect(lx - r, ly, r * 2 + 1, 1); sx.fillRect(lx, ly - r, 1, r * 2 + 1);
-    for (let dy = -r + 2; dy <= r - 2; dy++) { const w = Math.round(Math.sqrt(r * r - dy * dy) * 0.55); sx.fillRect(lx - w - 1, ly + dy, 1, 1); }
-    sx.fillStyle = "#FFFFFF"; sx.fillRect(lx + 2, ly - 3, 3, 3); sx.fillStyle = "#050A14"; sx.fillRect(lx + 3, ly - 2, 2, 2);
-    sx.fillStyle = "#F2C14E"; sx.fillRect(lx - r - 3, ly - 2, 2, 5); sx.fillRect(lx - r - 1, ly - 1, 1, 3);
+    sx.fillStyle = "rgba(0,0,0,.45)";
+    for (let dy = -4; dy <= 4; dy++) { const w = Math.round(Math.sqrt(16 - dy * dy) * 1.2); sx.fillRect(lx + 2 + Math.round(bounce * 3) - w, ly + 3 + Math.round(bounce * 4) + Math.round(dy * 0.6), w * 2, 1); }
+    const rot = (V.cam / PXM) * 0.08 + V.t * 0.6, ca = Math.cos(rot), sa = Math.sin(rot), R = Math.round(r);
+    for (let y = -R; y <= R; y++) for (let x = -R; x <= R; x++) {
+      if (x * x + y * y > r * r) continue;
+      const u = x * ca + y * sa, v = -x * sa + y * ca;
+      const seam = Math.abs(u) < 0.55 || Math.abs(v) < 0.55 || Math.abs(Math.hypot(u - r * 1.25, v) - r * 0.95) < 0.5 || Math.abs(Math.hypot(u + r * 1.25, v) - r * 0.95) < 0.5;
+      const lit = (x + y) / (2 * r);
+      sx.fillStyle = seam ? "#4A1C08" : lit < -0.25 ? "#FFA25C" : lit > 0.35 ? "#C75F22" : "#F07F35";
+      sx.fillRect(lx + x, ly + y, 1, 1);
+    }
   }
 
   // crisp layer: ruler, depth markers, tier lines, the sinking tag, glows
@@ -284,12 +440,12 @@
     if (bottom > top) {
       ix.strokeStyle = "rgba(159,178,207,.35)"; ix.lineWidth = 1;
       ix.beginPath(); ix.moveTo(rx + 0.5, top); ix.lineTo(rx + 0.5, bottom); ix.stroke();
-      const mA = Math.max(0, Math.floor((V.cam + top) / PXM / 20) * 20), mB = (V.cam + bottom) / PXM;
-      for (let m = mA; m <= mB; m += 20) {
+      const mA = Math.max(0, Math.floor((V.cam + top) / PXM / 5) * 5), mB = (V.cam + bottom) / PXM;
+      for (let m = mA; m <= mB; m += 5) {
         const y = Math.round(yOf(m)) + 0.5; if (y < top || y > bottom) continue;
-        const major = m % 100 === 0;
+        const major = m % 10 === 0;
         ix.beginPath(); ix.moveTo(rx - (major ? 14 : 6), y); ix.lineTo(rx, y); ix.stroke();
-        if (major && Math.abs(y - yOf(V.shownM)) > 12) { ix.fillStyle = "rgba(159,178,207,.6)"; ix.textAlign = "right"; ix.fillText(m ? `-${m}m` : "0m", rx - 18, y); }
+        if (major && !V.phone && Math.abs(y - yOf(V.shownM)) > 12) { ix.fillStyle = "rgba(159,178,207,.6)"; ix.textAlign = "right"; ix.fillText(`${m} ft`, rx - 18, y); }
       }
       // you
       const yy = yOf(V.shownM);
@@ -309,12 +465,13 @@
       const left = i % 2 === 0, x = left ? (V.phone ? 16 : Math.max(24, W / 2 - 420)) : (V.phone ? W - 40 : rx - 90);
       ix.textAlign = left ? "left" : "right";
       ix.beginPath(); ix.moveTo(left ? x : x, y); ix.lineTo(left ? x + 18 : x - 18, y); ix.stroke();
+      ix.lineWidth = 4; ix.strokeStyle = "rgba(5,10,20,.8)"; ix.strokeText(text, left ? x + 26 : x - 26, y); ix.lineWidth = 1;
       ix.fillText(text, left ? x + 26 : x - 26, y);
     });
     // tier lines for this round's reveal
     if (V.tiers) {
       const x0 = V.phone ? 8 : Math.max(16, W / 2 - 430), x1 = V.phone ? W - 26 : rx - 56;
-      ix.font = "18px VT323, monospace"; ix.textAlign = "right";
+      ix.font = `${V.phone ? 16 : 18}px VT323, monospace`; ix.textAlign = V.phone ? "left" : "right";
       V.tiers.list.forEach((tl, i) => {
         const y = Math.round(yOf(tl.d)) + 0.5; if (y < 70 || y > H + 10) return;
         let bright = 0;
@@ -322,30 +479,122 @@
         const a = tl.on ? 0.95 : 0.45 + bright * 0.5;
         ix.strokeStyle = `rgba(234,246,255,${a * 0.6})`; ix.setLineDash([6, 6]); ix.lineWidth = tl.on ? 2 : 1;
         ix.beginPath(); ix.moveTo(x0, y); ix.lineTo(x1, y); ix.stroke(); ix.setLineDash([]); ix.lineWidth = 1;
-        ix.fillStyle = tl.color; ix.globalAlpha = a; ix.fillText(`${EMOJI[i]} ${tl.name.toUpperCase()} · ${tl.points}`, x1 - 4, y - 10); ix.globalAlpha = 1;
+        const lab = `${EMOJI[i]} ${tl.name.toUpperCase()} · ${tl.points}`, lx = V.phone ? x0 + 4 : x1 - 4;
+        ix.globalAlpha = a; ix.lineWidth = 4; ix.strokeStyle = "rgba(5,10,20,.85)"; ix.strokeText(lab, lx, y - 10); ix.lineWidth = 1;
+        ix.fillStyle = tl.color; ix.fillText(lab, lx, y - 10); ix.globalAlpha = 1;
       });
     }
-    // the answer, sinking
-    if (V.tag && V.tag.alpha > 0) {
-      const y = yOf(V.tag.d), x = W / 2;
-      ix.save(); ix.translate(x, y); ix.rotate(-0.21); ix.globalAlpha = V.tag.alpha;
+    drawFx();
+    // the answer, sinking: it takes the color of each tier line it passes and lands in its own
+    const T = V.tag;
+    if (T && T.alpha > 0) {
+      const k = V.sink, p = k ? clamp((performance.now() - k.t0 - 600) / 3000, 0, 1) : 1;
+      const speed = k && p > 0 && p < 1 ? 3 * (1 - p) * (1 - p) * Math.min(1, (k.to - k.from) / 300) : 0;
+      const col = tierCol(T.cur), pop = Math.max(0, 1 - (V.t - T.pop) / 0.35);
+      const sway = T.landed ? Math.sin(V.t * 1.6) * 0.03 : Math.sin(V.t * 5.2) * (0.05 + speed * 0.05);
+      const x = W / 2 + (T.landed ? Math.sin(V.t * 0.9) * 6 : Math.sin(V.t * 3.1) * (6 + speed * 10));
+      const y = yOf(T.d) + (T.landed ? Math.sin(V.t * 1.6) * 4 : 0);
       ix.font = `${V.phone ? 22 : 28}px VT323, monospace`; ix.textAlign = "center";
-      const label = `“${V.tag.text.toUpperCase()}” ▼`, w = ix.measureText(label).width + 36, h = V.phone ? 38 : 46;
+      const label = `“${T.text.toUpperCase()}” ▼`, w = ix.measureText(label).width + 36, h = V.phone ? 38 : 46;
+      // afterimages while it falls fast
+      if (speed > 0.15 && !reduced()) for (let g = 3; g >= 1; g--) {
+        ix.save(); ix.translate(x, y - g * (10 + speed * 14)); ix.rotate(-0.21 + sway * 0.6);
+        ix.globalAlpha = T.alpha * 0.16 * speed * (4 - g) / 3; ix.fillStyle = col; ix.fillRect(-w / 2, -h / 2, w, h); ix.restore();
+      }
+      // speed lines from Deep Bench up
+      if (T.tier >= 3 && speed > 0.1 && !reduced()) {
+        ix.save(); ix.strokeStyle = col; ix.lineWidth = 2;
+        for (let i = 0; i < 6 + T.tier * 2; i++) {
+          const lx = x + (rnd(i, "sl") - 0.5) * (w + 80), len = 30 + speed * 90 * rnd(i, "sll"), ly = y - h / 2 - 8 - ((V.t * 900 + rnd(i, "slo") * 400) % 260);
+          ix.globalAlpha = T.alpha * 0.5 * speed; ix.beginPath(); ix.moveTo(Math.round(lx) + 0.5, ly); ix.lineTo(Math.round(lx) + 0.5, ly - len); ix.stroke();
+        }
+        ix.restore();
+      }
+      ix.save(); ix.translate(x, y); ix.rotate(-0.21 + sway);
+      const sc = 1 + pop * 0.22 + (T.landed ? 0 : speed * 0.04); ix.scale(sc, sc * (1 + speed * 0.06));
+      ix.globalAlpha = T.alpha;
+      ix.shadowColor = col; ix.shadowBlur = 6 + T.cur * 5 + pop * 24;
       ix.fillStyle = "rgba(9,18,34,.94)"; ix.fillRect(-w / 2, -h / 2, w, h);
+      ix.shadowBlur = 0;
       ix.fillStyle = "rgba(0,0,0,.35)"; ix.fillRect(-w / 2 + 4, h / 2, w - 4, 4);
-      ix.fillStyle = "#D7E3F4"; ix.fillText(label, 0, 2);
+      ix.strokeStyle = col; ix.lineWidth = 2; ix.strokeRect(-w / 2 + 1, -h / 2 + 1, w - 2, h - 2);
+      if (T.tier >= 5 && T.landed) {
+        // Buzzer Beater: a light sweeps across the box
+        const sw = ((V.t * 0.8) % 1.6) * w * 1.4 - w * 0.7;
+        const gr = ix.createLinearGradient(sw - 40, 0, sw + 40, 0);
+        gr.addColorStop(0, "rgba(255,255,255,0)"); gr.addColorStop(0.5, "rgba(255,255,255,.28)"); gr.addColorStop(1, "rgba(255,255,255,0)");
+        ix.fillStyle = gr; ix.fillRect(-w / 2, -h / 2, w, h);
+      }
+      ix.fillStyle = col; ix.shadowColor = col; ix.shadowBlur = 4 + T.cur * 3;
+      ix.fillText(label, 0, 2);
       ix.restore();
+    }
+    // a full-screen wash in the tier's color on the big landings
+    if (V.tint) {
+      V.tint.a -= V.dt * 1.6;
+      if (V.tint.a <= 0) V.tint = null;
+      else { ix.globalAlpha = V.tint.a; ix.fillStyle = V.tint.c; ix.fillRect(0, 0, W, H); ix.globalAlpha = 1; }
+    }
+  }
+
+  // ---------- effects: pixel sparks, confetti and rings, in world coordinates so they scroll with the scene
+  let TCOL = null;
+  const tierCol = (i) => (TCOL || (TCOL = [0, 1, 2, 3, 4, 5].map(tierHex)))[clamp(i, 0, 5)];
+  function burst(x, y, n, colors, { speed = 180, up = 0.3, grav = 160, life = 1.1, size = 3, conf = false } = {}) {
+    if (reduced()) return;
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2, v = speed * (0.35 + Math.random() * 0.65);
+      V.fx.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - speed * up, g: grav, life: life * (0.6 + Math.random() * 0.6), max: life,
+        c: colors[i % colors.length], s: size + (Math.random() < 0.3 ? 1 : 0), conf, rot: Math.random() * 6, vr: (Math.random() - 0.5) * 14 });
+    }
+  }
+  const ring = (x, y, c, { r = 10, vr = 420, life = 0.6, w = 3 } = {}) => { if (!reduced()) V.rings.push({ x, y, c, r, vr, life, max: life, w }); };
+  function drawFx() {
+    const dt = V.dt;
+    V.fx = V.fx.filter((f) => (f.life -= dt) > 0);
+    for (const f of V.fx) {
+      f.vx *= 1 - dt * (f.conf ? 2.2 : 1.2); f.vy += f.g * dt; if (f.conf) f.vy = Math.min(f.vy, 70);
+      f.x += f.vx * dt; f.y += f.vy * dt; f.rot += f.vr * dt;
+      const sy = f.y - V.cam; if (sy < -20 || sy > V.H + 20) continue;
+      ix.globalAlpha = clamp(f.life / f.max * 1.6, 0, 1); ix.fillStyle = f.c;
+      if (f.conf) { const cw = Math.abs(Math.cos(f.rot)) * 5 + 1; ix.fillRect(Math.round(f.x - cw / 2), Math.round(sy - 3), Math.round(cw), 6); }
+      else ix.fillRect(Math.round(f.x / 2) * 2, Math.round(sy / 2) * 2, f.s, f.s);
+    }
+    V.rings = V.rings.filter((r) => (r.life -= dt) > 0);
+    for (const r of V.rings) {
+      r.r += r.vr * dt; const sy = r.y - V.cam;
+      ix.globalAlpha = clamp(r.life / r.max, 0, 1); ix.strokeStyle = r.c; ix.lineWidth = r.w;
+      ix.beginPath(); ix.ellipse(r.x, sy, r.r, r.r * 0.42, 0, 0, Math.PI * 2); ix.stroke();
+    }
+    ix.globalAlpha = 1;
+  }
+  // what each tier gets when the answer lands: more points, more show
+  function land(t) {
+    const x = V.W / 2, y = V.tag.d * PXM, c = tierCol(t), all = [0, 1, 2, 3, 4, 5].map(tierCol);
+    SFX.land(t);
+    burst(x, y, 10 + t * 14, [c, "#EAF6FF"], { speed: 120 + t * 50, life: 0.8 + t * 0.15 });
+    if (t >= 1) ring(x, y, c, { vr: 300 + t * 80 });
+    if (t >= 2) { ring(x, y, "#EAF6FF", { vr: 220, life: 0.5, w: 2 }); V.kick = 3 + t; }
+    if (t >= 3) { V.tint = { c, a: 0.12 + (t - 3) * 0.06 }; burst(x, y, 24, [c], { speed: 420, up: 0, grav: 0, life: 0.5, size: 2 }); }
+    if (t >= 4) { ring(x, y, c, { vr: 700, life: 0.9, w: 4 }); document.body.classList.remove("shake"); void document.body.offsetWidth; document.body.classList.add("shake"); later(520, () => document.body.classList.remove("shake")); }
+    if (t >= 5) {
+      // Buzzer Beater: confetti rains from the top of the screen and fireworks pop around the answer
+      for (let i = 0; i < 70; i++) V.fx.push({ x: Math.random() * V.W, y: V.cam - 10 - Math.random() * 160, vx: (Math.random() - 0.5) * 60, vy: 40 + Math.random() * 60, g: 30,
+        life: 3 + Math.random() * 1.5, max: 4, c: all[i % 6], s: 3, conf: true, rot: Math.random() * 6, vr: (Math.random() - 0.5) * 10 });
+      [[-0.32, -60, 250], [0.3, -90, 450], [-0.12, -150, 700], [0.18, -30, 950]].forEach(([dx, dy, ms]) => later(ms, () => {
+        const fx = x + dx * Math.min(V.W, 900), fy = y + dy; burst(fx, fy, 36, [all[(ms / 250) % 6 | 0], "#FFFFFF", c], { speed: 260, up: 0.1, grav: 120, life: 1.2 }); ring(fx, fy, c, { vr: 260, life: 0.5, w: 2 }); SFX.pop();
+      }));
     }
   }
 
   function frame(now) {
-    const dt = Math.min(0.05, V.last ? (now - V.last) / 1000 : 0.016); V.last = now; V.t += dt;
+    const dt = Math.min(0.05, V.last ? (now - V.last) / 1000 : 0.016); V.last = now; V.t += dt; V.dt = dt;
     if (V.sink) stepSink(now); else { camAim(false); V.cam += (V.camTarget - V.cam) * (1 - Math.exp(-dt * 3.2)); }
     // where the diver swims
     let tx, ty;
-    if (V.tag) { tx = V.phone ? V.W * 0.1 : V.W / 2 - 170; ty = yOf(V.tag.d) - 34; }
+    if (V.tag) { tx = V.phone ? V.W * 0.86 : V.W / 2 - 170; ty = yOf(V.tag.d) - 34; }
     else if (V.mode === "start" || V.mode === "done") { tx = V.W * (V.phone ? 0.62 : 0.58); ty = surfaceScreen() + 120; }
-    else if (V.mode === "reveal") { tx = V.phone ? V.W * 0.1 : V.W / 2 - 170; ty = V.H * REVEAL_Y - 34; }
+    else if (V.mode === "reveal") { tx = V.phone ? V.W * 0.86 : V.W / 2 - 170; ty = V.H * REVEAL_Y - 34; }
     else { tx = V.W * (V.phone ? 0.12 : Math.max(0.1, 0.5 - 330 / V.W)); ty = V.level + V.H * 0.36; }
     tx += Math.sin(V.t * 0.7) * 18; ty += Math.sin(V.t * 1.3) * 6;
     V.diver.x += (tx - V.diver.x) * (1 - Math.exp(-dt * 2.5)); V.diver.y += (ty - V.diver.y) * (1 - Math.exp(-dt * 2.5));
@@ -397,7 +646,7 @@
 
   // ======================================================================== HUD
   function renderHud(scoreShown) {
-    $("mTop").textContent = fmt(V.shownM) + "m";
+    $("mTop").textContent = fmt(V.shownM) + " ft";
     $("ptsTop").textContent = scoreShown === undefined ? total() : scoreShown;
     $("progTxt").textContent = `PROMPT ${Math.min(S.cur + 1, P.length)} OF ${P.length}`;
     $("pips").innerHTML = P.map((_, k) => {
@@ -410,7 +659,7 @@
     const t0 = performance.now();
     const step = (now) => {
       const p = reduced() ? 1 : clamp((now - t0) / ms, 0, 1);
-      V.shownM = from + (to - from) * easeOut(p); $("mTop").textContent = fmt(V.shownM) + "m";
+      V.shownM = from + (to - from) * easeOut(p); $("mTop").textContent = fmt(V.shownM) + " ft";
       if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
@@ -425,7 +674,7 @@
     V.mode = "start"; S.phase = "start"; V.tiers = null; V.tag = null;
     only("startView"); $("hud").classList.add("off"); $("dim").classList.remove("on"); $("floor").hidden = true;
     const resume = S.answers.length > 0;
-    $("begin").innerHTML = resume ? `<i>▼</i> CONTINUE · PROMPT ${S.answers.length + 1} <i>▼</i>` : "<i>▼</i> START THE DIVE <i>▼</i>";
+    $("begin").innerHTML = resume ? `<i>▼</i> CONTINUE · PROMPT ${S.answers.length + 1} <i>▼</i>` : "<i>▼</i> TIP OFF <i>▼</i>";
     $("startSub").textContent = `DIVE #${DAY.n} · ${dayName(DAY.date).toUpperCase()}`;
     $("startWarn").hidden = !DAY.warn; $("startWarn").textContent = DAY.warn;
     if (window.DIVE_DATA) {
@@ -438,7 +687,7 @@
     const pr = P[S.cur];
     $("qnum").textContent = `PROMPT ${S.cur + 1} OF ${P.length}`;
     $("q").textContent = pr.text;
-    $("qrule").textContent = pr.rule || "rarer answers sink deeper";
+    $("qrule").textContent = pr.rule || "rarer answers shoot from further out";
   }
 
   // ---------- rounds
@@ -542,24 +791,24 @@
     V.mode = "reveal";
     animate($("card"), "out"); $("form").hidden = true; setConfirm(""); setReject("");
     const rv = $("revealView"); rv.classList.remove("land");
-    $("descendNext").textContent = last ? "SURFACE ▲" : "DESCEND ▼";
+    $("descendNext").textContent = last ? "FINAL HORN ▶" : "NEXT SHOT ▼";
     $("descendNext").classList.remove("up");
     V.tiers = { d0: beforeM, list: pr.tiers.map((t, i) => ({ d: beforeM + t.points * M_PER_PT, name: t.name, points: t.points, color: tierHex(i), passedAt: null, on: a && a.tier === i })) };
     if (a) {
       SFX.hit(); $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go");
       const gain = a.points * M_PER_PT, t0 = performance.now();
-      V.tag = { text: a.name, d: beforeM, alpha: 1 };
+      V.tag = { text: a.name, d: beforeM, alpha: 1, tier: a.tier, cur: 0, pop: -9, landed: false };
       V.sink = { t0, from: beforeM, to: beforeM + gain };
       countM(beforeM, beforeM + gain, 0); V.shownM = beforeM;
       later(600, () => countM(beforeM, beforeM + gain, 3000));
       const notes = NOTES[Math.min(a.tier, NOTES.length - 1)], note = notes[Math.floor(hash(a.name) * notes.length)];
       $("rvBanner").textContent = pr.tiers[a.tier].name.toUpperCase(); $("rvBanner").style.setProperty("--c", tierHex(a.tier));
-      $("rvQuote").textContent = `“${a.name}”`;
-      $("rvPts").innerHTML = `+${a.points} PTS · <b>sink ${fmt(gain)}m</b>`;
+      $("rvQuote").textContent = `“${a.name}”`; $("rvQuote").style.color = tierHex(a.tier);
+      $("rvPts").innerHTML = `+${a.points} PTS · <b>+${fmt(gain)} ft</b>`;
       $("rvNote").textContent = a.note || note;
       later(3750, () => {
         only("revealView", "descendNext"); rv.classList.add("land"); $("descendNext").classList.add("up");
-        SFX.banner(a.tier); if (V.tag) V.tag.fade = true;
+        SFX.banner(a.tier);
         const s0 = total() - a.points, t1 = performance.now();
         const up = (now) => { const p = clamp((now - t1) / 350, 0, 1); renderHud(Math.round(s0 + a.points * p)); if (p < 1) requestAnimationFrame(up); };
         requestAnimationFrame(up);
@@ -570,9 +819,9 @@
       document.body.classList.add("shake"); later(520, () => document.body.classList.remove("shake"));
       SFX.miss();
       const deep = deepest(pr);
-      $("rvBanner").textContent = "OUT OF AIR"; $("rvBanner").style.setProperty("--c", "#9FB2CF");
-      $("rvQuote").textContent = `the easy one: “${easiest(pr).name}”`;
-      $("rvPts").innerHTML = "+0 PTS · <b>sink 0m</b>";
+      $("rvBanner").textContent = "SHOT CLOCK"; $("rvBanner").style.setProperty("--c", "#9FB2CF");
+      $("rvQuote").textContent = `the easy one: “${easiest(pr).name}”`; $("rvQuote").style.color = "";
+      $("rvPts").innerHTML = "+0 PTS · <b>+0 ft</b>";
       $("rvNote").textContent = `The Buzzer Beater was ${deep.name}.${deep.note ? " " + deep.note : ""}`;
       later(900, () => { only("revealView", "descendNext"); rv.classList.add("land"); $("descendNext").classList.add("up"); renderHud(); $("descendNext").focus({ preventScroll: true }); });
     }
@@ -582,20 +831,35 @@
 
   function stepSink(now) {
     const k = V.sink, p = (now - k.t0 - 600) / 3000;
-    const d = k.from + (k.to - k.from) * easeOut(reduced() ? 1 : p);
-    if (V.tag) {
-      V.tag.d = d;
-      if (V.tag.fade) V.tag.alpha = Math.max(0, V.tag.alpha - 0.06);
+    const d = k.from + (k.to - k.from) * easeOut(reduced() ? 1 : p), T = V.tag;
+    if (T) {
+      T.d = d;
+      if (T.fade) T.alpha = Math.max(0, T.alpha - 0.06);
+      if (!T.landed && p >= 1) { T.landed = true; T.cur = T.tier; T.pop = V.t; land(T.tier); }
     }
-    V.cam = d * PXM - V.H * REVEAL_Y;
-    if (V.tiers) V.tiers.list.forEach((tl) => { if (tl.passedAt === null && d >= tl.d - 0.5) tl.passedAt = V.t; });
-    if (Math.random() < 0.5 && p > 0 && p < 1) V.bubbles.push({ x: V.W / 2 + (Math.random() - 0.5) * 120, y: d * PXM + 10, r: 1 + Math.random() * 2, vy: 50 + Math.random() * 60, life: 3, p: Math.random() * 6 });
+    V.kick *= Math.exp(-V.dt * 9);
+    V.cam = d * PXM - V.H * REVEAL_Y + (V.kick > 0.3 ? (Math.random() - 0.5) * V.kick * 2 : 0);
+    if (V.tiers) V.tiers.list.forEach((tl, i) => {
+      if (tl.passedAt !== null || d < tl.d - 0.5) return;
+      tl.passedAt = V.t;
+      // crossing a tier line: the answer takes its color, with a pop, a spark and a rising note
+      if (T && i < T.tier) {
+        T.cur = i; T.pop = V.t; SFX.cross(i);
+        burst(V.W / 2, tl.d * PXM, 8 + i * 5, [tl.color], { speed: 140 + i * 30, up: 0.6, life: 0.7 });
+        ring(V.W / 2, tl.d * PXM, tl.color, { vr: 260 + i * 40, life: 0.45, w: 2 });
+      }
+    });
+    // a trail of the current tier's color while it falls
+    if (T && p > 0 && p < 1 && !reduced() && Math.random() < 0.35 + T.cur * 0.12) {
+      const c = tierCol(T.cur);
+      V.fx.push({ x: V.W / 2 + (Math.random() - 0.5) * 160, y: d * PXM - 18, vx: (Math.random() - 0.5) * 30, vy: -40 - Math.random() * 60, g: 0, life: 0.9, max: 0.9, c, s: 2 + (T.cur >= 3 ? 1 : 0), conf: false, rot: 0, vr: 0 });
+    }
+    if (Math.random() < 0.3 && p > 0 && p < 1) V.bubbles.push({ x: V.W / 2 + (Math.random() - 0.5) * 120, y: d * PXM + 10, r: 1 + Math.random() * 2, vy: 50 + Math.random() * 60, life: 3, p: Math.random() * 6 });
     SFX.depth(d);
-    if (p >= 1.4 && V.tag && V.tag.alpha <= 0) { V.tag = null; V.sink = null; }
   }
 
   function next() {
-    SFX.click(); clearLater(); V.sink = null; V.tag = null;
+    SFX.click(); clearLater(); V.sink = null; V.tag = null; V.fx = []; V.rings = []; V.tint = null;
     S.depthM = meters();
     if (S.answers.length >= P.length) { beacon("fin", "/dive"); SFX.surface(); return renderDone(); }
     S.cur = S.answers.length;
@@ -613,9 +877,9 @@
       d += `L${x(k + 1).toFixed(1)},${y(m).toFixed(1)}`;
       dots += `<rect x="${(x(k + 1) - 5).toFixed(1)}" y="${(y(m) - 5).toFixed(1)}" width="10" height="10" fill="${a ? tierHex(a.tier) : "#2A3A55"}"/>`;
     });
-    const step = top > 2000 ? 1000 : top > 800 ? 500 : top > 300 ? 100 : 50;
+    const step = top > 300 ? 100 : top > 150 ? 50 : 25;
     let grid = "";
-    for (let v = 0; v <= top; v += step) grid += `<line x1="40" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="#1E3150" stroke-dasharray="4 4"/><text x="34" y="${y(v) + 4}" text-anchor="end">-${fmt(v)}</text>`;
+    for (let v = 0; v <= top; v += step) grid += `<line x1="40" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="#1E3150" stroke-dasharray="4 4"/><text x="34" y="${y(v) + 4}" text-anchor="end">${fmt(v)}</text>`;
     const xl = P.map((_, k) => `<text x="${x(k + 1)}" y="${H - 6}" text-anchor="middle">${k + 1}</text>`).join("");
     $("log").innerHTML = grid + xl + `<path d="${d}" fill="none" stroke="#4DE3FF" stroke-width="2"/>` + dots;
   }
@@ -628,7 +892,7 @@
     const p = total(), m = meters();
     $("rLabel").textContent = `DIVE #${DAY.n} COMPLETE`;
     $("rPts").textContent = p;
-    $("rM").textContent = `-${fmt(m)}m`;
+    $("rM").textContent = `${fmt(m)} ft`;
     $("rBand").textContent = bandOf(p).toUpperCase();
     drawLog();
     const maxP = P.reduce((s, pr) => s + Math.max(...pr.tiers.map((t) => t.points)), 0);
@@ -642,14 +906,14 @@
       const sub = a ? (a.note ? esc(a.note) : esc(pr.tiers[a.tier].name)) : `the easy one: ${esc(easiest(pr).name)}`;
       const list = pr.answers.slice().sort((x, y) => y.points - x.points || x.name.localeCompare(y.name))
         .map((x) => `<div class="${x === a ? "me" : ""}"><span>${EMOJI[x.tier]} ${esc(x.name)}</span><span>${x.points}${x.players ? ` · ${fmt(x.players)} picked` : ""}</span></div>`).join("");
-      return `<details><summary><span>${a ? EMOJI[a.tier] : "⬛"}</span><span class="who">${who}<small>${k + 1}. ${esc(pr.text)} · ${sub}</small></span><span class="p">+${pts(k)}<small>${fmt(pts(k) * M_PER_PT)}m</small></span></summary><div class="allans">${list}</div></details>`;
+      return `<details><summary><span>${a ? EMOJI[a.tier] : "⬛"}</span><span class="who">${who}<small>${k + 1}. ${esc(pr.text)} · ${sub}</small></span><span class="p">+${pts(k)}<small>${fmt(pts(k) * M_PER_PT)} ft</small></span></summary><div class="allans">${list}</div></details>`;
     }).join("");
     $("rate").innerHTML = [1, 2, 3, 4, 5].map((n) => `<button type="button" aria-pressed="${S.rating === n}" aria-label="Rate ${n} of 5">${n}</button>`).join("");
     $("shareTxt").textContent = shareText();
     $("doneView").scrollTop = 0;
   }
 
-  const shareText = () => `Daily Dive #${DAY.n} 🏀\n${total()} pts · ${fmt(meters())} m\n\n${P.map((_, k) => { const a = hit(k); return a ? EMOJI[a.tier] : "⬛"; }).join("")}\nthegravityreport.com/dive`;
+  const shareText = () => `Daily Dive #${DAY.n} 🏀\n${total()} pts · ${fmt(meters())} ft\n\n${P.map((_, k) => { const a = hit(k); return a ? EMOJI[a.tier] : "⬛"; }).join("")}\nthegravityreport.com/dive`;
 
   $("rate").addEventListener("click", (e) => {
     const b = e.target.closest("button"); if (!b) return;

@@ -131,7 +131,7 @@
     {"name":"Wayne Kreklow","match":"wayne kreklow","points":85,"tier":"Two-Way"},
     {"name":"A.J. Wynder","match":"aj wynder","points":85,"tier":"Two-Way"}
   ]},
-  {"slot": 3, "id": "award:dpoy", "text": "Name a Defensive Player of the Year", "rule": "Any season, 1982–83 to 2024–25", "source": "engine", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}],
+  {"slot": 3, "id": "award:dpoy", "text": "Name a Defensive Player of the Year", "rule": "Any season, 1982–83 to 2025–26", "source": "engine", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}],
    "answers": [
     {"name":"Michael Jordan","match":"michael jordan","points":10,"tier":"Layup"},
     {"name":"Hakeem Olajuwon","match":"hakeem olajuwon","points":15,"tier":"Too Cute"},
@@ -158,7 +158,8 @@
     {"name":"Marcus Smart","match":"marcus smart","points":60,"tier":"Deep Bench"},
     {"name":"Joakim Noah","match":"joakim noah","points":60,"tier":"Deep Bench"},
     {"name":"Jaren Jackson Jr.","match":"jaren jackson jr","points":85,"tier":"Two-Way"},
-    {"name":"Evan Mobley","match":"evan mobley","points":85,"tier":"Two-Way"}
+    {"name":"Evan Mobley","match":"evan mobley","points":85,"tier":"Two-Way"},
+    {"name":"Victor Wembanyama","match":"victor wembanyama","points":30,"tier":"Rotation","aliases":["wemby"]}
   ]},
   {"slot": 4, "id": "letter:z", "text": "Name an NBA player whose last name starts with Z", "rule": "Any NBA player, any era", "source": "engine", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}],
    "answers": [

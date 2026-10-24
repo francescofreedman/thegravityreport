@@ -1,6 +1,6 @@
 {"date": "2026-10-25", "pushedAt": null, "secondsPerPrompt": 25,
  "prompts": [
-  {"slot": 1, "id": "hand:mvp", "text": "Name a player who won NBA MVP", "rule": "Any season, 1956 to 2025", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"chris paul":"Chris Paul never won MVP.","kawhi leonard":"Kawhi has two Finals MVPs but no regular-season MVP."},
+  {"slot": 1, "id": "hand:mvp", "text": "Name a player who won NBA MVP", "rule": "Any season, 1956 to 2026", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"chris paul":"Chris Paul never won MVP.","kawhi leonard":"Kawhi has two Finals MVPs but no regular-season MVP."},
    "answers": [
     {"name":"Michael Jordan","match":"michael jordan","points":10,"tier":"Layup","aliases":["mj"]},
     {"name":"LeBron James","match":"lebron james","points":10,"tier":"Layup","aliases":["lebron"]},
@@ -39,7 +39,7 @@
     {"name":"Wes Unseld","match":"wes unseld","points":100,"tier":"Buzzer Beater","note":"Won MVP and Rookie of the Year in the same season, 1968–69. Only Wilt Chamberlain had done that before him."},
     {"name":"Dave Cowens","match":"dave cowens","points":85,"tier":"Two-Way"}
   ]},
-  {"slot": 2, "id": "hand:sixty", "text": "Name a player who scored 60 or more points in an NBA game", "rule": "Regular season or playoffs, through 2025–26", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"kevin durant":"Durant's career high is 54.","anthony davis":"Davis topped out at 59."},
+  {"slot": 2, "id": "hand:sixty", "text": "Name a player who scored 60 or more points in an NBA game", "rule": "Regular season or playoffs, through 2025–26", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"kevin durant":"Durant has never scored 60 in a game.","anthony davis":"Davis topped out at 59."},
    "answers": [
     {"name":"Kobe Bryant","match":"kobe bryant","points":10,"tier":"Layup","aliases":["kobe"]},
     {"name":"Wilt Chamberlain","match":"wilt chamberlain","points":10,"tier":"Layup","aliases":["wilt"]},
@@ -75,9 +75,14 @@
     {"name":"Rick Barry","match":"rick barry","points":85,"tier":"Two-Way"},
     {"name":"Bernard King","match":"bernard king","points":85,"tier":"Two-Way"},
     {"name":"Tom Chambers","match":"tom chambers","points":85,"tier":"Two-Way"},
-    {"name":"Joe Fulks","match":"joe fulks","points":100,"tier":"Buzzer Beater","note":"Scored 63 in 1949, a record that stood for ten years until Elgin Baylor scored 64."}
+    {"name":"Joe Fulks","match":"joe fulks","points":100,"tier":"Buzzer Beater","note":"Scored 63 in 1949, a record that stood for ten years until Elgin Baylor scored 64."},
+    {"name":"Bam Adebayo","match":"bam adebayo","points":30,"tier":"Rotation","aliases":["bam"]},
+    {"name":"Nikola Jokić","match":"nikola jokic","points":60,"tier":"Deep Bench"},
+    {"name":"Bradley Beal","match":"bradley beal","points":60,"tier":"Deep Bench"},
+    {"name":"De'Aaron Fox","match":"deaaron fox","points":85,"tier":"Two-Way"},
+    {"name":"George Mikan","match":"george mikan","points":85,"tier":"Two-Way"}
   ]},
-  {"slot": 3, "id": "hand:pick1", "text": "Name a #1 overall draft pick", "rule": "Any year", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"michael jordan":"Jordan went #3 in 1984.","kobe bryant":"Kobe went #13 in 1996.","stephen curry":"Curry went #7 in 2009."},
+  {"slot": 3, "id": "hand:pick1", "text": "Name a #1 overall draft pick", "rule": "Any year, through 2026", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"michael jordan":"Jordan went #3 in 1984.","kobe bryant":"Kobe went #13 in 1996.","stephen curry":"Curry went #7 in 2009."},
    "answers": [
     {"name":"LeBron James","match":"lebron james","points":10,"tier":"Layup","aliases":["lebron"]},
     {"name":"Victor Wembanyama","match":"victor wembanyama","points":10,"tier":"Layup","aliases":["wemby"]},
@@ -130,7 +135,7 @@
     {"name":"Mychal Thompson","match":"mychal thompson","points":100,"tier":"Buzzer Beater","note":"The first No. 1 pick born outside the U.S. (the Bahamas, 1978), and Klay Thompson's father."},
     {"name":"Joe Barry Carroll","match":"joe barry carroll","points":100,"tier":"Buzzer Beater","note":"Boston traded the pick that became him to Golden State for Robert Parish and the pick that became Kevin McHale."}
   ]},
-  {"slot": 4, "id": "hand:fmvp", "text": "Name a player who won Finals MVP", "rule": "Any year, 1969 to 2025", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"bill russell":"The award started in 1969, Russell's last season, and went to Jerry West.","jayson tatum":"Jaylen Brown won it in 2024."},
+  {"slot": 4, "id": "hand:fmvp", "text": "Name a player who won Finals MVP", "rule": "Any year, 1969 to 2026", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"bill russell":"The award started in 1969, Russell's last season, and went to Jerry West.","jayson tatum":"Jaylen Brown won it in 2024."},
    "answers": [
     {"name":"Michael Jordan","match":"michael jordan","points":10,"tier":"Layup","aliases":["mj"]},
     {"name":"LeBron James","match":"lebron james","points":10,"tier":"Layup","aliases":["lebron"]},
@@ -167,7 +172,8 @@
     {"name":"Dennis Johnson","match":"dennis johnson","points":85,"tier":"Two-Way"},
     {"name":"Wes Unseld","match":"wes unseld","points":85,"tier":"Two-Way"},
     {"name":"Cedric Maxwell","match":"cedric maxwell","points":100,"tier":"Buzzer Beater","note":"Won the 1981 Finals MVP on a team with Larry Bird."},
-    {"name":"Jo Jo White","match":"jo jo white","points":85,"tier":"Two-Way"}
+    {"name":"Jo Jo White","match":"jo jo white","points":85,"tier":"Two-Way"},
+    {"name":"Jalen Brunson","match":"jalen brunson","points":30,"tier":"Rotation"}
   ]},
   {"slot": 5, "id": "hand:sonics", "text": "Name a player who played for the Seattle SuperSonics", "rule": "Appeared in at least one game, 1967 to 2008", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"russell westbrook":"Seattle drafted Westbrook in 2008, but he never played a game there.","serge ibaka":"Ibaka was drafted by Seattle but debuted in Oklahoma City."},
    "answers": [
@@ -207,7 +213,7 @@
     {"name":"Damien Wilkins","match":"damien wilkins","points":85,"tier":"Two-Way"},
     {"name":"Jerome James","match":"jerome james","points":100,"tier":"Buzzer Beater","note":"One strong 2005 playoff run for Seattle turned into a five-year, $30 million deal with the Knicks."}
   ]},
-  {"slot": 6, "id": "hand:6moy", "text": "Name a Sixth Man of the Year winner", "rule": "Any year, 1983 to 2025", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"andre iguodala":"Iguodala came off the bench for years but never won it."},
+  {"slot": 6, "id": "hand:6moy", "text": "Name a Sixth Man of the Year winner", "rule": "Any year, 1983 to 2026", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"andre iguodala":"Iguodala came off the bench for years but never won it."},
    "answers": [
     {"name":"Lou Williams","match":"lou williams","points":10,"tier":"Layup"},
     {"name":"Jamal Crawford","match":"jamal crawford","points":10,"tier":"Layup"},
@@ -244,9 +250,10 @@
     {"name":"Eddie Johnson","match":"eddie johnson","points":85,"tier":"Two-Way"},
     {"name":"Rodney Rogers","match":"rodney rogers","points":85,"tier":"Two-Way"},
     {"name":"Roy Tarpley","match":"roy tarpley","points":100,"tier":"Buzzer Beater","note":"Won it with Dallas in 1988. Three years later the league banned him for drug violations."},
-    {"name":"Bobby Jones","match":"bobby jones","points":100,"tier":"Buzzer Beater","note":"The first Sixth Man of the Year, in 1983, the season the 76ers won the title."}
+    {"name":"Bobby Jones","match":"bobby jones","points":100,"tier":"Buzzer Beater","note":"The first Sixth Man of the Year, in 1983, the season the 76ers won the title."},
+    {"name":"Keldon Johnson","match":"keldon johnson","points":30,"tier":"Rotation"}
   ]},
-  {"slot": 7, "id": "hand:intl-allstar", "text": "Name an All-Star who was born outside the United States", "rule": "Any year. U.S. territories count as the U.S.", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"tim duncan":"Duncan was born in the U.S. Virgin Islands, a U.S. territory.","jamal murray":"Murray is Canadian but has never made an All-Star team.","joakim noah":"Noah was born in New York City."},
+  {"slot": 7, "id": "hand:intl-allstar", "text": "Name an All-Star who was born outside the United States", "rule": "Any year through 2026. U.S. territories count as the U.S.", "source": "hand", "tiers": [{"name":"Layup","points":10},{"name":"Too Cute","points":15},{"name":"Rotation","points":30},{"name":"Deep Bench","points":60},{"name":"Two-Way","points":85},{"name":"Buzzer Beater","points":100}], "traps": {"tim duncan":"Duncan was born in the U.S. Virgin Islands, a U.S. territory.","karl-anthony towns":"Towns plays for the Dominican Republic but was born in New Jersey.","joakim noah":"Noah was born in New York City."},
    "answers": [
     {"name":"Giannis Antetokounmpo","match":"giannis antetokounmpo","points":10,"tier":"Layup","aliases":["giannis"]},
     {"name":"Nikola Jokić","match":"nikola jokic","points":10,"tier":"Layup","aliases":["jokic"]},
@@ -282,6 +289,10 @@
     {"name":"Žydrūnas Ilgauskas","match":"zydrunas ilgauskas","points":85,"tier":"Two-Way"},
     {"name":"Detlef Schrempf","match":"detlef schrempf","points":85,"tier":"Two-Way"},
     {"name":"Rik Smits","match":"rik smits","points":85,"tier":"Two-Way"},
-    {"name":"Mehmet Okur","match":"mehmet okur","points":100,"tier":"Buzzer Beater","note":"Turkey's first NBA All-Star, in 2007 with Utah."}
+    {"name":"Mehmet Okur","match":"mehmet okur","points":100,"tier":"Buzzer Beater","note":"Turkey's first NBA All-Star, in 2007 with Utah."},
+    {"name":"Jamal Murray","match":"jamal murray","points":30,"tier":"Rotation"},
+    {"name":"Deni Avdija","match":"deni avdija","points":60,"tier":"Deep Bench"},
+    {"name":"Rolando Blackman","match":"rolando blackman","points":85,"tier":"Two-Way"},
+    {"name":"Kiki Vandeweghe","match":"kiki vandeweghe","points":85,"tier":"Two-Way"}
   ]}
 ]}
