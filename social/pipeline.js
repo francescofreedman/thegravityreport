@@ -641,8 +641,11 @@ export async function healthView(env, nowMs = Date.now(), adapters = ADAPTERS) {
       last_posted_at: lastPosted ? lastPosted.posted_at : null,
     };
   }
-  const last = await env.DB.prepare("SELECT ts, action, detail FROM social_log ORDER BY id DESC LIMIT 5").all();
+  const last = await env.DB.prepare("SELECT ts, action, detail FROM social_log ORDER BY id DESC LIMIT 25").all();
   out.last_log = (last.results || []).map((l) => `${l.ts.slice(0, 16)} ${l.action}${l.detail ? ": " + String(l.detail).slice(0, 80) : ""}`);
+  // the day markers the series leave behind (which day was checked, what was picked or why it was skipped)
+  const marks = await env.DB.prepare("SELECT key, value FROM social_settings WHERE key LIKE 'potd_%' OR key LIKE 'tonight_%' OR key LIKE 'tips_%' OR key LIKE 'series_%' ORDER BY key DESC LIMIT 20").all();
+  out.markers = Object.fromEntries((marks.results || []).map((r) => [r.key, String(r.value).slice(0, 60)]));
   return out;
 }
 
