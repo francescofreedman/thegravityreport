@@ -41,17 +41,22 @@
   }
 
   // ---------- day
-  let DAY = null, P = [], S = null, pending = null, tick = null, deadline = 0;
+  let DAY = null, P = [], S = null, pending = null, tick = null, timers = [];
   const LIMIT = () => (DAY.secondsPerPrompt || 25) * 1000;
   const saveKey = () => "dive_v1_" + DAY.date;
   const tierColor = (t) => `var(--t-${t})`;
+  const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const later = (ms, f) => timers.push(setTimeout(f, reduced() ? 0 : ms));
+  const clearLater = () => { timers.forEach(clearTimeout); timers = []; };
+  // A new dive every midnight Eastern, wherever the player is.
+  const todayET = () => new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date());
 
   async function load() {
     const params = new URLSearchParams(location.search);
     const asked = params.get("d");
     const index = await (await fetch("/dive/days/index.json", { cache: "no-cache" })).json();
     const days = index.days.slice().sort();
-    const today = localDate(new Date());
+    const today = todayET();
     let date = asked && days.includes(asked) ? asked : days.filter((d) => d <= today).pop();
     let preview = !!(asked && days.includes(asked) && asked !== today);
     let warn = "";
@@ -70,16 +75,18 @@
   const meters = () => total() * M_PER_PT;
   const maxM = () => P.reduce((s, p) => s + Math.max(...p.tiers.map((t) => t.points)), 0) * M_PER_PT;
 
+  // The round in progress is saved with absolute deadlines, so a reload resumes it with the clock still running.
   function persist() {
     if (DAY.preview) return;
-    store.set(saveKey(), { answers: S.answers, rating: S.rating });
+    const round = S.phase === "descend" || S.phase === "live" ? { cur: S.cur, phase: S.phase, descendEndsAt: S.descendEndsAt, answerEndsAt: S.answerEndsAt } : null;
+    store.set(saveKey(), { answers: S.answers, rating: S.rating, round });
   }
 
   // ---------- ocean + ruler
   const mix = (a, b, t) => "#" + [0, 2, 4].map((i) => Math.round(parseInt(a.substr(i + 1, 2), 16) * (1 - t) + parseInt(b.substr(i + 1, 2), 16) * t).toString(16).padStart(2, "0")).join("");
   const yPct = (m) => 2 + Math.min(1, m / maxM()) * 96;
-  function renderOcean() {
-    const t = Math.min(1, meters() / maxM());
+  function renderOcean(m) {
+    const t = Math.min(1, m / maxM());
     $("ocean").style.setProperty("--sea-top", mix("#0E4A6E", "#0A1426", Math.min(1, t * 1.6)));
     $("ocean").style.setProperty("--sea-bot", mix("#06223A", "#020408", Math.min(1, t * 1.6)));
     $("rays").style.opacity = String(Math.max(0, 1 - t * 1.8));
@@ -90,21 +97,24 @@
     h += '<div class="r-me" id="rMe"><svg viewBox="-60 -60 120 120"><use href="#puffer"/></svg></div>';
     $("ruler").innerHTML = h;
   }
-  function renderTop() {
-    const m = meters();
+  // shown: the depth on screen, which lags the real one while a reveal counts up.
+  function renderTop(shown) {
+    const m = shown === undefined ? meters() : shown;
     $("rMe").style.top = yPct(m) + "%";
     $("mTop").textContent = fmt(m) + " m";
-    $("ptsTop").textContent = total() + " pts";
+    $("ptsTop").textContent = Math.round(m / M_PER_PT) + " pts";
     $("pips").innerHTML = P.map((_, k) => {
-      const r = result(k), a = hit(k);
-      const cls = k === S.cur && S.view === "play" ? " cur" : r && !a ? " miss" : "";
-      return `<span class="pip${cls}">${r ? (a ? EMOJI[a.tier] : "·") : ""}</span>`;
+      const r = result(k), a = hit(k), live = k === S.cur && (S.phase === "descend" || S.phase === "live");
+      const cls = live ? " cur" : r && !a ? " miss" : "";
+      return `<span class="pip${cls}">${r && !live ? (a ? EMOJI[a.tier] : "·") : ""}</span>`;
     }).join("");
-    renderOcean();
+    renderOcean(m);
   }
 
   // ---------- views
   function show(v) { ["load", "start", "play", "reveal", "done"].forEach((k) => ($(k + "View").hidden = k !== v)); S.view = v; }
+  const card = () => document.querySelector(".card");
+  function animateCard(cls) { const c = card(); c.classList.remove("in", "out", "fade"); void c.offsetWidth; if (cls && !reduced()) c.classList.add(cls); }
 
   function renderStart() {
     show("start"); renderTop();
@@ -123,101 +133,150 @@
     $("qrule").textContent = pr.rule;
     $("descBox").hidden = S.phase !== "descend";
     $("form").hidden = S.phase !== "live";
-    if (S.phase === "descend") { $("hint").className = "hint"; $("hint").textContent = ""; }
     $("gStatus").textContent = `${S.answers.length} of ${P.length} played`;
   }
 
-  function ladder(t, pr) {
-    const step = 84 / Math.max(1, pr.tiers.length - 1);
-    const lines = pr.tiers.map((x, i) => `<div class="ln${i === t ? " on" : ""}" style="top:${8 + i * step}%;--c:${tierColor(i)}">${esc(x.name)} · ${x.points}</div>`).join("");
-    const to = t === null ? 96 : 8 + t * step;
-    return `<div class="ladder" aria-hidden="true">${lines}<div class="sinker" id="sinker" style="top:2%" data-to="${to}%"><svg viewBox="-60 -60 120 120"><use href="#puffer"/></svg></div></div>`;
-  }
-  const badge = (t, pr) => t === null ? '<span class="badge zero">No score</span>' : `<span class="badge" style="--c:${tierColor(t)}">${EMOJI[t]} ${esc(pr.tiers[t].name)}</span>`;
-  const easiest = (pr) => pr.answers.reduce((b, a) => (a.points < b.points || (a.points === b.points && a.players > b.players) ? a : b));
-  const deepest = (pr) => pr.answers.reduce((b, a) => (a.points > b.points ? a : b));
-  const chose = (a) => (a.players ? ` ${fmt(a.players)} other divers chose this.` : "");
-
-  function renderReveal() {
-    show("reveal"); renderTop();
-    const pr = P[S.cur], a = hit(S.cur), last = S.cur === P.length - 1;
-    $("rvNum").textContent = `Round ${S.cur + 1} of ${P.length}`;
-    const btn = `<button class="btn btn-dive" id="descendNext" type="button">${last ? "Surface" : "Descend"}</button>`;
-    if (!a) {
-      $("rvBody").innerHTML = `<div><div class="rv-name">Out of air</div><div class="rv-tier">${badge(null, pr)}</div><div class="rv-nums"><div><b>0</b>points</div><div><b>+0 m</b>sunk</div></div><div class="rv-note">The easy one was ${esc(easiest(pr).name)}. The Buzzer Beater was ${esc(deepest(pr).name)}${deepest(pr).note ? ": " + esc(deepest(pr).note) : "."}</div>${btn}</div>${ladder(null, pr)}`;
-    } else {
-      const notes = NOTES[Math.min(a.tier, NOTES.length - 1)], note = notes[Math.floor(hash(a.name) * notes.length)];
-      $("rvBody").innerHTML = `<div><div class="rv-name">${esc(a.name)}</div><div class="rv-tier">${badge(a.tier, pr)}</div><div class="rv-nums"><div><b>${a.points}</b>points</div><div><b>+${fmt(a.points * M_PER_PT)} m</b>sunk</div></div><div class="rv-note">${a.note ? esc(a.note) : note}${chose(a)}</div>${btn}</div>${ladder(a.tier, pr)}`;
-    }
-    requestAnimationFrame(() => requestAnimationFrame(() => { const s = $("sinker"); if (s) s.style.top = s.dataset.to; }));
-    $("descendNext").addEventListener("click", next);
-    $("descendNext").focus();
-  }
-
-  function next() {
-    if (S.answers.length >= P.length) { beacon("fin", "/dive"); return renderDone(); }
-    S.cur = S.answers.length;
-    startRound();
-  }
-
+  // ---------- rounds
   function startRound() {
-    S.phase = "descend"; renderPlay();
-    let n = DESCEND; $("descN").textContent = n;
-    clearInterval(tick);
-    tick = setInterval(() => {
-      n--;
-      if (n > 0) { $("descN").textContent = n; return; }
-      clearInterval(tick);
-      S.phase = "live"; pending = null; renderPlay();
-      $("guess").value = ""; $("hint").className = "hint"; $("hint").textContent = "";
-      // Leaving mid-round costs the round, so a reload can't buy a second look at the prompt.
-      S.answers[S.cur] = { status: "time" }; persist();
-      startAir(); $("guess").focus();
-    }, 1000);
+    clearLater(); clearInterval(tick);
+    S.phase = "descend"; S.descendEndsAt = Date.now() + DESCEND * 1000; S.answerEndsAt = S.descendEndsAt + LIMIT();
+    persist(); descend(true);
+  }
+  // The prompt card swims in half a second into the descent; the clock starts when the descent ends.
+  function descend(fresh) {
+    S.phase = "descend"; renderPlay(); setHint("", "");
+    if (fresh) { card().classList.add("pre"); later(500, () => { card().classList.remove("pre"); animateCard("in"); }); }
+    const step = () => {
+      const left = S.descendEndsAt - Date.now();
+      if (left > 0) { $("descN").textContent = Math.ceil(left / 1000); return; }
+      clearInterval(tick); goLive();
+    };
+    step(); clearInterval(tick); tick = setInterval(step, 100);
+  }
+  function goLive() {
+    S.phase = "live"; pending = null; persist(); renderPlay();
+    $("guess").value = ""; syncGo(); setHint("", "");
+    $("guess").focus();
+    clearInterval(tick); air(); tick = setInterval(air, 100);
   }
 
   // ---------- air
   const CIRC = 2 * Math.PI * 25;
   $("ringFg").style.strokeDasharray = CIRC;
-  function setAir(ms) {
+  function air() {
+    const ms = S.answerEndsAt - Date.now();
     $("ringFg").style.strokeDashoffset = CIRC * (1 - Math.max(0, ms / LIMIT()));
     $("tsec").textContent = Math.ceil(Math.max(0, ms) / 1000);
     $("ring").classList.toggle("low", ms < 6000);
-  }
-  function startAir() {
-    deadline = performance.now() + LIMIT(); setAir(LIMIT()); clearInterval(tick);
-    tick = setInterval(() => { const left = deadline - performance.now(); setAir(left); if (left <= 0) settle({ status: "time" }); }, 100);
+    document.body.classList.toggle("edge", ms > 0 && ms <= 5000);
+    if (ms <= 0) {
+      // Time's up: whatever is in the box counts if it's an exact match. Near misses don't get a confirm.
+      const r = DiveMatch.lookup($("guess").value, P[S.cur]);
+      settle(r.i !== undefined ? { i: r.i, status: "ok" } : { status: "time" });
+    }
   }
   function settle(r) {
-    clearInterval(tick);
+    clearInterval(tick); clearLater(); document.body.classList.remove("edge");
     S.answers[S.cur] = r; S.phase = "reveal"; persist();
-    renderReveal();
+    animateCard("out");
+    later(600, () => { animateCard("fade"); renderReveal(); });
   }
-  function miss(msg, shake) {
-    if (shake) { const r = $("ring"); r.classList.remove("hit"); void r.offsetWidth; r.classList.add("hit"); }
-    $("hint").className = "hint err";
-    $("hint").textContent = shake ? `Not on the board. ${msg} The clock keeps running.` : msg;
-    $("guess").select();
+
+  function setHint(cls, html) { $("hint").className = "hint" + (cls ? " " + cls : ""); $("hint").innerHTML = html; }
+  function miss(input, msg, free) {
+    setHint("", "");
+    if (free) return setHint("err", esc(msg));
+    // the typed text stays in the box; the message lands a beat later with a jolt
+    later(300, () => { if (S.phase === "live") setHint("err jolt", `Not on the board. ${esc(msg)} The clock keeps running.`); });
   }
+  const syncGo = () => { $("go").disabled = !$("guess").value.trim(); };
 
   $("form").addEventListener("submit", (e) => {
     e.preventDefault();
     if (S.phase !== "live") return;
     const val = $("guess").value;
+    if (!val.trim()) return;
     if (pending && pending.text === val) return settle({ i: pending.i, status: "ok" });
     const r = DiveMatch.lookup(val, P[S.cur]);
     if (r.i !== undefined) return settle({ i: r.i, status: "ok" });
     if (r.guess !== undefined) {
-      pending = { text: val, i: r.guess };
-      $("hint").className = "hint confirm";
-      $("hint").innerHTML = `Did you mean <b>${esc(P[S.cur].answers[r.guess].name)}</b>? Submit again to confirm, or edit.`;
+      // Near miss: the box takes the suggestion, and submitting again confirms it.
+      const name = P[S.cur].answers[r.guess].name;
+      pending = { text: name, i: r.guess };
+      $("guess").value = name; syncGo();
+      setHint("confirm", `<span class="typed">“${esc(val.trim())}”</span> → <b>“${esc(name)}”</b><small>submit again to confirm · or edit</small>`);
       return;
     }
-    pending = null; miss(r.err, !r.free);
+    pending = null; miss(val, r.err, r.free);
   });
   $("guess").addEventListener("input", () => {
-    if (pending && $("guess").value !== pending.text) { pending = null; $("hint").className = "hint"; $("hint").textContent = ""; }
+    syncGo();
+    if (pending && $("guess").value !== pending.text) pending = null;
+    if ($("hint").textContent) setHint("", "");
   });
+
+  // ---------- reveal
+  // Timeline (from the answer): card out 0.6 s; depth counts up 0.6 to 3.6 s while the puffer sinks past
+  // the tier lines; at 3.75 s the tier banner pops and Descend rises; points count up in 0.35 s.
+  function ladder(t, pr) {
+    const step = 84 / Math.max(1, pr.tiers.length - 1);
+    const to = t === null ? 96 : 8 + t * step;
+    // the sinker eases out (cubic), so it passes line y at t = 1 - (1 - y)^(1/3) of the way through its 3 s
+    const when = (y) => (0.6 + 3 * (1 - Math.cbrt(1 - Math.min(1, (y - 2) / (to - 2 || 1))))).toFixed(2);
+    const lines = pr.tiers.map((x, i) => {
+      const y = 8 + i * step, passed = y <= to;
+      return `<div class="ln${i === t ? " on" : ""}${passed ? " pass" : ""}" style="top:${y}%;--c:${tierColor(i)};--d:${passed ? when(y) : 0}s">${esc(x.name)} · ${x.points}</div>`;
+    }).join("");
+    return `<div class="ladder" aria-hidden="true">${lines}<div class="sinker" id="sinker" style="top:2%" data-to="${to}%"><svg viewBox="-60 -60 120 120"><use href="#puffer"/></svg></div></div>`;
+  }
+  const easiest = (pr) => pr.answers.reduce((b, a) => (a.points < b.points || (a.points === b.points && a.players > b.players) ? a : b));
+  const deepest = (pr) => pr.answers.reduce((b, a) => (a.points > b.points ? a : b));
+  const chose = (a) => (a.players ? ` ${fmt(a.players)} other divers chose this.` : "");
+
+  function countUp(el, from, to, ms, f) {
+    if (reduced() || ms <= 0) { el.textContent = f(to); return; }
+    const t0 = performance.now();
+    const frame = (now) => {
+      const t = Math.min(1, (now - t0) / ms), v = from + (to - from) * (1 - Math.pow(1 - t, 3));
+      el.textContent = f(Math.round(v));
+      if (t < 1) requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  }
+
+  function renderReveal() {
+    show("reveal");
+    $("rvBody").classList.remove("land", "missed");
+    const pr = P[S.cur], a = hit(S.cur), last = S.cur === P.length - 1;
+    const before = meters() - pts(S.cur) * M_PER_PT;
+    renderTop(before);
+    $("rvNum").textContent = `Round ${S.cur + 1} of ${P.length}`;
+    const btn = `<button class="btn btn-dive rise" id="descendNext" type="button">${last ? "Surface" : "Descend"}</button>`;
+    if (!a) {
+      const deep = deepest(pr);
+      $("rvBody").innerHTML = `<div><div class="rv-banner zero">Out of air</div><div class="rv-nums"><div><b>0</b>points</div><div><b>+0 m</b>sunk</div></div><div class="rv-note">The easy one was ${esc(easiest(pr).name)}. The Buzzer Beater was ${esc(deep.name)}${deep.note ? ": " + esc(deep.note) : "."}</div>${btn}</div>${ladder(null, pr)}`;
+      $("rvBody").classList.add("missed");
+      later(900, () => $("rvBody").classList.add("land"));
+    } else {
+      const notes = NOTES[Math.min(a.tier, NOTES.length - 1)], note = notes[Math.floor(hash(a.name) * notes.length)];
+      $("rvBody").innerHTML = `<div><div class="rv-banner" style="--c:${tierColor(a.tier)}">${EMOJI[a.tier]} ${esc(pr.tiers[a.tier].name)}</div><div class="rv-name">${esc(a.name)}</div><div class="rv-nums"><div><b id="rvPts">0</b>points</div><div><b id="rvM">+0 m</b>sunk</div></div><div class="rv-note">${a.note ? esc(a.note) : note}${chose(a)}</div>${btn}</div>${ladder(a.tier, pr)}`;
+      $("rvBody").classList.remove("missed");
+      const gain = a.points * M_PER_PT;
+      later(0, () => { countUp($("rvM"), 0, gain, 3000, (v) => `+${fmt(v)} m`); countUp($("mTop"), before, before + gain, 3000, (v) => `${fmt(v)} m`); });
+      later(3750, () => { $("rvBody").classList.add("land"); renderTop(); countUp($("rvPts"), 0, a.points, 350, String); });
+    }
+    requestAnimationFrame(() => requestAnimationFrame(() => { const s = $("sinker"); if (s) s.style.top = s.dataset.to; }));
+    if (reduced()) { $("rvBody").classList.add("land"); renderTop(); }
+    $("descendNext").addEventListener("click", next);
+    later(a ? 3750 : 900, () => $("descendNext").focus());
+  }
+
+  function next() {
+    clearLater();
+    if (S.answers.length >= P.length) { beacon("fin", "/dive"); return renderDone(); }
+    S.cur = S.answers.length;
+    startRound();
+  }
 
   // ---------- results
   function drawLog() {
@@ -235,12 +294,12 @@
   }
 
   function renderDone() {
-    clearInterval(tick);
-    show("done"); S.cur = P.length; renderTop();
+    clearInterval(tick); clearLater(); animateCard("fade");
+    S.phase = "done"; show("done"); S.cur = P.length; renderTop();
     const p = total(), m = meters(), maxP = maxM() / M_PER_PT;
-    $("rLabel").textContent = `Dive №${DAY.n} · you reached`;
-    $("rM").innerHTML = `${fmt(m)}<small>m</small>`;
-    $("rPts").textContent = p;
+    $("rLabel").textContent = `Dive №${DAY.n} complete`;
+    $("rM").innerHTML = `${p}<small>pts</small>`;
+    $("rPts").textContent = `${fmt(m)} m`;
     $("rBand").textContent = bandOf(p);
     $("nextTxt").textContent = DAY.preview ? "preview" : "next dive tomorrow";
     drawLog();
@@ -260,7 +319,7 @@
     $("shareTxt").textContent = shareText();
   }
 
-  const shareText = () => `Daily Dive №${DAY.n} · ${fmt(meters())} m\n${P.map((_, k) => { const a = hit(k); return a ? EMOJI[a.tier] : "⬛"; }).join("")}\nthegravityreport.com/dive`;
+  const shareText = () => `Daily Dive #${DAY.n} 🏀\n${total()} pts · ${fmt(meters())} m\n\n${P.map((_, k) => { const a = hit(k); return a ? EMOJI[a.tier] : "⬛"; }).join("")}\nthegravityreport.com/dive`;
 
   $("rate").addEventListener("click", (e) => {
     const b = e.target.closest("button"); if (!b) return;
@@ -272,7 +331,7 @@
     const fallback = () => { const r = document.createRange(); r.selectNodeContents($("shareTxt")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Selected"; };
     try { navigator.clipboard.writeText(txt).then(() => { btn.textContent = done; }, fallback); } catch (e) { fallback(); }
   }
-  $("copy").addEventListener("click", () => copyText($("copy"), shareText(), "Copied"));
+  $("copy").addEventListener("click", () => copyText($("copy"), shareText(), "Copied ✓"));
   $("shareBtn").addEventListener("click", () => {
     if (navigator.share) navigator.share({ text: shareText() }).catch(() => {});
     else copyText($("shareBtn"), shareText(), "Copied");
@@ -296,14 +355,23 @@
   // ---------- boot
   load().then(() => {
     const saved = DAY.preview ? null : store.get(saveKey());
-    S = { view: "load", answers: (saved && saved.answers) || [], cur: 0, phase: "descend", rating: (saved && saved.rating) || 0 };
-    S.answers = S.answers.slice(0, P.length);
+    S = { view: "load", answers: ((saved && saved.answers) || []).slice(0, P.length), cur: 0, phase: "start", rating: (saved && saved.rating) || 0 };
     S.cur = Math.min(S.answers.length, P.length - 1);
+    const round = saved && saved.round;
     $("menuNum").textContent = `№${DAY.n}`;
     $("menuTiers").innerHTML = P[0].tiers.map((t, i) => `<span class="badge" style="--c:${tierColor(i)}">${EMOJI[i]} ${esc(t.name)} · ${t.points}</span>`).join("");
     buildRuler();
     beacon("pv", "/dive");
-    if (S.answers.length >= P.length) renderDone(); else renderStart();
+    if (S.answers.length >= P.length) return renderDone();
+    if (round && round.cur === S.answers.length) {
+      // A reload mid-round picks the round back up; its clock never stopped. The typed draft is gone.
+      Object.assign(S, { cur: round.cur, descendEndsAt: round.descendEndsAt, answerEndsAt: round.answerEndsAt });
+      if (Date.now() < round.descendEndsAt) return descend(false);
+      if (Date.now() < round.answerEndsAt) return goLive();
+      S.answers[S.cur] = { status: "time" }; S.phase = "reveal"; persist();
+      return renderReveal();
+    }
+    renderStart();
   }).catch(() => {
     $("loadView").innerHTML = '<p class="pill">Today\'s dive didn\'t load. Refresh to try again.</p>';
   });
