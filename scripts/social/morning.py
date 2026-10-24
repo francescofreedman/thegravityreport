@@ -84,7 +84,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=datetime.datetime.now(ET).date().isoformat())
     ap.add_argument("--from-site", action="store_true", help="read the brief from thegravityreport.com instead of ESPN")
+    ap.add_argument("--fresh", action="store_true", help="ignore social/brief/latest.json and fetch")
     a = ap.parse_args()
+    # the GitHub Action commits today's brief to social/brief/latest.json each morning; a machine with no
+    # outside network (the cloud writer) just reads that
+    latest = os.path.join(ROOT, "social", "brief", "latest.json")
+    if not a.fresh and not a.from_site and os.path.exists(latest):
+        b = json.load(open(latest, encoding="utf-8"))
+        if b.get("date") == a.date:
+            print(f"using committed brief {os.path.relpath(latest, ROOT)} ({b['date']})", file=sys.stderr)
+            json.dump(b, sys.stdout, ensure_ascii=False, indent=1); print()
+            return
     if a.from_site:
         return from_site()
     try:

@@ -1,0 +1,36 @@
+# Every morning, before the cloud writer runs, build the day's brief (last night's box scores, tonight's
+# games, 644/TORQUE records) and commit it, so the writer never needs network access of its own.
+name: Morning brief
+on:
+  schedule:
+    - cron: "40 11 * * *"   # 7:40 AM ET in October (6:40 AM after the clocks change); the writer runs at 12:00 UTC
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: morning-brief
+  cancel-in-progress: false
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build the brief
+        run: |
+          mkdir -p social/brief
+          python3 scripts/social/morning.py --fresh > social/brief/latest.json
+          d=$(python3 -c "import json;print(json.load(open('social/brief/latest.json'))['date'])")
+          cp social/brief/latest.json "social/brief/$d.json"
+          python3 -c "import json;b=json.load(open('social/brief/latest.json'));print('date',b['date'],'pick',b['pick'] and b['pick']['player'],'games tonight',len(b['tonight']))"
+      - name: Commit
+        run: |
+          git config user.name "Morning brief"
+          git config user.email "posts@thegravityreport.com"
+          git add social/brief
+          git diff --cached --quiet && echo "no change" && exit 0
+          git commit -m "Morning brief $(python3 -c "import json;print(json.load(open('social/brief/latest.json'))['date'])")"
+          git pull --rebase origin main
+          git push origin HEAD:main
