@@ -139,6 +139,10 @@ SERIES = [
      "`series_tonight = 0` in social_settings"),
     ("Tip-off", "As it happens, up to 2 a night: a marquee game about to start (both best players top 10, or both teams TORQUE top 6)",
      "Worker, automatic (social/gamenight.js); X and Bluesky", "`series_tips = 0` in social_settings"),
+    ("Morning writer (not a post)", "Daily: the brief at 7:40 AM ET (GitHub Action → social/brief/latest.json), the writing at 8:00 AM ET",
+     "A cloud Claude routine ('Gravity Report morning writer') reads the committed brief and writes social/copy/potd-<date>.json and "
+     "tonight-<date>.json in the owner's voice; the Worker uses that text for player of the day and 'Tonight' when it passes the number "
+     "guard and names the same player, else its own phrasing", "pause the routine at claude.ai/code/routines; the Worker's own phrasing takes over"),
     ("Instagram + Threads hand-off (not a post)", "15–30 minutes before any Instagram or Threads row is due",
      "Worker, automatic (social/handoff.js): emails the caption, the images and a 3-line how-to to HANDOFF_TO; the row shows "
      "'Sent to your phone'. The Worker never posts to Instagram or Threads itself.",
